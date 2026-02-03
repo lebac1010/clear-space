@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Delete Confirmation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden selection:bg-primary/30">
+<!-- Screen Wrapper -->
+<div class="relative h-screen w-full flex flex-col overflow-hidden mx-auto max-w-md bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- App Header (Contextual Background) -->
+<div class="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#101922] shadow-sm z-10 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">arrow_back</button>
+<h1 class="text-lg font-bold tracking-tight">Storage Cleaner</h1>
+</div>
+<button class="material-symbols-outlined text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">more_vert</button>
+</div>
+<!-- App Content (Simulated List) -->
+<div class="flex-1 overflow-y-auto p-4 space-y-3 bg-background-light dark:bg-background-dark pb-24">
+<!-- Simulated File Item 1 -->
+<div class="flex items-center p-3 bg-white dark:bg-[#16212e] rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm gap-4 transition-opacity duration-500 opacity-40">
+<div class="w-12 h-12 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">folder</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3 mb-2"></div>
+<div class="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/4"></div>
+</div>
+<div class="w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-sm shadow-primary/30">
+<span class="material-symbols-outlined text-white text-sm font-bold">check</span>
+</div>
+</div>
+<!-- Simulated File Item 2 -->
+<div class="flex items-center p-3 bg-white dark:bg-[#16212e] rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm gap-4 transition-opacity duration-500 opacity-40">
+<div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
+<div class="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/5"></div>
+</div>
+<div class="w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-sm shadow-primary/30">
+<span class="material-symbols-outlined text-white text-sm font-bold">check</span>
+</div>
+</div>
+<!-- Simulated File Item 3 -->
+<div class="flex items-center p-3 bg-white dark:bg-[#16212e] rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm gap-4 transition-opacity duration-500 opacity-40">
+<div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">image</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3 mb-2"></div>
+<div class="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/4"></div>
+</div>
+<div class="w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-sm shadow-primary/30">
+<span class="material-symbols-outlined text-white text-sm font-bold">check</span>
+</div>
+</div>
+<!-- Simulated File Item 4 -->
+<div class="flex items-center p-3 bg-white dark:bg-[#16212e] rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm gap-4 transition-opacity duration-500 opacity-40">
+<div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">audiotrack</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
+<div class="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/5"></div>
+</div>
+<div class="w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-sm shadow-primary/30">
+<span class="material-symbols-outlined text-white text-sm font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Dimmed Overlay -->
+<div class="absolute inset-0 bg-slate-900/60 dark:bg-black/70 z-20 backdrop-blur-[2px] transition-all duration-300"></div>
+<!-- Bottom Sheet Container -->
+<div class="absolute bottom-0 left-0 right-0 z-30 transform transition-transform duration-300 ease-out translate-y-0">
+<!-- Sheet Surface -->
+<div class="bg-white dark:bg-[#18212a] rounded-t-[32px] shadow-[0_-8px_30px_rgba(0,0,0,0.12)] border-t border-white/10 overflow-hidden">
+<!-- BottomSheetHandle -->
+<div class="flex w-full flex-col items-center pt-3 pb-2 cursor-grab active:cursor-grabbing">
+<div class="h-1.5 w-12 rounded-full bg-slate-200 dark:bg-slate-600"></div>
+</div>
+<!-- Content Wrapper -->
+<div class="flex flex-col px-6 pt-2 pb-8">
+<!-- Icon Area (Enhancing 'Trust' & 'Safety') -->
+<div class="flex justify-center mb-5">
+<div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-full flex items-center justify-center ring-8 ring-red-50/50 dark:ring-red-500/5">
+<span class="material-symbols-outlined text-red-600 dark:text-red-500 text-[32px]">delete_forever</span>
+</div>
+</div>
+<!-- HeadlineText -->
+<h3 class="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight text-center mb-3">
+                        Delete 12 items?
+                    </h3>
+<!-- BodyText -->
+<p class="text-slate-500 dark:text-slate-400 text-[15px] font-normal leading-relaxed text-center mb-8 max-w-xs mx-auto">
+                        This will free up <span class="text-slate-900 dark:text-slate-200 font-medium">450 MB</span>. This action cannot be undone.
+                    </p>
+<!-- Buttons Group -->
+<div class="flex flex-row gap-3">
+<!-- Cancel Button (Secondary) -->
+<button class="group flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-[0.98] transition-all duration-200">
+<span class="text-slate-700 dark:text-slate-200 text-[15px] font-bold tracking-wide truncate">Cancel</span>
+</button>
+<!-- Delete Button (Primary - Danger) -->
+<button class="group flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-red-600 hover:bg-red-700 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-red-600/20">
+<span class="text-white text-[15px] font-bold tracking-wide truncate">Delete</span>
+</button>
+</div>
+</div>
+<!-- Home Indicator Safe Area (iOS style) -->
+<div class="h-5 w-full bg-white dark:bg-[#18212a]"></div>
+</div>
+</div>
+</div>
+</body></html>

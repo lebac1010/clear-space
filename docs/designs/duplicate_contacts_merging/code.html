@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contacts Cleanup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark border-x border-slate-200 dark:border-slate-800 shadow-xl">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-10 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-slate-100 dark:border-slate-800/50">
+<button class="text-slate-900 dark:text-slate-100 flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">Contacts Cleanup</h2>
+</header>
+<main class="flex-1 flex flex-col">
+<!-- HeadlineText -->
+<div class="px-6 pt-6 pb-2">
+<h2 class="text-slate-900 dark:text-slate-100 tracking-tight text-[28px] font-bold leading-tight text-left">Found 5 duplicate groups</h2>
+</div>
+<!-- BodyText -->
+<div class="px-6 pb-6">
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">Review and merge duplicates to organize your address book safely.</p>
+</div>
+<!-- List Section -->
+<div class="flex flex-col gap-1 pb-20">
+<!-- ListItem: Image Profile -->
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4 overflow-hidden">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 shrink-0 border border-slate-200 dark:border-slate-700 shadow-sm" data-alt="Portrait of Sarah Miller" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4qegEa2vRD3CgMj0j8830q75peTxsSrnj8KyzB39ppWTv_alVzo1qRWLLDhGHxSPcBG3JzLOsCArgb4W8gXeCo0Ob6dsKrmtGnOC0ON_my6jTFPJh7CwvIaERYP0qxireLOr9ngUQKeTG8hge7zDVGM4224zH1_atXmMep33fGDgxlm3tbetduK6XtolKtCAgerFHPcgiV9l8Z-z4NLTZyF6Nj1cjm8K6bDzIXPInzE60wa-0H4XEU_ffmnFau6sOz3vTwRxzqCg");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal line-clamp-1 truncate">Sarah Miller</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2 mt-0.5">2 contacts • Same Name</p>
+</div>
+</div>
+<div class="shrink-0 pl-2">
+<button class="flex min-w-[80px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-4 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary text-sm font-semibold leading-normal transition-colors">
+<span class="truncate">Merge</span>
+</button>
+</div>
+</div>
+<!-- ListItem: Phone Icon -->
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4 overflow-hidden">
+<div class="text-slate-500 dark:text-slate-400 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 shrink-0 h-12 w-12 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined" style="font-size: 24px;">call</span>
+</div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal line-clamp-1 truncate">(415) 555-0123</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2 mt-0.5">3 contacts • Same Number</p>
+</div>
+</div>
+<div class="shrink-0 pl-2">
+<button class="flex min-w-[80px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-4 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary text-sm font-semibold leading-normal transition-colors">
+<span class="truncate">Merge</span>
+</button>
+</div>
+</div>
+<!-- ListItem: Image Profile 2 -->
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4 overflow-hidden">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 shrink-0 border border-slate-200 dark:border-slate-700 shadow-sm" data-alt="Portrait of Michael Chen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3usfUmZTpBD6G4PQFqGdrK3MoAtNs7jZOQML4o4B3bSM4L75JeO8icdDm1Kot_Z1hSMUA2vgRe9Ago0qgUalCW3ev3bsEN60aZZcBuqQUArKE5Xz9VZ02teqi2cx70cX_EoEEPryY4K7xmkyI8yK5CXJWYyW-pcXgMZCHwt83XVh9HWietiH6YZpTTbAHtQmp8_XydQSk5Fe-dtL1cagj1b--pqM23jxmxQu0QYB1AKKagGQEYTTaOrwUegrtuiLGEXp4dmo4tF4");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal line-clamp-1 truncate">Michael Chen</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2 mt-0.5">2 contacts • Same Name</p>
+</div>
+</div>
+<div class="shrink-0 pl-2">
+<button class="flex min-w-[80px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-4 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary text-sm font-semibold leading-normal transition-colors">
+<span class="truncate">Merge</span>
+</button>
+</div>
+</div>
+<!-- ListItem: No Name / Email -->
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4 overflow-hidden">
+<div class="text-slate-500 dark:text-slate-400 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 shrink-0 h-12 w-12 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined" style="font-size: 24px;">mail</span>
+</div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal line-clamp-1 truncate">alex.design@gmail.com</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2 mt-0.5">2 contacts • Same Email</p>
+</div>
+</div>
+<div class="shrink-0 pl-2">
+<button class="flex min-w-[80px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-4 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary text-sm font-semibold leading-normal transition-colors">
+<span class="truncate">Merge</span>
+</button>
+</div>
+</div>
+<!-- ListItem: Image Profile 3 -->
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4 overflow-hidden">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 shrink-0 border border-slate-200 dark:border-slate-700 shadow-sm" data-alt="Portrait of Jessica Wong" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB7ggYdLYXjCoxZ4jW4kMmXMWcwZvGjBDja3BUOnHDSAavI2tXwTeb2V9eNHyP6p0OPYJJ5HOwINOcnRMfUdjdOk2F7tzj1QHMGatMBwqlE2xyFXPe4vSEN2oqsS3EOa320i98rDqpvqt4MccIdquX2DxgkjRXI1R0jHl7ELfhQgyRFCDxErwjjTnV6PjuAeB8ddVcUgrg8IO5wBCv9QuZKb5Ei-goezoftKAWe7XlFqzTu4ut5EHrMPgjYeRCFrHUTZRNXc4ucP04");'></div>
+<div class="flex flex-col justify-center min-w-0">
+<p class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal line-clamp-1 truncate">Jessica Wong</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2 mt-0.5">4 contacts • Same Name</p>
+</div>
+</div>
+<div class="shrink-0 pl-2">
+<button class="flex min-w-[80px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-4 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary text-sm font-semibold leading-normal transition-colors">
+<span class="truncate">Merge</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Optional: Merge All Floating Action Button or Bottom Bar for better UX -->
+<div class="fixed bottom-6 left-0 right-0 flex justify-center z-20 pointer-events-none">
+<button class="pointer-events-auto flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">merge</span>
+<span class="font-semibold text-sm">Merge All (5)</span>
+</button>
+</div>
+</div>
+</body></html>

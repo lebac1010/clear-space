@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Critical Storage Alert</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f20d0d",
+                        "background-light": "#f8f5f5",
+                        "background-dark": "#221010",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white overflow-x-hidden transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark group/design-root">
+<!-- TopAppBar -->
+<div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-20 bg-background-light dark:bg-background-dark/95 backdrop-blur-md transition-colors">
+<button class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Storage Status</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full size-12 bg-transparent text-slate-900 dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0 hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col px-4 pt-2 pb-8 gap-6">
+<!-- Alert Header Section (HeadlineText + BodyText) -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary animate-pulse" style="font-size: 28px; font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="text-slate-900 dark:text-white tracking-light text-[28px] font-bold leading-tight text-left">Critical Storage</h2>
+</div>
+<p class="text-slate-600 dark:text-white/80 text-base font-normal leading-normal">
+                    Your device is running low on space. Less than 5% free space remaining. Some system functions may stop working.
+                </p>
+</div>
+<!-- Charts Section -->
+<div class="w-full">
+<div class="flex flex-col gap-4 py-2">
+<div class="flex flex-col gap-6 rounded-2xl bg-white dark:bg-[#2e1616] p-6 shadow-sm border border-slate-200 dark:border-primary/20">
+<!-- Chart Header -->
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-slate-500 dark:text-white/70 text-base font-medium leading-normal">Storage Usage</p>
+<p class="text-slate-900 dark:text-white tracking-light text-[32px] font-bold leading-tight truncate">96% Used</p>
+</div>
+<div class="flex items-center gap-1 bg-red-100 dark:bg-primary/20 px-2 py-1 rounded text-primary">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<p class="text-sm font-bold leading-normal">+12%</p>
+</div>
+</div>
+<!-- Bar Chart -->
+<div class="grid min-h-[160px] grid-flow-col gap-6 grid-rows-[1fr_auto] items-end justify-items-center px-1">
+<!-- Apps Bar -->
+<div class="w-full h-full flex items-end justify-center group relative cursor-pointer">
+<div class="w-full bg-slate-200 dark:bg-[#492222] rounded-t-sm relative overflow-hidden transition-all duration-300 group-hover:bg-red-200 dark:group-hover:bg-[#5e2b2b]" style="height: 70%;">
+<div class="absolute top-0 w-full h-1 bg-primary dark:bg-[#cb9090]"></div>
+</div>
+<div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-xs py-1 px-2 rounded pointer-events-none">32 GB</div>
+</div>
+<!-- Media Bar -->
+<div class="w-full h-full flex items-end justify-center group relative cursor-pointer">
+<div class="w-full bg-slate-200 dark:bg-[#492222] rounded-t-sm relative overflow-hidden transition-all duration-300 group-hover:bg-red-200 dark:group-hover:bg-[#5e2b2b]" style="height: 85%;">
+<div class="absolute top-0 w-full h-1 bg-primary dark:bg-[#cb9090]"></div>
+</div>
+<div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-xs py-1 px-2 rounded pointer-events-none">48 GB</div>
+</div>
+<!-- System Bar -->
+<div class="w-full h-full flex items-end justify-center group relative cursor-pointer">
+<div class="w-full bg-slate-200 dark:bg-[#492222] rounded-t-sm relative overflow-hidden transition-all duration-300 group-hover:bg-red-200 dark:group-hover:bg-[#5e2b2b]" style="height: 40%;">
+<div class="absolute top-0 w-full h-1 bg-primary dark:bg-[#cb9090]"></div>
+</div>
+<div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-xs py-1 px-2 rounded pointer-events-none">12 GB</div>
+</div>
+<!-- Labels -->
+<p class="text-slate-500 dark:text-[#cb9090] text-[13px] font-bold leading-normal tracking-[0.015em]">Apps</p>
+<p class="text-slate-500 dark:text-[#cb9090] text-[13px] font-bold leading-normal tracking-[0.015em]">Media</p>
+<p class="text-slate-500 dark:text-[#cb9090] text-[13px] font-bold leading-normal tracking-[0.015em]">System</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card -->
+<div class="w-full">
+<div class="bg-cover bg-center flex flex-col items-stretch justify-end rounded-2xl overflow-hidden shadow-lg shadow-red-500/10 dark:shadow-none min-h-[240px] relative border border-slate-200 dark:border-primary/30" data-alt="Abstract red and black gradient illustrating high data density or alert state" style='background-image: linear-gradient(0deg, rgba(34, 16, 16, 1) 20%, rgba(34, 16, 16, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDd7fgvwJ45COPBu47OAshMPPE5X3N8ZSbF41cLsjnscXX7UrBUh0b4OJCOeSvtsw7R4GpZQ4BlqfebZ5aueOnjNkT-tWhU0qoHZog0B5MKq7duD1PYZuvu8El53ns8I2zMB4-agqdDBmzLmqWdb2O_FUfA3TUlVWWGHsSR7mKaX3oKqjn0-cUpZ9LCyAD4QNQJoHEeuDvVshTAr8_KD6xhq2idpBM5O6qR_UvqiMfPiGm-2S7RRfyoqhQ8YRW9cHZL1_SMaM2z6Yk");'>
+<div class="flex w-full flex-col gap-4 p-5 z-10">
+<div class="flex flex-col gap-2">
+<div class="inline-flex">
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Recommended Action</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-white tracking-light text-2xl font-bold leading-tight max-w-[440px]">Free up 2.4 GB</p>
+<p class="text-white/80 text-sm font-medium leading-normal">Large cache files detected. Cleaning is safe.</p>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-4 bg-primary hover:bg-red-600 active:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-red-900/40 transition-all">
+<span class="material-symbols-outlined mr-2">cleaning_services</span>
+<span class="truncate">Clean Now</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

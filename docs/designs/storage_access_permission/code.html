@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Storage Access Permission</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#0d141b] dark:text-white antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800">
+<button class="text-[#0d141b] dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
+</button>
+<h2 class="text-[#0d141b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Storage Access</h2>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 flex-col items-center justify-center px-6 py-8">
+<div class="flex flex-col items-center gap-8 w-full max-w-sm">
+<!-- Icon container -->
+<div class="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+<span class="material-symbols-outlined text-primary text-[48px]">folder_managed</span>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-center gap-3 text-center">
+<h3 class="text-[#0d141b] dark:text-white text-2xl font-bold leading-tight tracking-[-0.015em]">
+                        Allow access to storage
+                    </h3>
+<p class="text-[#495662] dark:text-gray-400 text-base font-normal leading-relaxed">
+                        To help you clean up junk files and free up valuable space, we need your permission to scan your device's storage.
+                    </p>
+</div>
+<!-- Permission Details Card -->
+<div class="w-full rounded-xl bg-white dark:bg-[#1a2632] p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">verified_user</span>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-semibold text-[#0d141b] dark:text-white">Your privacy is protected</p>
+<p class="text-xs text-[#495662] dark:text-gray-400 leading-normal">
+                                We only scan for junk files. Your personal photos, videos, and documents remain private and never leave your device.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Spacer to push buttons down if needed, but centering looks better here -->
+<div class="flex-1"></div>
+<!-- Action Buttons -->
+<div class="flex w-full flex-col gap-3 mt-4">
+<button class="flex h-12 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-primary hover:bg-primary/90 transition-colors text-white text-base font-semibold leading-normal tracking-[0.015em] shadow-lg shadow-primary/20">
+<span>Open Settings</span>
+</button>
+<button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-[#0d141b] dark:text-white text-base font-medium leading-normal tracking-[0.015em]">
+<span>Maybe Later</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

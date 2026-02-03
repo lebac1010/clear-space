@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recovery Information State</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display antialiased selection:bg-primary/30">
+<!-- Top App Bar -->
+<div class="flex items-center px-4 py-3 justify-between bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-start cursor-pointer hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Cleaned</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0 hover:text-primary/80 transition-colors">Done</button>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex flex-col items-center justify-center flex-1 px-4 py-6 w-full max-w-md mx-auto">
+<!-- Empty State / Success Message -->
+<div class="flex flex-col items-center gap-6 w-full">
+<div class="bg-center bg-no-repeat bg-contain rounded-xl w-full aspect-video flex items-center justify-center bg-slate-100 dark:bg-slate-800/50" data-alt="Minimalist illustration of a secure recycling bin folder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4eZqZLv7UHuX0aZki1QhImnkCbHvEOEiMNWkTc88f-RXA7R01-WDuKeUoLf3zuDJ3UTTp54WIpgZu0M-qVrwXPDGcFVTvJIL-GhB7hgbvJiS3QM1A2p9870aJDwghQaZKqBDxq5RkVaeWKo7y7VNOsPLv3klhDIO-zmU-otqvrsVJ-whKIvN7jk4axxV67xTKXsvQVSYKgFeJxpi1PlE7dXH8xyBh5wRTQvicDpkXrPrbT3fzN07QrXRz1oBaXSqkM5t15hUXacA");'>
+</div>
+<div class="flex flex-col items-center gap-3 text-center">
+<p class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">Files Moved to Trash</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-relaxed max-w-[320px]">
+                    Your deleted files have been safely moved to the System Trash. They will be permanently removed after 30 days. You can restore them anytime before then.
+                </p>
+</div>
+<button class="flex w-full max-w-[320px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95">
+<span class="truncate">Go to Trash</span>
+</button>
+</div>
+<!-- Spacer -->
+<div class="h-8"></div>
+<!-- Action Panel -->
+<div class="w-full">
+<div class="flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#182635] p-5 shadow-sm">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px]">cleaning_services</span>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Need more space?</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">
+                        Manage your trash settings or empty it now to free up space immediately.
+                    </p>
+</div>
+<div class="border-t border-slate-100 dark:border-slate-700/50 pt-3">
+<a class="text-sm font-bold leading-normal tracking-[0.015em] flex items-center justify-between text-primary hover:text-primary/80 transition-colors group" href="#">
+<span>Manage Trash Settings</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Meta Text Footer -->
+<div class="pb-6 pt-2 px-6">
+<p class="text-slate-400 dark:text-slate-500 text-xs font-normal leading-normal text-center">
+            Items in trash still occupy device storage until permanently deleted.
+        </p>
+</div>
+</body></html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smart Cleanup Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-x-hidden text-slate-900 dark:text-white selection:bg-primary/30">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-20 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50">
+<div class="flex items-center justify-between p-4 h-16 max-w-lg mx-auto w-full">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-2">Smart Cleanup</h2>
+<div class="flex items-center justify-end w-10">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col w-full max-w-lg mx-auto pb-32">
+<!-- Headline -->
+<div class="pt-8 pb-6 px-4 text-center">
+<h1 class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight mb-2">
+                You can free up <span class="text-primary whitespace-nowrap">~4.2 GB</span>
+</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">
+                Safe to remove items found in your storage
+            </p>
+</div>
+<!-- Cards List -->
+<div class="flex flex-col gap-4 px-4">
+<!-- Card 1: Similar Photos -->
+<div class="group relative bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/50 transition-all hover:shadow-md">
+<div class="flex items-stretch justify-between gap-4">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">photo_library</span>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Similar Photos</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal pl-[28px]">312 items • <span class="text-slate-700 dark:text-slate-300 font-medium">~2.1 GB</span></p>
+</div>
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-background-light dark:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors w-fit ml-[28px]">
+                            Review
+                        </button>
+</div>
+<div class="flex-1 min-w-[100px] aspect-square rounded-lg bg-cover bg-center overflow-hidden relative" data-alt="Stack of similar looking photos" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAX_bZCmc8qUUWbSPDv7749BHfsvB-jeldV22XGPAaHyZ1Ez_sKfhHPlDcW6ru_XGy8RSo24zScZL2fR3bb5ptoz-EEgaJS4LbqZbwe8g2QKp5hlCajgrHcFZ9Z_AU6fJq4kLMCK3CY7Ttzv0RXV7oYn17Aqd3q0skbAnu3Thp1JeTO60L2pKzNiPvNAtbpLknG65M19-aOcq2J-iQRSL0vfYFDzHxtEHHYaEpKQ5rFduYLmk-gSSUpBDTTDxDN5a39ZwHrWddStIc");'>
+<div class="absolute inset-0 bg-black/10 dark:bg-black/20"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: Large Videos -->
+<div class="group relative bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/50 transition-all hover:shadow-md">
+<div class="flex items-stretch justify-between gap-4">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500 text-[20px]">movie</span>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Large Videos</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal pl-[28px]">4 videos • <span class="text-slate-700 dark:text-slate-300 font-medium">~1.6 GB</span></p>
+</div>
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-background-light dark:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors w-fit ml-[28px]">
+                            Review
+                        </button>
+</div>
+<div class="flex-1 min-w-[100px] aspect-square rounded-lg bg-cover bg-center overflow-hidden relative" data-alt="Abstract colorful video frame" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDSWwQa4EonhxKaqb_sGz13kFjvMz2kUSGwnQhqHf2uDBG9oFBzhawTVceOOEsdKMr-kokBIrCLU81Yuf78zNuPp_tXZhz1PU56eRChx039BFaxfq0ibwd4o9vTdWwOU21OB1zEGkz7GnM_Zc_xSLcMMArEtOAUnGRyPXqv8f8AvgZrFB4htXROOFxakGANOPDGjHqDXYezC1a6Jj5_mWN-FKivKu90IEz81CmGk8tokDdzTU46BG3C2BJdRr9tuLZRtcPcqdS8ekk");'>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20">
+<span class="material-symbols-outlined text-white drop-shadow-md">play_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Old Screenshots -->
+<div class="group relative bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/50 transition-all hover:shadow-md">
+<div class="flex items-stretch justify-between gap-4">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-3">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-purple-500 text-[20px]">smartphone</span>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Old Screenshots</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal pl-[28px]">58 items • <span class="text-slate-700 dark:text-slate-300 font-medium">~500 MB</span></p>
+</div>
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-background-light dark:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors w-fit ml-[28px]">
+                            Review
+                        </button>
+</div>
+<div class="flex-1 min-w-[100px] aspect-square rounded-lg bg-cover bg-center overflow-hidden relative" data-alt="Grid of mobile interface screenshots" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvBxvO9mHVYVBQsPP7AfIoB7QeWi9qQubzwlWMhS8BPVeIwmEp51kUCqEVFSfjKfZLVZOXz2wbBzrnhR4CGCEeAgI_lzjEgWF3NFpXRBC3X_pt6CSzJZtAp7xJbZOFOIUWLxNJjwG-ay1ejTMiQSSpVQwYh3hqmouVvZZWrNeVU7qp8LBWjgku6thAAZfRaUNyFVlsDUONX3tQsCNFYHiYi_RNKMoYsnPPhxd7HItdICsMszO-cDPbP_qjBbYwks_ac-Jrv_T3kDw");'>
+<div class="absolute inset-0 bg-black/10 dark:bg-black/20"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom CTA Bar -->
+<div class="fixed bottom-0 left-0 w-full z-30 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 pb-safe pt-4 px-4">
+<div class="max-w-lg mx-auto w-full mb-6">
+<button class="group w-full flex items-center justify-center gap-3 bg-primary hover:bg-blue-600 active:bg-blue-700 text-white text-lg font-bold py-4 rounded-xl shadow-lg shadow-blue-500/25 transition-all transform active:scale-[0.98]">
+<span class="material-symbols-outlined group-hover:animate-pulse">cleaning_services</span>
+                Start Step-by-Step
+            </button>
+<p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-3">
+                Action will be taken only after your confirmation
+            </p>
+</div>
+</div>
+</body></html>

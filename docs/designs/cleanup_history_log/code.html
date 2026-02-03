@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cleanup History Log</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark px-4 py-3 justify-between border-b border-gray-200 dark:border-gray-800">
+<div class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-start cursor-pointer hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Cleanup History</h2>
+<div class="flex items-center justify-end cursor-pointer hover:opacity-80 transition-opacity">
+<p class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0">Clear All</p>
+</div>
+</div>
+<!-- Content -->
+<div class="flex-1 flex flex-col w-full max-w-md mx-auto">
+<!-- Section: This Week -->
+<div class="mt-4">
+<!-- HeadlineText -->
+<h3 class="text-slate-900 dark:text-white tracking-tight text-xl font-bold leading-tight px-4 text-left pb-3 pt-2">This Week</h3>
+<!-- ListItem: Similar Photos -->
+<div class="group flex gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-primary/90 shrink-0 size-12 shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 24px;">photo_library</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal">Similar Photos Cleaned</p>
+<div class="flex items-center gap-2">
+<p class="text-primary text-sm font-medium leading-normal">1.2 GB freed</p>
+<span class="text-slate-400 dark:text-slate-600 text-xs">•</span>
+<p class="text-slate-500 dark:text-[#92adc9] text-sm font-normal leading-normal">Oct 24, 2023</p>
+</div>
+</div>
+</div>
+<div class="shrink-0 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 24px;">chevron_right</span>
+</div>
+</div>
+<!-- ListItem: Large Videos -->
+<div class="group flex gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-orange-500 shrink-0 size-12 shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 24px;">videocam</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal">Large Videos Deleted</p>
+<div class="flex items-center gap-2">
+<p class="text-primary text-sm font-medium leading-normal">450 MB freed</p>
+<span class="text-slate-400 dark:text-slate-600 text-xs">•</span>
+<p class="text-slate-500 dark:text-[#92adc9] text-sm font-normal leading-normal">Oct 20, 2023</p>
+</div>
+</div>
+</div>
+<div class="shrink-0 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 24px;">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Spacer/Divider -->
+<div class="h-px bg-gray-200 dark:bg-gray-800 mx-4 my-2"></div>
+<!-- Section: Last Month -->
+<div class="mt-2">
+<!-- HeadlineText -->
+<h3 class="text-slate-900 dark:text-white tracking-tight text-xl font-bold leading-tight px-4 text-left pb-3 pt-2">Last Month</h3>
+<!-- ListItem: System Cache -->
+<div class="group flex gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-emerald-500 shrink-0 size-12 shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 24px;">cleaning_services</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal">System Cache Clear</p>
+<div class="flex items-center gap-2">
+<p class="text-primary text-sm font-medium leading-normal">120 MB freed</p>
+<span class="text-slate-400 dark:text-slate-600 text-xs">•</span>
+<p class="text-slate-500 dark:text-[#92adc9] text-sm font-normal leading-normal">Oct 15, 2023</p>
+</div>
+</div>
+</div>
+<div class="shrink-0 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 24px;">chevron_right</span>
+</div>
+</div>
+<!-- ListItem: Duplicate Files -->
+<div class="group flex gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-purple-500 shrink-0 size-12 shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 24px;">file_copy</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal">Duplicate Files Removed</p>
+<div class="flex items-center gap-2">
+<p class="text-primary text-sm font-medium leading-normal">85 MB freed</p>
+<span class="text-slate-400 dark:text-slate-600 text-xs">•</span>
+<p class="text-slate-500 dark:text-[#92adc9] text-sm font-normal leading-normal">Oct 12, 2023</p>
+</div>
+</div>
+</div>
+<div class="shrink-0 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 24px;">chevron_right</span>
+</div>
+</div>
+<!-- ListItem: WhatsApp Media -->
+<div class="group flex gap-4 bg-background-light dark:bg-background-dark px-4 py-3 justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-start gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-green-600 shrink-0 size-12 shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 24px;">chat</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal">Old Chat Media</p>
+<div class="flex items-center gap-2">
+<p class="text-primary text-sm font-medium leading-normal">340 MB freed</p>
+<span class="text-slate-400 dark:text-slate-600 text-xs">•</span>
+<p class="text-slate-500 dark:text-[#92adc9] text-sm font-normal leading-normal">Oct 05, 2023</p>
+</div>
+</div>
+</div>
+<div class="shrink-0 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 24px;">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="h-10 bg-transparent"></div>
+</div>
+</div>
+</body></html>

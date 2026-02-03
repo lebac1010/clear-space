@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cleanup Success Result</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body>
+<div class="relative flex h-full min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden font-display">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="text-[#0d141b] dark:text-white flex size-12 shrink-0 items-center justify-center">
+<!-- Empty left for balance, or could be back arrow if needed, but context implies modal result -->
+</div>
+<h2 class="text-[#0d141b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Results</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-transparent text-[#0d141b] dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+<!-- Success Icon & Headline -->
+<div class="flex flex-col items-center gap-6 mb-10">
+<div class="flex items-center justify-center w-24 h-24 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined text-[48px] font-bold">check_circle</span>
+</div>
+<div class="text-center space-y-2">
+<h1 class="text-[#0d141b] dark:text-white tracking-light text-[32px] font-bold leading-tight">Cleanup Complete</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Your device is optimized and ready.</p>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="w-full max-w-md grid grid-cols-2 gap-4 mb-8">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[20px]">cleaning_services</span>
+<p class="text-[#0d141b] dark:text-slate-200 text-sm font-medium leading-normal">Space Freed</p>
+</div>
+<p class="text-[#0d141b] dark:text-white tracking-light text-3xl font-bold leading-tight mt-1">2.4 GB</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[20px]">sd_storage</span>
+<p class="text-[#0d141b] dark:text-slate-200 text-sm font-medium leading-normal">Free Space</p>
+</div>
+<p class="text-[#0d141b] dark:text-white tracking-light text-3xl font-bold leading-tight mt-1">15.8 GB</p>
+</div>
+</div>
+<!-- Cleaned Items Preview (Optional visual reinforcement) -->
+<div class="w-full max-w-md mb-8">
+<p class="text-[#0d141b] dark:text-white text-base font-bold mb-3 px-1">Items Removed</p>
+<div class="grid grid-cols-4 gap-2">
+<div class="aspect-square rounded-lg bg-cover bg-center bg-no-repeat relative overflow-hidden group" data-alt="blurred preview of deleted cache files or temp images" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDiE3oDNRByuOaBJH1k7khQfNRitW1ku3buKq9ajDKksv_mcGoISJIB00wDIKhEmzZlOZswQ4xlfgQDoq8CmmfAv-eSIj8LE1DP1ArIL18staFpNi5EsudGlMj5V10StahanUSE2HsaLF4Bp1--5zin_P5KnYPd-ZG92Ux33Z83_FoFpdosMJLgO-5z3BPBZVzEvLRB4kf9TJ22H8EDvQtaiHOw_yfTJqBjYRXFUAdSC_WjUGUkJ4E3cBMlSHjNpV0U3KqOLoriT2E");'>
+<div class="absolute inset-0 bg-black/10 dark:bg-black/40"></div>
+<div class="absolute inset-0 flex items-center justify-center text-white/80">
+<span class="material-symbols-outlined text-[24px]">image</span>
+</div>
+</div>
+<div class="aspect-square rounded-lg bg-cover bg-center bg-no-repeat relative overflow-hidden" data-alt="blurred abstract background representing app cache" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBb7Q4rt3Cdsx6mh2ijPZEmDW1ypGtbiqMmgiKcppqwdqyiSSL1ADY_Ya-k4h52FyPVmfuy3u98u9BAjxwsNy1hj1-6EbkLN36clE9cuyyap5mxjS96YsUl_NhFvMzPmArDUeWrcm8bJ69JR16d90kc8bsboav6L9k5DE9ZVpxEB5Tegfp0logXFzgt5IacpHoL_LSwiAhgjQiz9ezLk7Y2CQCBpX1ZrlpAFYsnqeV2C0NyjboPkHNFNgzg2tnjZ9Hk8KWpgp8pKrE");'>
+<div class="absolute inset-0 bg-black/10 dark:bg-black/40"></div>
+<div class="absolute inset-0 flex items-center justify-center text-white/80">
+<span class="material-symbols-outlined text-[24px]">folder_zip</span>
+</div>
+</div>
+<div class="aspect-square rounded-lg bg-cover bg-center bg-no-repeat relative overflow-hidden" data-alt="blurred abstract tech pattern" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCgJTNrV0621kujj4mHsCkSPY8TsY62ifewYAD1bQaloo1GOo8CiIaeRjgTiPJd9XP5Z73vcFUb8wzpZyPM9ZZB9VHR27WiNDyOo5TB6vFtx6GrHxl8UUbxyzqd3I0pZz4q111tQO_B44eUpB619MjdE6CVmk_oLs5XbVmvcscvh2qDooxlsL5pnZetK4HWiYSgtFr4OGtDH1Djpehi1TUNOeQpzwTt8rAFg08_86Hr8TTlXkXjtlJr9-K6U2qATy0VXn4XqndUYfQ");'>
+<div class="absolute inset-0 bg-black/10 dark:bg-black/40"></div>
+<div class="absolute inset-0 flex items-center justify-center text-white/80">
+<span class="material-symbols-outlined text-[24px]">description</span>
+</div>
+</div>
+<div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500">
+<span class="text-xs font-medium">+124</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Actions -->
+<div class="w-full bg-background-light dark:bg-background-dark p-4 pb-8 border-t border-slate-100 dark:border-slate-800">
+<div class="flex flex-col gap-3 max-w-md mx-auto">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary hover:bg-blue-600 transition-colors text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-blue-500/20">
+<span class="material-symbols-outlined mr-2">notifications_active</span>
+<span class="truncate">Set Weekly Reminder</span>
+</button>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-primary dark:text-blue-400 text-sm font-semibold leading-normal tracking-[0.015em]">
+<span class="truncate">Upgrade to Pro</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

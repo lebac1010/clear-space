@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Screenshots Cleaner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>body {
+    font-family: "Inter", sans-serif
+    }
+/* Custom checkbox style to match design */
+.custom-checkbox:checked {
+    background-color: #137fec;
+    border-color: #137fec;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBAIHDfsGIBBtUkJas9nlDrs3vCSqL37MfjWEJlL5ep9H-5CW5EgqJvx9SYIq9q8Dr8la8OwZ5y-eQn2jGsnV6Cuugz11Nc4e6kYOPtyI_ytdafEgFyppblwC0exF9PLgbnIC8_8eFf5l-r4Wfb0ru_6bcok2GqUQmgBh3HUUXlEro_soWN6_lEtCNpjoMUD2b1XuLC-HvB2vsEjyL5oL_72vqacu6cme73d73MuVIOXGiYe5GCEakc9v73JubbQM1bt5JMFB3x24A)
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d141b] dark:text-white overflow-x-hidden transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col font-display pb-24">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-20 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800 transition-colors">
+<div class="flex size-12 shrink-0 items-center justify-start text-[#0d141b] dark:text-white cursor-pointer hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</div>
+<h2 class="text-[#0d141b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Screenshots</h2>
+<div class="flex w-12 items-center justify-end cursor-pointer hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[#4c739a] dark:text-gray-400" style="font-size: 24px;">sort</span>
+</div>
+</div>
+<!-- Headline & Meta -->
+<div class="px-4 pt-4 pb-2">
+<h3 class="text-[#0d141b] dark:text-white tracking-tight text-2xl font-bold leading-tight">324 Screenshots (1.2 GB)</h3>
+<p class="text-[#4c739a] dark:text-gray-400 text-sm font-medium leading-normal pt-1">Last 30 days</p>
+</div>
+<!-- Image Grid -->
+<div class="grid grid-cols-3 gap-1 p-1 sm:grid-cols-4 md:grid-cols-5 md:gap-3 md:p-4">
+<!-- Grid Item 1 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Cybersecurity lock screen interface screenshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCnkm7bTuu8o7SjxoJw5Xbutf2Xxrt8-_CvFblL_JPFXOgbRESKkuMEAGCg-FrD9MSMrJhAW-Y-Feu6edgnUrBkZMf087ZdeCnRI9UBfo-rZxok2rzCn7OfuwvVrVSKbS4zK25NAeqBUva_ZBH4sLT-n7ex2GqA7T7vtq0rQkc9KHmPYZRUcn1Z7Cj1FjhcWIB_Dz9z6UFRmfdUkIvzg2ZFyrW778XBjVOneSTRv8rEKwgIIZSycl6Bok7_aDNeX6Z8zCs1L0UY4io");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 2 (Checked) -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Social media feed interface screenshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWdQucKB3VVxJ2-er4LvPbYLMZruJphIEUiJvt8VBfiM8-KKO04WXov5nVE-tBjrpUVGaIQG3GJwrAUyxkdnWP5TBUhrmtm3NmMdbwiVgJ-y4rnLx4Y6IulPylOCqBLTp3WevJ0QvLQ6wnEQcFep3YbLr8N8punfMticmfvtaR9XYekOUSBJf90Roh8tweHlugj1kVPOkWE32eKEUdc_EUg1Zxc5UKN7CJhe2q2GnJZ6uQw-7Yv-J3-SQugqsFTBFzKJcFZrSIYDo");'></div>
+<div class="absolute inset-0 bg-primary/20 ring-2 ring-primary ring-inset rounded-lg"></div> <!-- Highlight for checked -->
+<div class="absolute top-2 right-2 z-10">
+<input checked="" class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 3 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Coding terminal dark mode screenshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDwl51k5DmNczfgF7h6A_tlh5W3hjr0wmXVWZrgQ2MlbimjgIBgI9RbOQGfCTjC_qLe65EuT97SS5Oh1bDEp2nT3nxWxGqImkFBpdZjzrHPQtqAEIhOdwk2vStRAJTWeXKRxlYy_hQYEoO-xiQqaKkeni7Tktg0n-5vcVY3ocYRkeJQqvmSL13oYxKNc47EHRA2OpfcJbQz7O1AOSONNa0silAg7n78kZoK8oJfL7-QRd-EaYqkJyXjsPCfs2_WYR0W3EkKcah5ZuY");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 4 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Mobile chat application interface screenshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCQgV8Tr0k5-8NvtwVuX-fGvEFzhCpTEBL1237vJ6mjE8Dh5aqhzfY7TP92cE61W6NAthHdRL3YpFcwAur2VVF67mTzN6hCxFbzzTk8JOJUXE2J3mKOFcza0WPmbkIoM2J36NEn_LN1xFWJFgyJGFu5XPmbF2zZZEcz2IzQbMVFYnpEfRpWe5BeB9HXT1W1-4yY3Pa__hf7UwMjIsCbBEsEqCsuu8cKcZNT-c5mYPUYThVvAptYUdWeeZ1pW9_MFRSJNN8N5WjSgR0");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 5 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Abstract gradient wallpaper screenshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBclxCDErLhea39UqjZ9cUJj58La_PNomM99R3g23DmmJU-IaByMEay8yjPyQxt83aHtMstAHWRFOEasxnMSjUDndhmEXpdHUZXI4XQF8GTGVbgXUBY3LZcsdoKkc2u3DHP2pKVWC2ZTMSvcdNKm2z6TicjEXQnSio8y8LOy812vD2vaF5A7nvL0k48DmPI35JdSR0yUu4iNKqCWxminlwAMDlN10zyo_WGFwsH2rYdQDGZJLwSaNC0X-DQaFXxI7hP75xx4IYoC8c");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 6 (Checked) -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="UX design prototype mobile screen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBP0PDKgeD6xblA6ckUX1g8WGunBT5tsH3PbsmVULI_90eE76Zs3jdz2aHNW_Rj0NFasETTixf9W13HdwNdI5tQoMN_F0OXb3P7ET-OK8E8aNZ7SvcwccSabhdslYvVGKe1WH8c3nOrJ4-DzQH3gr0kv9bzzhkLxJbDDtkQnYZaLphyZoJG5saIoomrDea-aPHXwAGU3Z3HOKAn94F7Ssw_iM8uhabjjdNw2_yrIhApx_HIR2yC_GFobd6CSqxuRQg82XSEjMMaO-8");'></div>
+<div class="absolute inset-0 bg-primary/20 ring-2 ring-primary ring-inset rounded-lg"></div>
+<div class="absolute top-2 right-2 z-10">
+<input checked="" class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 7 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Map navigation interface screenshot with route" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCAv4ESzckPGeTQJ01ViuYxqRV8zIlgw18KbwbLxEBzh_Gp7UX6NsmhrDxcNp1x3MQY-KqX_8qjfdPGzvm_xkUbi910JmpO9tsOG31SfyiVIytsrD3jFuLQafmGPWtjjb8TIVnG7v9pob48ZFChwXnLNN6LtuBuh9xX-H8teW_Q5OYEJhlNcXjTeP7WaJyF1k-YVK4mQp0xcseRnbxxJ3D0X4qTGXnmae4Z-toNzIjwFml5Syz1fBSsTjzMiZVdg1PJQunQudwbUq4");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 8 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Digital banking dashboard transaction list" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDSJUOyN5t_2Nz-HPDkEfftJmDtekeFri0w8u2seXiPtPbCFFE2ebTFfXfblQUCYTlGAM2WcplfIeYJeaR68L13RVdLxgVodtGKfnm7-FJFsmIJqN9ID1T2KZWamS7BaZn5XBXR81onBuMLlgjB7yk-3ifLiQnvjRuYm2SbIeIQsGVWuO2PljkagDcD_vc7_VTDFMDXTYuHghw25OHHEZi0eBmUyiJti_lJsVtHGOjtbQ6PIB7s6Bo45xFDRWfW5RtNfqwp_IseyTw");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 9 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Mobile app settings menu list" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJGfSBjFMsbaKrvhhFgR3nriqLpfaj7jaCRwiDExAkYQ0JlWkutjFxBYYyz33zuTJopBWRAHR7-nClSi7a2XzntGusbm62VEqC-CJOfcJt6Om90CTHsXCZDqPN_EedQ-1PsqqXRR-d4IPkzbrl2RFppQP66pCzqW-kgxSeDi9dA5AgyPd4ACyPdST_BsqacsSLfvMdZPusgdrVYuqFFL3cURC2A2Md4zI46rNAYtVTL5IptEJk64OavMk_PXp-gzfKLe8GpG48-og");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 10 (Checked) -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Android home screen with widgets" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBqSBG_jN3Nu1s-TcIJ0za3RKEClzlSzyjVGnkFBJ-s2IhKNHB45iCEfLZ4BgsdMkUDWb2nWT9ocZH0rm9vXJQ_ZuXpcMBiVS3mw5yN2kmIj5--ItHNt5AtQWl4llafUwopAeHxED_I3bsTsUVr7ftiyIN2tU8BmlYPfObzpbDUi-CzEnTyWwgQ2KsiDhlhKKgmbJn5xKG1NTvsXn4nJkb-8rgxVeop_Ql5QEUC5MkMxaDpDe9cLy1JyqvZUNlrO1NL8j5VSOHnjYI");'></div>
+<div class="absolute inset-0 bg-primary/20 ring-2 ring-primary ring-inset rounded-lg"></div>
+<div class="absolute top-2 right-2 z-10">
+<input checked="" class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 11 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Shopping cart checkout interface mobile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDSjRyP66xyGRtRIX9T7gtx1Tr4ZmSTMRSs1YwSbc-h1MGJGGclTq8PTDAk5XMN0Jtx7Xuc8GY1K-kV6m6QUgbvdPLsCa1SaY_wgwDJsPp9OyrnxLgb3guDCek1M4GRZ29nb13sB93gkO7ft8yc88uqadCk052ybp76CQ3qr2ks535IWfh9WNotakXPUTfj4ppUFw6nnyqfx5-v911ibRYLB8aamayCg387yfPoKGOLRWz4eLa3LS0MxH8TeYFZiSZ2DB5ZNqT-IfU");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+<!-- Grid Item 12 -->
+<div class="relative aspect-square group cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105" data-alt="Analytics graph data visualization screenshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBA9Nk3EIHXaw3P-dvRkR0iCz40At11qFVLhsC5DFFVGukcp0wqy7xQAhuCFt7lCrGeUHtfpP3uyqxG7DpWXc2sukVyZsyUVUBP13Y7CRcMCnOD40h4fxmGFK_i_4Q0K9WQb29ie2p_bJYi4QWgk6CzREoD4t7YwSQxFUDNgozYEIpM3QQIb4yHa2fMnG9SlbtykwZ1a74Tcc_Rr4zb4VaaqGyjZfbPdeGb62r0f_C1G-6tYdp5mBScdZPxPlPoFIx1N0k0Zq_mXag");'></div>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute top-2 right-2 z-10">
+<input class="custom-checkbox size-5 rounded-full border-2 border-white bg-black/20 text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-30 bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+<div class="mx-auto flex w-full max-w-lg items-center justify-between gap-4">
+<button class="flex flex-1 items-center justify-center h-12 rounded-xl bg-gray-200 dark:bg-gray-800 text-[#0d141b] dark:text-white text-base font-bold tracking-wide active:scale-95 transition-transform">
+                    Select All
+                </button>
+<button class="flex flex-1 items-center justify-center h-12 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-light text-base font-bold tracking-wide active:scale-95 transition-transform hover:bg-primary/20">
+                    Delete (3)
+                </button>
+</div>
+<!-- Safe area spacer for iOS home indicator if needed, purely visual here -->
+<div class="h-4 w-full"></div>
+</div>
+</div>
+</body></html>

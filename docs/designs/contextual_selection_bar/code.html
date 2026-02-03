@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contextual Selection Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#137fec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101922",
+            "surface-dark": "#1a2632",
+            "surface-light": "#ffffff",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col overflow-hidden">
+<!-- Top Selection Bar -->
+<div class="fixed top-0 left-0 right-0 z-50 bg-surface-light dark:bg-background-dark border-b border-gray-200 dark:border-gray-800 shadow-md">
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-center cursor-pointer rounded-full hover:bg-gray-100 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</div>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 ml-2">5 items selected</h2>
+<div class="flex items-center justify-end">
+<button class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0 hover:opacity-80 transition-opacity">
+          Select all
+        </button>
+</div>
+</div>
+</div>
+<!-- Main Content: List of Files -->
+<main class="flex-1 pt-20 pb-32 px-4 overflow-y-auto w-full max-w-md mx-auto">
+<div class="flex flex-col gap-3">
+<!-- Selected Item 1 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-3 rounded-xl border-2 border-primary shadow-sm transition-all">
+<div class="relative size-12 shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+<div class="absolute inset-0 flex items-center justify-center bg-primary/20 text-primary">
+<span class="material-symbols-outlined">image</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-medium truncate">IMG_20231024_140222.jpg</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">3.2 MB • Oct 24, 2023</p>
+</div>
+<div class="shrink-0 size-6 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<!-- Selected Item 2 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-3 rounded-xl border-2 border-primary shadow-sm transition-all">
+<div class="relative size-12 shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+<div class="absolute inset-0 flex items-center justify-center bg-orange-500/20 text-orange-500">
+<span class="material-symbols-outlined">music_note</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-medium truncate">Voice_Memo_002.m4a</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">12.5 MB • Yesterday</p>
+</div>
+<div class="shrink-0 size-6 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<!-- Selected Item 3 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-3 rounded-xl border-2 border-primary shadow-sm transition-all">
+<div class="relative size-12 shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+<div class="absolute inset-0 flex items-center justify-center bg-green-500/20 text-green-500">
+<span class="material-symbols-outlined">description</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-medium truncate">Project_Proposal_Draft_v2.pdf</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">1.8 MB • 2 days ago</p>
+</div>
+<div class="shrink-0 size-6 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<!-- Unselected Item -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-3 rounded-xl border border-transparent hover:bg-gray-50 dark:hover:bg-[#1f2d3b] transition-all">
+<div class="relative size-12 shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+<div class="absolute inset-0 flex items-center justify-center bg-blue-500/20 text-blue-500">
+<span class="material-symbols-outlined">movie</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-medium truncate">Screen_Recording_2023.mp4</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">142 MB • Last week</p>
+</div>
+<div class="shrink-0 size-6 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+</div>
+<!-- Selected Item 4 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-3 rounded-xl border-2 border-primary shadow-sm transition-all">
+<div class="relative size-12 shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+<div class="absolute inset-0 flex items-center justify-center bg-purple-500/20 text-purple-500">
+<span class="material-symbols-outlined">folder_zip</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-medium truncate">Old_Backup_Archive.zip</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">256 MB • 3 weeks ago</p>
+</div>
+<div class="shrink-0 size-6 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<!-- Selected Item 5 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-3 rounded-xl border-2 border-primary shadow-sm transition-all">
+<div class="relative size-12 shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+<div class="absolute inset-0 flex items-center justify-center bg-primary/20 text-primary">
+<span class="material-symbols-outlined">image</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-medium truncate">Screenshot_2023-10-01.png</p>
+<p class="text-gray-500 dark:text-gray-400 text-xs">450 KB • Oct 01, 2023</p>
+</div>
+<div class="shrink-0 size-6 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-surface-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 pb-safe">
+<div class="@container">
+<div class="gap-2 px-4 py-2 grid-cols-4 grid max-w-md mx-auto">
+<!-- Action: Delete -->
+<button class="group flex flex-col items-center gap-1.5 py-2 text-center hover:opacity-80 transition-opacity">
+<div class="rounded-full bg-red-100 dark:bg-red-900/30 p-2.5 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-red-600 dark:text-red-400 text-[24px]">delete</span>
+</div>
+<p class="text-red-600 dark:text-red-400 text-xs font-medium leading-normal">Delete</p>
+</button>
+<!-- Action: Share -->
+<button class="group flex flex-col items-center gap-1.5 py-2 text-center hover:opacity-80 transition-opacity">
+<div class="rounded-full bg-gray-100 dark:bg-[#233648] p-2.5 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-gray-700 dark:text-white text-[24px]">share</span>
+</div>
+<p class="text-gray-700 dark:text-white text-xs font-medium leading-normal">Share</p>
+</button>
+<!-- Action: Archive -->
+<button class="group flex flex-col items-center gap-1.5 py-2 text-center hover:opacity-80 transition-opacity">
+<div class="rounded-full bg-gray-100 dark:bg-[#233648] p-2.5 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-gray-700 dark:text-white text-[24px]">archive</span>
+</div>
+<p class="text-gray-700 dark:text-white text-xs font-medium leading-normal">Archive</p>
+</button>
+<!-- Action: More -->
+<button class="group flex flex-col items-center gap-1.5 py-2 text-center hover:opacity-80 transition-opacity">
+<div class="rounded-full bg-gray-100 dark:bg-[#233648] p-2.5 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-gray-700 dark:text-white text-[24px]">more_vert</span>
+</div>
+<p class="text-gray-700 dark:text-white text-xs font-medium leading-normal">More</p>
+</button>
+</div>
+</div>
+</div>
+</body></html>

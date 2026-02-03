@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Similar Photos Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden font-display">
+<!-- TopAppBar -->
+<div class="flex items-center p-4 pb-2 justify-between bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-center cursor-pointer rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Similar Photos</h2>
+<div class="flex w-12 items-center justify-end cursor-pointer">
+<p class="text-primary dark:text-primary-400 text-base font-bold leading-normal tracking-[0.015em] shrink-0">Skip</p>
+</div>
+</div>
+<!-- ProgressBar -->
+<div class="flex flex-col gap-3 px-6 py-2">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-normal">Group 1 / 12</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium">15 MB potential savings</p>
+</div>
+<div class="rounded-full bg-slate-200 dark:bg-slate-700 h-2 w-full overflow-hidden">
+<div class="h-full rounded-full bg-primary transition-all duration-300 ease-out" style="width: 8%;"></div>
+</div>
+</div>
+<!-- Headline & Body -->
+<div class="flex flex-col items-center px-6 pt-6 pb-2">
+<h2 class="text-slate-900 dark:text-white tracking-tight text-[28px] font-bold leading-tight text-center mb-2">3 similar photos</h2>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-relaxed text-center max-w-sm">
+                We've selected the best quality photo to keep. The others will be moved to trash.
+            </p>
+</div>
+<!-- ImageGrid -->
+<div class="flex-1 px-4 py-4">
+<!-- Main Grid -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Best Match Item (Takes full width on top or prominently placed) -->
+<div class="col-span-2 aspect-[4/3] bg-cover bg-center flex flex-col gap-3 rounded-xl justify-between p-4 relative overflow-hidden group shadow-sm ring-4 ring-primary ring-offset-2 ring-offset-background-light dark:ring-offset-background-dark transition-all" data-alt="Golden retriever dog running in a park with green grass" style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 40%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-uhKPpIoxidSMiE4TvCejsTLvwDGTBuMhz-1zC-BqiyCxSs6QsWALCsNtbXPWtxsvJZdeZV5fnP11nRtfWhSCDp87og2bQLq5kJQDgltbpP0nz1r_LI9T7-WDlT9JY2gZa9y5V23lOBPxd_RLVddQ7pAaGH-H7BkgOT4WIZeywqU9rskvUD6rxizz5nM1WoiipGErKUvhI0pYG5OdEG35--Y_drCtMrMkNQiHh0Y0_XBRiaqp-uvBF4v5_2A_4HNimwNmH8Tqo4I");'>
+<div class="flex justify-between items-start w-full">
+<div class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">star</span>
+                            Best Match
+                        </div>
+<div class="size-8 rounded-full bg-primary flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+</div>
+<div class="w-full flex justify-between items-end">
+<p class="text-white/90 text-xs font-medium backdrop-blur-md bg-black/20 px-2 py-1 rounded">3.2 MB • 4032 x 3024</p>
+</div>
+</div>
+<!-- Duplicate 1 -->
+<div class="aspect-square bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-3 relative overflow-hidden opacity-80 hover:opacity-100 transition-opacity" data-alt="Golden retriever dog running in a park, slightly blurry" style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-EVkhkNj6eAbOzQ_sAm2v_Yc3PAJyhVmkuvpiaAqqoCIkScvVbPMVZIG3PQ4bhsrrdX6mfcsXy3Ds1GqTjqfL4NYs04N7NkJCiVGZLY-H2W-7434q4xydjpek8vPbGHbyGmitlQ7CmNiX20hWlOCtojhXL6cbjfW9wvCYf0uIt0jiEuBJ45F4rkvq5RcIw08ekyeNmMcvLpL34SGx135QB-8afp7zA_ybCeEoZZ8v-DDUH4jD5SyU9eacilAbA_AbG8jvZvPQlf4");'>
+<div class="absolute top-3 right-3 size-6 rounded-full border-2 border-white/60 bg-black/20 backdrop-blur-sm flex items-center justify-center">
+<!-- Unchecked state visual -->
+</div>
+<p class="text-white/80 text-[10px] font-medium self-start backdrop-blur-md bg-black/20 px-1.5 py-0.5 rounded">3.1 MB</p>
+</div>
+<!-- Duplicate 2 -->
+<div class="aspect-square bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-3 relative overflow-hidden opacity-80 hover:opacity-100 transition-opacity" data-alt="Golden retriever dog running in a park, out of focus" style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBN9JjFCzf1lpyIIam5oxEA4MFkplUh6uw6exl5fI7v_iR14OPX_wCzjUcsWMQl8Agu2WvCfcrOlmUnCYMzwFdu2vi5j_dvGKB9cL3J8MSv6R6kEeoALE9i4RViVlk24E7MGqp75BpetvHkUHuvwoIdTBwiepf9MBSmTkEaWcnvyJlCMhwiRqYbuaqtfmTNeNaewCX5ep2F6Sxe8L1g0qQCg2y5ra8FtKG0F78V7HEOBu-OG3aMaxh0UsRAnT1QxoLj83DFHZp361A");'>
+<div class="absolute top-3 right-3 size-6 rounded-full border-2 border-white/60 bg-black/20 backdrop-blur-sm flex items-center justify-center">
+<!-- Unchecked state visual -->
+</div>
+<p class="text-white/80 text-[10px] font-medium self-start backdrop-blur-md bg-black/20 px-1.5 py-0.5 rounded">2.9 MB</p>
+</div>
+</div>
+</div>
+<!-- Bottom Actions -->
+<div class="p-4 bg-background-light dark:bg-background-dark sticky bottom-0 z-20 pb-8 pt-2">
+<!-- Shadow gradient for smooth transition if content scrolls -->
+<div class="absolute -top-12 left-0 w-full h-12 bg-gradient-to-t from-background-light dark:from-background-dark to-transparent pointer-events-none"></div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white rounded-full py-4 px-6 font-bold text-lg shadow-lg shadow-primary/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group">
+<span>Keep Best &amp; Delete Others</span>
+<span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">delete_sweep</span>
+</button>
+<div class="text-center mt-4">
+<button class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+                    Review Selection Manually
+                </button>
+</div>
+</div>
+</div>
+</body></html>

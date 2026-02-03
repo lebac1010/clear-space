@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>App Settings</title>
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-20 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-3 justify-between">
+<button aria-label="Go back" class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white" style="font-size: 24px;">arrow_back</span>
+</button>
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Settings</h1>
+</header>
+<!-- Content -->
+<main class="flex-1 px-4 py-2 space-y-6">
+<!-- Section: General -->
+<section class="space-y-3">
+<h3 class="px-1 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">General</h3>
+<!-- Weekly Cleanup Reminder -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 px-4 py-3.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/50">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-900/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 22px;">notifications</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-tight">Weekly Cleanup</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Remind me every Sunday</p>
+</div>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-[30px] w-[50px] cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-1 transition-colors duration-200 has-[:checked]:justify-end has-[:checked]:bg-primary">
+<div class="h-[22px] w-[22px] rounded-full bg-white shadow-md transition-all"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Cloud Backup Sync -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 px-4 py-3.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/50">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-900/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 22px;">cloud_upload</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-base font-medium leading-tight">Cloud Backup</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Sync cleaning logs</p>
+</div>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-[30px] w-[50px] cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-1 transition-colors duration-200 has-[:checked]:justify-end has-[:checked]:bg-primary">
+<div class="h-[22px] w-[22px] rounded-full bg-white shadow-md transition-all"></div>
+<input class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Language -->
+<button class="w-full flex items-center gap-4 bg-white dark:bg-slate-800/50 px-4 py-3.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-900/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 22px;">language</span>
+</div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-tight">Language</p>
+</div>
+<div class="shrink-0 flex items-center gap-2">
+<span class="text-slate-500 dark:text-slate-400 text-sm">English</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600" style="font-size: 20px;">chevron_right</span>
+</div>
+</button>
+</section>
+<!-- Section: Support -->
+<section class="space-y-3">
+<h3 class="px-1 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Support &amp; Info</h3>
+<!-- Help & Feedback -->
+<button class="w-full flex items-center gap-4 bg-white dark:bg-slate-800/50 px-4 py-3.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-900/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 22px;">help</span>
+</div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-tight">Help &amp; Feedback</p>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600" style="font-size: 20px;">chevron_right</span>
+</div>
+</button>
+<!-- About -->
+<button class="w-full flex items-center gap-4 bg-white dark:bg-slate-800/50 px-4 py-3.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left">
+<div class="flex items-center gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-900/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 22px;">info</span>
+</div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-tight">About</p>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600" style="font-size: 20px;">chevron_right</span>
+</div>
+</button>
+</section>
+</main>
+<div class="h-8"></div>
+</div>
+</body></html>

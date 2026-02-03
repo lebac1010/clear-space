@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>App Onboarding</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#137fec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101922",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    /* Custom utility for material icons alignment */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-hidden">
+<!-- Top Spacer / Optional Nav Area -->
+<div class="flex items-center justify-between p-4 h-14">
+<div class="w-8"></div> <!-- Balance spacer -->
+<!-- Optional: Skip button could go here -->
+</div>
+<!-- Main Scrollable Content -->
+<div class="flex-1 flex flex-col items-center w-full max-w-md mx-auto px-6 pb-24 overflow-y-auto">
+<!-- Hero Image Area -->
+<div class="w-full flex justify-center py-8">
+<div class="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center overflow-hidden shadow-inner">
+<!-- Abstract clean visual -->
+<div class="w-full h-full bg-center bg-cover opacity-80" data-alt="Abstract blue circular gradient representing clean data flow" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBZBjoicsgYLQQqs3kNhOY1ULg8dApwt2C59WaDd4yLBcpydGJozsiLNq7biGPDevRvApMki4Lve4kD5NQDkqt4nGOwNZldq-h3CDecuSXTmloNuE7N5CiPFbpEmmKE7d_y3NRWiv4ABR3KRZ-nPw3UqSAMvlTacklQ0tL0huCASjTo364AHfbQu473zPB8UMK6kPwZ8UbQuogiVWIW4FmV55-0zGJgFwvy3D0jjJt2HQ8mOfRUx4T2ogLZPOMjKQBMyi90VQF3QBU");'></div>
+<!-- Overlay Icon -->
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary drop-shadow-lg" style="font-size: 64px;">cleaning_services</span>
+</div>
+</div>
+</div>
+<!-- Text Header -->
+<div class="text-center mb-8">
+<h1 class="text-3xl font-black tracking-tight mb-3 text-slate-900 dark:text-white">
+          Device Care
+        </h1>
+<p class="text-slate-500 dark:text-slate-400 text-base leading-relaxed px-2">
+          Keep your phone running smoothly. Analyze storage, remove junk, and stay safe.
+        </p>
+</div>
+<!-- Feature List (Vertical Stack) -->
+<div class="w-full flex flex-col gap-4">
+<!-- Feature 1 -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-all hover:shadow-md">
+<div class="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">pie_chart</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight mb-1">Understand your storage</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Get a clear visual breakdown of what's taking up space on your device.</p>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-all hover:shadow-md">
+<div class="flex-shrink-0 w-10 h-10 rounded-lg bg-green-50 dark:bg-slate-700 flex items-center justify-center text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight mb-1">Clean safely</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Remove unnecessary files with safe deletion protocols that protect your data.</p>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-all hover:shadow-md">
+<div class="flex-shrink-0 w-10 h-10 rounded-lg bg-purple-50 dark:bg-slate-700 flex items-center justify-center text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight mb-1">Free up space</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Optimizes performance by clearing cache and residual files instantly.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Fixed Bottom Action Area -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-10 flex justify-center">
+<div class="w-full max-w-md">
+<button class="w-full h-12 bg-primary hover:bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>Get Started</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<p class="text-center text-xs text-slate-400 mt-3 pb-2">
+          By continuing, you agree to our Terms of Service &amp; Privacy Policy.
+        </p>
+</div>
+</div>
+</div>
+</body></html>

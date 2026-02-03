@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Large Videos Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+                "surface-light": "#ffffff",
+                "surface-dark": "#1c2936",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen">
+<div class="relative flex h-full w-full flex-col max-w-md mx-auto overflow-x-hidden pb-6">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-transparent dark:border-slate-800 transition-colors">
+<div class="flex items-center gap-3">
+<button class="text-slate-900 dark:text-white flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Large Videos</h1>
+</div>
+<button class="text-slate-900 dark:text-white flex items-center justify-center p-2 -mr-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">sort</span>
+</button>
+</div>
+<!-- Headline & Stats -->
+<div class="px-4 pt-6 pb-2">
+<h2 class="text-slate-900 dark:text-white text-[28px] font-bold leading-tight tracking-tight mb-2">Review 4.2 GB</h2>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">
+                Found 5 files taking up significant space. Compressing or deleting them will improve performance.
+            </p>
+</div>
+<!-- Divider/Spacer -->
+<div class="h-4"></div>
+<!-- Video List -->
+<div class="flex flex-col gap-4 px-4">
+<!-- Item 1 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col gap-4">
+<div class="flex items-start gap-4">
+<div class="relative shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Mountain landscape with sunset view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA1PDYg5hn3kSFama9rSfzgqjvjkWvny9wgA0myX1iaYER43tjSo-UUgdx0PxXCxQfY2WI3iG8QkCFaI_awfICUrW6D6pnKYq_RcUbikd29b21FnUo1buGO6r6MxsXHG49Q_om8WmSCe8Pc_FTGlbfztyxK6yEKnyXpaCzTf838ZAeocaTBOAIQhi22jpsoWemRuVgfRFOLdtrGfFu_A0zVAFfL0hD8CcTzYRaKf_3ajFziAmS8BYyLy7vG-F81agqp1kCPq0RpZSk");'></div>
+<div class="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">12:04</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 py-1">
+<h3 class="text-slate-900 dark:text-white text-base font-semibold truncate leading-snug mb-1">vacation_footage_raw.mp4</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Recorded on Oct 24, 2023</p>
+<p class="text-primary font-bold text-lg leading-none">1.4 GB</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 active:bg-primary/95 text-white rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">compress</span>
+                        Compress
+                    </button>
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white text-slate-700 rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+                        Delete
+                    </button>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col gap-4">
+<div class="flex items-start gap-4">
+<div class="relative shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Camera lens focusing on a blurred street background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDRXfhtXhlmqkPvbiI3HxSgucY83RsEPGSq8-_OcK-9BHm5F1n8oUS6dIWtaS65sW4UNy5sztgXPqckpBFwrIP_2tlA0beNic2IMXou-6AJYF5sSpqCCnHWd9ZgEe-TYUTrTHD4J9TTRG8oXyBqsE0QRtC9OKRkpu0ZH3w1bRbcPRcoyiej-pf99kB56gx7lAwPRoXNoDQMGk_pKqykuUC3MXUUa7BOziK7BL7cjWDHoG_2sl1sYK1XygKJvQFioDBb8wVcy5YkOiA");'></div>
+<div class="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">45:10</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 py-1">
+<h3 class="text-slate-900 dark:text-white text-base font-semibold truncate leading-snug mb-1">podcast_episode_42_final.mov</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Recorded on Sep 12, 2023</p>
+<p class="text-primary font-bold text-lg leading-none">2.1 GB</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 active:bg-primary/95 text-white rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">compress</span>
+                        Compress
+                    </button>
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white text-slate-700 rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+                        Delete
+                    </button>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col gap-4">
+<div class="flex items-start gap-4">
+<div class="relative shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Abstract colorful light streaks at night" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBMx3E23Gsz97w_VMo-Ghl-mLu3n25hnywwV8YquJAOwmxYqg5b5Y0XuLRq-KCZqE4jJKjoLM6UkHdsPa2oSCmVK8YfGGxZ69GWzEt1J7clP-DcEZPqTojCOnVHOAbXnbGrj6GS59iDu7Hsw4Tk1737Yt5WPTjyYPY0FF2juBooP6nXeei7xaHwBNYh4BEQ-k7ssPfBbJ9v2qz6jOtuoH4jJklR3tbyu9-I-u-L-7awp3HE4Q-qh-EJfl-07K2ymH0N-U3bv-p1IuQ");'></div>
+<div class="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">08:22</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 py-1">
+<h3 class="text-slate-900 dark:text-white text-base font-semibold truncate leading-snug mb-1">concert_clip_4k.mp4</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Recorded on Aug 05, 2023</p>
+<p class="text-primary font-bold text-lg leading-none">850 MB</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 active:bg-primary/95 text-white rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">compress</span>
+                        Compress
+                    </button>
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white text-slate-700 rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+                        Delete
+                    </button>
+</div>
+</div>
+<!-- Item 4 (Warning State) -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-orange-200 dark:border-orange-900/30 flex flex-col gap-4 relative overflow-hidden">
+<!-- Subtle warning indicator -->
+<div class="absolute top-0 right-0 w-16 h-16 pointer-events-none">
+<div class="absolute transform rotate-45 bg-orange-500 text-white text-[10px] font-bold py-1 right-[-35px] top-[15px] w-[120px] text-center shadow-sm">
+                        HUGE
+                    </div>
+</div>
+<div class="flex items-start gap-4">
+<div class="relative shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Drone shot of a coastal highway" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCa78C3MMiCjJH3HSUQLw1iC-LqYGmUZED4-fa4yOjWQ5L1N3_OPDuyA4bRcYNuIbnwZVl1fqyDKy2rhy9QgQaTa5TnIp2a_Ag4KV0Jk0MtHl47x5u77d4CL5KyE69mXWriuw_EVaYscwuSqfeTxC-4Dh71V9GItKpxlbZX-dInDdhXv3t9mo6lHE54keLQ7Lk8Q4lZYRtC0QD-uFHp1I6KFShIUQ63AZMEYir2i4a-seQhRFmw0MGyq3JakNJpgOQjFyyoy42s7WM");'></div>
+<div class="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">1:02:15</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0 py-1">
+<h3 class="text-slate-900 dark:text-white text-base font-semibold truncate leading-snug mb-1">screen_recording_full_session.mp4</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Recorded on Jul 19, 2023</p>
+<p class="text-orange-600 dark:text-orange-400 font-bold text-lg leading-none">3.8 GB</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 active:bg-primary/95 text-white rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">compress</span>
+                        Compress
+                    </button>
+<button class="flex-1 h-10 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white text-slate-700 rounded-lg text-sm font-bold tracking-wide transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+                        Delete
+                    </button>
+</div>
+</div>
+</div>
+<!-- Bottom safe area spacer -->
+<div class="h-8"></div>
+</div>
+</body></html>

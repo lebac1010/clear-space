@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Storage Scanning Progress</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom animation for the scanning effect */
+        @keyframes scan-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.98); }
+        }
+        .scan-pulse {
+            animation: scan-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 pb-2 justify-between border-b border-transparent dark:border-slate-800">
+<div class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Storage Cleaner</h2>
+</div>
+<!-- Main Content -->
+<div class="flex flex-col items-center justify-center flex-1 w-full max-w-md mx-auto px-4 py-6 gap-6">
+<!-- Circular Progress Indicator -->
+<div class="relative flex items-center justify-center w-64 h-64 mt-4">
+<!-- Outer glow ring -->
+<div class="absolute inset-0 rounded-full bg-primary/10 blur-xl scan-pulse"></div>
+<!-- Background track -->
+<div class="absolute inset-2 rounded-full border-[12px] border-slate-200 dark:border-slate-800"></div>
+<!-- Active Progress Ring (Simulated with conic gradient mask or SVG) -->
+<!-- Using SVG for clean circular progress -->
+<svg class="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)] -rotate-90" viewbox="0 0 100 100">
+<circle class="text-primary" cx="50" cy="50" fill="none" r="44" stroke="currentColor" stroke-dasharray="276" stroke-dashoffset="80" stroke-linecap="round" stroke-width="8" style="transition: stroke-dashoffset 0.5s ease;"></circle>
+</svg>
+<!-- Inner Content -->
+<div class="relative flex flex-col items-center justify-center z-10">
+<span class="material-symbols-outlined text-5xl text-primary mb-2 spin-slow">data_usage</span>
+<span class="text-4xl font-bold text-slate-900 dark:text-white">72%</span>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wide">Scanned</span>
+</div>
+</div>
+<!-- Headline Text -->
+<div class="flex flex-col items-center gap-2">
+<h2 class="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight text-center">Analyzing storage...</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal text-center max-w-xs">
+                    Please wait while we categorize your photos, videos, and large files.
+                </p>
+</div>
+<!-- Categories Checklist -->
+<div class="w-full bg-white dark:bg-slate-800/50 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 mt-2">
+<div class="flex flex-col gap-4">
+<!-- Item 1: Completed -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined text-lg">check</span>
+</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-200">System Cache</span>
+</div>
+<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">1.2 GB</span>
+</div>
+<!-- Item 2: Active -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg animate-spin">sync</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium text-slate-900 dark:text-white">Photos &amp; Videos</span>
+<span class="text-[10px] text-primary">Scanning...</span>
+</div>
+</div>
+<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">---</span>
+</div>
+<!-- Item 3: Pending -->
+<div class="flex items-center justify-between opacity-50">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-400">
+<span class="material-symbols-outlined text-lg">schedule</span>
+</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-200">Large Files</span>
+</div>
+<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Pending</span>
+</div>
+</div>
+</div>
+<!-- Linear Progress Bar Component (Reused/Adapted) -->
+<div class="flex flex-col gap-2 w-full mt-2">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-slate-900 dark:text-white text-sm font-medium leading-normal">Total Progress</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal leading-normal">Time remaining: ~15s</p>
+</div>
+<div class="rounded-full bg-slate-200 dark:bg-slate-700 h-2 overflow-hidden">
+<div class="h-full rounded-full bg-primary transition-all duration-300 relative overflow-hidden" style="width: 72%;">
+<div class="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite] translate-x-[-100%]" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);"></div>
+</div>
+</div>
+</div>
+<!-- Images / Files Preview (Reused/Adapted) -->
+<div class="w-full mt-4">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3 px-1">Found Items</p>
+<div class="grid grid-cols-4 gap-2">
+<!-- Image 1 -->
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<div class="w-full h-full bg-cover bg-center opacity-80" data-alt="Blurry photo of a sunset over mountains" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBuwUBjLT7Ew26JYhNDJPWmSJuC2LKHDNeB0yZlDJnxookOvGB0ChVhb0STh-HeejFXnIKX3m23ne_uhDonpT-EPFTyJspOWg5Gl4ZZF91dgABTaOoxJJGYwflHNm3tS7evTk0s11J58eYASWRseZbjKLm8i3Jk2axtEmywMQ1B8CKrSG_24z1-62tO1iPdV3gV83pDvx1EWC9Mk6pLF-0JjR_OPwDw3NWxiZpcbCoUTRWVcImCi9F0dT0jVgil3Bre2wYp6xGB0MI");'></div>
+<div class="absolute inset-0 bg-primary/20 animate-pulse"></div>
+</div>
+<!-- Image 2 -->
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<div class="w-full h-full bg-cover bg-center opacity-80" data-alt="Abstract blue geometric pattern wallpaper" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAhqYrPiq8q6Dr0a0bzmWM5uS_e5eJAbBAZ5214R0XrOX0wuJ6SQ-1WJ6XorAmb0cW7KhGy7yYH_e_R8Wz6cXZH4acAf0LbsfajJdQoaOCA555bYbAzV9IyMom5mLrN69by89TKhFhm0tbbsBdQ7vq5__gdEPUZgfvwGtWd4x3QAOdTz8ALcdBAvJV2_9K20P6KkGmuoBSzi4vqZXinOGFnaAnTMy-kr5jT2HSpNxZiqkBrrKt7uO-jxQL_WQO8iCcNq29WEEM_CNQ");'></div>
+<div class="absolute inset-0 bg-primary/20 animate-pulse delay-75"></div>
+</div>
+<!-- Image 3 -->
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<div class="w-full h-full bg-cover bg-center opacity-80" data-alt="Screenshot of a mobile app interface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAdbef4hdqTAKMT0604DkRVDpOS3MF9VupUn95FOHszfEp3ZXLTyzN5cUOW4YOPIVEEO6fX0_xC9QnmzStLdKVM-TfX0IIne6q12wZHwboOV426q3HRLfIRS6MsIElCt4MKNpCi8eD3B4y3nORAm0LS3i-YZNoCLgySe0_fkO6avWrwuze77wnu0luvDPfXrfnocZhc6SdpoCCbaEQK0qa9HeR6OoY35ygCNCECCyyrggL7YE3DJLvbnY3saiOTVE3W_ovaEXlljoM");'></div>
+<div class="absolute inset-0 bg-primary/20 animate-pulse delay-100"></div>
+</div>
+<!-- Image 4 (Placeholder for more) -->
+<div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined text-2xl">more_horiz</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-8"></div>
+</div>
+<style>
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Similar Photos - Empty State</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-4 py-3 bg-background-light dark:bg-background-dark z-10">
+<button class="flex size-10 items-center justify-center rounded-full text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] text-slate-900 dark:text-white">
+                Similar Photos
+            </h2>
+<!-- Spacer to balance the back button -->
+<div class="size-10"></div>
+</header>
+<!-- Main Content: Empty State -->
+<main class="flex flex-1 flex-col items-center justify-center px-6 pb-20 overflow-y-auto">
+<div class="flex flex-col items-center gap-8 w-full max-w-sm">
+<!-- Illustration -->
+<div class="relative w-full aspect-square max-w-[280px] flex items-center justify-center">
+<!-- Abstract circle background for illustration -->
+<div class="absolute inset-0 m-auto size-64 rounded-full bg-primary/5 dark:bg-primary/10"></div>
+<div class="absolute inset-0 m-auto size-48 rounded-full bg-primary/10 dark:bg-primary/20 animate-pulse"></div>
+<div class="relative z-10 w-40 h-40 bg-center bg-contain bg-no-repeat" data-alt="Illustration of a clean folder with a checkmark" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwvXK5XmLom_cvPBcwt9ZCFIr20PLjvhlrZyB8cy4J4OlALpP9-KUqxM1Zw32c9Ch-tW9wipwjuOsgFjBPfbtdr-tKWcLsbNl7AWsAjU4lBKE696Kop5RKZLbwL36bR2H-zIF21BuXowzJqAGkf-jJ11kfnAZope_JgjffZJO0R3eb0CCqESwk9KZgHNomt6kGJrbIAXWOSFMI3RyZenZ6Byep_jXK2WrHNPseWKOYg9c8CuShJvJeDjRkAvhLJZSOveQKDatemSU');"></div>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-center gap-3 text-center">
+<h3 class="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
+                        You’re all clean!
+                    </h3>
+<p class="text-base font-normal leading-relaxed text-slate-500 dark:text-slate-400 max-w-[280px]">
+                        No similar photos found. Your gallery is optimized.
+                    </p>
+</div>
+<!-- Secondary Button -->
+<button class="w-full max-w-[280px] h-12 flex items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-semibold shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+<span>Check Large Videos</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark pb-safe">
+<div class="flex items-center justify-around px-2 py-3">
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">image</span>
+<span class="text-[10px] font-medium">Photos</span>
+</a>
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<div class="flex h-8 w-14 items-center justify-center rounded-full bg-primary/10">
+<span class="material-symbols-outlined text-[24px] fill-current">cleaning_services</span>
+</div>
+<span class="text-[10px] font-bold">Cleaner</span>
+</a>
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">folder_open</span>
+<span class="text-[10px] font-medium">Files</span>
+</a>
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</a>
+</div>
+<!-- Safe area spacing for iOS home indicator -->
+<div class="h-4 w-full"></div>
+</nav>
+</div>
+</body></html>
