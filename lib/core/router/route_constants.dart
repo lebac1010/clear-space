@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 /// Centralized route path constants to avoid magic strings.
 abstract class RouteConstants {
   static const String dashboard = '/dashboard';
-  static const String contacts = '/contacts';
+  static const String cleanup = '/cleanup';
+  static const String photos = '/photos';
   static const String files = '/files';
+
+  // Non-tab routes
+  static const String contacts = '/contacts';
   static const String settings = '/settings';
 }
 

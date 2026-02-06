@@ -1,115 +1,165 @@
+import 'package:clear_space/core/theme/app_colors.dart';
+import 'package:clear_space/core/widgets/app_button.dart';
+import 'package:clear_space/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/widgets/app_button.dart';
-import '../../../../core/widgets/app_action_tile.dart';
-import '../../../../core/widgets/app_card.dart';
-import '../../../../core/extensions/build_context_x.dart';
+import '../widgets/storage_category_tile.dart';
+import '../widgets/storage_overview_card.dart';
+import '../widgets/storage_permission_view.dart';
 
-/// Dashboard screen displaying storage overview and cleanup suggestions.
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(dashboardControllerProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Storage Dashboard'),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        centerTitle: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {}, // TODO: Drawer
+            ),
+            const Gap(8),
+            Text(
+              'Storage Dashboard',
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        titleSpacing: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            tooltip: 'Settings',
             onPressed: () {
-              // TODO: Navigate to settings
-              debugPrint('Settings tapped');
+              // Context is valid here for GoRouter if needed
             },
           ),
+          const Gap(8),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: state.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, st) => Center(child: Text('Error: $err')),
+        data: (info) {
+          if (info == null) {
+            return const StoragePermissionView();
+          }
+
+          return Stack(
             children: [
-              // Storage Summary Card
-              _buildStorageCard(context),
-              const SizedBox(height: AppSpacing.lg),
+              // Scrollable Content
+              ListView(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                  bottom: 100, // Space for fixed button
+                ),
+                children: [
+                  StorageOverviewCard(info: info),
 
-              Text('Cleanup Suggestions', style: context.textTheme.titleLarge),
-              const SizedBox(height: AppSpacing.md),
+                  const Gap(24),
 
-              // Action Items
-              AppActionTile(
-                title: 'Duplicate Contacts',
-                subtitle: 'Merge 5 duplicate contacts',
-                icon: Icons.people_outline,
-                onTap: () {
-                  // TODO: Navigate to contacts cleanup
-                  debugPrint('Duplicate Contacts tapped');
-                },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Storage Breakdown',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text('View Details'),
+                      ),
+                    ],
+                  ),
+
+                  const Gap(8),
+
+                  StorageCategoryTile(
+                    icon: Icons.image_outlined,
+                    color: Colors.purple,
+                    title: 'Photos & Images',
+                    count: info.photosCount,
+                    sizeBytes: info.photosSize,
+                    percentage: info.totalSpace > 0
+                        ? info.photosSize / info.totalSpace
+                        : 0,
+                  ),
+                  const Gap(12),
+                  StorageCategoryTile(
+                    icon: Icons.movie_outlined,
+                    color: Colors.pink,
+                    title: 'Videos',
+                    count: info.videosCount,
+                    sizeBytes: info.videosSize,
+                    percentage: info.totalSpace > 0
+                        ? info.videosSize / info.totalSpace
+                        : 0,
+                  ),
+                  const Gap(12),
+                  StorageCategoryTile(
+                    icon: Icons.folder_open_outlined,
+                    color: Colors.orange,
+                    title: 'Documents & Files',
+                    count: info.filesCount,
+                    sizeBytes: info.filesSize,
+                    percentage: info.totalSpace > 0
+                        ? info.filesSize / info.totalSpace
+                        : 0,
+                  ),
+                  const Gap(12),
+                  StorageCategoryTile(
+                    icon: Icons.dns_outlined,
+                    color: Colors.blueGrey,
+                    title: 'System & Apps',
+                    count: null, // Not counting apps yet -> Hides "0 items"
+                    sizeBytes: info.systemSize,
+                    percentage: info.totalSpace > 0
+                        ? info.systemSize / info.totalSpace
+                        : 0,
+                  ),
+                ],
               ),
-              const SizedBox(height: AppSpacing.sm),
-              AppActionTile(
-                title: 'Video Compression',
-                subtitle: 'Save 1.2 GB space',
-                icon: Icons.video_collection_outlined,
-                onTap: () {
-                  // TODO: Navigate to video compression
-                  debugPrint('Video Compression tapped');
-                },
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              AppActionTile(
-                title: 'Large Files',
-                subtitle: '12 files over 100 MB',
-                icon: Icons.folder_outlined,
-                onTap: () {
-                  // TODO: Navigate to large files
-                  debugPrint('Large Files tapped');
-                },
+
+              // Bottom Fixed CTA
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.background.withValues(alpha: 0.95),
+                    border: const Border(
+                      top: BorderSide(color: AppColors.border),
+                    ),
+                  ),
+                  child: AppButton(
+                    text: 'Smart Cleanup Plan',
+                    icon: const Icon(Icons.cleaning_services_outlined),
+                    onPressed: () {
+                      // TODO: Navigate to Smart Cleanup
+                    },
+                  ),
+                ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStorageCard(BuildContext context) {
-    // TODO: Replace with data from provider
-    const usedPercentage = 75;
-    const usedStorage = '64 GB';
-    const totalStorage = '128 GB';
-
-    return AppCard(
-      color: AppColors.primary,
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: Column(
-        children: [
-          Text(
-            '$usedPercentage% Used',
-            style: context.textTheme.displaySmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            '$usedStorage / $totalStorage',
-            style: context.textTheme.bodyLarge?.copyWith(color: Colors.white70),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          AppButton.secondary(
-            text: 'Analyze Details',
-            onPressed: () {
-              // TODO: Navigate to storage analysis
-              debugPrint('Analyze Details tapped');
-            },
-          ),
-        ],
+          );
+        },
       ),
     );
   }
