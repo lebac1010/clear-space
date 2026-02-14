@@ -217,6 +217,9 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                 val types = call.argument<List<String>>("types") ?: emptyList()
                 val workManager = androidx.work.WorkManager.getInstance(context)
                 
+                // Fix #4: Prune old finished/cancelled work to prevent REPLACE from being a no-op
+                workManager.pruneWork()
+                
                 val inputData = androidx.work.workDataOf("types" to types.toTypedArray())
                 
                 val request = androidx.work.OneTimeWorkRequest.Builder(com.lebac.storage_dashboard.clear_space.workers.CleanupWorker::class.java)
@@ -227,7 +230,7 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
 
                 workManager.enqueueUniqueWork(
                     "cleanup_job",
-                    androidx.work.ExistingWorkPolicy.KEEP,
+                    androidx.work.ExistingWorkPolicy.REPLACE,
                     request
                 )
                 

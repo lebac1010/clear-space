@@ -45,6 +45,12 @@
             android:exported="false"
             android:stopWithTask="false" />
 
+        <!-- WorkManager Foreground Service (required for Android 14+ / setForeground()) -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

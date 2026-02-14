@@ -140,6 +140,7 @@ class NativeStorageScanner {
   /// Get info about the background cleanup job
   Future<Map<String, dynamic>?> getCleanupInfo() async {
     final result = await _methodChannel.invokeMethod('getCleanupInfo');
+    if (result == null) return null;
     return convertToJsonMap(result);
   }
 }

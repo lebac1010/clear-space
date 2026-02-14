@@ -8,15 +8,15 @@ import '../../application/smart_cleanup_service.dart';
 
 part 'safe_cleanup_controller.g.dart';
 
-@riverpod
+@Riverpod(
+  keepAlive: true,
+) // Fix #3: Prevent rebuild-caused reinstantiation losing _isPolling
 class SafeCleanupController extends _$SafeCleanupController {
   bool _isPolling = false;
 
   @override
   FutureOr<SafeCleanupInfo?> build() async {
-    // Check for background job on first load?
-    // We can't easily distinguish first load from rebuilds triggered by dashboard refresh.
-    // But we can check if we are already polling.
+    // Check for background job on first load
     if (!_isPolling) {
       Future.microtask(() => checkForBackgroundJob());
     }
@@ -39,9 +39,6 @@ class SafeCleanupController extends _$SafeCleanupController {
     try {
       // Check Notification Permission for Background work
       if (io.Platform.isAndroid) {
-        // Android 13+ (SDK 33)
-        // We can't easily check SDK int here without device_info or relying on permission_handler specific behavior.
-        // permission_handler manages validation.
         final status = await Permission.notification.status;
         if (status.isDenied) {
           await Permission.notification.request();
@@ -55,7 +52,7 @@ class SafeCleanupController extends _$SafeCleanupController {
         // Background job started. Start polling.
         await _pollCleanupStatus();
       } else {
-        // Foreground done.
+        // Foreground done. Force refresh to get updated counts.
         ref.read(dashboardControllerProvider.notifier).refresh();
       }
     } catch (e, st) {
@@ -73,39 +70,56 @@ class SafeCleanupController extends _$SafeCleanupController {
         state = const AsyncLoading();
         _pollCleanupStatus();
       }
-    } catch (e) {
-      // access logic error or native error, fail silently or log
-      // state = AsyncError(e, StackTrace.current); // Don't disrupt UI for bg check failure
+    } catch (_) {
+      // Native bridge error on startup — fail silently, don't disrupt UI
     }
   }
 
+  // Fix #5: Added try/catch inside loop body + timeout + finally block
   Future<void> _pollCleanupStatus() async {
     if (_isPolling) return;
     _isPolling = true;
 
-    final repo = await ref.read(storageRepositoryProvider.future);
-    while (true) {
-      await Future.delayed(const Duration(seconds: 1));
-      final info = await repo.getCleanupInfo();
+    try {
+      final repo = await ref.read(storageRepositoryProvider.future);
+      int attempts = 0;
+      const maxAttempts = 300; // 5-minute timeout (300 × 1 second)
 
-      if (info == null) {
-        // Job disappeared or failed?
-        break;
+      while (attempts < maxAttempts) {
+        attempts++;
+        await Future.delayed(const Duration(seconds: 1));
+
+        try {
+          final info = await repo.getCleanupInfo();
+
+          if (info == null) {
+            // Job disappeared — break out
+            break;
+          }
+
+          final stateStr = info['state'];
+
+          if (stateStr == 'SUCCEEDED') {
+            // Fix #6: Force dashboard refresh to get fresh data (not stale cache)
+            ref.read(dashboardControllerProvider.notifier).refresh();
+            break;
+          } else if (stateStr == 'FAILED' || stateStr == 'CANCELLED') {
+            state = AsyncError('Cleanup $stateStr', StackTrace.current);
+            break;
+          }
+          // If RUNNING or ENQUEUED, continue polling
+        } catch (_) {
+          // Native bridge error mid-poll — retry on next iteration
+          continue;
+        }
       }
 
-      final stateStr =
-          info['state']; // ENQUEUED, RUNNING, SUCCEEDED, FAILED, BLOCKED, CANCELLED
-
-      if (stateStr == 'SUCCEEDED') {
-        ref.read(dashboardControllerProvider.notifier).refresh();
-        // State update handled by build() ref.watching dashboard.
-        break;
-      } else if (stateStr == 'FAILED' || stateStr == 'CANCELLED') {
-        state = AsyncError('Cleanup $stateStr', StackTrace.current);
-        break;
+      // If we hit maxAttempts, treat as timeout
+      if (attempts >= maxAttempts) {
+        state = AsyncError('Cleanup timed out', StackTrace.current);
       }
-      // If RUNNING, continue polling
+    } finally {
+      _isPolling = false; // ALWAYS reset, even on exception
     }
-    _isPolling = false;
   }
 }

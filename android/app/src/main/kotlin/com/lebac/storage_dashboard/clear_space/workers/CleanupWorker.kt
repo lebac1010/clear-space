@@ -12,7 +12,7 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.ForegroundInfo
-import com.lebac.storage_dashboard.clear_space.R
+
 
 class CleanupWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
@@ -63,7 +63,7 @@ class CleanupWorker(context: Context, params: WorkerParameters) : CoroutineWorke
     private fun createForegroundInfo(progress: Int, total: Int): ForegroundInfo {
         val channelId = "cleanup_channel"
         val title = "Cleaning Junk Files"
-        val cancel = "Cancel"
+
         
         // Create Channel if needed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -134,6 +134,10 @@ class StorageRepositoryImpl implements StorageRepository {
     if (totalItems > 50) {
       // Threshold: 50 items
       final started = await _nativeScanner.cleanJunkBackground(types);
+      if (started) {
+        // Fix #6: Pre-clear cache so dashboard refresh after completion gets fresh data
+        _cacheService.clearCache();
+      }
       return {'background': true, 'started': started};
     }
 
