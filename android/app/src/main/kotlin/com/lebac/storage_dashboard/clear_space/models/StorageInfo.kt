@@ -20,6 +20,7 @@ data class StorageInfo(
     val filesCount: Int,
     val filesSize: Long,
     val systemSize: Long,
+    val appsCount: Int,
     
     // Metadata
     val lastUpdated: Long,
@@ -29,10 +30,18 @@ data class StorageInfo(
     val duplicateCount: Int,
     val duplicateSize: Long,
     val potentialSavings: Long,
+    val similarPhotoCount: Int,
+    val similarPhotoSize: Long,
     val largeFiles: List<LargeFileInfo>,
     val storageVolumes: List<StorageVolumeInfo>,
     val cloudOnlyCount: Int,
-    val scanDurationMs: Long
+    val scanDurationMs: Long,
+    // NEW: Junk stats
+    val junkCount: Int,
+    val junkSize: Long,
+    val emptyFolderCount: Int,
+    val apkCount: Int, // NEW
+    val apkSize: Long // NEW
 ) {
     fun toMap(): Map<String, Any> = mapOf(
         "totalSpace" to totalSpace,
@@ -49,14 +58,22 @@ data class StorageInfo(
         "filesCount" to filesCount,
         "filesSize" to filesSize,
         "systemSize" to systemSize,
+        "appsCount" to appsCount,
         "lastUpdated" to lastUpdated,
         "isEstimated" to isEstimated,
         "duplicateCount" to duplicateCount,
         "duplicateSize" to duplicateSize,
         "potentialSavings" to potentialSavings,
+        "similarPhotoCount" to similarPhotoCount,
+        "similarPhotoSize" to similarPhotoSize,
         "largeFiles" to largeFiles.map { it.toMap() },
         "storageVolumes" to storageVolumes.map { it.toMap() },
         "cloudOnlyCount" to cloudOnlyCount,
-        "scanDurationMs" to scanDurationMs
+        "scanDurationMs" to scanDurationMs,
+        "junkCount" to junkCount,
+        "junkSize" to junkSize,
+        "emptyFolderCount" to emptyFolderCount,
+        "apkCount" to apkCount,
+        "apkSize" to apkSize
     )
 }

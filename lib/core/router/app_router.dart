@@ -5,8 +5,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/cleanup/presentation/screens/cleanup_screen.dart';
+import '../../features/cleanup/presentation/screens/duplicate_list_screen.dart';
+import '../../features/cleanup/presentation/screens/large_file_list_screen.dart';
+import '../../features/cleanup/presentation/screens/smart_cleanup_plan_screen.dart';
+import '../../features/cleanup/presentation/controllers/duplicate_controller.dart'; // Import CleanupType
 import '../../features/contacts/presentation/screens/contacts_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/cleanup/presentation/screens/junk_files_screen.dart';
 import '../../features/files/presentation/screens/files_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
@@ -49,6 +54,35 @@ GoRouter goRouter(GoRouterRef ref) {
                 path: RouteConstants.cleanup,
                 name: 'cleanup',
                 builder: (context, state) => const CleanupScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'duplicates',
+                    name: 'duplicates',
+                    builder: (context, state) {
+                      final typeStr = state.uri.queryParameters['type'];
+                      final type = typeStr == 'similar'
+                          ? CleanupType.similar
+                          : CleanupType.duplicate;
+                      return DuplicateListScreen(type: type);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'large-files',
+                    name: 'large-files',
+                    builder: (context, state) => const LargeFileListScreen(),
+                  ),
+                  GoRoute(
+                    path: 'smart',
+                    name: 'smart-cleanup',
+                    parentNavigatorKey: rootNavigatorKey, // Full screen
+                    builder: (context, state) => const SmartCleanupPlanScreen(),
+                  ),
+                  GoRoute(
+                    path: 'junk',
+                    name: 'junk-files',
+                    builder: (context, state) => const JunkFilesScreen(),
+                  ),
+                ],
               ),
             ],
           ),

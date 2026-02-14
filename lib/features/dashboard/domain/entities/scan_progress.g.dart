@@ -27,15 +27,15 @@ Map<String, dynamic> _$$ScanProgressImplToJson(_$ScanProgressImpl instance) =>
     };
 
 const _$ScanPhaseEnumMap = {
-  ScanPhase.DISK_SPACE: 'DISK_SPACE',
-  ScanPhase.PHOTOS: 'PHOTOS',
-  ScanPhase.VIDEOS: 'VIDEOS',
-  ScanPhase.AUDIO: 'AUDIO',
-  ScanPhase.DOCUMENTS: 'DOCUMENTS',
-  ScanPhase.CALCULATING: 'CALCULATING',
-  ScanPhase.COMPLETE: 'COMPLETE',
-  ScanPhase.PAUSED: 'PAUSED',
-  ScanPhase.CANCELLED: 'CANCELLED',
-  ScanPhase.ERROR: 'ERROR',
-  ScanPhase.CACHE_INVALIDATED: 'CACHE_INVALIDATED',
+  ScanPhase.diskSpace: 'DISK_SPACE',
+  ScanPhase.photos: 'PHOTOS',
+  ScanPhase.videos: 'VIDEOS',
+  ScanPhase.audio: 'AUDIO',
+  ScanPhase.documents: 'DOCUMENTS',
+  ScanPhase.calculating: 'CALCULATING',
+  ScanPhase.complete: 'COMPLETE',
+  ScanPhase.paused: 'PAUSED',
+  ScanPhase.cancelled: 'CANCELLED',
+  ScanPhase.error: 'ERROR',
+  ScanPhase.cacheInvalidated: 'CACHE_INVALIDATED',
 };

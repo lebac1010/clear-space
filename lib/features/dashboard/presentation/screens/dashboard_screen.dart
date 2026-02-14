@@ -3,11 +3,13 @@ import 'package:clear_space/core/widgets/app_button.dart';
 import 'package:clear_space/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../widgets/storage_category_tile.dart';
 import '../widgets/storage_overview_card.dart';
 import '../widgets/storage_permission_view.dart';
+import '../../../../core/router/route_constants.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -71,6 +73,52 @@ class DashboardScreen extends ConsumerWidget {
 
                   const Gap(24),
 
+                  if (info.junkSize > 0 ||
+                      info.emptyFolderCount > 0 ||
+                      info.apkCount > 0)
+                    Card(
+                      color: Theme.of(context).colorScheme.errorContainer,
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.delete_sweep,
+                          color: Theme.of(context).colorScheme.onErrorContainer,
+                        ),
+                        title: Text(
+                          'Junk Files Found',
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onErrorContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          '${info.emptyFolderCount + info.apkCount + info.junkCount} items can be cleaned',
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onErrorContainer,
+                          ),
+                        ),
+                        trailing: FilledButton.icon(
+                          onPressed: () =>
+                              context.push(RouteConstants.junkFiles),
+                          icon: const Icon(Icons.arrow_forward, size: 16),
+                          label: const Text('Review'),
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.error,
+                            foregroundColor: Theme.of(
+                              context,
+                            ).colorScheme.onError,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  const Gap(24),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -81,7 +129,7 @@ class DashboardScreen extends ConsumerWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () => context.go(RouteConstants.files),
                         child: const Text('View Details'),
                       ),
                     ],
@@ -98,6 +146,7 @@ class DashboardScreen extends ConsumerWidget {
                     percentage: info.totalSpace > 0
                         ? info.photosSize / info.totalSpace
                         : 0,
+                    onTap: () => context.go(RouteConstants.photos),
                   ),
                   const Gap(12),
                   StorageCategoryTile(
@@ -109,6 +158,21 @@ class DashboardScreen extends ConsumerWidget {
                     percentage: info.totalSpace > 0
                         ? info.videosSize / info.totalSpace
                         : 0,
+                    onTap: () =>
+                        context.go('${RouteConstants.files}?category=video'),
+                  ),
+                  const Gap(12),
+                  StorageCategoryTile(
+                    icon: Icons.audiotrack_outlined,
+                    color: Colors.deepOrange,
+                    title: 'Audio',
+                    count: info.audioCount,
+                    sizeBytes: info.audioSize,
+                    percentage: info.totalSpace > 0
+                        ? info.audioSize / info.totalSpace
+                        : 0,
+                    onTap: () =>
+                        context.go('${RouteConstants.files}?category=audio'),
                   ),
                   const Gap(12),
                   StorageCategoryTile(
@@ -120,17 +184,21 @@ class DashboardScreen extends ConsumerWidget {
                     percentage: info.totalSpace > 0
                         ? info.filesSize / info.totalSpace
                         : 0,
+                    onTap: () =>
+                        context.go('${RouteConstants.files}?category=document'),
                   ),
                   const Gap(12),
                   StorageCategoryTile(
                     icon: Icons.dns_outlined,
                     color: Colors.blueGrey,
                     title: 'System & Apps',
-                    count: null, // Not counting apps yet -> Hides "0 items"
+                    count: info.appsCount,
                     sizeBytes: info.systemSize,
                     percentage: info.totalSpace > 0
                         ? info.systemSize / info.totalSpace
                         : 0,
+                    onTap: () =>
+                        context.go('${RouteConstants.files}?category=apps'),
                   ),
                 ],
               ),
@@ -152,7 +220,7 @@ class DashboardScreen extends ConsumerWidget {
                     text: 'Smart Cleanup Plan',
                     icon: const Icon(Icons.cleaning_services_outlined),
                     onPressed: () {
-                      // TODO: Navigate to Smart Cleanup
+                      context.push(RouteConstants.smartCleanup);
                     },
                   ),
                 ),

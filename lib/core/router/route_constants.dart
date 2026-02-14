@@ -10,6 +10,10 @@ abstract class RouteConstants {
   // Non-tab routes
   static const String contacts = '/contacts';
   static const String settings = '/settings';
+  static const String duplicates = '/cleanup/duplicates';
+  static const String largeFiles = '/cleanup/large-files';
+  static const String smartCleanup = '/cleanup/smart';
+  static const String junkFiles = '/cleanup/junk';
 }
 
 /// 404 Not Found Screen for unknown routes.

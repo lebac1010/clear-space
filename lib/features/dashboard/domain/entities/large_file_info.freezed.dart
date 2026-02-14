@@ -26,6 +26,7 @@ mixin _$LargeFileInfo {
   String get mimeType => throw _privateConstructorUsedError;
   int get dateModified => throw _privateConstructorUsedError;
   String get uri => throw _privateConstructorUsedError;
+  String get path => throw _privateConstructorUsedError;
   String get mediaType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $LargeFileInfoCopyWith<$Res> {
       String mimeType,
       int dateModified,
       String uri,
+      String path,
       String mediaType});
 }
 
@@ -69,6 +71,7 @@ class _$LargeFileInfoCopyWithImpl<$Res, $Val extends LargeFileInfo>
     Object? mimeType = null,
     Object? dateModified = null,
     Object? uri = null,
+    Object? path = null,
     Object? mediaType = null,
   }) {
     return _then(_value.copyWith(
@@ -96,6 +99,10 @@ class _$LargeFileInfoCopyWithImpl<$Res, $Val extends LargeFileInfo>
           ? _value.uri
           : uri // ignore: cast_nullable_to_non_nullable
               as String,
+      path: null == path
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
       mediaType: null == mediaType
           ? _value.mediaType
           : mediaType // ignore: cast_nullable_to_non_nullable
@@ -119,6 +126,7 @@ abstract class _$$LargeFileInfoImplCopyWith<$Res>
       String mimeType,
       int dateModified,
       String uri,
+      String path,
       String mediaType});
 }
 
@@ -139,6 +147,7 @@ class __$$LargeFileInfoImplCopyWithImpl<$Res>
     Object? mimeType = null,
     Object? dateModified = null,
     Object? uri = null,
+    Object? path = null,
     Object? mediaType = null,
   }) {
     return _then(_$LargeFileInfoImpl(
@@ -166,6 +175,10 @@ class __$$LargeFileInfoImplCopyWithImpl<$Res>
           ? _value.uri
           : uri // ignore: cast_nullable_to_non_nullable
               as String,
+      path: null == path
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
       mediaType: null == mediaType
           ? _value.mediaType
           : mediaType // ignore: cast_nullable_to_non_nullable
@@ -184,6 +197,7 @@ class _$LargeFileInfoImpl implements _LargeFileInfo {
       required this.mimeType,
       required this.dateModified,
       required this.uri,
+      required this.path,
       required this.mediaType});
 
   factory _$LargeFileInfoImpl.fromJson(Map<String, dynamic> json) =>
@@ -202,11 +216,13 @@ class _$LargeFileInfoImpl implements _LargeFileInfo {
   @override
   final String uri;
   @override
+  final String path;
+  @override
   final String mediaType;
 
   @override
   String toString() {
-    return 'LargeFileInfo(id: $id, name: $name, size: $size, mimeType: $mimeType, dateModified: $dateModified, uri: $uri, mediaType: $mediaType)';
+    return 'LargeFileInfo(id: $id, name: $name, size: $size, mimeType: $mimeType, dateModified: $dateModified, uri: $uri, path: $path, mediaType: $mediaType)';
   }
 
   @override
@@ -222,14 +238,15 @@ class _$LargeFileInfoImpl implements _LargeFileInfo {
             (identical(other.dateModified, dateModified) ||
                 other.dateModified == dateModified) &&
             (identical(other.uri, uri) || other.uri == uri) &&
+            (identical(other.path, path) || other.path == path) &&
             (identical(other.mediaType, mediaType) ||
                 other.mediaType == mediaType));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, size, mimeType, dateModified, uri, mediaType);
+  int get hashCode => Object.hash(runtimeType, id, name, size, mimeType,
+      dateModified, uri, path, mediaType);
 
   @JsonKey(ignore: true)
   @override
@@ -253,6 +270,7 @@ abstract class _LargeFileInfo implements LargeFileInfo {
       required final String mimeType,
       required final int dateModified,
       required final String uri,
+      required final String path,
       required final String mediaType}) = _$LargeFileInfoImpl;
 
   factory _LargeFileInfo.fromJson(Map<String, dynamic> json) =
@@ -270,6 +288,8 @@ abstract class _LargeFileInfo implements LargeFileInfo {
   int get dateModified;
   @override
   String get uri;
+  @override
+  String get path;
   @override
   String get mediaType;
   @override

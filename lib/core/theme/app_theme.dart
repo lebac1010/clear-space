@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 /// Application theme configuration.
 /// Uses Material 3 with custom tokens from Stitch designs.
 class AppTheme {
   static ThemeData get light {
-    final baseTextTheme = GoogleFonts.interTextTheme();
+    // Use local Inter font defined in pubspec.yaml
+    final baseTextTheme = Typography.material2021().black.apply(
+      fontFamily: 'Inter',
+    );
 
     // Complete TextTheme mapping for Inter font
     final textTheme = baseTextTheme.copyWith(
@@ -71,7 +73,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       // Modern ColorScheme without deprecated properties
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         onPrimary: Colors.white,
         surface: AppColors.surface,
@@ -103,7 +105,10 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
-          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w600,
+          ),
           elevation: 0,
           minimumSize: const Size(0, 48), // Consistent height
           padding: const EdgeInsets.symmetric(
@@ -197,13 +202,15 @@ class AppTheme {
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.inter(
+            return const TextStyle(
+              fontFamily: 'Inter',
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.primary,
             );
           }
-          return GoogleFonts.inter(
+          return const TextStyle(
+            fontFamily: 'Inter',
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: AppColors.textSecondary,

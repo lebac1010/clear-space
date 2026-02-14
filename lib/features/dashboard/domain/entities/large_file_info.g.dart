@@ -14,6 +14,7 @@ _$LargeFileInfoImpl _$$LargeFileInfoImplFromJson(Map<String, dynamic> json) =>
       mimeType: json['mimeType'] as String,
       dateModified: (json['dateModified'] as num).toInt(),
       uri: json['uri'] as String,
+      path: json['path'] as String,
       mediaType: json['mediaType'] as String,
     );
 
@@ -25,5 +26,6 @@ Map<String, dynamic> _$$LargeFileInfoImplToJson(_$LargeFileInfoImpl instance) =>
       'mimeType': instance.mimeType,
       'dateModified': instance.dateModified,
       'uri': instance.uri,
+      'path': instance.path,
       'mediaType': instance.mediaType,
     };

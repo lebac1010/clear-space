@@ -12,6 +12,7 @@ class LargeFileInfo with _$LargeFileInfo {
     required String mimeType,
     required int dateModified,
     required String uri,
+    required String path,
     required String mediaType, // IMAGE, VIDEO, AUDIO, DOCUMENT, OTHER
   }) = _LargeFileInfo;
 

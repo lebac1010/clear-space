@@ -22,6 +22,7 @@ class LargeFileTracker(private val maxFiles: Int = 20) {
         mimeType: String,
         dateModified: Long,
         uri: String,
+        path: String,
         mediaType: MediaType
     ) {
         val file = LargeFileInfo(
@@ -31,6 +32,7 @@ class LargeFileTracker(private val maxFiles: Int = 20) {
             mimeType = mimeType,
             dateModified = dateModified,
             uri = uri,
+            path = path,
             mediaType = mediaType
         )
         

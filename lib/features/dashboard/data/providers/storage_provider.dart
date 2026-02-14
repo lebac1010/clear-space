@@ -12,10 +12,21 @@ part 'storage_provider.g.dart';
 Future<SharedPreferences> sharedPreferences(SharedPreferencesRef ref) =>
     SharedPreferences.getInstance();
 
+@Riverpod(keepAlive: true)
+NativeStorageScanner nativeStorageScanner(NativeStorageScannerRef ref) =>
+    NativeStorageScanner();
+
+@Riverpod(keepAlive: true)
+Future<StorageCacheService> storageCacheService(
+  StorageCacheServiceRef ref,
+) async {
+  final prefs = await ref.watch(sharedPreferencesProvider.future);
+  return StorageCacheService(prefs);
+}
+
 @riverpod
 Future<StorageRepository> storageRepository(StorageRepositoryRef ref) async {
-  final prefs = await ref.watch(sharedPreferencesProvider.future);
-  final cacheService = StorageCacheService(prefs);
-  final nativeScanner = NativeStorageScanner();
+  final cacheService = await ref.watch(storageCacheServiceProvider.future);
+  final nativeScanner = ref.watch(nativeStorageScannerProvider);
   return StorageRepositoryImpl(nativeScanner, cacheService);
 }

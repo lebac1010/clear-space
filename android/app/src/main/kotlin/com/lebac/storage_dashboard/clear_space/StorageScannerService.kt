@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.lebac.storage_dashboard.clear_space.models.ScanPhase
 import com.lebac.storage_dashboard.clear_space.models.ScanProgress
@@ -117,6 +118,7 @@ class StorageScannerService : Service() {
             try {
                 scanner!!.scanStorage()
                     .catch { e ->
+                        Log.e("StorageScannerService", "Scan error caught: ${e.message}", e)
                         progressHandler?.sendError("SCAN_ERROR", e.message ?: "Unknown")
                         sendResult { it.error("SCAN_ERROR", e.message, null) }
                     }
@@ -149,11 +151,44 @@ class StorageScannerService : Service() {
         sendResult { it.error("SCAN_CANCELLED", "Scan cancelled", null) }
     }
 
+    fun getDuplicateFiles(): Map<String, List<Map<String, Any>>> {
+        return scanner?.getDuplicateFiles() ?: emptyMap()
+    }
+
+    fun getSimilarPhotos(): Map<String, List<Map<String, Any>>> {
+        return scanner?.getSimilarPhotos() ?: emptyMap()
+    }
+
+
+    fun requestDelete(uris: List<String>, permanent: Boolean, callback: (android.content.IntentSender?) -> Unit) {
+        // Use service scope to ensure operation completes even if app backgrounds
+        (serviceScope ?: CoroutineScope(Dispatchers.Main + SupervisorJob()).also { serviceScope = it }).launch {
+            try {
+                // Ensure scanner is initialized
+                if (scanner == null) {
+                    scanner = MediaStoreScanner(this@StorageScannerService)
+                }
+                
+                val intentSender = if (permanent) {
+                    scanner?.deletePermanently(uris)
+                } else {
+                    scanner?.moveToTrash(uris)
+                }
+                callback(intentSender)
+            } catch (e: Exception) {
+                // Log error or handle?
+                // For now, return null as if failed (or caller handles timeout)
+                callback(null)
+            }
+        }
+    }
+    
     private fun sendResult(block: (MethodChannel.Result) -> Unit) {
         pendingResult.getAndSet(null)?.let { res ->
             try { block(res) } catch (e: Exception) {}
         }
     }
+
     
     private fun cleanup() {
         cancelScan()
@@ -192,6 +227,17 @@ class StorageScannerService : Service() {
             }
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
+        }
+    }
+
+    fun cleanJunk(types: List<String>, callback: (Map<String, Any>) -> Unit) {
+        val scope = serviceScope ?: CoroutineScope(Dispatchers.Main + SupervisorJob()).also { serviceScope = it }
+        scope.launch {
+            if (scanner == null) {
+                scanner = MediaStoreScanner(this@StorageScannerService)
+            }
+            val stats = scanner?.cleanJunk(types) ?: mapOf("count" to 0, "bytes" to 0L)
+            callback(stats)
         }
     }
 

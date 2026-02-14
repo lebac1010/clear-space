@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
 
 class StorageCategoryTile extends StatelessWidget {
@@ -26,9 +27,6 @@ class StorageCategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formatGb(int bytes) =>
-        (bytes / (1024 * 1024 * 1024)).toStringAsFixed(1);
-
     return AppCard(
       padding: const EdgeInsets.all(16),
       onTap: onTap,
@@ -101,7 +99,7 @@ class StorageCategoryTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '${formatGb(sizeBytes)} GB',
+                FileUtils.formatSize(sizeBytes),
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),

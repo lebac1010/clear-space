@@ -24,15 +24,23 @@ class StorageInfo with _$StorageInfo {
     required int filesCount,
     required int filesSize,
     required int systemSize,
+    required int appsCount, // NEW
     required int duplicateCount, // NEW
     required int duplicateSize, // NEW
     required int potentialSavings, // NEW
+    required int similarPhotoCount, // NEW
+    required int similarPhotoSize, // NEW
     required List<LargeFileInfo> largeFiles, // NEW
     required List<StorageVolumeInfo> storageVolumes, // NEW
     required int cloudOnlyCount, // NEW
     required int scanDurationMs, // NEW
     required int lastUpdated, // NEW: Timestamp
     required bool isEstimated, // NEW
+    required int junkCount, // NEW
+    required int junkSize, // NEW
+    required int emptyFolderCount, // NEW
+    required int apkCount, // NEW
+    required int apkSize, // NEW
   }) = _StorageInfo;
 
   const StorageInfo._();
@@ -41,4 +49,9 @@ class StorageInfo with _$StorageInfo {
       _$StorageInfoFromJson(json);
 
   double get usedPercentage => totalSpace == 0 ? 0 : usedSpace / totalSpace;
+
+  int get largeFilesTotalSize => largeFiles.fold(
+    0,
+    (previousValue, element) => previousValue + element.size,
+  );
 }

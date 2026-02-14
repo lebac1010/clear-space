@@ -11,6 +11,8 @@ import android.os.StatFs
 import android.app.usage.StorageStatsManager
 import android.provider.MediaStore
 import com.lebac.storage_dashboard.clear_space.models.*
+import android.content.pm.PackageManager
+import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,7 +25,16 @@ class MediaStoreScanner(private val context: Context) {
     private val volumeHelper = VolumeHelper(context)
     private val fileSizeResolver = FileSizeResolver(context.contentResolver)
     private val duplicateDetector = DuplicateDetector()
-    private val largeFileTracker = LargeFileTracker(20)  // Top 20
+    private val similarPhotoDetector = SimilarPhotoDetector()
+    private val largeFileTracker = LargeFileTracker(20)
+
+    private var lastSimilarPhotos: List<DuplicateFileInfo> = emptyList()
+    private val photoPaths = mutableListOf<String>()
+    
+    // Smart Cleanup Cache
+    private val junkFilesCache = mutableListOf<String>()
+    private val emptyFoldersCache = mutableListOf<String>()
+    private val safeApkFilesCache = mutableListOf<String>()
     
     @Volatile
     private var isPaused = false
@@ -41,17 +52,25 @@ class MediaStoreScanner(private val context: Context) {
             // Reset trackers
             duplicateDetector.clear()
             largeFileTracker.clear()
+            photoPaths.clear()
+            junkFilesCache.clear()
+            emptyFoldersCache.clear()
+            safeApkFilesCache.clear()
+            lastSimilarPhotos = emptyList()
+            lastSimilarPhotos = emptyList()
             isPaused = false
             isCancelled = false
             
             var cloudOnlyCount = 0
             
+            Log.d("StorageScanner", "Phase 1: Disk Space")
             // Phase 1: Get disk space (with fallback)
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.DISK_SPACE, 0, 1, 0L)))
             val diskSpace = getDiskSpaceSafe()
             val volumes = volumeHelper.getAllVolumes()
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.DISK_SPACE, 1, 1, 0L)))
 
+            Log.d("StorageScanner", "Phase 2: Photos")
             // Phase 2: Photos
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.PHOTOS, 0, 100, 0L)))
             val photosResult = scanMediaType(
@@ -64,6 +83,7 @@ class MediaStoreScanner(private val context: Context) {
             }
             checkCancelled()
 
+            Log.d("StorageScanner", "Phase 3: Videos")
             // Phase 3: Videos
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.VIDEOS, 0, 100, 0L)))
             val videosResult = scanMediaType(
@@ -76,6 +96,7 @@ class MediaStoreScanner(private val context: Context) {
             }
             checkCancelled()
 
+            Log.d("StorageScanner", "Phase 4: Audio")
             // Phase 4: Audio
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.AUDIO, 0, 100, 0L)))
             val audioResult = scanMediaType(
@@ -88,6 +109,7 @@ class MediaStoreScanner(private val context: Context) {
             }
             checkCancelled()
 
+            Log.d("StorageScanner", "Phase 5: Documents")
             // Phase 5: Documents
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.DOCUMENTS, 0, 100, 0L)))
             val documentsResult = scanDocuments { progress ->
@@ -95,13 +117,38 @@ class MediaStoreScanner(private val context: Context) {
             }
             checkCancelled()
 
-            // Phase 6: Calculate final values
+            Log.d("StorageScanner", "Phase 6: Junk")
+            // Phase 6: Junk
+            emit(ScanUpdate.Progress(ScanProgress(ScanPhase.JUNK, 0, 100, 0L)))
+            val junkResult = scanJunkFiles { progress ->
+                emit(ScanUpdate.Progress(progress))
+            }
+            checkCancelled()
+
+            Log.d("StorageScanner", "Phase 7: Empty Folders")
+            // Phase 7: Empty Folders
+            emit(ScanUpdate.Progress(ScanProgress(ScanPhase.EMPTY_FOLDERS, 0, 100, 0L)))
+            val emptyFolderCount = scanEmptyFolders { progress ->
+                emit(ScanUpdate.Progress(progress))
+            }
+            checkCancelled()
+
+            Log.d("StorageScanner", "Phase 8: APKs")
+            // Phase 8: APKs
+            emit(ScanUpdate.Progress(ScanProgress(ScanPhase.APKS, 0, 100, 0L)))
+            val apkResult = scanApks { progress ->
+                emit(ScanUpdate.Progress(progress))
+            }
+            checkCancelled()
+            
+            Log.d("StorageScanner", "Phase 9: Calculating")
+            // Phase 9: Calculate final values
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.CALCULATING, 0, 1, 0L)))
             
             val filesCount = documentsResult.count + audioResult.count
             val filesSize = documentsResult.size + audioResult.size
             val mediaSize = photosResult.size + videosResult.size
-            val systemSize = max(0L, diskSpace.usedSpace - mediaSize - filesSize)
+            val systemSize = max(0L, diskSpace.usedSpace - mediaSize - filesSize - junkResult.size - apkResult.size)
             
             // Get duplicate stats
             val duplicateStats = duplicateDetector.getStats()
@@ -123,18 +170,27 @@ class MediaStoreScanner(private val context: Context) {
                 filesCount = filesCount,
                 filesSize = filesSize,
                 systemSize = systemSize,
+                appsCount = getInstalledAppsCount(),
                 lastUpdated = System.currentTimeMillis(),
                 isEstimated = false,
                 duplicateCount = duplicateStats.totalDuplicateFiles,
                 duplicateSize = duplicateStats.totalDuplicateSize,
                 potentialSavings = duplicateStats.potentialSavings,
+                similarPhotoCount = lastSimilarPhotos.sumOf { it.files.size },
+                similarPhotoSize = lastSimilarPhotos.sumOf { it.totalSize },
                 largeFiles = largeFileTracker.getLargestFiles(),
                 storageVolumes = volumes,
                 cloudOnlyCount = cloudOnlyCount,
-                scanDurationMs = scanDuration
+                scanDurationMs = scanDuration,
+                junkCount = junkResult.count,
+                junkSize = junkResult.size,
+                emptyFolderCount = emptyFolderCount,
+                apkCount = apkResult.count,
+                apkSize = apkResult.size
             )
 
-            // Phase 7: Complete
+            Log.d("StorageScanner", "Phase 10: Complete")
+            // Phase 10: Complete
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.COMPLETE, 100, 100, 0L)))
             emit(ScanUpdate.Complete(storageInfo))
             
@@ -146,6 +202,325 @@ class MediaStoreScanner(private val context: Context) {
             throw e
         }
     }.flowOn(Dispatchers.IO)
+
+    /**
+     * Scan for junk files (.log, .tmp, .temp) in public storage
+     */
+    private suspend fun scanJunkFiles(
+        onProgress: suspend (ScanProgress) -> Unit
+    ): MediaResult {
+        var totalCount = 0
+        var totalSize = 0L
+        var processedSoFar = 0
+
+        // Only for Android 11+ where we can query Files with relative ease in public dirs
+        // For older versions, this might still work or we can rely on manual file walking (not implemented here)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val projection = arrayOf(
+                MediaStore.Files.FileColumns._ID,
+                MediaStore.Files.FileColumns.SIZE,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.MIME_TYPE,
+                MediaStore.Files.FileColumns.DATA // Add DATA column
+            )
+
+            // Select non-media files with junk extensions
+            val selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE} = ? AND (" +
+                    "${MediaStore.Files.FileColumns.DISPLAY_NAME} LIKE ? OR " +
+                    "${MediaStore.Files.FileColumns.DISPLAY_NAME} LIKE ? OR " +
+                    "${MediaStore.Files.FileColumns.DISPLAY_NAME} LIKE ?)"
+            
+            val selectionArgs = arrayOf(
+                MediaStore.Files.FileColumns.MEDIA_TYPE_NONE.toString(),
+                "%.log",
+                "%.tmp",
+                "%.temp"
+            )
+
+            val cursor = context.contentResolver.query(
+                MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                selectionArgs,
+                null
+            )
+
+            cursor?.use {
+                val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
+                // Need DATA column for path
+                val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+
+                totalCount = cursor.count
+
+                while (cursor.moveToNext()) {
+                    waitIfPaused()
+                    
+                    val size = cursor.getLong(sizeIndex)
+                    if (size > 0) {
+                        totalSize += size
+                        // Add to cache
+                        val path = cursor.getString(dataIndex)
+                        if (path != null) {
+                            junkFilesCache.add(path)
+                        }
+                    }
+                    processedSoFar++
+
+                    if (processedSoFar % 50 == 0) {
+                        onProgress(
+                            ScanProgress(
+                                phase = ScanPhase.JUNK,
+                                processedItems = processedSoFar,
+                                totalItems = totalCount,
+                                currentBytes = totalSize,
+                                currentVolume = "External"
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        // Final progress
+        onProgress(
+            ScanProgress(
+                phase = ScanPhase.JUNK,
+                processedItems = processedSoFar,
+                totalItems = totalCount,
+                currentBytes = totalSize
+            )
+        )
+
+        return MediaResult(
+            count = processedSoFar,
+            size = totalSize
+        )
+    }
+
+    /**
+     * Scan for empty folders in safe public directories
+     */
+    private suspend fun scanEmptyFolders(
+        onProgress: suspend (ScanProgress) -> Unit
+    ): Int {
+        var emptyCount = 0
+        var scannedCount = 0
+
+        // SAFETY: Only scan explicit public folders
+        val safeRoots = listOf(
+            Environment.DIRECTORY_DOWNLOADS,
+            Environment.DIRECTORY_DOCUMENTS,
+            Environment.DIRECTORY_DCIM,
+            Environment.DIRECTORY_PICTURES,
+            Environment.DIRECTORY_MUSIC,
+            Environment.DIRECTORY_MOVIES,
+            Environment.DIRECTORY_PODCASTS
+        )
+        
+        val externalStorage = Environment.getExternalStorageDirectory()
+
+        for (rootName in safeRoots) {
+            val rootDir = java.io.File(externalStorage, rootName)
+            if (rootDir.exists() && rootDir.isDirectory) {
+                // Recursive scan
+                emptyCount += scanDirForEmpty(rootDir)
+                scannedCount++
+                
+                // Note: scanDirForEmpty doesn't return paths, it recursively counts.
+                // We need to modify scanDirForEmpty or add logic here.
+                // Actually scanDirForEmpty should populate the cache directly.
+                 onProgress(
+                    ScanProgress(
+                        phase = ScanPhase.EMPTY_FOLDERS,
+                        processedItems = scannedCount,
+                        totalItems = 100, // Dummy
+                        currentBytes = 0,
+                        currentVolume = rootName
+                    )
+                )
+            }
+        }
+        
+        return emptyCount
+    }
+    
+    private fun scanDirForEmpty(dir: java.io.File): Int {
+        var count = 0
+        val files = dir.listFiles()
+        
+        if (files == null) return 0 // Access denied or IO error
+        
+        var isEmpty = true
+        var hasSubDirs = false
+        
+        for (file in files) {
+            // SAFETY: Skip hidden files/folders (starting with .)
+            if (file.name.startsWith(".")) {
+                // If it contains hidden files, is it "empty"? 
+                // Usually yes for cleanup purposes if ONLY hidden files exist?
+                // But safer to say: if it has hidden files, it's NOT empty to avoid breaking app config.
+                isEmpty = false 
+                continue 
+            }
+            
+            if (file.isDirectory) {
+                hasSubDirs = true
+                // Recursive call
+                val subCount = scanDirForEmpty(file)
+                count += subCount
+                
+                // If subDir is NOT empty (subCount == 0 doesn't mean it wasn't empty, 
+                // it means we found 0 empty folders inside it. Wait.)
+                // Actually, to know if *this* dir is empty, we need to know if subDir is empty *and* we plan to delete it?
+                // Simpler logic: A folder is empty if listFiles() is empty.
+                // If it contains empty subfolders, it is NOT empty itself until those subfolders are deleted.
+                // We are just *counting* empty leaf nodes here.
+                
+                // If we want to count nested empty folders:
+                // We just sum up the counts.
+                // Does this dir become empty? No, unless we delete the child.
+                
+                isEmpty = false // It has a subdirectory, so it's not a leaf empty node.
+            } else {
+                // It has a file
+                isEmpty = false
+            }
+        }
+        
+        if (isEmpty && files.isEmpty()) {
+            // It is a leaf empty folder
+            count++
+            // Add to cache logic
+            emptyFoldersCache.add(dir.absolutePath)
+        } else if (isEmpty && hasSubDirs) {
+            // Logic above had isEmpty = false if hasSubDirs. 
+            // So this block is unreachable with current logic.
+            // Correct logic for "Empty Folder Cleaner":
+            // Usually we find leaf nodes.
+        }
+        
+        return count
+    }
+
+    /**
+     * Scan for APKs and check installation status
+     */
+    private suspend fun scanApks(
+        onProgress: suspend (ScanProgress) -> Unit
+    ): MediaResult {
+        var totalCount = 0
+        var totalSize = 0L
+        var processedSoFar = 0
+
+        val projection = arrayOf(
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.Files.FileColumns.SIZE,
+            MediaStore.Files.FileColumns.DISPLAY_NAME,
+            MediaStore.Files.FileColumns.DATA
+        )
+
+        // Select .apk files
+        val selection = "${MediaStore.Files.FileColumns.DATA} LIKE ?"
+        val selectionArgs = arrayOf("%.apk")
+
+        val cursor = context.contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        cursor?.use {
+            val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
+            val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+            totalCount = cursor.count
+
+            while (cursor.moveToNext()) {
+                waitIfPaused()
+                
+                val size = cursor.getLong(sizeIndex)
+                val path = cursor.getString(dataIndex)
+                
+                // Verify it's an APK logic (Optional: PackageParser)
+                // We just count for now, and ideally we would identify which are "junk" (installed) vs "keep"
+                // For this phase, we are just counting ALL APKs found in public storage.
+                // Refinement: If we want to identify "Safe to Delete", we need more logic.
+                // Let's implement the basic check if possible.
+                
+                var isInstalled = false
+                try {
+                    val packageInfo = context.packageManager.getPackageArchiveInfo(path, 0)
+                    if (packageInfo != null) {
+                        val packageName = packageInfo.packageName
+                        // Check if installed
+                        try {
+                            val installedInfo = context.packageManager.getPackageInfo(packageName, 0)
+                            // If installed, check version
+                            // If installed version >= apk version, it's redundant/safe to delete.
+                            // If installed version < apk version, it's an update (Keep).
+                            
+                            val installedVersion = installedInfo.longVersionCodeCompat()
+                            val apkVersion = packageInfo.longVersionCodeCompat()
+                            
+                            if (installedVersion >= apkVersion) {
+                                isInstalled = true
+                                // Safe to delete (Installed)
+                                safeApkFilesCache.add(path)
+                            }
+                        } catch (e: Exception) {
+                            // Not installed or hidden
+                        }
+                    }
+                } catch (e: Exception) {
+                   // Corrupt APK?
+                }
+
+                if (size > 0) {
+                    // For now, allow user to review ALL APKs, but we highlight installed ones in the UI list later.
+                    // Here we aggregate total APKs size occupying space.
+                    totalSize += size
+                }
+                processedSoFar++
+
+                if (processedSoFar % 50 == 0) {
+                    onProgress(
+                        ScanProgress(
+                            phase = ScanPhase.APKS,
+                            processedItems = processedSoFar,
+                            totalItems = totalCount,
+                            currentBytes = totalSize,
+                            currentVolume = "External"
+                        )
+                    )
+                }
+            }
+        }
+
+        // Final progress
+        onProgress(
+            ScanProgress(
+                phase = ScanPhase.APKS,
+                processedItems = processedSoFar,
+                totalItems = totalCount,
+                currentBytes = totalSize
+            )
+        )
+
+        return MediaResult(
+            count = processedSoFar,
+            size = totalSize
+        )
+    }
+
+    private fun android.content.pm.PackageInfo.longVersionCodeCompat(): Long {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            longVersionCode
+        } else {
+            @Suppress("DEPRECATION")
+            versionCode.toLong()
+        }
+    }
 
     /**
      * Pause scanning
@@ -318,7 +693,11 @@ class MediaStoreScanner(private val context: Context) {
                         
                         // Track for duplicate detection
                         val fileUri = ContentUris.withAppendedId(volumeUri, id).toString()
-                        duplicateDetector.addFile(id, name, size, path, fileUri)
+                        duplicateDetector.addFile(id, name, size, path, fileUri, dateModified)
+
+                        if (mediaType == MediaType.IMAGE && path.isNotEmpty()) {
+                            photoPaths.add(path)
+                        }
                         
                         // Track large files
                         largeFileTracker.addFile(
@@ -328,6 +707,7 @@ class MediaStoreScanner(private val context: Context) {
                             mimeType = mimeType,
                             dateModified = dateModified,
                             uri = fileUri,
+                            path = path,
                             mediaType = mediaType
                         )
                         
@@ -441,7 +821,71 @@ class MediaStoreScanner(private val context: Context) {
         )
     }
 
+    /**
+     * Move files to trash (Android 11+) or delete them (Android 10)
+     * Returns IntentSender for user confirmation or null if immediate success
+     */
+    suspend fun moveToTrash(uris: List<String>): android.content.IntentSender? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val uriList = uris.map { Uri.parse(it) }
+            val editPendingIntent = MediaStore.createTrashRequest(context.contentResolver, uriList, true)
+            return editPendingIntent.intentSender
+        } else {
+            // Android 10 and below: Try to delete directly. 
+            // If strictly Android 10, it might throw RecoverableSecurityException which needs to be handled by caller
+            deletePermanently(uris)
+            return null
+        }
+    }
+
+    /**
+     * Delete files permanently
+     * Returns IntentSender for user confirmation (Android 11+) or null
+     */
+    suspend fun deletePermanently(uris: List<String>): android.content.IntentSender? {
+        val uriList = uris.map { Uri.parse(it) }
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val deletePendingIntent = MediaStore.createDeleteRequest(context.contentResolver, uriList)
+            return deletePendingIntent.intentSender
+        } else {
+            // Pre-Android 11
+            for (uri in uriList) {
+                context.contentResolver.delete(uri, null, null)
+            }
+            return null
+        }
+    }
+
+    /**
+     * Get detailed duplicate files list
+     */
+    fun getDuplicateFiles(): Map<String, List<Map<String, Any>>> {
+        val duplicates = duplicateDetector.getDuplicates()
+        return duplicates.associate { group ->
+            group.signature to group.files.map { file ->
+                mapOf(
+                    "id" to file.id,
+                    "name" to file.name,
+                    "size" to file.size,
+                    "path" to file.path,
+                    "uri" to file.uri,
+                    "dateModified" to file.dateModified
+                )
+            }
+        }
+    }
+
+    fun getSimilarPhotos(): Map<String, List<Map<String, Any>>> {
+        return lastSimilarPhotos.associate { group ->
+            group.signature to group.files.map { file ->
+                file.toMap()
+            }
+        }
+    }
+
     // Data classes
+
     private data class DiskSpaceData(
         val totalSpace: Long,
         val freeSpace: Long,
@@ -452,6 +896,81 @@ class MediaStoreScanner(private val context: Context) {
         val count: Int,
         val size: Long
     )
+    
+    /**
+     * Smart Cleanup Logic
+     */
+    suspend fun cleanJunk(types: List<String>): Map<String, Any> {
+        var deletedCount = 0
+        var deletedBytes = 0L // We don't track bytes per file in cache yet.
+
+        if (types.contains("junk")) {
+            val iter = junkFilesCache.iterator()
+            while (iter.hasNext()) {
+                val path = iter.next()
+                if (deleteSingleFile(path)) {
+                    deletedCount++
+                    iter.remove()
+                }
+            }
+        }
+
+        if (types.contains("empty_folders")) {
+             // Delete in reverse order of depth (longest path first)
+             val sorted = emptyFoldersCache.sortedByDescending { it.length }
+             val remaining = mutableListOf<String>()
+             for (path in sorted) {
+                 if (deleteSingleFile(path)) {
+                     deletedCount++
+                 } else {
+                     remaining.add(path)
+                 }
+             }
+             emptyFoldersCache.clear()
+             emptyFoldersCache.addAll(remaining)
+        }
+
+        if (types.contains("apks")) {
+            val iter = safeApkFilesCache.iterator()
+            while (iter.hasNext()) {
+                val path = iter.next()
+                if (deleteSingleFile(path)) {
+                    deletedCount++
+                    iter.remove()
+                }
+            }
+        }
+        
+        return mapOf("count" to deletedCount, "bytes" to deletedBytes)
+    }
+
+    private fun deleteSingleFile(path: String): Boolean {
+        val file = java.io.File(path)
+        return try {
+            if (file.isDirectory) {
+                file.delete()
+            } else {
+                file.delete()
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun getInstalledAppsCount(): Int {
+        return try {
+            // Policy-safe: Use queryIntentActivities with MAIN/LAUNCHER intent
+            // instead of getInstalledApplications (which requires QUERY_ALL_PACKAGES).
+            // This returns only user-visible, launchable apps.
+            val mainIntent = android.content.Intent(android.content.Intent.ACTION_MAIN, null)
+            mainIntent.addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+            val apps = context.packageManager.queryIntentActivities(mainIntent, 0)
+            apps.size
+        } catch (e: Exception) {
+            Log.e("MediaStoreScanner", "Error counting apps", e)
+            0
+        }
+    }
 }
 
 sealed class ScanUpdate {

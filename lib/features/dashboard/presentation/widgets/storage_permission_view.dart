@@ -37,7 +37,7 @@ class StoragePermissionView extends ConsumerWidget {
             ),
             const Gap(8),
             Text(
-              'We need access to your storage to analyze and clean up files. Your data stays on your device.',
+              'We need access to your storage (including Documents & Downloads) to find and clean junk files.',
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),

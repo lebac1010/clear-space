@@ -22,9 +22,12 @@ _$StorageInfoImpl _$$StorageInfoImplFromJson(Map<String, dynamic> json) =>
       filesCount: (json['filesCount'] as num).toInt(),
       filesSize: (json['filesSize'] as num).toInt(),
       systemSize: (json['systemSize'] as num).toInt(),
+      appsCount: (json['appsCount'] as num).toInt(),
       duplicateCount: (json['duplicateCount'] as num).toInt(),
       duplicateSize: (json['duplicateSize'] as num).toInt(),
       potentialSavings: (json['potentialSavings'] as num).toInt(),
+      similarPhotoCount: (json['similarPhotoCount'] as num).toInt(),
+      similarPhotoSize: (json['similarPhotoSize'] as num).toInt(),
       largeFiles: (json['largeFiles'] as List<dynamic>)
           .map((e) => LargeFileInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -35,6 +38,11 @@ _$StorageInfoImpl _$$StorageInfoImplFromJson(Map<String, dynamic> json) =>
       scanDurationMs: (json['scanDurationMs'] as num).toInt(),
       lastUpdated: (json['lastUpdated'] as num).toInt(),
       isEstimated: json['isEstimated'] as bool,
+      junkCount: (json['junkCount'] as num).toInt(),
+      junkSize: (json['junkSize'] as num).toInt(),
+      emptyFolderCount: (json['emptyFolderCount'] as num).toInt(),
+      apkCount: (json['apkCount'] as num).toInt(),
+      apkSize: (json['apkSize'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$StorageInfoImplToJson(_$StorageInfoImpl instance) =>
@@ -53,13 +61,21 @@ Map<String, dynamic> _$$StorageInfoImplToJson(_$StorageInfoImpl instance) =>
       'filesCount': instance.filesCount,
       'filesSize': instance.filesSize,
       'systemSize': instance.systemSize,
+      'appsCount': instance.appsCount,
       'duplicateCount': instance.duplicateCount,
       'duplicateSize': instance.duplicateSize,
       'potentialSavings': instance.potentialSavings,
+      'similarPhotoCount': instance.similarPhotoCount,
+      'similarPhotoSize': instance.similarPhotoSize,
       'largeFiles': instance.largeFiles,
       'storageVolumes': instance.storageVolumes,
       'cloudOnlyCount': instance.cloudOnlyCount,
       'scanDurationMs': instance.scanDurationMs,
       'lastUpdated': instance.lastUpdated,
       'isEstimated': instance.isEstimated,
+      'junkCount': instance.junkCount,
+      'junkSize': instance.junkSize,
+      'emptyFolderCount': instance.emptyFolderCount,
+      'apkCount': instance.apkCount,
+      'apkSize': instance.apkSize,
     };

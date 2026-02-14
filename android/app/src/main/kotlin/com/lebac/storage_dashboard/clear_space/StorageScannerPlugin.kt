@@ -11,15 +11,29 @@ import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
+import android.app.Activity
+import android.content.IntentSender
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.PluginRegistry
+
+class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
 
     private lateinit var methodChannel: MethodChannel
     private lateinit var eventChannel: EventChannel
     private lateinit var context: Context
     
+    private var activity: Activity? = null
+    private var activityBinding: ActivityPluginBinding? = null
+    
     private val progressHandler = ProgressStreamHandler()
     private var scannerService: StorageScannerService? = null
     private var isBound = false
+    
+    // Request Code for scoped storage deletion
+    private val DELETE_REQUEST_CODE = 42
+
+    private var pendingResult: MethodChannel.Result? = null
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -62,6 +76,40 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
         scannerService = null
     }
 
+    // ActivityAware Implementation
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        activity = binding.activity
+        activityBinding = binding
+        binding.addActivityResultListener(this)
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        activityBinding?.removeActivityResultListener(this)
+        activity = null
+        activityBinding = null
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        onAttachedToActivity(binding)
+    }
+
+    override fun onDetachedFromActivity() {
+        onDetachedFromActivityForConfigChanges()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if (requestCode == DELETE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                pendingResult?.success(true)
+            } else {
+                pendingResult?.success(false)
+            }
+            pendingResult = null
+            return true
+        }
+        return false
+    }
+
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "startScan" -> {
@@ -69,7 +117,6 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
                     result.error("NOT_BOUND", "Service not bound yet", null)
                     return
                 }
-                // Start service to ensure lifecycle promotion
                 val intent = Intent(context, StorageScannerService::class.java)
                 context.startService(intent)
                 
@@ -87,7 +134,140 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
                 scannerService?.cancelScan()
                 result.success(null)
             }
+            "deleteFiles" -> {
+                // Delete files (handles both trash and permanent delete based on arg)
+                val uris = call.argument<List<String>>("uris") ?: emptyList()
+                val permanent = call.argument<Boolean>("permanent") ?: false
+                
+                if (uris.isEmpty()) {
+                    result.success(true)
+                    return
+                }
+                
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+
+                if (activity == null) {
+                    result.error("NO_ACTIVITY", "Cannot delete files without foreground activity", null)
+                    return
+                }
+
+                // Launch coroutine scope from service or plugin? 
+                // We need to call suspend function. Let's delegate to service to get the IntentSender.
+                // But we need to update Service to expose this.
+                // Quick fix: CoroutineScope in Plugin or Service? Service has scope.
+                
+                // We need a way to call suspend function from callback.
+                // Ideally, Service exposes `deleteFiles` which returns CompletableFuture or Callback.
+                // Let's modify Service to support this.
+                
+                scannerService?.requestDelete(uris, permanent) { intentSender ->
+                    if (intentSender != null) {
+                        try {
+                            pendingResult = result
+                            activity?.startIntentSenderForResult(
+                                intentSender, 
+                                DELETE_REQUEST_CODE, 
+                                null, 0, 0, 0
+                            )
+                        } catch (e: IntentSender.SendIntentException) {
+                            result.error("SEND_INTENT_ERROR", e.message, null)
+                            pendingResult = null
+                        }
+                    } else {
+                        // Success immediately (Android 10 or auto-granted)
+                        result.success(true)
+                    }
+                }
+            }
+
+            "getDuplicateFiles" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                
+                // This is synchronous but might be heavy. 
+                // However, scanner.getDuplicateFiles() just returns memory state from last scan.
+                // So it should be fast.
+                val duplicates = scannerService?.getDuplicateFiles() ?: emptyMap()
+                result.success(duplicates)
+            }
+            "getSimilarPhotos" -> {
+                 if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val similar = scannerService?.getSimilarPhotos() ?: emptyMap()
+                result.success(similar)
+            }
+            "cleanJunk" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val types = call.argument<List<String>>("types") ?: emptyList()
+                scannerService?.cleanJunk(types) { stats ->
+                    result.success(stats)
+                }
+            }
+            "cleanJunkBackground" -> {
+                val types = call.argument<List<String>>("types") ?: emptyList()
+                val workManager = androidx.work.WorkManager.getInstance(context)
+                
+                val inputData = androidx.work.workDataOf("types" to types.toTypedArray())
+                
+                val request = androidx.work.OneTimeWorkRequest.Builder(com.lebac.storage_dashboard.clear_space.workers.CleanupWorker::class.java)
+                    .setInputData(inputData)
+                    .setExpedited(androidx.work.OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                    .addTag("cleanup_job")
+                    .build()
+
+                workManager.enqueueUniqueWork(
+                    "cleanup_job",
+                    androidx.work.ExistingWorkPolicy.KEEP,
+                    request
+                )
+                
+                result.success(true)
+            }
+            "getCleanupInfo" -> {
+                val workManager = androidx.work.WorkManager.getInstance(context)
+                val statusFuture = workManager.getWorkInfosForUniqueWork("cleanup_job")
+                // This is a ListenableFuture. We need to wait for it or add listener.
+                // Since we are in onMethodCall (Main Thread), we should use a listener or blocking if fast.
+                // But get() is blocking. Ideally run in bg.
+                // Quick hack: run in thread.
+                
+                statusFuture.addListener({
+                    try {
+                        val workInfoList = statusFuture.get()
+                        if (workInfoList.isNotEmpty()) {
+                            val info = workInfoList[0]
+                            val state = info.state.name // ENQUEUED, RUNNING, SUCCEEDED, FAILED, BLOCKED, CANCELLED
+                            // Output Data
+                            val output = info.outputData
+                            val count = output.getInt("count", -1)
+                            val bytes = output.getLong("bytes", -1)
+                            
+                            val map = mapOf(
+                                "state" to state,
+                                "count" to count,
+                                "bytes" to bytes
+                            )
+                            result.success(map)
+                        } else {
+                            result.success(null)
+                        }
+                    } catch (e: Exception) {
+                         result.error("WORK_INFO_ERROR", e.message, null)
+                    }
+                }, androidx.core.content.ContextCompat.getMainExecutor(context))
+            }
             else -> result.notImplemented()
         }
     }
 }
+

@@ -4,17 +4,28 @@ part 'scan_progress.freezed.dart';
 part 'scan_progress.g.dart';
 
 enum ScanPhase {
-  DISK_SPACE,
-  PHOTOS,
-  VIDEOS,
-  AUDIO,
-  DOCUMENTS,
-  CALCULATING,
-  COMPLETE,
-  PAUSED,
-  CANCELLED,
-  ERROR,
-  CACHE_INVALIDATED,
+  @JsonValue('DISK_SPACE')
+  diskSpace,
+  @JsonValue('PHOTOS')
+  photos,
+  @JsonValue('VIDEOS')
+  videos,
+  @JsonValue('AUDIO')
+  audio,
+  @JsonValue('DOCUMENTS')
+  documents,
+  @JsonValue('CALCULATING')
+  calculating,
+  @JsonValue('COMPLETE')
+  complete,
+  @JsonValue('PAUSED')
+  paused,
+  @JsonValue('CANCELLED')
+  cancelled,
+  @JsonValue('ERROR')
+  error,
+  @JsonValue('CACHE_INVALIDATED')
+  cacheInvalidated,
 }
 
 @freezed

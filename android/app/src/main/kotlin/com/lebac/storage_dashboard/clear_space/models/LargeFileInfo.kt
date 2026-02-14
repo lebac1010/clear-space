@@ -7,6 +7,7 @@ data class LargeFileInfo(
     val mimeType: String,
     val dateModified: Long,
     val uri: String,
+    val path: String,
     val mediaType: MediaType
 ) {
     fun toMap(): Map<String, Any> = mapOf(
@@ -16,6 +17,7 @@ data class LargeFileInfo(
         "mimeType" to mimeType,
         "dateModified" to dateModified,
         "uri" to uri,
+        "path" to path,
         "mediaType" to mediaType.name
     )
 }

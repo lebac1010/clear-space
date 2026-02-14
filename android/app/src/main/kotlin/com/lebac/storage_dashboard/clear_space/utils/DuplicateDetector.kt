@@ -15,7 +15,7 @@ class DuplicateDetector {
     /**
      * Add a file to the detector
      */
-    fun addFile(id: Long, name: String, size: Long, path: String, uri: String) {
+    fun addFile(id: Long, name: String, size: Long, path: String, uri: String, dateModified: Long) {
         val signature = createSignature(name, size)
         
         val item = DuplicateItem(
@@ -23,7 +23,8 @@ class DuplicateDetector {
             name = name,
             size = size,
             path = path,
-            uri = uri
+            uri = uri,
+            dateModified = dateModified
         )
         
         filesBySignature.getOrPut(signature) { mutableListOf() }.add(item)

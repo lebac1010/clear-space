@@ -21,7 +21,40 @@ final sharedPreferencesProvider = FutureProvider<SharedPreferences>.internal(
 );
 
 typedef SharedPreferencesRef = FutureProviderRef<SharedPreferences>;
-String _$storageRepositoryHash() => r'95b8b0f895e8b0a04748b473e2e886074485ccf3';
+String _$nativeStorageScannerHash() =>
+    r'e9e47bebb45aa5cc734bc952e7294a54717b8043';
+
+/// See also [nativeStorageScanner].
+@ProviderFor(nativeStorageScanner)
+final nativeStorageScannerProvider = Provider<NativeStorageScanner>.internal(
+  nativeStorageScanner,
+  name: r'nativeStorageScannerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$nativeStorageScannerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef NativeStorageScannerRef = ProviderRef<NativeStorageScanner>;
+String _$storageCacheServiceHash() =>
+    r'6215c8b9b2c2780d52fece3e06862f0442d9500f';
+
+/// See also [storageCacheService].
+@ProviderFor(storageCacheService)
+final storageCacheServiceProvider =
+    FutureProvider<StorageCacheService>.internal(
+  storageCacheService,
+  name: r'storageCacheServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$storageCacheServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef StorageCacheServiceRef = FutureProviderRef<StorageCacheService>;
+String _$storageRepositoryHash() => r'79284e9332135ad24852ecde9f33e6d476c0b180';
 
 /// See also [storageRepository].
 @ProviderFor(storageRepository)

@@ -21,6 +21,9 @@ class NativeStorageScanner {
       // Deep convert entire event to handle nested structures
       final data = convertToJsonMap(event);
       final String type = data['type'] as String;
+      // DEBUG LOG
+      // print('NativeStorageScanner: Scanning...');
+      // print('NativeStorageScanner: Received event type: $type');
 
       if (type == 'progress') {
         // Deep convert nested 'data' field
@@ -28,7 +31,7 @@ class NativeStorageScanner {
         return ScanProgress.fromJson(progressData);
       } else if (type == 'complete') {
         return const ScanProgress(
-          phase: ScanPhase.COMPLETE,
+          phase: ScanPhase.complete,
           processedItems: 100,
           totalItems: 100,
           currentBytes: 0,
@@ -37,7 +40,7 @@ class NativeStorageScanner {
         throw Exception(data['message']);
       } else if (type == 'cache_invalidated') {
         return const ScanProgress(
-          phase: ScanPhase.CACHE_INVALIDATED,
+          phase: ScanPhase.cacheInvalidated,
           processedItems: 0,
           totalItems: 0,
           currentBytes: 0,
@@ -46,7 +49,7 @@ class NativeStorageScanner {
 
       // Default fallback
       return const ScanProgress(
-        phase: ScanPhase.CALCULATING,
+        phase: ScanPhase.calculating,
         processedItems: 0,
         totalItems: 1,
         currentBytes: 0,
@@ -73,8 +76,70 @@ class NativeStorageScanner {
     await _methodChannel.invokeMethod('resumeScan');
   }
 
-  /// Cancel scan
-  Future<void> cancelScan() async {
-    await _methodChannel.invokeMethod('cancelScan');
+  /// Delete files
+  /// [uris] List of file path URIs (content://...)
+  /// [permanent] If true, deletes permanently. If false (default), moves to Trash (Android 11+)
+  Future<bool> deleteFiles(List<String> uris, {bool permanent = false}) async {
+    try {
+      final success =
+          await _methodChannel.invokeMethod<bool>('deleteFiles', {
+            'uris': uris,
+            'permanent': permanent,
+          }) ??
+          false;
+      return success;
+    } on PlatformException catch (_) {
+      // Handle cancellation or error
+      // 'SEND_INTENT_ERROR' might happen if activity is gone
+      return false;
+    }
+  }
+
+  /// Get detailed duplicate files list
+  /// Returns Map<String (hash), List<Map<String, dynamic>>>
+  /// Where value is list of file items
+  Future<Map<String, List<Map<String, dynamic>>>> getDuplicateFiles() async {
+    final result = await _methodChannel.invokeMethod('getDuplicateFiles');
+    // Deep convert
+    final jsonMap = convertToJsonMap(result);
+    // Cast to expected type
+    return jsonMap.map((key, value) {
+      final list = (value as List).cast<Map<String, dynamic>>();
+      return MapEntry(key, list);
+    });
+  }
+
+  /// Get detailed similar photos list
+  Future<Map<String, List<Map<String, dynamic>>>> getSimilarPhotos() async {
+    final result = await _methodChannel.invokeMethod('getSimilarPhotos');
+    final jsonMap = convertToJsonMap(result);
+    return jsonMap.map((key, value) {
+      final list = (value as List).cast<Map<String, dynamic>>();
+      return MapEntry(key, list);
+    });
+  }
+
+  /// Smart Clean Junk
+  /// Returns Map of statistics {'count': int, 'bytes': int}
+  Future<Map<String, dynamic>> cleanJunk(List<String> types) async {
+    final result = await _methodChannel.invokeMethod('cleanJunk', {
+      'types': types,
+    });
+    return convertToJsonMap(result);
+  }
+
+  /// Start background cleanup (WorkManager)
+  Future<bool> cleanJunkBackground(List<String> types) async {
+    final result = await _methodChannel.invokeMethod<bool>(
+      'cleanJunkBackground',
+      {'types': types},
+    );
+    return result ?? false;
+  }
+
+  /// Get info about the background cleanup job
+  Future<Map<String, dynamic>?> getCleanupInfo() async {
+    final result = await _methodChannel.invokeMethod('getCleanupInfo');
+    return convertToJsonMap(result);
   }
 }

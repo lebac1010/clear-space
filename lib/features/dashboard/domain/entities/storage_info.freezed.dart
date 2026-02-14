@@ -34,9 +34,12 @@ mixin _$StorageInfo {
   int get filesCount => throw _privateConstructorUsedError;
   int get filesSize => throw _privateConstructorUsedError;
   int get systemSize => throw _privateConstructorUsedError;
+  int get appsCount => throw _privateConstructorUsedError; // NEW
   int get duplicateCount => throw _privateConstructorUsedError; // NEW
   int get duplicateSize => throw _privateConstructorUsedError; // NEW
   int get potentialSavings => throw _privateConstructorUsedError; // NEW
+  int get similarPhotoCount => throw _privateConstructorUsedError; // NEW
+  int get similarPhotoSize => throw _privateConstructorUsedError; // NEW
   List<LargeFileInfo> get largeFiles =>
       throw _privateConstructorUsedError; // NEW
   List<StorageVolumeInfo> get storageVolumes =>
@@ -44,7 +47,12 @@ mixin _$StorageInfo {
   int get cloudOnlyCount => throw _privateConstructorUsedError; // NEW
   int get scanDurationMs => throw _privateConstructorUsedError; // NEW
   int get lastUpdated => throw _privateConstructorUsedError; // NEW: Timestamp
-  bool get isEstimated => throw _privateConstructorUsedError;
+  bool get isEstimated => throw _privateConstructorUsedError; // NEW
+  int get junkCount => throw _privateConstructorUsedError; // NEW
+  int get junkSize => throw _privateConstructorUsedError; // NEW
+  int get emptyFolderCount => throw _privateConstructorUsedError; // NEW
+  int get apkCount => throw _privateConstructorUsedError; // NEW
+  int get apkSize => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -73,15 +81,23 @@ abstract class $StorageInfoCopyWith<$Res> {
       int filesCount,
       int filesSize,
       int systemSize,
+      int appsCount,
       int duplicateCount,
       int duplicateSize,
       int potentialSavings,
+      int similarPhotoCount,
+      int similarPhotoSize,
       List<LargeFileInfo> largeFiles,
       List<StorageVolumeInfo> storageVolumes,
       int cloudOnlyCount,
       int scanDurationMs,
       int lastUpdated,
-      bool isEstimated});
+      bool isEstimated,
+      int junkCount,
+      int junkSize,
+      int emptyFolderCount,
+      int apkCount,
+      int apkSize});
 }
 
 /// @nodoc
@@ -111,15 +127,23 @@ class _$StorageInfoCopyWithImpl<$Res, $Val extends StorageInfo>
     Object? filesCount = null,
     Object? filesSize = null,
     Object? systemSize = null,
+    Object? appsCount = null,
     Object? duplicateCount = null,
     Object? duplicateSize = null,
     Object? potentialSavings = null,
+    Object? similarPhotoCount = null,
+    Object? similarPhotoSize = null,
     Object? largeFiles = null,
     Object? storageVolumes = null,
     Object? cloudOnlyCount = null,
     Object? scanDurationMs = null,
     Object? lastUpdated = null,
     Object? isEstimated = null,
+    Object? junkCount = null,
+    Object? junkSize = null,
+    Object? emptyFolderCount = null,
+    Object? apkCount = null,
+    Object? apkSize = null,
   }) {
     return _then(_value.copyWith(
       totalSpace: null == totalSpace
@@ -178,6 +202,10 @@ class _$StorageInfoCopyWithImpl<$Res, $Val extends StorageInfo>
           ? _value.systemSize
           : systemSize // ignore: cast_nullable_to_non_nullable
               as int,
+      appsCount: null == appsCount
+          ? _value.appsCount
+          : appsCount // ignore: cast_nullable_to_non_nullable
+              as int,
       duplicateCount: null == duplicateCount
           ? _value.duplicateCount
           : duplicateCount // ignore: cast_nullable_to_non_nullable
@@ -189,6 +217,14 @@ class _$StorageInfoCopyWithImpl<$Res, $Val extends StorageInfo>
       potentialSavings: null == potentialSavings
           ? _value.potentialSavings
           : potentialSavings // ignore: cast_nullable_to_non_nullable
+              as int,
+      similarPhotoCount: null == similarPhotoCount
+          ? _value.similarPhotoCount
+          : similarPhotoCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      similarPhotoSize: null == similarPhotoSize
+          ? _value.similarPhotoSize
+          : similarPhotoSize // ignore: cast_nullable_to_non_nullable
               as int,
       largeFiles: null == largeFiles
           ? _value.largeFiles
@@ -214,6 +250,26 @@ class _$StorageInfoCopyWithImpl<$Res, $Val extends StorageInfo>
           ? _value.isEstimated
           : isEstimated // ignore: cast_nullable_to_non_nullable
               as bool,
+      junkCount: null == junkCount
+          ? _value.junkCount
+          : junkCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      junkSize: null == junkSize
+          ? _value.junkSize
+          : junkSize // ignore: cast_nullable_to_non_nullable
+              as int,
+      emptyFolderCount: null == emptyFolderCount
+          ? _value.emptyFolderCount
+          : emptyFolderCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      apkCount: null == apkCount
+          ? _value.apkCount
+          : apkCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      apkSize: null == apkSize
+          ? _value.apkSize
+          : apkSize // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -241,15 +297,23 @@ abstract class _$$StorageInfoImplCopyWith<$Res>
       int filesCount,
       int filesSize,
       int systemSize,
+      int appsCount,
       int duplicateCount,
       int duplicateSize,
       int potentialSavings,
+      int similarPhotoCount,
+      int similarPhotoSize,
       List<LargeFileInfo> largeFiles,
       List<StorageVolumeInfo> storageVolumes,
       int cloudOnlyCount,
       int scanDurationMs,
       int lastUpdated,
-      bool isEstimated});
+      bool isEstimated,
+      int junkCount,
+      int junkSize,
+      int emptyFolderCount,
+      int apkCount,
+      int apkSize});
 }
 
 /// @nodoc
@@ -277,15 +341,23 @@ class __$$StorageInfoImplCopyWithImpl<$Res>
     Object? filesCount = null,
     Object? filesSize = null,
     Object? systemSize = null,
+    Object? appsCount = null,
     Object? duplicateCount = null,
     Object? duplicateSize = null,
     Object? potentialSavings = null,
+    Object? similarPhotoCount = null,
+    Object? similarPhotoSize = null,
     Object? largeFiles = null,
     Object? storageVolumes = null,
     Object? cloudOnlyCount = null,
     Object? scanDurationMs = null,
     Object? lastUpdated = null,
     Object? isEstimated = null,
+    Object? junkCount = null,
+    Object? junkSize = null,
+    Object? emptyFolderCount = null,
+    Object? apkCount = null,
+    Object? apkSize = null,
   }) {
     return _then(_$StorageInfoImpl(
       totalSpace: null == totalSpace
@@ -344,6 +416,10 @@ class __$$StorageInfoImplCopyWithImpl<$Res>
           ? _value.systemSize
           : systemSize // ignore: cast_nullable_to_non_nullable
               as int,
+      appsCount: null == appsCount
+          ? _value.appsCount
+          : appsCount // ignore: cast_nullable_to_non_nullable
+              as int,
       duplicateCount: null == duplicateCount
           ? _value.duplicateCount
           : duplicateCount // ignore: cast_nullable_to_non_nullable
@@ -355,6 +431,14 @@ class __$$StorageInfoImplCopyWithImpl<$Res>
       potentialSavings: null == potentialSavings
           ? _value.potentialSavings
           : potentialSavings // ignore: cast_nullable_to_non_nullable
+              as int,
+      similarPhotoCount: null == similarPhotoCount
+          ? _value.similarPhotoCount
+          : similarPhotoCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      similarPhotoSize: null == similarPhotoSize
+          ? _value.similarPhotoSize
+          : similarPhotoSize // ignore: cast_nullable_to_non_nullable
               as int,
       largeFiles: null == largeFiles
           ? _value._largeFiles
@@ -380,6 +464,26 @@ class __$$StorageInfoImplCopyWithImpl<$Res>
           ? _value.isEstimated
           : isEstimated // ignore: cast_nullable_to_non_nullable
               as bool,
+      junkCount: null == junkCount
+          ? _value.junkCount
+          : junkCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      junkSize: null == junkSize
+          ? _value.junkSize
+          : junkSize // ignore: cast_nullable_to_non_nullable
+              as int,
+      emptyFolderCount: null == emptyFolderCount
+          ? _value.emptyFolderCount
+          : emptyFolderCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      apkCount: null == apkCount
+          ? _value.apkCount
+          : apkCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      apkSize: null == apkSize
+          ? _value.apkSize
+          : apkSize // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -402,15 +506,23 @@ class _$StorageInfoImpl extends _StorageInfo {
       required this.filesCount,
       required this.filesSize,
       required this.systemSize,
+      required this.appsCount,
       required this.duplicateCount,
       required this.duplicateSize,
       required this.potentialSavings,
+      required this.similarPhotoCount,
+      required this.similarPhotoSize,
       required final List<LargeFileInfo> largeFiles,
       required final List<StorageVolumeInfo> storageVolumes,
       required this.cloudOnlyCount,
       required this.scanDurationMs,
       required this.lastUpdated,
-      required this.isEstimated})
+      required this.isEstimated,
+      required this.junkCount,
+      required this.junkSize,
+      required this.emptyFolderCount,
+      required this.apkCount,
+      required this.apkSize})
       : _largeFiles = largeFiles,
         _storageVolumes = storageVolumes,
         super._();
@@ -451,6 +563,9 @@ class _$StorageInfoImpl extends _StorageInfo {
   @override
   final int systemSize;
   @override
+  final int appsCount;
+// NEW
+  @override
   final int duplicateCount;
 // NEW
   @override
@@ -458,6 +573,12 @@ class _$StorageInfoImpl extends _StorageInfo {
 // NEW
   @override
   final int potentialSavings;
+// NEW
+  @override
+  final int similarPhotoCount;
+// NEW
+  @override
+  final int similarPhotoSize;
 // NEW
   final List<LargeFileInfo> _largeFiles;
 // NEW
@@ -490,10 +611,25 @@ class _$StorageInfoImpl extends _StorageInfo {
 // NEW: Timestamp
   @override
   final bool isEstimated;
+// NEW
+  @override
+  final int junkCount;
+// NEW
+  @override
+  final int junkSize;
+// NEW
+  @override
+  final int emptyFolderCount;
+// NEW
+  @override
+  final int apkCount;
+// NEW
+  @override
+  final int apkSize;
 
   @override
   String toString() {
-    return 'StorageInfo(totalSpace: $totalSpace, freeSpace: $freeSpace, usedSpace: $usedSpace, photosCount: $photosCount, photosSize: $photosSize, videosCount: $videosCount, videosSize: $videosSize, audioCount: $audioCount, audioSize: $audioSize, documentsCount: $documentsCount, documentsSize: $documentsSize, filesCount: $filesCount, filesSize: $filesSize, systemSize: $systemSize, duplicateCount: $duplicateCount, duplicateSize: $duplicateSize, potentialSavings: $potentialSavings, largeFiles: $largeFiles, storageVolumes: $storageVolumes, cloudOnlyCount: $cloudOnlyCount, scanDurationMs: $scanDurationMs, lastUpdated: $lastUpdated, isEstimated: $isEstimated)';
+    return 'StorageInfo(totalSpace: $totalSpace, freeSpace: $freeSpace, usedSpace: $usedSpace, photosCount: $photosCount, photosSize: $photosSize, videosCount: $videosCount, videosSize: $videosSize, audioCount: $audioCount, audioSize: $audioSize, documentsCount: $documentsCount, documentsSize: $documentsSize, filesCount: $filesCount, filesSize: $filesSize, systemSize: $systemSize, appsCount: $appsCount, duplicateCount: $duplicateCount, duplicateSize: $duplicateSize, potentialSavings: $potentialSavings, similarPhotoCount: $similarPhotoCount, similarPhotoSize: $similarPhotoSize, largeFiles: $largeFiles, storageVolumes: $storageVolumes, cloudOnlyCount: $cloudOnlyCount, scanDurationMs: $scanDurationMs, lastUpdated: $lastUpdated, isEstimated: $isEstimated, junkCount: $junkCount, junkSize: $junkSize, emptyFolderCount: $emptyFolderCount, apkCount: $apkCount, apkSize: $apkSize)';
   }
 
   @override
@@ -529,12 +665,18 @@ class _$StorageInfoImpl extends _StorageInfo {
                 other.filesSize == filesSize) &&
             (identical(other.systemSize, systemSize) ||
                 other.systemSize == systemSize) &&
+            (identical(other.appsCount, appsCount) ||
+                other.appsCount == appsCount) &&
             (identical(other.duplicateCount, duplicateCount) ||
                 other.duplicateCount == duplicateCount) &&
             (identical(other.duplicateSize, duplicateSize) ||
                 other.duplicateSize == duplicateSize) &&
             (identical(other.potentialSavings, potentialSavings) ||
                 other.potentialSavings == potentialSavings) &&
+            (identical(other.similarPhotoCount, similarPhotoCount) ||
+                other.similarPhotoCount == similarPhotoCount) &&
+            (identical(other.similarPhotoSize, similarPhotoSize) ||
+                other.similarPhotoSize == similarPhotoSize) &&
             const DeepCollectionEquality()
                 .equals(other._largeFiles, _largeFiles) &&
             const DeepCollectionEquality()
@@ -546,7 +688,16 @@ class _$StorageInfoImpl extends _StorageInfo {
             (identical(other.lastUpdated, lastUpdated) ||
                 other.lastUpdated == lastUpdated) &&
             (identical(other.isEstimated, isEstimated) ||
-                other.isEstimated == isEstimated));
+                other.isEstimated == isEstimated) &&
+            (identical(other.junkCount, junkCount) ||
+                other.junkCount == junkCount) &&
+            (identical(other.junkSize, junkSize) ||
+                other.junkSize == junkSize) &&
+            (identical(other.emptyFolderCount, emptyFolderCount) ||
+                other.emptyFolderCount == emptyFolderCount) &&
+            (identical(other.apkCount, apkCount) ||
+                other.apkCount == apkCount) &&
+            (identical(other.apkSize, apkSize) || other.apkSize == apkSize));
   }
 
   @JsonKey(ignore: true)
@@ -567,15 +718,23 @@ class _$StorageInfoImpl extends _StorageInfo {
         filesCount,
         filesSize,
         systemSize,
+        appsCount,
         duplicateCount,
         duplicateSize,
         potentialSavings,
+        similarPhotoCount,
+        similarPhotoSize,
         const DeepCollectionEquality().hash(_largeFiles),
         const DeepCollectionEquality().hash(_storageVolumes),
         cloudOnlyCount,
         scanDurationMs,
         lastUpdated,
-        isEstimated
+        isEstimated,
+        junkCount,
+        junkSize,
+        emptyFolderCount,
+        apkCount,
+        apkSize
       ]);
 
   @JsonKey(ignore: true)
@@ -608,15 +767,23 @@ abstract class _StorageInfo extends StorageInfo {
       required final int filesCount,
       required final int filesSize,
       required final int systemSize,
+      required final int appsCount,
       required final int duplicateCount,
       required final int duplicateSize,
       required final int potentialSavings,
+      required final int similarPhotoCount,
+      required final int similarPhotoSize,
       required final List<LargeFileInfo> largeFiles,
       required final List<StorageVolumeInfo> storageVolumes,
       required final int cloudOnlyCount,
       required final int scanDurationMs,
       required final int lastUpdated,
-      required final bool isEstimated}) = _$StorageInfoImpl;
+      required final bool isEstimated,
+      required final int junkCount,
+      required final int junkSize,
+      required final int emptyFolderCount,
+      required final int apkCount,
+      required final int apkSize}) = _$StorageInfoImpl;
   const _StorageInfo._() : super._();
 
   factory _StorageInfo.fromJson(Map<String, dynamic> json) =
@@ -651,11 +818,17 @@ abstract class _StorageInfo extends StorageInfo {
   @override
   int get systemSize;
   @override
+  int get appsCount;
+  @override // NEW
   int get duplicateCount;
   @override // NEW
   int get duplicateSize;
   @override // NEW
   int get potentialSavings;
+  @override // NEW
+  int get similarPhotoCount;
+  @override // NEW
+  int get similarPhotoSize;
   @override // NEW
   List<LargeFileInfo> get largeFiles;
   @override // NEW
@@ -668,6 +841,16 @@ abstract class _StorageInfo extends StorageInfo {
   int get lastUpdated;
   @override // NEW: Timestamp
   bool get isEstimated;
+  @override // NEW
+  int get junkCount;
+  @override // NEW
+  int get junkSize;
+  @override // NEW
+  int get emptyFolderCount;
+  @override // NEW
+  int get apkCount;
+  @override // NEW
+  int get apkSize;
   @override
   @JsonKey(ignore: true)
   _$$StorageInfoImplCopyWith<_$StorageInfoImpl> get copyWith =>

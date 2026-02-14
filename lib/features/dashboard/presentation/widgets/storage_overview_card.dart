@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../domain/entities/storage_info.dart';
 
@@ -23,24 +24,15 @@ class StorageOverviewCard extends ConsumerWidget {
     if (scanAsync.hasValue) {
       currentProgress = scanAsync.value;
       // If complete, ignore progress and rely on info (which should update shortly)
-      if (currentProgress?.phase == ScanPhase.COMPLETE) {
+      if (currentProgress?.phase == ScanPhase.complete) {
         currentProgress = null;
       }
     }
 
-    // Format bytes to GB (with 1 decimal place)
-    String formatGb(int bytes) =>
-        (bytes / (1024 * 1024 * 1024)).toStringAsFixed(1);
-
-    // Format bytes to GB as integer (for quick stats)
-    String formatGbInt(int bytes) {
-      final gb = bytes / (1024 * 1024 * 1024);
-      return gb < 0.1 ? '0' : gb.toStringAsFixed(0);
-    }
-
-    final usedGb = formatGb(info.usedSpace);
-    final totalGb = formatGb(info.totalSpace);
-    final freeGb = formatGb(info.freeSpace);
+    // Use FileUtils for smart formatting (B, KB, MB, GB)
+    final usedSize = FileUtils.formatSize(info.usedSpace);
+    final totalSize = FileUtils.formatSize(info.totalSpace);
+    final freeSize = FileUtils.formatSize(info.freeSpace);
 
     final percentage = (info.usedPercentage * 100).toInt();
 
@@ -55,7 +47,8 @@ class StorageOverviewCard extends ConsumerWidget {
       // Safe division - clamp to valid percentage range
       final p = total > 0 ? (processed / total).clamp(0.0, 1.0) : 0.0;
 
-      if (currentProgress.phase != ScanPhase.CALCULATING) {
+      // Show scanning indicator if not merely calculating
+      if (currentProgress.phase != ScanPhase.calculating) {
         final volumeName = currentProgress.currentVolume ?? 'storage';
         statusText = 'Scanning $volumeName... (${(p * 100).toInt()}%)';
       } else {
@@ -90,7 +83,7 @@ class StorageOverviewCard extends ConsumerWidget {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        '$freeGb GB',
+                        freeSize,
                         style: Theme.of(context).textTheme.displaySmall
                             ?.copyWith(
                               color: AppColors.primary,
@@ -112,7 +105,7 @@ class StorageOverviewCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '$totalGb GB Total',
+                    '$totalSize Total',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -120,7 +113,7 @@ class StorageOverviewCard extends ConsumerWidget {
                   ),
                   const Gap(2),
                   Text(
-                    '$usedGb GB Used',
+                    '$usedSize Used',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
@@ -169,7 +162,7 @@ class StorageOverviewCard extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('0 GB', style: Theme.of(context).textTheme.labelSmall),
+              Text('0 B', style: Theme.of(context).textTheme.labelSmall),
               Text(
                 currentProgress != null ? statusText : '$percentage% Used',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -177,10 +170,7 @@ class StorageOverviewCard extends ConsumerWidget {
                   fontWeight: currentProgress != null ? FontWeight.bold : null,
                 ),
               ),
-              Text(
-                '$totalGb GB',
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
+              Text(totalSize, style: Theme.of(context).textTheme.labelSmall),
             ],
           ),
 
@@ -192,17 +182,17 @@ class StorageOverviewCard extends ConsumerWidget {
           Row(
             children: [
               _QuickStat(
-                value: '${formatGbInt(info.photosSize)} GB',
+                value: FileUtils.formatSize(info.photosSize),
                 label: 'PHOTOS',
                 isFirst: true,
               ),
               _QuickStat(
-                value: '${formatGbInt(info.videosSize)} GB',
+                value: FileUtils.formatSize(info.videosSize),
                 label: 'VIDEOS',
                 hasBorder: true,
               ),
               _QuickStat(
-                value: '${formatGbInt(info.systemSize)} GB',
+                value: FileUtils.formatSize(info.systemSize),
                 label: 'OTHER',
                 isLast: true,
               ),
