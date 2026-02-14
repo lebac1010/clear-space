@@ -64,12 +64,18 @@ class SafeCleanupController extends _$SafeCleanupController {
   }
 
   Future<void> checkForBackgroundJob() async {
-    final repo = await ref.read(storageRepositoryProvider.future);
-    final info = await repo.getCleanupInfo();
-    if (info != null &&
-        (info['state'] == 'RUNNING' || info['state'] == 'ENQUEUED')) {
-      state = const AsyncLoading();
-      _pollCleanupStatus();
+    if (_isPolling) return;
+    try {
+      final repo = await ref.read(storageRepositoryProvider.future);
+      final info = await repo.getCleanupInfo();
+      if (info != null &&
+          (info['state'] == 'RUNNING' || info['state'] == 'ENQUEUED')) {
+        state = const AsyncLoading();
+        _pollCleanupStatus();
+      }
+    } catch (e) {
+      // access logic error or native error, fail silently or log
+      // state = AsyncError(e, StackTrace.current); // Don't disrupt UI for bg check failure
     }
   }
 
