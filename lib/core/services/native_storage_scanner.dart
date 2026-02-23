@@ -19,42 +19,55 @@ class NativeStorageScanner {
   /// Get progress stream - creates fresh stream each time
   Stream<ScanProgress> get onProgress {
     return _eventChannel.receiveBroadcastStream().map((event) {
-      // Deep convert entire event to handle nested structures
-      final data = convertToJsonMap(event);
-      final String type = data['type'] as String;
-      // DEBUG LOG
-      // print('NativeStorageScanner: Scanning...');
-      // print('NativeStorageScanner: Received event type: $type');
+      try {
+        // Deep convert entire event to handle nested structures
+        final data = convertToJsonMap(event);
+        final String type = data['type'] as String;
 
-      if (type == 'progress') {
-        // Deep convert nested 'data' field
-        final progressData = convertToJsonMap(data['data']);
-        return ScanProgress.fromJson(progressData);
-      } else if (type == 'complete') {
+        if (type == 'progress') {
+          // Deep convert nested 'data' field
+          final progressData = convertToJsonMap(data['data']);
+          return ScanProgress.fromJson(progressData);
+        } else if (type == 'complete') {
+          return const ScanProgress(
+            phase: ScanPhase.complete,
+            processedItems: 100,
+            totalItems: 100,
+            currentBytes: 0,
+          );
+        } else if (type == 'error') {
+          // Instead of throwing and breaking the stream, yield an error phase
+          return const ScanProgress(
+            phase: ScanPhase.error,
+            processedItems: 0,
+            totalItems: 0,
+            currentBytes: 0,
+          );
+        } else if (type == 'cache_invalidated') {
+          return const ScanProgress(
+            phase: ScanPhase.cacheInvalidated,
+            processedItems: 0,
+            totalItems: 0,
+            currentBytes: 0,
+          );
+        }
+
+        // Default fallback
         return const ScanProgress(
-          phase: ScanPhase.complete,
-          processedItems: 100,
-          totalItems: 100,
+          phase: ScanPhase.calculating,
+          processedItems: 0,
+          totalItems: 1,
           currentBytes: 0,
         );
-      } else if (type == 'error') {
-        throw Exception(data['message']);
-      } else if (type == 'cache_invalidated') {
+      } catch (e) {
+        debugPrint('Error parsing progress stream event: $e');
         return const ScanProgress(
-          phase: ScanPhase.cacheInvalidated,
+          phase: ScanPhase.error,
           processedItems: 0,
           totalItems: 0,
           currentBytes: 0,
         );
       }
-
-      // Default fallback
-      return const ScanProgress(
-        phase: ScanPhase.calculating,
-        processedItems: 0,
-        totalItems: 1,
-        currentBytes: 0,
-      );
     });
   }
 

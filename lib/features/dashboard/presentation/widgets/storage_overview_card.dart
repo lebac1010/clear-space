@@ -23,8 +23,10 @@ class StorageOverviewCard extends ConsumerWidget {
     ScanProgress? currentProgress;
     if (scanAsync.hasValue) {
       currentProgress = scanAsync.value;
-      // If complete, ignore progress and rely on info (which should update shortly)
-      if (currentProgress?.phase == ScanPhase.complete) {
+      // If complete/error, ignore progress and rely on info (which should update shortly)
+      if (currentProgress?.phase == ScanPhase.complete ||
+          currentProgress?.phase == ScanPhase.error ||
+          currentProgress?.phase == ScanPhase.cancelled) {
         currentProgress = null;
       }
     }

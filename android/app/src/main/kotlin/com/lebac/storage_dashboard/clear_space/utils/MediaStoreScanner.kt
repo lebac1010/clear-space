@@ -704,7 +704,12 @@ class MediaStoreScanner(private val context: Context) {
                         duplicateDetector.addFile(id, name, size, path, fileUri, dateModified)
 
                         if (mediaType == MediaType.IMAGE && path.isNotEmpty()) {
-                            photoInfos.add(SimilarPhotoDetector.PhotoInfo(path = path, contentUri = fileUri))
+                            photoInfos.add(SimilarPhotoDetector.PhotoInfo(
+                                id = id,
+                                path = path, 
+                                contentUri = fileUri,
+                                dateModified = dateModified
+                            ))
                         }
                         
                         // Track large files

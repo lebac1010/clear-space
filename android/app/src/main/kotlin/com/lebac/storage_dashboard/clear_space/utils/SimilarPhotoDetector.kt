@@ -35,8 +35,10 @@ class SimilarPhotoDetector(private val context: Context) {
      * Data class to carry both path and content URI for each photo.
      */
     data class PhotoInfo(
+        val id: Long,
         val path: String,
-        val contentUri: String
+        val contentUri: String,
+        val dateModified: Long
     )
 
     fun findSimilarPhotos(photos: List<PhotoInfo>): List<DuplicateFileInfo> {
@@ -74,12 +76,12 @@ class SimilarPhotoDetector(private val context: Context) {
                     Log.d("SimilarPhotoDetector", "Photo $path matches group (distance=$distance)")
                     group.items.add(
                         DuplicateItem(
-                            id = hash,
+                            id = photoInfo.id,
                             name = path.substringAfterLast("/"),
                             size = fileSize,
                             path = path,
                             uri = uriString,
-                            dateModified = 0 // Will be enriched later if needed
+                            dateModified = photoInfo.dateModified
                         )
                     )
                     addedToGroup = true
@@ -93,12 +95,12 @@ class SimilarPhotoDetector(private val context: Context) {
                         representativeHash = hash,
                         items = mutableListOf(
                              DuplicateItem(
-                                id = hash,
+                                id = photoInfo.id,
                                 name = path.substringAfterLast("/"),
                                 size = fileSize,
                                 path = path,
                                 uri = uriString,
-                                dateModified = 0
+                                dateModified = photoInfo.dateModified
                             )
                         )
                     )
