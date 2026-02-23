@@ -14,6 +14,14 @@ enum ScanPhase {
   audio,
   @JsonValue('DOCUMENTS')
   documents,
+  @JsonValue('JUNK')
+  junk,
+  @JsonValue('EMPTY_FOLDERS')
+  emptyFolders,
+  @JsonValue('APKS')
+  apks,
+  @JsonValue('SIMILAR_PHOTOS')
+  similarPhotos,
   @JsonValue('CALCULATING')
   calculating,
   @JsonValue('COMPLETE')

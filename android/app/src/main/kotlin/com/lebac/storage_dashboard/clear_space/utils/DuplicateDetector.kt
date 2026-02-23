@@ -45,6 +45,14 @@ class DuplicateDetector {
                     savingsIfDeleted = totalSize - files.first().size  // Keep one copy
                 )
             }
+            .filter { group ->
+                // Fix: Filter out false positives where duplicate candidates are only in the same folder.
+                // Since our signature is Name+Size, files with the same name MUST be in different folders
+                // (OS prevents same-name files in the same folder).
+                // This acts as a sanity check and also filters edge cases where path is empty.
+                val folders = group.files.map { it.path.substringBeforeLast("/") }.distinct()
+                folders.size >= 2
+            }
             .sortedByDescending { it.savingsIfDeleted }
     }
     

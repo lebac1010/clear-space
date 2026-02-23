@@ -1,13 +1,14 @@
 package com.lebac.storage_dashboard.clear_space.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.media.ThumbnailUtils
+import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import com.lebac.storage_dashboard.clear_space.models.DuplicateFileInfo
 import com.lebac.storage_dashboard.clear_space.models.DuplicateItem
-import java.io.File
-import kotlin.math.cos
 import kotlin.math.PI
 
 /**
@@ -22,7 +23,7 @@ import kotlin.math.PI
  * 6. Construct 64-bit hash (1 if > average, 0 if < average).
  * 7. Compare Hamming Distance (<= 5 is similar).
  */
-class SimilarPhotoDetector {
+class SimilarPhotoDetector(private val context: Context) {
 
     // Threshold for Hamming Distance (0-64). <= 5 implies ~90% similarity.
     private val SIMILARITY_THRESHOLD = 5
@@ -30,39 +31,55 @@ class SimilarPhotoDetector {
     // Safety: Exclude specific folders to avoid false positives on docs/screenshots
     private val EXCLUDED_FOLDERS = listOf("documents", "document", "screenshot", "screenshots", "notes", "invoice", "receipt")
 
-    fun findSimilarPhotos(filePaths: List<String>): List<DuplicateFileInfo> {
-        val hashes = mutableMapOf<Long, DuplicateItem>() // store hash -> first item (if we were doing exact) - wait, we need needed pairwise or grouping.
-        // Actually for pHash grouping, we need to compare every new hash with existing group representatives.
-        
-        // Structure: List of Groups. Each Group has a "Representative Hash".
+    /**
+     * Data class to carry both path and content URI for each photo.
+     */
+    data class PhotoInfo(
+        val path: String,
+        val contentUri: String
+    )
+
+    fun findSimilarPhotos(photos: List<PhotoInfo>): List<DuplicateFileInfo> {
+        Log.d("SimilarPhotoDetector", "findSimilarPhotos called with ${photos.size} photos")
         val groups = mutableListOf<SimilarGroup>()
         
-        for (path in filePaths) {
-            val file = File(path)
-            if (!file.exists()) continue
+        for (photoInfo in photos) {
+            val path = photoInfo.path
+            val uriString = photoInfo.contentUri
             
             // Safety Check 1: Folder Exclusion
-            if (isExcludedFolder(path)) continue
-            
-            // Safety Check 2: File Size (skip too small images, icons)
-            if (file.length() < 50 * 1024) continue // < 50KB skip
+            if (isExcludedFolder(path)) {
+                Log.d("SimilarPhotoDetector", "Skipping excluded folder: $path")
+                continue
+            }
 
-            val hash = computePHash(path) ?: continue
+            // Safety Check 2: File Size (skip too small images, icons)
+            val fileSize = getFileSizeFromUri(uriString)
+            if (fileSize < 50 * 1024) {
+                Log.d("SimilarPhotoDetector", "Skipping small file ($fileSize bytes): $path")
+                continue
+            }
+
+            val hash = computePHash(uriString) ?: run {
+                Log.w("SimilarPhotoDetector", "Failed to compute pHash for: $path (uri: $uriString)")
+                continue
+            }
+            
+            Log.d("SimilarPhotoDetector", "Computed pHash for $path: $hash")
             
             var addedToGroup = false
             for (group in groups) {
-                if (calculateHammingDistance(group.representativeHash, hash) <= SIMILARITY_THRESHOLD) {
+                val distance = calculateHammingDistance(group.representativeHash, hash)
+                if (distance <= SIMILARITY_THRESHOLD) {
+                    Log.d("SimilarPhotoDetector", "Photo $path matches group (distance=$distance)")
                     group.items.add(
                         DuplicateItem(
-                            id = hash, // Use hash as ID for now or generate distinct? Item needs actual ID. 
-                            // Wait, input only has path. We need ID/Size/Date from scanner. 
-                            // For simplicity in this specialized detector, we might need to parse file stats or accept rich objects.
-                            // Let's assume for now we construct DuplicateItem from File.
-                            name = file.name,
-                            size = file.length(),
+                            id = hash,
+                            name = path.substringAfterLast("/"),
+                            size = fileSize,
                             path = path,
-                            uri = "file://$path", // Placeholder URI, real one should come from MediaStore
-                            dateModified = file.lastModified()
+                            uri = uriString,
+                            dateModified = 0 // Will be enriched later if needed
                         )
                     )
                     addedToGroup = true
@@ -77,11 +94,11 @@ class SimilarPhotoDetector {
                         items = mutableListOf(
                              DuplicateItem(
                                 id = hash,
-                                name = file.name,
-                                size = file.length(),
+                                name = path.substringAfterLast("/"),
+                                size = fileSize,
                                 path = path,
-                                uri = "file://$path",
-                                dateModified = file.lastModified()
+                                uri = uriString,
+                                dateModified = 0
                             )
                         )
                     )
@@ -90,21 +107,23 @@ class SimilarPhotoDetector {
         }
 
         // Convert to result format (only groups with > 1 item)
-        return groups
+        val result = groups
             .filter { it.items.size > 1 }
             .map { group ->
                 val totalSize = group.items.sumOf { it.size }
-                // Smart Select logic will be in UI, here we just return the group
-                val savings = totalSize - group.items.maxOf { it.size } // Keep largest
+                val savings = totalSize - group.items.maxOf { it.size }
                 
                 DuplicateFileInfo(
-                    signature = group.representativeHash.toString(), // Use hash as signature
+                    signature = group.representativeHash.toString(),
                     files = group.items,
                     totalSize = totalSize,
                     savingsIfDeleted = savings,
                     type = "SIMILAR"
                 )
             }
+        
+        Log.d("SimilarPhotoDetector", "findSimilarPhotos result: ${result.size} similar groups found")
+        return result
     }
     
     private fun isExcludedFolder(path: String): Boolean {
@@ -112,31 +131,66 @@ class SimilarPhotoDetector {
         return EXCLUDED_FOLDERS.any { lowerPath.contains("/$it/") || lowerPath.contains("/$it") }
     }
 
-    private fun computePHash(path: String): Long? {
+    /**
+     * Get file size from content URI via ContentResolver.
+     */
+    private fun getFileSizeFromUri(uriString: String): Long {
+        return try {
+            val uri = Uri.parse(uriString)
+            val cursor = context.contentResolver.query(
+                uri,
+                arrayOf(MediaStore.MediaColumns.SIZE),
+                null, null, null
+            )
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    it.getLong(0)
+                } else 0L
+            } ?: 0L
+        } catch (e: Exception) {
+            Log.e("SimilarPhotoDetector", "Error getting file size from $uriString: ${e.message}")
+            0L
+        }
+    }
+
+    /**
+     * Compute pHash using ContentResolver InputStream (scoped storage safe).
+     */
+    private fun computePHash(uriString: String): Long? {
         try {
+            val uri = Uri.parse(uriString)
+            
+            // Use ContentResolver to open stream (works with scoped storage)
+            val inputStream = context.contentResolver.openInputStream(uri) ?: run {
+                Log.e("SimilarPhotoDetector", "openInputStream returned null for $uriString")
+                return null
+            }
+            
             val options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            // Decode smaller to save memory
             options.inSampleSize = 4 
             
-            var bitmap = BitmapFactory.decodeFile(path, options) ?: return null
+            var bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream.close()
+            
+            if (bitmap == null) {
+                Log.e("SimilarPhotoDetector", "BitmapFactory.decodeStream returned null for $uriString")
+                return null
+            }
             
             // 1. Resize to 32x32
             bitmap = Bitmap.createScaledBitmap(bitmap, 32, 32, true)
             
             // 2. Grayscale & 3. DCT
-            // Simplified: We can do DCT on 32x32 matrix.
-            // Converting to grayscale array
             val vals = DoubleArray(32 * 32)
             for (y in 0 until 32) {
                 for (x in 0 until 32) {
                     val pixel = bitmap.getPixel(x, y)
-                    // Luminance formula
                     val gray = 0.299 * Color.red(pixel) + 0.587 * Color.green(pixel) + 0.114 * Color.blue(pixel)
                     vals[y * 32 + x] = gray
                 }
             }
-            bitmap.recycle() // Clean up
+            bitmap.recycle()
             
             // 4. Compute DCT
             val dctVals = applyDCT(vals, 32)
@@ -166,7 +220,7 @@ class SimilarPhotoDetector {
             
             return hash
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("SimilarPhotoDetector", "Error computing pHash: ${e.message}", e)
             return null
         }
     }
@@ -209,3 +263,4 @@ class SimilarPhotoDetector {
         val items: MutableList<DuplicateItem>
     )
 }
+

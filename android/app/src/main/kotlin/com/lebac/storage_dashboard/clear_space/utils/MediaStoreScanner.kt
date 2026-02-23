@@ -25,11 +25,11 @@ class MediaStoreScanner(private val context: Context) {
     private val volumeHelper = VolumeHelper(context)
     private val fileSizeResolver = FileSizeResolver(context.contentResolver)
     private val duplicateDetector = DuplicateDetector()
-    private val similarPhotoDetector = SimilarPhotoDetector()
+    private val similarPhotoDetector = SimilarPhotoDetector(context)
     private val largeFileTracker = LargeFileTracker(20)
 
     private var lastSimilarPhotos: List<DuplicateFileInfo> = emptyList()
-    private val photoPaths = mutableListOf<String>()
+    private val photoInfos = mutableListOf<SimilarPhotoDetector.PhotoInfo>()
     
     // Smart Cleanup Cache
     private val junkFilesCache = mutableListOf<String>()
@@ -52,11 +52,10 @@ class MediaStoreScanner(private val context: Context) {
             // Reset trackers
             duplicateDetector.clear()
             largeFileTracker.clear()
-            photoPaths.clear()
+            photoInfos.clear()
             junkFilesCache.clear()
             emptyFoldersCache.clear()
             safeApkFilesCache.clear()
-            lastSimilarPhotos = emptyList()
             lastSimilarPhotos = emptyList()
             isPaused = false
             isCancelled = false
@@ -140,7 +139,16 @@ class MediaStoreScanner(private val context: Context) {
                 emit(ScanUpdate.Progress(progress))
             }
             checkCancelled()
-            
+
+            Log.d("StorageScanner", "Phase 8.5: Similar Photos")
+            // Phase 8.5: Similar Photos
+            if (photoInfos.isNotEmpty()) {
+                emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, 0, photoInfos.size, 0L)))
+                lastSimilarPhotos = similarPhotoDetector.findSimilarPhotos(photoInfos)
+                emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, photoInfos.size, photoInfos.size, 0L)))
+            }
+            checkCancelled()
+
             Log.d("StorageScanner", "Phase 9: Calculating")
             // Phase 9: Calculate final values
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.CALCULATING, 0, 1, 0L)))
@@ -696,7 +704,7 @@ class MediaStoreScanner(private val context: Context) {
                         duplicateDetector.addFile(id, name, size, path, fileUri, dateModified)
 
                         if (mediaType == MediaType.IMAGE && path.isNotEmpty()) {
-                            photoPaths.add(path)
+                            photoInfos.add(SimilarPhotoDetector.PhotoInfo(path = path, contentUri = fileUri))
                         }
                         
                         // Track large files
@@ -882,6 +890,111 @@ class MediaStoreScanner(private val context: Context) {
                 file.toMap()
             }
         }
+    }
+
+    /**
+     * Get photos with pagination
+     */
+    fun getPhotos(limit: Int, offset: Int): List<Map<String, Any>> {
+        val photos = mutableListOf<Map<String, Any>>()
+        
+        Log.d("MediaStoreScanner", "getPhotos START: limit=$limit, offset=$offset, SDK=${Build.VERSION.SDK_INT}")
+        
+        // Android 10+ (Q): MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        // Pre-Q: MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        }
+        
+        Log.d("MediaStoreScanner", "getPhotos collection URI: $collection")
+
+        val projection = arrayOf(
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media.DATE_MODIFIED,
+            MediaStore.Images.Media.DATA // Path
+        )
+
+        try {
+            val cursor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // API 26+: Use Bundle for query arguments (supports LIMIT/OFFSET safely)
+                val bundle = android.os.Bundle().apply {
+                    // Limit & Offset (API 30 constants, but string keys work on 26+)
+                    putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
+                    putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
+                    
+                    // Sort (API 26+)
+                    putStringArray(
+                        ContentResolver.QUERY_ARG_SORT_COLUMNS, 
+                        arrayOf(MediaStore.Images.Media.DATE_MODIFIED)
+                    )
+                    putInt(
+                        ContentResolver.QUERY_ARG_SORT_DIRECTION, 
+                        ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+                    )
+                }
+                
+                Log.d("MediaStoreScanner", "getPhotos using Bundle API (API ${Build.VERSION.SDK_INT})")
+                context.contentResolver.query(
+                    collection,
+                    projection,
+                    bundle,
+                    null
+                )
+            } else {
+                // Pre-O: Fallback to SQL hack in sortOrder
+                val sortOrder = "${MediaStore.Images.Media.DATE_MODIFIED} DESC LIMIT $limit OFFSET $offset"
+                Log.d("MediaStoreScanner", "getPhotos using sortOrder hack: $sortOrder")
+                context.contentResolver.query(
+                    collection,
+                    projection,
+                    null,
+                    null,
+                    sortOrder
+                )
+            }
+
+            Log.d("MediaStoreScanner", "getPhotos cursor: ${cursor != null}, count: ${cursor?.count ?: "null"}")
+            
+            cursor?.use {
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+                val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
+                val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
+                val dateColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)
+                val dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+                
+                Log.d("MediaStoreScanner", "getPhotos columns: id=$idColumn, name=$nameColumn, size=$sizeColumn, date=$dateColumn, data=$dataColumn")
+
+                while (cursor.moveToNext()) {
+                     val id = cursor.getLong(idColumn)
+                     val name = cursor.getString(nameColumn) ?: "unknown"
+                     val size = cursor.getLong(sizeColumn)
+                     val dateModified = cursor.getLong(dateColumn)
+                     val path = if (dataColumn >= 0) cursor.getString(dataColumn) ?: "" else ""
+                     
+                     Log.d("MediaStoreScanner", "getPhotos found: id=$id, name=$name, size=$size, path=$path")
+                     
+                     val contentUri = ContentUris.withAppendedId(collection, id)
+
+                     photos.add(mapOf(
+                         "id" to id,
+                         "name" to name,
+                         "size" to size,
+                         "dateModified" to dateModified,
+                         "path" to path,
+                         "uri" to contentUri.toString()
+                     ))
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("MediaStoreScanner", "Error fetching photos: ${e.message}", e)
+        }
+        
+        Log.d("MediaStoreScanner", "getPhotos END: returning ${photos.size} photos")
+        return photos
     }
 
     // Data classes

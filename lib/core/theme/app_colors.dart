@@ -25,6 +25,10 @@ abstract class AppColors {
 
   // Overlay
   static const Color overlay = Colors.black54;
+
+  // Feature Colors
+  static const Color orange = Color(0xFFFF9800);
+  static const Color purple = Color(0xFF9C27B0);
 }
 
 /// Centralized spacing values for consistent UI.

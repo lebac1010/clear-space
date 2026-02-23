@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../utils/platform_channel_utils.dart';
 import '../../features/dashboard/domain/entities/scan_progress.dart';
@@ -137,10 +138,73 @@ class NativeStorageScanner {
     return result ?? false;
   }
 
-  /// Get info about the background cleanup job
+  /// Get usage info about the background cleanup job
   Future<Map<String, dynamic>?> getCleanupInfo() async {
     final result = await _methodChannel.invokeMethod('getCleanupInfo');
     if (result == null) return null;
     return convertToJsonMap(result);
+  }
+
+  /// Get photos with pagination
+  /// Returns List<Map<String, dynamic>>
+  Future<List<Map<String, dynamic>>> getPhotos({
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    debugPrint(
+      '[NativeStorageScanner] getPhotos called: limit=$limit, offset=$offset',
+    );
+    final result = await _methodChannel.invokeMethod('getPhotos', {
+      'limit': limit,
+      'offset': offset,
+    });
+    debugPrint(
+      '[NativeStorageScanner] getPhotos raw result type: ${result?.runtimeType}, isNull: ${result == null}',
+    );
+    if (result == null) {
+      debugPrint(
+        '[NativeStorageScanner] getPhotos result is NULL, returning []',
+      );
+      return [];
+    }
+    if (result is List) {
+      debugPrint(
+        '[NativeStorageScanner] getPhotos raw list length: ${result.length}',
+      );
+      if (result.isNotEmpty) {
+        debugPrint(
+          '[NativeStorageScanner] first item type: ${result.first.runtimeType}',
+        );
+        debugPrint('[NativeStorageScanner] first item: ${result.first}');
+      }
+    }
+    // Result is List<Object?>, not Map — use deepConvert directly
+    final converted = deepConvertPlatformData(result);
+    debugPrint(
+      '[NativeStorageScanner] converted type: ${converted.runtimeType}',
+    );
+    if (converted is List) {
+      final typed = converted.whereType<Map<String, dynamic>>().toList();
+      debugPrint(
+        '[NativeStorageScanner] getPhotos returning ${typed.length} typed maps',
+      );
+      return typed;
+    }
+    debugPrint('[NativeStorageScanner] converted is NOT a List, returning []');
+    return [];
+  }
+
+  /// Load image bytes from a content URI (scoped storage safe)
+  Future<Uint8List?> getPhotoBytes(String uri) async {
+    try {
+      final result = await _methodChannel.invokeMethod('getPhotoBytes', {
+        'uri': uri,
+      });
+      if (result is Uint8List) return result;
+      return null;
+    } catch (e) {
+      debugPrint('[NativeStorageScanner] getPhotoBytes error: $e');
+      return null;
+    }
   }
 }

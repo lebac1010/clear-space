@@ -27,10 +27,10 @@ enum class ScanPhase {
     VIDEOS,
     AUDIO,
     DOCUMENTS,
-    JUNK, // NEW
-    EMPTY_FOLDERS, // NEW
-    APKS, // NEW
-    SIMILARITY,
+    JUNK,
+    EMPTY_FOLDERS,
+    APKS,
+    SIMILAR_PHOTOS,
     CALCULATING,
     COMPLETE,
     PAUSED,

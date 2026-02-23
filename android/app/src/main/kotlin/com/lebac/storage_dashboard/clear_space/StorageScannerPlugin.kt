@@ -203,6 +203,20 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                 val similar = scannerService?.getSimilarPhotos() ?: emptyMap()
                 result.success(similar)
             }
+            "getPhotos" -> {
+                 android.util.Log.d("StorageScannerPlugin", "getPhotos called, isBound=$isBound, scannerService=${scannerService != null}")
+                 if (scannerService == null) {
+                    android.util.Log.e("StorageScannerPlugin", "getPhotos FAILED: Service not bound yet")
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val limit = call.argument<Int>("limit") ?: 50
+                val offset = call.argument<Int>("offset") ?: 0
+                android.util.Log.d("StorageScannerPlugin", "getPhotos calling service with limit=$limit, offset=$offset")
+                val photos = scannerService?.getPhotos(limit, offset) ?: emptyList()
+                android.util.Log.d("StorageScannerPlugin", "getPhotos returning ${photos.size} photos to Flutter")
+                result.success(photos)
+            }
             "cleanJunk" -> {
                 if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)
@@ -268,6 +282,27 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                          result.error("WORK_INFO_ERROR", e.message, null)
                     }
                 }, androidx.core.content.ContextCompat.getMainExecutor(context))
+            }
+            "getPhotoBytes" -> {
+                val uri = call.argument<String>("uri")
+                if (uri == null) {
+                    result.error("INVALID_ARG", "uri is required", null)
+                    return
+                }
+                try {
+                    val contentUri = android.net.Uri.parse(uri)
+                    val inputStream = context.contentResolver.openInputStream(contentUri)
+                    if (inputStream != null) {
+                        val bytes = inputStream.readBytes()
+                        inputStream.close()
+                        result.success(bytes)
+                    } else {
+                        result.error("IO_ERROR", "Could not open stream for $uri", null)
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("StorageScannerPlugin", "getPhotoBytes error: ${e.message}", e)
+                    result.error("IO_ERROR", e.message, null)
+                }
             }
             else -> result.notImplemented()
         }

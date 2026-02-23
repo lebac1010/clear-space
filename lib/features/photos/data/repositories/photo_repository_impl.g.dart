@@ -1,27 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'safe_cleanup_controller.dart';
+part of 'photo_repository_impl.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$safeCleanupControllerHash() =>
-    r'f7438edb6d71f30ecdd385f619ab8da1d02f7a4d';
+String _$photoRepositoryHash() => r'ff257c6b33243c263c83ea19af9e812fa5c45f21';
 
-/// See also [SafeCleanupController].
-@ProviderFor(SafeCleanupController)
-final safeCleanupControllerProvider =
-    AsyncNotifierProvider<SafeCleanupController, SafeCleanupInfo?>.internal(
-  SafeCleanupController.new,
-  name: r'safeCleanupControllerProvider',
+/// See also [photoRepository].
+@ProviderFor(photoRepository)
+final photoRepositoryProvider = AutoDisposeProvider<PhotoRepository>.internal(
+  photoRepository,
+  name: r'photoRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$safeCleanupControllerHash,
+      : _$photoRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SafeCleanupController = AsyncNotifier<SafeCleanupInfo?>;
+typedef PhotoRepositoryRef = AutoDisposeProviderRef<PhotoRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
