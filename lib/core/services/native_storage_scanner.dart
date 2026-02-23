@@ -118,7 +118,10 @@ class NativeStorageScanner {
     final jsonMap = convertToJsonMap(result);
     // Cast to expected type
     return jsonMap.map((key, value) {
-      final list = (value as List).cast<Map<String, dynamic>>();
+      // [A2] Eager conversion instead of lazy .cast<>() to prevent deferred CastErrors
+      final list = (value as List)
+          .map((e) => Map<String, dynamic>.from(e as Map))
+          .toList();
       return MapEntry(key, list);
     });
   }
@@ -128,7 +131,10 @@ class NativeStorageScanner {
     final result = await _methodChannel.invokeMethod('getSimilarPhotos');
     final jsonMap = convertToJsonMap(result);
     return jsonMap.map((key, value) {
-      final list = (value as List).cast<Map<String, dynamic>>();
+      // [A2] Eager conversion instead of lazy .cast<>() to prevent deferred CastErrors
+      final list = (value as List)
+          .map((e) => Map<String, dynamic>.from(e as Map))
+          .toList();
       return MapEntry(key, list);
     });
   }

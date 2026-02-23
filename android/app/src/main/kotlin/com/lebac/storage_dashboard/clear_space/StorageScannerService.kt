@@ -12,6 +12,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.os.Environment
 import androidx.core.app.NotificationCompat
 import com.lebac.storage_dashboard.clear_space.models.ScanPhase
 import com.lebac.storage_dashboard.clear_space.models.ScanProgress
@@ -95,6 +96,11 @@ class StorageScannerService : Service() {
             result.error("LOW_BATTERY", "Battery too low", null)
             return
         }
+        
+        // [S2] Check MANAGE_EXTERNAL_STORAGE on Android 11+ (needed for junk/empty folder deletion)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+            Log.w("StorageScannerService", "MANAGE_EXTERNAL_STORAGE not granted. Junk/empty folder cleanup may be limited.")
+        }
 
         // 1. Start Foreground immediately
         startForegroundServiceCompat()
@@ -116,6 +122,9 @@ class StorageScannerService : Service() {
             )
 
             try {
+                // [P5] Suppress ContentObserver during scan to prevent self-invalidation
+                contentObserver?.isSuppressed = true
+                
                 scanner!!.scanStorage()
                     .catch { e ->
                         Log.e("StorageScannerService", "Scan error caught: ${e.message}", e)
@@ -134,6 +143,8 @@ class StorageScannerService : Service() {
                         }
                     }
             } finally {
+                // [P5] Re-enable ContentObserver after scan completes
+                contentObserver?.isSuppressed = false
                 stopForegroundServiceCompat()
                 batteryMonitor?.stopMonitoring()
             }

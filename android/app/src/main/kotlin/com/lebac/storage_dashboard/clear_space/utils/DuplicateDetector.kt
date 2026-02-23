@@ -2,20 +2,28 @@ package com.lebac.storage_dashboard.clear_space.utils
 
 import com.lebac.storage_dashboard.clear_space.models.DuplicateFileInfo
 import com.lebac.storage_dashboard.clear_space.models.DuplicateItem
-import java.security.MessageDigest
 
 /**
  * Detects duplicate files based on name + size signature.
+ * 
+ * [P1] Results are cached after first computation and invalidated on addFile/clear.
+ * [F1] Signature includes normalized extension for robustness.
+ * [F2] savingsIfDeleted keeps the largest file (consistent with SimilarPhotoDetector).
  */
 class DuplicateDetector {
     
     // Map of signature -> list of files with that signature
     private val filesBySignature = mutableMapOf<String, MutableList<DuplicateItem>>()
     
+    // [P1] Cached result — invalidated when data changes
+    private var cachedDuplicates: List<DuplicateFileInfo>? = null
+    
     /**
-     * Add a file to the detector
+     * Add a file to the detector. Invalidates cached results.
      */
     fun addFile(id: Long, name: String, size: Long, path: String, uri: String, dateModified: Long) {
+        cachedDuplicates = null // [P1] Invalidate cache
+        
         val signature = createSignature(name, size)
         
         val item = DuplicateItem(
@@ -31,10 +39,13 @@ class DuplicateDetector {
     }
     
     /**
-     * Get all duplicate groups (2+ files with same signature)
+     * Get all duplicate groups (2+ files with same signature).
+     * [P1] Results are cached — subsequent calls return immediately.
      */
     fun getDuplicates(): List<DuplicateFileInfo> {
-        return filesBySignature
+        cachedDuplicates?.let { return it }
+        
+        val result = filesBySignature
             .filter { it.value.size >= 2 }
             .map { (signature, files) ->
                 val totalSize = files.sumOf { it.size }
@@ -42,22 +53,27 @@ class DuplicateDetector {
                     signature = signature,
                     files = files.toList(),
                     totalSize = totalSize,
-                    savingsIfDeleted = totalSize - files.first().size  // Keep one copy
+                    // [F2] Keep the largest file, consistent with SimilarPhotoDetector
+                    savingsIfDeleted = totalSize - files.maxOf { it.size }
                 )
             }
             .filter { group ->
-                // Fix: Filter out false positives where duplicate candidates are only in the same folder.
-                // Since our signature is Name+Size, files with the same name MUST be in different folders
+                // Filter out false positives where all files are in the same folder.
+                // Since signature is Name+Size, files with same name MUST be in different folders
                 // (OS prevents same-name files in the same folder).
-                // This acts as a sanity check and also filters edge cases where path is empty.
+                // Also filter edge cases where path is empty.
                 val folders = group.files.map { it.path.substringBeforeLast("/") }.distinct()
                 folders.size >= 2
             }
             .sortedByDescending { it.savingsIfDeleted }
+        
+        cachedDuplicates = result // [P1] Cache the result
+        return result
     }
     
     /**
-     * Get summary statistics
+     * Get summary statistics.
+     * [P1] Uses cached getDuplicates() — no redundant computation.
      */
     fun getStats(): DuplicateStats {
         val duplicates = getDuplicates()
@@ -70,19 +86,24 @@ class DuplicateDetector {
     }
     
     /**
-     * Clear detector
+     * Clear detector. Invalidates cache.
      */
     fun clear() {
         filesBySignature.clear()
+        cachedDuplicates = null // [P1] Invalidate cache
     }
     
-    // FIX #5: Improve signature to reduce false positives
-    // Include parent folder name to distinguish files with same name from different locations
+    /**
+     * [F1] Improved signature to reduce false positives.
+     * Uses normalized name + size + extension for better discrimination.
+     * Two files with same name and size but different extensions are NOT duplicates.
+     */
     private fun createSignature(name: String, size: Long): String {
         val normalizedName = name.lowercase().trim()
-        // We only use name + size; for true duplicate detection you'd want hash
-        // But this is a balance between accuracy and performance
-        return "${normalizedName}_$size"
+        val extension = normalizedName.substringAfterLast('.', "")
+        // Separate extension in signature ensures "photo.jpg" (100KB) and "photo.png" (100KB)
+        // are NOT treated as duplicates even if they happen to have the same size.
+        return "${normalizedName}_${extension}_$size"
     }
     
     /**

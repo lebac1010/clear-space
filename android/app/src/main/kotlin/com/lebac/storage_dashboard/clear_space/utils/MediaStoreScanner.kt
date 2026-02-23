@@ -144,7 +144,8 @@ class MediaStoreScanner(private val context: Context) {
             // Phase 8.5: Similar Photos
             if (photoInfos.isNotEmpty()) {
                 emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, 0, photoInfos.size, 0L)))
-                lastSimilarPhotos = similarPhotoDetector.findSimilarPhotos(photoInfos)
+                // [C3] Pass defensive copy to avoid shared mutable state across coroutines
+                lastSimilarPhotos = similarPhotoDetector.findSimilarPhotos(photoInfos.toList())
                 emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, photoInfos.size, photoInfos.size, 0L)))
             }
             checkCancelled()
@@ -704,11 +705,13 @@ class MediaStoreScanner(private val context: Context) {
                         duplicateDetector.addFile(id, name, size, path, fileUri, dateModified)
 
                         if (mediaType == MediaType.IMAGE && path.isNotEmpty()) {
+                            // [C2] Pass fileSize directly so SimilarPhotoDetector skips redundant queries
                             photoInfos.add(SimilarPhotoDetector.PhotoInfo(
                                 id = id,
                                 path = path, 
                                 contentUri = fileUri,
-                                dateModified = dateModified
+                                dateModified = dateModified,
+                                fileSize = size
                             ))
                         }
                         
@@ -726,8 +729,13 @@ class MediaStoreScanner(private val context: Context) {
                         
                         processedSoFar++
 
-                        // Emit progress every 50 items
-                        if (processedSoFar % 50 == 0) {
+                        // [P7] Adaptive progress emission — reduce overhead for large datasets
+                        val progressInterval = when {
+                            totalCount > 5000 -> 500
+                            totalCount > 1000 -> 200
+                            else -> 50
+                        }
+                        if (processedSoFar % progressInterval == 0) {
                             onProgress(
                                 ScanProgress(
                                     phase = phase,
@@ -1020,14 +1028,17 @@ class MediaStoreScanner(private val context: Context) {
      */
     suspend fun cleanJunk(types: List<String>): Map<String, Any> {
         var deletedCount = 0
-        var deletedBytes = 0L // We don't track bytes per file in cache yet.
+        var deletedBytes = 0L
 
         if (types.contains("junk")) {
             val iter = junkFilesCache.iterator()
             while (iter.hasNext()) {
                 val path = iter.next()
+                // [F3] Track file size before deletion
+                val fileSize = java.io.File(path).let { if (it.exists()) it.length() else 0L }
                 if (deleteSingleFile(path)) {
                     deletedCount++
+                    deletedBytes += fileSize
                     iter.remove()
                 }
             }
@@ -1040,6 +1051,7 @@ class MediaStoreScanner(private val context: Context) {
              for (path in sorted) {
                  if (deleteSingleFile(path)) {
                      deletedCount++
+                     // Empty folders contribute 0 bytes, no need to track
                  } else {
                      remaining.add(path)
                  }
@@ -1052,8 +1064,11 @@ class MediaStoreScanner(private val context: Context) {
             val iter = safeApkFilesCache.iterator()
             while (iter.hasNext()) {
                 val path = iter.next()
+                // [F3] Track file size before deletion
+                val fileSize = java.io.File(path).let { if (it.exists()) it.length() else 0L }
                 if (deleteSingleFile(path)) {
                     deletedCount++
+                    deletedBytes += fileSize
                     iter.remove()
                 }
             }
@@ -1062,15 +1077,31 @@ class MediaStoreScanner(private val context: Context) {
         return mapOf("count" to deletedCount, "bytes" to deletedBytes)
     }
 
+    /**
+     * [S3] Delete a file with scoped storage awareness.
+     * On Android 11+ without MANAGE_EXTERNAL_STORAGE, java.io.File.delete() may fail.
+     * Falls back to ContentResolver delete via MediaStore URI lookup.
+     */
     private fun deleteSingleFile(path: String): Boolean {
         val file = java.io.File(path)
         return try {
-            if (file.isDirectory) {
-                file.delete()
-            } else {
-                file.delete()
+            // Try direct delete first (works if we have MANAGE_EXTERNAL_STORAGE or own the file)
+            if (file.delete()) {
+                return true
             }
+            
+            // [S3] Fallback: Try deleting via MediaStore for scoped storage compliance
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !file.isDirectory) {
+                val contentUri = MediaStore.Files.getContentUri("external")
+                val selection = "${MediaStore.Files.FileColumns.DATA} = ?"
+                val selectionArgs = arrayOf(path)
+                val deleted = context.contentResolver.delete(contentUri, selection, selectionArgs)
+                return deleted > 0
+            }
+            
+            false
         } catch (e: Exception) {
+            Log.w("MediaStoreScanner", "Failed to delete $path: ${e.message}")
             false
         }
     }

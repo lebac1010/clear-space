@@ -65,8 +65,26 @@ class StorageScanWorker(
             } else {
                 Result.failure()
             }
-        } catch (e: Exception) {
+        } catch (e: SecurityException) {
+            // [F5] Permission errors are permanent — don't retry
+            android.util.Log.e("StorageScanWorker", "Permission denied, failing permanently", e)
+            Result.failure()
+        } catch (e: IllegalStateException) {
+            // [F5] State errors (e.g., service unavailable) are permanent
+            android.util.Log.e("StorageScanWorker", "Illegal state, failing permanently", e)
+            Result.failure()
+        } catch (e: OutOfMemoryError) {
+            // [F5] OOM is not retryable
+            android.util.Log.e("StorageScanWorker", "OOM, failing permanently", e)
+            Result.failure()
+        } catch (e: java.io.IOException) {
+            // [F5] I/O errors MAY be transient (SD card unmounted temporarily) — retry
+            android.util.Log.w("StorageScanWorker", "I/O error, will retry", e)
             Result.retry()
+        } catch (e: Exception) {
+            // [F5] Unknown errors — fail to prevent infinite retry loop draining battery
+            android.util.Log.e("StorageScanWorker", "Unknown error, failing", e)
+            Result.failure()
         }
     }
 }

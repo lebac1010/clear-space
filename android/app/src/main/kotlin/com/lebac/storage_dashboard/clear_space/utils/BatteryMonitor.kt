@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import android.os.Build
 
 /**
  * Monitors battery level to pause scanning when battery is low.
@@ -43,10 +44,14 @@ class BatteryMonitor(private val context: Context) {
             }
         }
         
-        context.registerReceiver(
-            batteryReceiver,
-            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        )
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        
+        // [E2] Android 14+ requires explicit receiver export flag
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            context.registerReceiver(batteryReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            context.registerReceiver(batteryReceiver, filter)
+        }
     }
     
     /**

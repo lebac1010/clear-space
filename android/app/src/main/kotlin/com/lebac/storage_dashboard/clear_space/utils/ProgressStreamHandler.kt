@@ -77,11 +77,17 @@ class ProgressStreamHandler : EventChannel.StreamHandler {
         }
     }
 
+    // [F6] Send error as a data event, NOT EventSink.error() which kills the stream permanently.
+    // Flutter side already handles type="error" in the onProgress mapper.
     fun sendError(errorCode: String, errorMessage: String) {
         if (!isActive()) return
         
         mainHandler.post {
-            eventSink?.error(errorCode, errorMessage, null)
+            eventSink?.success(mapOf(
+                "type" to "error",
+                "code" to errorCode,
+                "message" to errorMessage
+            ))
         }
     }
 }

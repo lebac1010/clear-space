@@ -13,9 +13,12 @@ import io.flutter.plugin.common.MethodChannel
 
 import android.app.Activity
 import android.content.IntentSender
+import android.util.Log
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.PluginRegistry
+import kotlinx.coroutines.*
+import java.util.concurrent.atomic.AtomicInteger
 
 class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
 
@@ -30,10 +33,15 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
     private var scannerService: StorageScannerService? = null
     private var isBound = false
     
-    // Request Code for scoped storage deletion
-    private val DELETE_REQUEST_CODE = 42
+    // [S4] Use a map of request codes to pending results to avoid race conditions
+    private val requestCodeCounter = AtomicInteger(100)
+    private val pendingResults = mutableMapOf<Int, MethodChannel.Result>()
+    
+    // [P4/P6] Background scope for I/O operations off main thread
+    private var pluginScope: CoroutineScope? = null
 
-    private var pendingResult: MethodChannel.Result? = null
+    // [S1] Max photo bytes to read (10MB cap to prevent OOM)
+    private val MAX_PHOTO_BYTES = 10L * 1024 * 1024
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -51,6 +59,7 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         context = binding.applicationContext
+        pluginScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
         
         // Bind to service
         val intent = Intent(context, StorageScannerService::class.java)
@@ -68,6 +77,8 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel.setMethodCallHandler(null)
         eventChannel.setStreamHandler(null)
+        pluginScope?.cancel()
+        pluginScope = null
         
         if (isBound) {
             context.unbindService(connection)
@@ -97,14 +108,15 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
         onDetachedFromActivityForConfigChanges()
     }
 
+    // [S4] Fixed: use unique request code from map, not single variable
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (requestCode == DELETE_REQUEST_CODE) {
+        val result = pendingResults.remove(requestCode)
+        if (result != null) {
             if (resultCode == Activity.RESULT_OK) {
-                pendingResult?.success(true)
+                result.success(true)
             } else {
-                pendingResult?.success(false)
+                result.success(false)
             }
-            pendingResult = null
             return true
         }
         return false
@@ -135,7 +147,6 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                 result.success(null)
             }
             "deleteFiles" -> {
-                // Delete files (handles both trash and permanent delete based on arg)
                 val uris = call.argument<List<String>>("uris") ?: emptyList()
                 val permanent = call.argument<Boolean>("permanent") ?: false
                 
@@ -154,68 +165,60 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     return
                 }
 
-                // Launch coroutine scope from service or plugin? 
-                // We need to call suspend function. Let's delegate to service to get the IntentSender.
-                // But we need to update Service to expose this.
-                // Quick fix: CoroutineScope in Plugin or Service? Service has scope.
-                
-                // We need a way to call suspend function from callback.
-                // Ideally, Service exposes `deleteFiles` which returns CompletableFuture or Callback.
-                // Let's modify Service to support this.
-                
                 scannerService?.requestDelete(uris, permanent) { intentSender ->
                     if (intentSender != null) {
                         try {
-                            pendingResult = result
+                            // [S4] Generate unique request code for this operation
+                            val requestCode = requestCodeCounter.getAndIncrement()
+                            pendingResults[requestCode] = result
                             activity?.startIntentSenderForResult(
                                 intentSender, 
-                                DELETE_REQUEST_CODE, 
+                                requestCode, 
                                 null, 0, 0, 0
                             )
                         } catch (e: IntentSender.SendIntentException) {
                             result.error("SEND_INTENT_ERROR", e.message, null)
-                            pendingResult = null
                         }
                     } else {
-                        // Success immediately (Android 10 or auto-granted)
                         result.success(true)
                     }
                 }
             }
 
+            // [P6] getDuplicateFiles — moved to background thread
             "getDuplicateFiles" -> {
                 if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)
                     return
                 }
-                
-                // This is synchronous but might be heavy. 
-                // However, scanner.getDuplicateFiles() just returns memory state from last scan.
-                // So it should be fast.
-                val duplicates = scannerService?.getDuplicateFiles() ?: emptyMap()
-                result.success(duplicates)
+                getScope().launch(Dispatchers.IO) {
+                    val duplicates = scannerService?.getDuplicateFiles() ?: emptyMap()
+                    withContext(Dispatchers.Main) { result.success(duplicates) }
+                }
             }
+            // [P6] getSimilarPhotos — moved to background thread
             "getSimilarPhotos" -> {
-                 if (scannerService == null) {
+                if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)
                     return
                 }
-                val similar = scannerService?.getSimilarPhotos() ?: emptyMap()
-                result.success(similar)
+                getScope().launch(Dispatchers.IO) {
+                    val similar = scannerService?.getSimilarPhotos() ?: emptyMap()
+                    withContext(Dispatchers.Main) { result.success(similar) }
+                }
             }
+            // [P4] getPhotos — moved to background thread
             "getPhotos" -> {
-                 android.util.Log.d("StorageScannerPlugin", "getPhotos called, isBound=$isBound, scannerService=${scannerService != null}")
-                 if (scannerService == null) {
-                    android.util.Log.e("StorageScannerPlugin", "getPhotos FAILED: Service not bound yet")
+                if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)
                     return
                 }
                 val limit = call.argument<Int>("limit") ?: 50
                 val offset = call.argument<Int>("offset") ?: 0
-                android.util.Log.d("StorageScannerPlugin", "getPhotos calling service with limit=$limit, offset=$offset")
-                val photos = scannerService?.getPhotos(limit, offset) ?: emptyList()
-                android.util.Log.d("StorageScannerPlugin", "getPhotos returning ${photos.size} photos to Flutter")
-                result.success(photos)
+                getScope().launch(Dispatchers.IO) {
+                    val photos = scannerService?.getPhotos(limit, offset) ?: emptyList()
+                    withContext(Dispatchers.Main) { result.success(photos) }
+                }
             }
             "cleanJunk" -> {
                 if (scannerService == null) {
@@ -231,7 +234,6 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                 val types = call.argument<List<String>>("types") ?: emptyList()
                 val workManager = androidx.work.WorkManager.getInstance(context)
                 
-                // Fix #4: Prune old finished/cancelled work to prevent REPLACE from being a no-op
                 workManager.pruneWork()
                 
                 val inputData = androidx.work.workDataOf("types" to types.toTypedArray())
@@ -253,18 +255,13 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
             "getCleanupInfo" -> {
                 val workManager = androidx.work.WorkManager.getInstance(context)
                 val statusFuture = workManager.getWorkInfosForUniqueWork("cleanup_job")
-                // This is a ListenableFuture. We need to wait for it or add listener.
-                // Since we are in onMethodCall (Main Thread), we should use a listener or blocking if fast.
-                // But get() is blocking. Ideally run in bg.
-                // Quick hack: run in thread.
                 
                 statusFuture.addListener({
                     try {
                         val workInfoList = statusFuture.get()
                         if (workInfoList.isNotEmpty()) {
                             val info = workInfoList[0]
-                            val state = info.state.name // ENQUEUED, RUNNING, SUCCEEDED, FAILED, BLOCKED, CANCELLED
-                            // Output Data
+                            val state = info.state.name
                             val output = info.outputData
                             val count = output.getInt("count", -1)
                             val bytes = output.getLong("bytes", -1)
@@ -283,29 +280,73 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     }
                 }, androidx.core.content.ContextCompat.getMainExecutor(context))
             }
+            // [S1] getPhotoBytes — URI validation + size cap + .use{} + background thread
             "getPhotoBytes" -> {
                 val uri = call.argument<String>("uri")
                 if (uri == null) {
                     result.error("INVALID_ARG", "uri is required", null)
                     return
                 }
-                try {
-                    val contentUri = android.net.Uri.parse(uri)
-                    val inputStream = context.contentResolver.openInputStream(contentUri)
-                    if (inputStream != null) {
-                        val bytes = inputStream.readBytes()
-                        inputStream.close()
-                        result.success(bytes)
-                    } else {
-                        result.error("IO_ERROR", "Could not open stream for $uri", null)
+                
+                // [S1] Validate URI is a MediaStore content URI (not contacts/sms/etc.)
+                if (!uri.startsWith("content://media/")) {
+                    result.error("INVALID_URI", "Only MediaStore URIs are allowed", null)
+                    return
+                }
+                
+                // [P4] Move I/O to background thread
+                getScope().launch(Dispatchers.IO) {
+                    try {
+                        val contentUri = android.net.Uri.parse(uri)
+                        
+                        // [S1] Check file size before reading to prevent OOM
+                        val fileSize = getContentSize(contentUri)
+                        if (fileSize > MAX_PHOTO_BYTES) {
+                            withContext(Dispatchers.Main) {
+                                result.error("FILE_TOO_LARGE", "File exceeds ${MAX_PHOTO_BYTES / 1024 / 1024}MB limit", null)
+                            }
+                            return@launch
+                        }
+                        
+                        // [S1/F4] Use .use{} for guaranteed stream closure
+                        val bytes = context.contentResolver.openInputStream(contentUri)?.use { stream ->
+                            stream.readBytes()
+                        }
+                        
+                        withContext(Dispatchers.Main) {
+                            if (bytes != null) {
+                                result.success(bytes)
+                            } else {
+                                result.error("IO_ERROR", "Could not open stream for $uri", null)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("StorageScannerPlugin", "getPhotoBytes error: ${e.message}", e)
+                        withContext(Dispatchers.Main) {
+                            result.error("IO_ERROR", e.message, null)
+                        }
                     }
-                } catch (e: Exception) {
-                    android.util.Log.e("StorageScannerPlugin", "getPhotoBytes error: ${e.message}", e)
-                    result.error("IO_ERROR", e.message, null)
                 }
             }
             else -> result.notImplemented()
         }
     }
+    
+    /**
+     * [S1] Get content size from ContentResolver without reading the file.
+     */
+    private fun getContentSize(uri: android.net.Uri): Long {
+        return try {
+            context.contentResolver.openAssetFileDescriptor(uri, "r")?.use { afd ->
+                val declared = afd.declaredLength
+                if (declared > 0) declared else afd.parcelFileDescriptor?.statSize ?: 0L
+            } ?: 0L
+        } catch (e: Exception) {
+            0L // Can't determine size — allow read (will fail on stream if truly inaccessible)
+        }
+    }
+    
+    private fun getScope(): CoroutineScope {
+        return pluginScope ?: CoroutineScope(Dispatchers.Main + SupervisorJob()).also { pluginScope = it }
+    }
 }
-
