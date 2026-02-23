@@ -93,6 +93,19 @@ GoRouter goRouter(GoRouterRef ref) {
                 path: RouteConstants.photos,
                 name: 'photos',
                 builder: (context, state) => const PhotosScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'duplicates',
+                    name: 'photos-duplicates',
+                    builder: (context, state) {
+                      final typeStr = state.uri.queryParameters['type'];
+                      final type = typeStr == 'similar'
+                          ? CleanupType.similar
+                          : CleanupType.duplicate;
+                      return DuplicateListScreen(type: type);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

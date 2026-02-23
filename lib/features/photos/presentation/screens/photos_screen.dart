@@ -157,8 +157,8 @@ class PhotosScreen extends ConsumerWidget {
                 icon: Icons.copy,
                 color: AppColors.orange,
                 onTap: () {
-                  // Navigate to Cleanup tab's duplicates sub-route
-                  context.go('/cleanup/duplicates?type=duplicate');
+                  // Navigate to Photos tab's duplicates sub-route
+                  context.go('/photos/duplicates?type=duplicate');
                 },
               ),
             ),
@@ -171,7 +171,7 @@ class PhotosScreen extends ConsumerWidget {
                 icon: Icons.photo_library_outlined,
                 color: AppColors.purple,
                 onTap: () {
-                  context.go('/cleanup/duplicates?type=similar');
+                  context.go('/photos/duplicates?type=similar');
                 },
               ),
             ),

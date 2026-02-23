@@ -51,7 +51,10 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 24,
+                  ),
                   child: Column(
                     children: [
                       // Hero Header with Animation
@@ -148,7 +151,11 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
 
               // Bottom Action
               Container(
-                padding: const EdgeInsets.all(24),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   boxShadow: [
@@ -263,7 +270,9 @@ class _AnimatedHeroHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(32),
+      width: 180,
+      height: 180,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: AppColors.surface,
         shape: BoxShape.circle,
@@ -272,29 +281,38 @@ class _AnimatedHeroHeader extends StatelessWidget {
           width: 8,
         ),
       ),
-      child: Column(
-        children: [
-          Text(
-            'Save',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
-          ),
-          // Animated counter
-          TweenAnimationBuilder<int>(
-            duration: const Duration(seconds: 1),
-            tween: IntTween(begin: 0, end: savings),
-            builder: (context, value, child) {
-              return Text(
-                FileUtils.formatSize(value),
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Save',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+            ),
+            // Animated counter
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: TweenAnimationBuilder<int>(
+                  duration: const Duration(seconds: 1),
+                  tween: IntTween(begin: 0, end: savings),
+                  builder: (context, value, child) {
+                    return Text(
+                      FileUtils.formatSize(value),
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -333,6 +351,7 @@ class _InteractiveBreakdownItem extends StatelessWidget {
               value: isSelected,
               onChanged: onToggle,
               activeColor: AppColors.primary,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -353,6 +372,8 @@ class _InteractiveBreakdownItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
