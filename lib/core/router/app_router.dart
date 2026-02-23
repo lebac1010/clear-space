@@ -22,7 +22,8 @@ part 'app_router.g.dart';
 
 /// Application router provider using GoRouter.
 /// Includes error handling and uses route constants.
-@riverpod
+// [A7] keepAlive: true — prevents router disposal (losing back stack and nav state)
+@Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
   final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 

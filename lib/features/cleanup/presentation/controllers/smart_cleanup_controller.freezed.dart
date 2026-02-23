@@ -21,9 +21,12 @@ mixin _$SmartCleanupState {
   int get similarPhotoSize => throw _privateConstructorUsedError;
   int get duplicateCount => throw _privateConstructorUsedError;
   int get similarPhotoCount => throw _privateConstructorUsedError;
-  List<CleanupItem> get selectedItems => throw _privateConstructorUsedError;
-  bool get duplicatesSelected => throw _privateConstructorUsedError; // NEW
-  bool get similarPhotosSelected => throw _privateConstructorUsedError; // NEW
+  List<CleanupItem> get selectedItems =>
+      throw _privateConstructorUsedError; // [A10] Store raw items for instant toggle without refetching
+  List<CleanupItem> get allDuplicateItems => throw _privateConstructorUsedError;
+  List<CleanupItem> get allSimilarItems => throw _privateConstructorUsedError;
+  bool get duplicatesSelected => throw _privateConstructorUsedError;
+  bool get similarPhotosSelected => throw _privateConstructorUsedError;
   bool get isCleaning => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
 
@@ -45,6 +48,8 @@ abstract class $SmartCleanupStateCopyWith<$Res> {
       int duplicateCount,
       int similarPhotoCount,
       List<CleanupItem> selectedItems,
+      List<CleanupItem> allDuplicateItems,
+      List<CleanupItem> allSimilarItems,
       bool duplicatesSelected,
       bool similarPhotosSelected,
       bool isCleaning,
@@ -70,6 +75,8 @@ class _$SmartCleanupStateCopyWithImpl<$Res, $Val extends SmartCleanupState>
     Object? duplicateCount = null,
     Object? similarPhotoCount = null,
     Object? selectedItems = null,
+    Object? allDuplicateItems = null,
+    Object? allSimilarItems = null,
     Object? duplicatesSelected = null,
     Object? similarPhotosSelected = null,
     Object? isCleaning = null,
@@ -99,6 +106,14 @@ class _$SmartCleanupStateCopyWithImpl<$Res, $Val extends SmartCleanupState>
       selectedItems: null == selectedItems
           ? _value.selectedItems
           : selectedItems // ignore: cast_nullable_to_non_nullable
+              as List<CleanupItem>,
+      allDuplicateItems: null == allDuplicateItems
+          ? _value.allDuplicateItems
+          : allDuplicateItems // ignore: cast_nullable_to_non_nullable
+              as List<CleanupItem>,
+      allSimilarItems: null == allSimilarItems
+          ? _value.allSimilarItems
+          : allSimilarItems // ignore: cast_nullable_to_non_nullable
               as List<CleanupItem>,
       duplicatesSelected: null == duplicatesSelected
           ? _value.duplicatesSelected
@@ -135,6 +150,8 @@ abstract class _$$SmartCleanupStateImplCopyWith<$Res>
       int duplicateCount,
       int similarPhotoCount,
       List<CleanupItem> selectedItems,
+      List<CleanupItem> allDuplicateItems,
+      List<CleanupItem> allSimilarItems,
       bool duplicatesSelected,
       bool similarPhotosSelected,
       bool isCleaning,
@@ -158,6 +175,8 @@ class __$$SmartCleanupStateImplCopyWithImpl<$Res>
     Object? duplicateCount = null,
     Object? similarPhotoCount = null,
     Object? selectedItems = null,
+    Object? allDuplicateItems = null,
+    Object? allSimilarItems = null,
     Object? duplicatesSelected = null,
     Object? similarPhotosSelected = null,
     Object? isCleaning = null,
@@ -187,6 +206,14 @@ class __$$SmartCleanupStateImplCopyWithImpl<$Res>
       selectedItems: null == selectedItems
           ? _value._selectedItems
           : selectedItems // ignore: cast_nullable_to_non_nullable
+              as List<CleanupItem>,
+      allDuplicateItems: null == allDuplicateItems
+          ? _value._allDuplicateItems
+          : allDuplicateItems // ignore: cast_nullable_to_non_nullable
+              as List<CleanupItem>,
+      allSimilarItems: null == allSimilarItems
+          ? _value._allSimilarItems
+          : allSimilarItems // ignore: cast_nullable_to_non_nullable
               as List<CleanupItem>,
       duplicatesSelected: null == duplicatesSelected
           ? _value.duplicatesSelected
@@ -218,11 +245,15 @@ class _$SmartCleanupStateImpl implements _SmartCleanupState {
       required this.duplicateCount,
       required this.similarPhotoCount,
       required final List<CleanupItem> selectedItems,
+      required final List<CleanupItem> allDuplicateItems,
+      required final List<CleanupItem> allSimilarItems,
       this.duplicatesSelected = true,
       this.similarPhotosSelected = true,
       this.isCleaning = false,
       this.isCompleted = false})
-      : _selectedItems = selectedItems;
+      : _selectedItems = selectedItems,
+        _allDuplicateItems = allDuplicateItems,
+        _allSimilarItems = allSimilarItems;
 
   @override
   final int totalPotentialSavings;
@@ -242,14 +273,31 @@ class _$SmartCleanupStateImpl implements _SmartCleanupState {
     return EqualUnmodifiableListView(_selectedItems);
   }
 
+// [A10] Store raw items for instant toggle without refetching
+  final List<CleanupItem> _allDuplicateItems;
+// [A10] Store raw items for instant toggle without refetching
+  @override
+  List<CleanupItem> get allDuplicateItems {
+    if (_allDuplicateItems is EqualUnmodifiableListView)
+      return _allDuplicateItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allDuplicateItems);
+  }
+
+  final List<CleanupItem> _allSimilarItems;
+  @override
+  List<CleanupItem> get allSimilarItems {
+    if (_allSimilarItems is EqualUnmodifiableListView) return _allSimilarItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allSimilarItems);
+  }
+
   @override
   @JsonKey()
   final bool duplicatesSelected;
-// NEW
   @override
   @JsonKey()
   final bool similarPhotosSelected;
-// NEW
   @override
   @JsonKey()
   final bool isCleaning;
@@ -259,7 +307,7 @@ class _$SmartCleanupStateImpl implements _SmartCleanupState {
 
   @override
   String toString() {
-    return 'SmartCleanupState(totalPotentialSavings: $totalPotentialSavings, duplicateSize: $duplicateSize, similarPhotoSize: $similarPhotoSize, duplicateCount: $duplicateCount, similarPhotoCount: $similarPhotoCount, selectedItems: $selectedItems, duplicatesSelected: $duplicatesSelected, similarPhotosSelected: $similarPhotosSelected, isCleaning: $isCleaning, isCompleted: $isCompleted)';
+    return 'SmartCleanupState(totalPotentialSavings: $totalPotentialSavings, duplicateSize: $duplicateSize, similarPhotoSize: $similarPhotoSize, duplicateCount: $duplicateCount, similarPhotoCount: $similarPhotoCount, selectedItems: $selectedItems, allDuplicateItems: $allDuplicateItems, allSimilarItems: $allSimilarItems, duplicatesSelected: $duplicatesSelected, similarPhotosSelected: $similarPhotosSelected, isCleaning: $isCleaning, isCompleted: $isCompleted)';
   }
 
   @override
@@ -279,6 +327,10 @@ class _$SmartCleanupStateImpl implements _SmartCleanupState {
                 other.similarPhotoCount == similarPhotoCount) &&
             const DeepCollectionEquality()
                 .equals(other._selectedItems, _selectedItems) &&
+            const DeepCollectionEquality()
+                .equals(other._allDuplicateItems, _allDuplicateItems) &&
+            const DeepCollectionEquality()
+                .equals(other._allSimilarItems, _allSimilarItems) &&
             (identical(other.duplicatesSelected, duplicatesSelected) ||
                 other.duplicatesSelected == duplicatesSelected) &&
             (identical(other.similarPhotosSelected, similarPhotosSelected) ||
@@ -298,6 +350,8 @@ class _$SmartCleanupStateImpl implements _SmartCleanupState {
       duplicateCount,
       similarPhotoCount,
       const DeepCollectionEquality().hash(_selectedItems),
+      const DeepCollectionEquality().hash(_allDuplicateItems),
+      const DeepCollectionEquality().hash(_allSimilarItems),
       duplicatesSelected,
       similarPhotosSelected,
       isCleaning,
@@ -319,6 +373,8 @@ abstract class _SmartCleanupState implements SmartCleanupState {
       required final int duplicateCount,
       required final int similarPhotoCount,
       required final List<CleanupItem> selectedItems,
+      required final List<CleanupItem> allDuplicateItems,
+      required final List<CleanupItem> allSimilarItems,
       final bool duplicatesSelected,
       final bool similarPhotosSelected,
       final bool isCleaning,
@@ -336,11 +392,15 @@ abstract class _SmartCleanupState implements SmartCleanupState {
   int get similarPhotoCount;
   @override
   List<CleanupItem> get selectedItems;
+  @override // [A10] Store raw items for instant toggle without refetching
+  List<CleanupItem> get allDuplicateItems;
+  @override
+  List<CleanupItem> get allSimilarItems;
   @override
   bool get duplicatesSelected;
-  @override // NEW
+  @override
   bool get similarPhotosSelected;
-  @override // NEW
+  @override
   bool get isCleaning;
   @override
   bool get isCompleted;

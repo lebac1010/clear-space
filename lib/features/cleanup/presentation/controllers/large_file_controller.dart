@@ -93,9 +93,10 @@ class LargeFileController extends _$LargeFileController {
       );
 
       if (success) {
-        // Refresh Dashboard to update source of truth
-        ref.invalidate(dashboardControllerProvider);
-        // We don't need to manual refresh self because we watch dashboardControllerProvider
+        // [A4] Immediately clear deleted items from list
+        ref.invalidateSelf();
+        // [D1] Trigger background re-scan instead of invalidating (which causes full re-scan loop)
+        ref.read(dashboardControllerProvider.notifier).startScan();
       } else {
         ref.invalidateSelf();
       }

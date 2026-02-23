@@ -226,4 +226,29 @@ class NativeStorageScanner {
       return null;
     }
   }
+
+  /// Load efficient thumbnail from a content URI
+  /// Uses Android's ContentResolver.loadThumbnail() — returns small JPEG bytes (~10-30KB)
+  /// Falls back to getPhotoBytes() if thumbnail generation fails
+  Future<Uint8List?> getPhotoThumbnail(
+    String uri, {
+    int width = 200,
+    int height = 200,
+  }) async {
+    try {
+      final result = await _methodChannel.invokeMethod('getPhotoThumbnail', {
+        'uri': uri,
+        'width': width,
+        'height': height,
+      });
+      if (result is Uint8List) return result;
+      return null;
+    } catch (e) {
+      debugPrint(
+        '[NativeStorageScanner] getPhotoThumbnail error: $e, falling back to getPhotoBytes',
+      );
+      // Fallback to full image if thumbnail fails
+      return getPhotoBytes(uri);
+    }
+  }
 }

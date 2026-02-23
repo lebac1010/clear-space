@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
 import '../../domain/entities/cleanup_group.dart';
 import '../../domain/entities/cleanup_item.dart';
 import '../providers/cleanup_provider.dart';
@@ -18,8 +19,11 @@ class SmartCleanupState with _$SmartCleanupState {
     required int duplicateCount,
     required int similarPhotoCount,
     required List<CleanupItem> selectedItems,
-    @Default(true) bool duplicatesSelected, // NEW
-    @Default(true) bool similarPhotosSelected, // NEW
+    // [A10] Store raw items for instant toggle without refetching
+    required List<CleanupItem> allDuplicateItems,
+    required List<CleanupItem> allSimilarItems,
+    @Default(true) bool duplicatesSelected,
+    @Default(true) bool similarPhotosSelected,
     @Default(false) bool isCleaning,
     @Default(false) bool isCompleted,
   }) = _SmartCleanupState;
@@ -89,69 +93,37 @@ class SmartCleanupController extends _$SmartCleanupController {
       duplicateCount: duplicateItems.length,
       similarPhotoCount: similarItems.length,
       selectedItems: selectedItems,
+      allDuplicateItems: duplicateItems,
+      allSimilarItems: similarItems,
       duplicatesSelected: duplicatesSelected,
       similarPhotosSelected: similarPhotosSelected,
     );
   }
 
-  void toggleDuplicates(bool selected) async {
+  // [A10] Instant toggle — no AsyncLoading, no refetch, just recalculate from cached items
+  void toggleDuplicates(bool selected) {
     final currentState = state.value;
     if (currentState == null) return;
 
-    // We need the original full lists to recalculate.
-    // Since we don't store them in state, we might need to fetch/store them.
-    // Optimization: Store full lists in state or re-fetch (fast since cached in Repo/Provider).
-    // Better: Store raw items in state too? Or just re-run the logic?
-    // Re-running build logic is hard without refetching.
-    // Let's modify state to hold the 'raw' items or just re-fetch since repo is likely caching.
-
-    // Actually, to avoid refetching, let's just keep the processed lists in the class?
-    // No, Controller is recreated.
-    // Let's rely on Repository caching which is already implemented for these methods.
-
-    state = const AsyncLoading();
-
-    // Re-run build-like logic but with new selection
-    // Ideally we should refactor build to separate data fetching from state calculation.
-
-    final repository = await ref.read(cleanupRepositoryProvider.future);
-    final results = await Future.wait([
-      repository.getDuplicateFiles(),
-      repository.getSimilarPhotos(),
-    ]);
-
-    final duplicateItems = _smartSelect(results[0], CleanupType.duplicate);
-    final similarItems = _smartSelect(results[1], CleanupType.similar);
-
     state = AsyncData(
       _calculateState(
-        duplicateItems: duplicateItems,
-        similarItems: similarItems,
+        duplicateItems: currentState.allDuplicateItems,
+        similarItems: currentState.allSimilarItems,
         duplicatesSelected: selected,
         similarPhotosSelected: currentState.similarPhotosSelected,
       ),
     );
   }
 
-  void toggleSimilarPhotos(bool selected) async {
+  // [A10] Instant toggle
+  void toggleSimilarPhotos(bool selected) {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = const AsyncLoading();
-
-    final repository = await ref.read(cleanupRepositoryProvider.future);
-    final results = await Future.wait([
-      repository.getDuplicateFiles(),
-      repository.getSimilarPhotos(),
-    ]);
-
-    final duplicateItems = _smartSelect(results[0], CleanupType.duplicate);
-    final similarItems = _smartSelect(results[1], CleanupType.similar);
-
     state = AsyncData(
       _calculateState(
-        duplicateItems: duplicateItems,
-        similarItems: similarItems,
+        duplicateItems: currentState.allDuplicateItems,
+        similarItems: currentState.allSimilarItems,
         duplicatesSelected: currentState.duplicatesSelected,
         similarPhotosSelected: selected,
       ),
@@ -168,7 +140,7 @@ class SmartCleanupController extends _$SmartCleanupController {
       if (type == CleanupType.similar) {
         // Similar: Prioritize Size (Quality) then Date
         sortedItems.sort((a, b) {
-          final sizeCompare = b.size.compareTo(a.size); // Desecending size
+          final sizeCompare = b.size.compareTo(a.size); // Descending size
           if (sizeCompare != 0) return sizeCompare;
           return b.dateModified.compareTo(a.dateModified); // Descending date
         });
@@ -199,12 +171,11 @@ class SmartCleanupController extends _$SmartCleanupController {
       final success = await repository.deleteItems(uris);
 
       if (success) {
-        // Invalidate self to refresh data
         state = AsyncData(
           currentState.copyWith(isCleaning: false, isCompleted: true),
         );
-        // Need to refresh repository/dashboard too?
-        // Ref.invalidate(dashboardControllerProvider); // Ideally
+        // [A3] Refresh dashboard after cleanup to reflect deleted files
+        ref.read(dashboardControllerProvider.notifier).startScan();
       } else {
         state = AsyncData(currentState.copyWith(isCleaning: false));
       }

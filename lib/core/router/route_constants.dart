@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// Centralized route path constants to avoid magic strings.
 abstract class RouteConstants {
@@ -38,8 +39,9 @@ class NotFoundScreen extends StatelessWidget {
             const Text('The page you are looking for does not exist.'),
             const SizedBox(height: 24),
             FilledButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Go Back'),
+              // [A8] Safely navigate to dashboard instead of pop (which fails at root)
+              onPressed: () => context.go(RouteConstants.dashboard),
+              child: const Text('Go to Dashboard'),
             ),
           ],
         ),

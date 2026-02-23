@@ -95,7 +95,8 @@ class CleanupScreen extends ConsumerWidget {
                   ),
                   color: AppColors.error,
                   icon: Icons.video_file_rounded,
-                  onTap: () => context.push(RouteConstants.largeFiles),
+                  // [A9] Use go (not push) for consistent navigation within shell branch
+                  onTap: () => context.go(RouteConstants.largeFiles),
                 ),
                 const Gap(12),
                 // Hidden for now as logic is not ready

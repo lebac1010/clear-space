@@ -41,7 +41,10 @@ dynamic deepConvertPlatformData(dynamic value) {
 Map<String, dynamic> convertToJsonMap(dynamic platformData) {
   final converted = deepConvertPlatformData(platformData);
   if (converted is! Map<String, dynamic>) {
-    throw TypeError();
+    // [A11] Descriptive error instead of raw TypeError
+    throw FormatException(
+      'Expected Map<String, dynamic> from platform channel, got ${converted.runtimeType}: $converted',
+    );
   }
   return converted;
 }

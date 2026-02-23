@@ -92,6 +92,9 @@ class DuplicateListScreen extends ConsumerWidget {
                             return Stack(
                               children: [
                                 CleanupItemTile(
+                                  key: ValueKey(
+                                    item.id,
+                                  ), // [D5] Prevent stale thumbnails on reorder
                                   item: item,
                                   onTap: () {
                                     ref

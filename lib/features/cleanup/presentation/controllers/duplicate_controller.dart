@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../dashboard/data/providers/storage_provider.dart';
 import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
 import '../../domain/entities/cleanup_group.dart';
 import '../providers/cleanup_provider.dart';
@@ -110,9 +109,9 @@ class DuplicateController extends _$DuplicateController {
       if (success) {
         // Refresh list
         ref.invalidateSelf();
-        // Also refresh storage info
-        ref.invalidate(storageRepositoryProvider);
-        ref.invalidate(dashboardControllerProvider);
+        // [D1] Trigger background re-scan instead of invalidating (which causes full re-scan loop)
+        // Cache was already cleared by deleteFiles() in the repository
+        ref.read(dashboardControllerProvider.notifier).startScan();
       } else {
         // Restore state if failed (or partially failed?)
         // Ideally we should reload

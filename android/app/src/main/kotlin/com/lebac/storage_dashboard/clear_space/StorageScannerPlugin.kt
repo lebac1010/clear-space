@@ -328,6 +328,77 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     }
                 }
             }
+            // [D2] getPhotoThumbnail — efficient thumbnail loading via ContentResolver
+            "getPhotoThumbnail" -> {
+                val uri = call.argument<String>("uri")
+                if (uri == null) {
+                    result.error("INVALID_ARG", "uri is required", null)
+                    return
+                }
+                
+                if (!uri.startsWith("content://media/")) {
+                    result.error("INVALID_URI", "Only MediaStore URIs are allowed", null)
+                    return
+                }
+                
+                val width = call.argument<Int>("width") ?: 200
+                val height = call.argument<Int>("height") ?: 200
+                
+                getScope().launch(Dispatchers.IO) {
+                    try {
+                        val contentUri = android.net.Uri.parse(uri)
+                        val bitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                            // API 29+: Use efficient loadThumbnail
+                            context.contentResolver.loadThumbnail(
+                                contentUri,
+                                android.util.Size(width, height),
+                                null
+                            )
+                        } else {
+                            // Fallback: decode with inSampleSize for memory efficiency
+                            val options = android.graphics.BitmapFactory.Options().apply {
+                                inJustDecodeBounds = true
+                            }
+                            context.contentResolver.openInputStream(contentUri)?.use { stream ->
+                                android.graphics.BitmapFactory.decodeStream(stream, null, options)
+                            }
+                            
+                            val sampleSize = maxOf(
+                                (options.outWidth / width),
+                                (options.outHeight / height),
+                                1
+                            )
+                            
+                            val decodeOptions = android.graphics.BitmapFactory.Options().apply {
+                                inSampleSize = sampleSize
+                            }
+                            context.contentResolver.openInputStream(contentUri)?.use { stream ->
+                                android.graphics.BitmapFactory.decodeStream(stream, null, decodeOptions)
+                            }
+                        }
+                        
+                        if (bitmap != null) {
+                            val stream = java.io.ByteArrayOutputStream()
+                            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 80, stream)
+                            bitmap.recycle()
+                            val bytes = stream.toByteArray()
+                            
+                            withContext(Dispatchers.Main) {
+                                result.success(bytes)
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                result.error("THUMB_ERROR", "Could not generate thumbnail", null)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("StorageScannerPlugin", "getPhotoThumbnail error: ${e.message}", e)
+                        withContext(Dispatchers.Main) {
+                            result.error("THUMB_ERROR", e.message, null)
+                        }
+                    }
+                }
+            }
             else -> result.notImplemented()
         }
     }

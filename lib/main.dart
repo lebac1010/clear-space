@@ -8,12 +8,22 @@ import 'core/router/app_router.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Global error handling
+  // Global error handling — sync errors (widget build, layout, painting)
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     if (kReleaseMode) {
       // TODO: Log to crashlytics or similar service
     }
+  };
+
+  // [A12] Async error handling — PlatformExceptions, unhandled Future errors
+  PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('[AsyncError] $error');
+    debugPrint('[AsyncError] $stack');
+    if (kReleaseMode) {
+      // TODO: Log to crashlytics or similar service
+    }
+    return true; // Prevent crash
   };
 
   runApp(

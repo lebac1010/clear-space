@@ -7,7 +7,7 @@ part of 'duplicate_controller.dart';
 // **************************************************************************
 
 String _$duplicateControllerHash() =>
-    r'be7cc961eda3f2451849a8fe14ab0e8c0706c991';
+    r'a841f522c711440bc14d45bed9d1c73022480be2';
 
 /// Copied from Dart SDK
 class _SystemHash {

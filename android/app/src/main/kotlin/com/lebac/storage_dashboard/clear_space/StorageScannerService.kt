@@ -221,7 +221,9 @@ class StorageScannerService : Service() {
     private fun startForegroundServiceCompat() {
         val notification = createNotification()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            // [P5] Must match manifest's android:foregroundServiceType="specialUse"
+            // Using DATA_SYNC here crashed on Android 14+ when manifest declares specialUse
+            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(NOTIFICATION_ID, notification)
         }

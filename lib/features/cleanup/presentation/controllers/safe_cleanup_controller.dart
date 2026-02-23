@@ -21,7 +21,10 @@ class SafeCleanupController extends _$SafeCleanupController {
       Future.microtask(() => checkForBackgroundJob());
     }
 
-    final dashboardState = ref.watch(dashboardControllerProvider);
+    // [A2] Use ref.read instead of ref.watch to break circular dependency
+    // SafeCleanupController (keepAlive) watching DashboardController (keepAlive)
+    // caused infinite rebuild loops when dashboard state changed.
+    final dashboardState = ref.read(dashboardControllerProvider);
 
     return dashboardState.when(
       data: (info) {
@@ -32,6 +35,11 @@ class SafeCleanupController extends _$SafeCleanupController {
       error: (_, __) => null,
       loading: () => null,
     );
+  }
+
+  /// Manually refresh when dashboard data changes (called externally)
+  void refreshFromDashboard() {
+    ref.invalidateSelf();
   }
 
   Future<void> cleanNow() async {
