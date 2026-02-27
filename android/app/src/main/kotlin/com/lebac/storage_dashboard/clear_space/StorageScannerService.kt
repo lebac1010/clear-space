@@ -181,6 +181,14 @@ class StorageScannerService : Service() {
         return result
     }
 
+    fun getMediaFiles(type: String, limit: Int, offset: Int): List<Map<String, Any>> {
+        Log.d("StorageScannerService", "getMediaFiles called: type=$type, limit=$limit, offset=$offset")
+        if (scanner == null) {
+            scanner = MediaStoreScanner(this)
+        }
+        return scanner?.getMediaFiles(type, limit, offset) ?: emptyList()
+    }
+
 
     fun requestDelete(uris: List<String>, permanent: Boolean, callback: (android.content.IntentSender?) -> Unit) {
         // Use service scope to ensure operation completes even if app backgrounds

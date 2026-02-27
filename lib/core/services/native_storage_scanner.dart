@@ -213,6 +213,31 @@ class NativeStorageScanner {
     return [];
   }
 
+  /// Get media files (audio, video, documents) with pagination
+  /// Returns List<Map<String, dynamic>>
+  Future<List<Map<String, dynamic>>> getMediaFiles({
+    required String type,
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    debugPrint(
+      '[NativeStorageScanner] getMediaFiles called: type=$type, limit=$limit, offset=$offset',
+    );
+    final result = await _methodChannel.invokeMethod('getMediaFiles', {
+      'type': type,
+      'limit': limit,
+      'offset': offset,
+    });
+
+    if (result == null) return [];
+
+    final converted = deepConvertPlatformData(result);
+    if (converted is List) {
+      return converted.whereType<Map<String, dynamic>>().toList();
+    }
+    return [];
+  }
+
   /// Load image bytes from a content URI (scoped storage safe)
   Future<Uint8List?> getPhotoBytes(String uri) async {
     try {

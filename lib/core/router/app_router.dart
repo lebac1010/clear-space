@@ -12,7 +12,7 @@ import '../../features/cleanup/presentation/controllers/duplicate_controller.dar
 import '../../features/contacts/presentation/screens/contacts_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/cleanup/presentation/screens/junk_files_screen.dart';
-import '../../features/files/presentation/screens/files_screen.dart';
+import '../../features/files/presentation/screens/media_explorer_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -109,6 +109,7 @@ GoRouter goRouter(GoRouterRef ref) {
                   GoRoute(
                     path: 'junk',
                     name: 'junk-files',
+                    parentNavigatorKey: rootNavigatorKey, // Full screen
                     builder: (context, state) => const JunkFilesScreen(),
                   ),
                 ],
@@ -143,8 +144,19 @@ GoRouter goRouter(GoRouterRef ref) {
             routes: [
               GoRoute(
                 path: RouteConstants.files,
-                name: 'files',
-                builder: (context, state) => const FilesScreen(),
+                name: 'media-explorer',
+                builder: (context, state) {
+                  final String? category =
+                      state.uri.queryParameters['category'];
+
+                  // Map dashboard categories to tab types
+                  String initialType = 'audio';
+                  if (category == 'video') initialType = 'video';
+                  if (category == 'document') initialType = 'documents';
+                  // 'apps' category is not supported in these tabs yet, fallback to audio
+
+                  return MediaExplorerScreen(initialType: initialType);
+                },
               ),
             ],
           ),

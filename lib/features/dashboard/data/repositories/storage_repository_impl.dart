@@ -155,6 +155,19 @@ class StorageRepositoryImpl implements StorageRepository {
 
   @override
   Future<Map<String, dynamic>?> getCleanupInfo() async {
-    return _nativeScanner.getCleanupInfo();
+    return await _nativeScanner.getCleanupInfo();
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getMediaFiles({
+    required String type,
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    return await _nativeScanner.getMediaFiles(
+      type: type,
+      limit: limit,
+      offset: offset,
+    );
   }
 }

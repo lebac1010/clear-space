@@ -83,7 +83,16 @@ class FakeStorageRepository implements StorageRepository {
 
   @override
   Future<Map<String, dynamic>?> getCleanupInfo() async {
-    return {'state': 'SUCCEEDED', 'count': 0, 'bytes': 0};
+    return {'background': true, 'started': true};
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getMediaFiles({
+    required String type,
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    return [];
   }
 }
 

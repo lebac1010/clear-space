@@ -31,6 +31,20 @@ class MediaStoreScanner(private val context: Context) {
     private var lastSimilarPhotos: List<DuplicateFileInfo> = emptyList()
     private val photoInfos = mutableListOf<SimilarPhotoDetector.PhotoInfo>()
     
+    // Media Explorer Caches
+    data class FileInfo(
+        val id: Long,
+        val name: String,
+        val size: Long,
+        val path: String,
+        val mimeType: String,
+        val dateModified: Long,
+        val uri: String
+    )
+    private val audioCache = mutableListOf<FileInfo>()
+    private val videoCache = mutableListOf<FileInfo>()
+    private val documentCache = mutableListOf<FileInfo>()
+
     // Smart Cleanup Cache
     private val junkFilesCache = mutableListOf<String>()
     private val emptyFoldersCache = mutableListOf<String>()
@@ -56,6 +70,9 @@ class MediaStoreScanner(private val context: Context) {
             junkFilesCache.clear()
             emptyFoldersCache.clear()
             safeApkFilesCache.clear()
+            audioCache.clear()
+            videoCache.clear()
+            documentCache.clear()
             lastSimilarPhotos = emptyList()
             isPaused = false
             isCancelled = false
@@ -76,7 +93,7 @@ class MediaStoreScanner(private val context: Context) {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 ScanPhase.PHOTOS,
                 MediaType.IMAGE
-            ) { progress, cloud -> 
+            ) { progress: ScanProgress, cloud: Int -> 
                 emit(ScanUpdate.Progress(progress))
                 cloudOnlyCount += cloud
             }
@@ -89,7 +106,7 @@ class MediaStoreScanner(private val context: Context) {
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 ScanPhase.VIDEOS,
                 MediaType.VIDEO
-            ) { progress, cloud -> 
+            ) { progress: ScanProgress, cloud: Int -> 
                 emit(ScanUpdate.Progress(progress))
                 cloudOnlyCount += cloud
             }
@@ -102,7 +119,7 @@ class MediaStoreScanner(private val context: Context) {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 ScanPhase.AUDIO,
                 MediaType.AUDIO
-            ) { progress, cloud -> 
+            ) { progress: ScanProgress, cloud: Int -> 
                 emit(ScanUpdate.Progress(progress))
                 cloudOnlyCount += cloud
             }
@@ -111,7 +128,7 @@ class MediaStoreScanner(private val context: Context) {
             Log.d("StorageScanner", "Phase 5: Documents")
             // Phase 5: Documents
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.DOCUMENTS, 0, 100, 0L)))
-            val documentsResult = scanDocuments { progress ->
+            val documentsResult = scanDocuments { progress: ScanProgress ->
                 emit(ScanUpdate.Progress(progress))
             }
             checkCancelled()
@@ -119,7 +136,7 @@ class MediaStoreScanner(private val context: Context) {
             Log.d("StorageScanner", "Phase 6: Junk")
             // Phase 6: Junk
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.JUNK, 0, 100, 0L)))
-            val junkResult = scanJunkFiles { progress ->
+            val junkResult = scanJunkFiles { progress: ScanProgress ->
                 emit(ScanUpdate.Progress(progress))
             }
             checkCancelled()
@@ -127,7 +144,7 @@ class MediaStoreScanner(private val context: Context) {
             Log.d("StorageScanner", "Phase 7: Empty Folders")
             // Phase 7: Empty Folders
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.EMPTY_FOLDERS, 0, 100, 0L)))
-            val emptyFolderCount = scanEmptyFolders { progress ->
+            val emptyFolderCount = scanEmptyFolders { progress: ScanProgress ->
                 emit(ScanUpdate.Progress(progress))
             }
             checkCancelled()
@@ -135,7 +152,7 @@ class MediaStoreScanner(private val context: Context) {
             Log.d("StorageScanner", "Phase 8: APKs")
             // Phase 8: APKs
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.APKS, 0, 100, 0L)))
-            val apkResult = scanApks { progress ->
+            val apkResult = scanApks { progress: ScanProgress ->
                 emit(ScanUpdate.Progress(progress))
             }
             checkCancelled()
@@ -410,6 +427,321 @@ class MediaStoreScanner(private val context: Context) {
         }
         
         return count
+    }
+
+    /**
+     * Scan for documents (PDF, DOC, XLS, TXT, etc.)
+     */
+    private suspend fun scanDocuments(
+        onProgress: suspend (ScanProgress) -> Unit
+    ): MediaResult {
+        var totalCount = 0
+        var totalSize = 0L
+        var processedSoFar = 0
+
+        val projection = arrayOf(
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.Files.FileColumns.SIZE,
+            MediaStore.Files.FileColumns.DISPLAY_NAME,
+            MediaStore.Files.FileColumns.MIME_TYPE,
+            MediaStore.Files.FileColumns.DATA,
+            MediaStore.Files.FileColumns.DATE_MODIFIED
+        )
+
+        // Select common document types
+        val selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE} = ? AND (" +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ?)"
+
+        val selectionArgs = arrayOf(
+            MediaStore.Files.FileColumns.MEDIA_TYPE_NONE.toString(),
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "text/plain",
+            "application/rtf",
+            "application/zip" // Often contains documents
+        )
+
+        val cursor = context.contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        cursor?.use {
+            val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+            val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
+            val nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+            val mimeTypeIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
+            val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+            val dateModifiedIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED)
+
+            totalCount = cursor.count
+
+            while (cursor.moveToNext()) {
+                waitIfPaused()
+
+                val id = cursor.getLong(idIndex)
+                val size = cursor.getLong(sizeIndex)
+                val name = cursor.getString(nameIndex)
+                val mimeType = cursor.getString(mimeTypeIndex)
+                val path = cursor.getString(dataIndex)
+                val dateModified = cursor.getLong(dateModifiedIndex)
+
+                if (size > 0 && path != null) {
+                    totalSize += size
+                    documentCache.add(
+                        FileInfo(
+                            id = id,
+                            name = name ?: "Unknown",
+                            size = size,
+                            path = path,
+                            mimeType = mimeType ?: "application/octet-stream",
+                            dateModified = dateModified,
+                            uri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id).toString()
+                        )
+                    )
+                }
+                processedSoFar++
+
+                if (processedSoFar % 50 == 0) {
+                    onProgress(
+                        ScanProgress(
+                            phase = ScanPhase.DOCUMENTS,
+                            processedItems = processedSoFar,
+                            totalItems = totalCount,
+                            currentBytes = totalSize,
+                            currentVolume = "External"
+                        )
+                    )
+                }
+            }
+        }
+
+        // Final progress
+        onProgress(
+            ScanProgress(
+                phase = ScanPhase.DOCUMENTS,
+                processedItems = processedSoFar,
+                totalItems = totalCount,
+                currentBytes = totalSize
+            )
+        )
+
+        return MediaResult(
+            count = processedSoFar,
+            size = totalSize
+        )
+    }
+
+    /**
+     * Get media files by querying MediaStore directly (no cache dependency).
+     * This ensures data is always available even without a prior scan.
+     */
+    fun getMediaFiles(type: String, limit: Int, offset: Int): List<Map<String, Any>> {
+        return when (type) {
+            "audio" -> queryMediaStore(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                limit, offset
+            )
+            "video" -> queryMediaStore(
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                limit, offset
+            )
+            "documents" -> queryDocuments(limit, offset)
+            else -> emptyList()
+        }
+    }
+
+    /**
+     * Query audio/video from MediaStore with pagination, sorted by size desc.
+     * Uses Bundle-based query API (required on Android 11+).
+     */
+    private fun queryMediaStore(
+        contentUri: Uri,
+        limit: Int,
+        offset: Int
+    ): List<Map<String, Any>> {
+        val results = mutableListOf<Map<String, Any>>()
+
+        val projection = arrayOf(
+            MediaStore.MediaColumns._ID,
+            MediaStore.MediaColumns.DISPLAY_NAME,
+            MediaStore.MediaColumns.SIZE,
+            MediaStore.MediaColumns.DATA,
+            MediaStore.MediaColumns.MIME_TYPE,
+            MediaStore.MediaColumns.DATE_MODIFIED
+        )
+
+        val queryArgs = android.os.Bundle().apply {
+            // WHERE clause
+            putString(
+                android.content.ContentResolver.QUERY_ARG_SQL_SELECTION,
+                "${MediaStore.MediaColumns.SIZE} > 0"
+            )
+            // Sort by size descending
+            putStringArray(
+                android.content.ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.MediaColumns.SIZE)
+            )
+            putInt(
+                android.content.ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                android.content.ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+            )
+            // Pagination
+            putInt(android.content.ContentResolver.QUERY_ARG_LIMIT, limit)
+            putInt(android.content.ContentResolver.QUERY_ARG_OFFSET, offset)
+        }
+
+        val cursor = context.contentResolver.query(
+            contentUri,
+            projection,
+            queryArgs,
+            null
+        )
+
+        cursor?.use {
+            val idIdx = it.getColumnIndexOrThrow(MediaStore.MediaColumns._ID)
+            val nameIdx = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME)
+            val sizeIdx = it.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE)
+            val pathIdx = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+            val mimeIdx = it.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE)
+            val dateIdx = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED)
+
+            while (it.moveToNext()) {
+                val id = it.getLong(idIdx)
+                val path = it.getString(pathIdx) ?: continue
+
+                results.add(mapOf(
+                    "id" to id,
+                    "name" to (it.getString(nameIdx) ?: "Unknown"),
+                    "size" to it.getLong(sizeIdx),
+                    "path" to path,
+                    "mimeType" to (it.getString(mimeIdx) ?: "application/octet-stream"),
+                    "dateModified" to it.getLong(dateIdx),
+                    "uri" to ContentUris.withAppendedId(contentUri, id).toString()
+                ))
+            }
+        }
+
+        return results
+    }
+
+    /**
+     * Query documents from MediaStore Files table with pagination, sorted by size desc.
+     * Uses Bundle-based query API (required on Android 11+).
+     */
+    private fun queryDocuments(limit: Int, offset: Int): List<Map<String, Any>> {
+        val results = mutableListOf<Map<String, Any>>()
+
+        val projection = arrayOf(
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.Files.FileColumns.DISPLAY_NAME,
+            MediaStore.Files.FileColumns.SIZE,
+            MediaStore.Files.FileColumns.DATA,
+            MediaStore.Files.FileColumns.MIME_TYPE,
+            MediaStore.Files.FileColumns.DATE_MODIFIED
+        )
+
+        val selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE} = ? AND ${MediaStore.Files.FileColumns.SIZE} > 0 AND (" +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ? OR " +
+                "${MediaStore.Files.FileColumns.MIME_TYPE} LIKE ?)"
+
+        val selectionArgs = arrayOf(
+            MediaStore.Files.FileColumns.MEDIA_TYPE_NONE.toString(),
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "text/plain",
+            "application/rtf",
+            "application/zip"
+        )
+
+        val queryArgs = android.os.Bundle().apply {
+            // WHERE clause with args
+            putString(
+                android.content.ContentResolver.QUERY_ARG_SQL_SELECTION,
+                selection
+            )
+            putStringArray(
+                android.content.ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
+                selectionArgs
+            )
+            // Sort by size descending
+            putStringArray(
+                android.content.ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.Files.FileColumns.SIZE)
+            )
+            putInt(
+                android.content.ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                android.content.ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+            )
+            // Pagination
+            putInt(android.content.ContentResolver.QUERY_ARG_LIMIT, limit)
+            putInt(android.content.ContentResolver.QUERY_ARG_OFFSET, offset)
+        }
+
+        val cursor = context.contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            projection,
+            queryArgs,
+            null
+        )
+
+        cursor?.use {
+            val idIdx = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+            val nameIdx = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+            val sizeIdx = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
+            val pathIdx = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+            val mimeIdx = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
+            val dateIdx = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED)
+
+            while (it.moveToNext()) {
+                val id = it.getLong(idIdx)
+                val path = it.getString(pathIdx) ?: continue
+
+                results.add(mapOf(
+                    "id" to id,
+                    "name" to (it.getString(nameIdx) ?: "Unknown"),
+                    "size" to it.getLong(sizeIdx),
+                    "path" to path,
+                    "mimeType" to (it.getString(mimeIdx) ?: "application/octet-stream"),
+                    "dateModified" to it.getLong(dateIdx),
+                    "uri" to ContentUris.withAppendedId(
+                        MediaStore.Files.getContentUri("external"), id
+                    ).toString()
+                ))
+            }
+        }
+
+        return results
     }
 
     /**
@@ -728,6 +1060,14 @@ class MediaStoreScanner(private val context: Context) {
                             mediaType = mediaType
                         )
                         
+                        // Add to appropriate media cache
+                        val fileInfo = FileInfo(id, name, size, path, mimeType, dateModified, fileUri)
+                        when (mediaType) {
+                            MediaType.AUDIO -> audioCache.add(fileInfo)
+                            MediaType.VIDEO -> videoCache.add(fileInfo)
+                            else -> {} 
+                        }
+                        
                         processedSoFar++
 
                         // [P7] Adaptive progress emission — reduce overhead for large datasets
@@ -772,76 +1112,7 @@ class MediaStoreScanner(private val context: Context) {
         )
     }
 
-    /**
-     * Scan documents - FIX #11: Actually scan downloads and documents
-     */
-    private suspend fun scanDocuments(
-        onProgress: suspend (ScanProgress) -> Unit
-    ): MediaResult {
-        var totalCount = 0
-        var totalSize = 0L
-        var processedSoFar = 0
 
-        // Android 10+: Use MediaStore.Downloads
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val projection = arrayOf(
-                MediaStore.Downloads._ID,
-                MediaStore.Downloads.SIZE,
-                MediaStore.Downloads.DISPLAY_NAME,
-                MediaStore.Downloads.MIME_TYPE
-            )
-
-            val cursor = context.contentResolver.query(
-                MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-                projection,
-                null,
-                null,
-                null
-            )
-
-            cursor?.use {
-                val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Downloads.SIZE)
-                totalCount = cursor.count
-
-                while (cursor.moveToNext()) {
-                    waitIfPaused()
-                    
-                    val size = cursor.getLong(sizeIndex)
-                    if (size > 0) {
-                        totalSize += size
-                    }
-                    processedSoFar++
-
-                    if (processedSoFar % 50 == 0) {
-                        onProgress(
-                            ScanProgress(
-                                phase = ScanPhase.DOCUMENTS,
-                                processedItems = processedSoFar,
-                                totalItems = totalCount,
-                                currentBytes = totalSize,
-                                currentVolume = "Downloads"
-                            )
-                        )
-                    }
-                }
-            }
-        }
-
-        // Final progress
-        onProgress(
-            ScanProgress(
-                phase = ScanPhase.DOCUMENTS,
-                processedItems = processedSoFar,
-                totalItems = totalCount,
-                currentBytes = totalSize
-            )
-        )
-
-        return MediaResult(
-            count = processedSoFar,
-            size = totalSize
-        )
-    }
 
     /**
      * Move files to trash (Android 11+) or delete them (Android 10)

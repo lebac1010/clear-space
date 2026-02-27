@@ -220,6 +220,19 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     withContext(Dispatchers.Main) { result.success(photos) }
                 }
             }
+            "getMediaFiles" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val type = call.argument<String>("type") ?: return result.error("INVALID_ARGS", "Missing type", null)
+                val limit = call.argument<Int>("limit") ?: 50
+                val offset = call.argument<Int>("offset") ?: 0
+                getScope().launch(Dispatchers.IO) {
+                    val media = scannerService?.getMediaFiles(type, limit, offset) ?: emptyList()
+                    withContext(Dispatchers.Main) { result.success(media) }
+                }
+            }
             "cleanJunk" -> {
                 if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)

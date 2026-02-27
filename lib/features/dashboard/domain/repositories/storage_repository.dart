@@ -28,4 +28,11 @@ abstract class StorageRepository {
 
   /// Get background cleanup info
   Future<Map<String, dynamic>?> getCleanupInfo();
+
+  /// Get media files (audio, video, documents) with pagination
+  Future<List<Map<String, dynamic>>> getMediaFiles({
+    required String type,
+    int limit = 50,
+    int offset = 0,
+  });
 }
