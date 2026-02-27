@@ -43,4 +43,9 @@ class SmartCleanupService extends _$SmartCleanupService {
     // Types to clean: "junk", "empty_folders", "apks" (Safe ones)
     return repo.cleanJunk(['junk', 'empty_folders', 'apks']);
   }
+
+  Future<Map<String, dynamic>> cleanCategory(List<String> types) async {
+    final repo = await ref.read(storageRepositoryProvider.future);
+    return repo.cleanJunk(types);
+  }
 }

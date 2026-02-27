@@ -9,24 +9,23 @@ import '../repositories/storage_repository_impl.dart';
 part 'storage_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<SharedPreferences> sharedPreferences(SharedPreferencesRef ref) =>
-    SharedPreferences.getInstance();
+SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
+  throw UnimplementedError('sharedPreferences must be overridden in main.dart');
+}
 
 @Riverpod(keepAlive: true)
 NativeStorageScanner nativeStorageScanner(NativeStorageScannerRef ref) =>
     NativeStorageScanner();
 
 @Riverpod(keepAlive: true)
-Future<StorageCacheService> storageCacheService(
-  StorageCacheServiceRef ref,
-) async {
-  final prefs = await ref.watch(sharedPreferencesProvider.future);
+StorageCacheService storageCacheService(StorageCacheServiceRef ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
   return StorageCacheService(prefs);
 }
 
 @riverpod
 Future<StorageRepository> storageRepository(StorageRepositoryRef ref) async {
-  final cacheService = await ref.watch(storageCacheServiceProvider.future);
+  final cacheService = ref.watch(storageCacheServiceProvider);
   final nativeScanner = ref.watch(nativeStorageScannerProvider);
   return StorageRepositoryImpl(nativeScanner, cacheService);
 }

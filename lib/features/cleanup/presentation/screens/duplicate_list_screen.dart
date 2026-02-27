@@ -11,11 +11,19 @@ import '../../domain/entities/cleanup_group.dart';
 class DuplicateListScreen extends ConsumerWidget {
   final CleanupType type;
 
-  const DuplicateListScreen({super.key, this.type = CleanupType.duplicate});
+  final bool autoSmartSelect;
+
+  const DuplicateListScreen({
+    super.key,
+    this.type = CleanupType.duplicate,
+    this.autoSmartSelect = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final duplicatesAsync = ref.watch(duplicateControllerProvider(type));
+    final duplicatesAsync = ref.watch(
+      duplicateControllerProvider(type, autoSmartSelect: autoSmartSelect),
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -29,7 +37,12 @@ class DuplicateListScreen extends ConsumerWidget {
           TextButton(
             onPressed: () {
               ref
-                  .read(duplicateControllerProvider(type).notifier)
+                  .read(
+                    duplicateControllerProvider(
+                      type,
+                      autoSmartSelect: autoSmartSelect,
+                    ).notifier,
+                  )
                   .smartSelect();
             },
             child: const Text('Smart Select'),
@@ -101,6 +114,7 @@ class DuplicateListScreen extends ConsumerWidget {
                                         .read(
                                           duplicateControllerProvider(
                                             type,
+                                            autoSmartSelect: autoSmartSelect,
                                           ).notifier,
                                         )
                                         .toggleSelection(group.id, item.id);

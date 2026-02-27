@@ -62,6 +62,24 @@ class SafeCleanupController extends _$SafeCleanupController {
       } else {
         // Foreground done. Force refresh to get updated counts.
         ref.read(dashboardControllerProvider.notifier).refresh();
+        ref.invalidateSelf(); // Exit AsyncLoading → rebuild with fresh data
+      }
+    } catch (e, st) {
+      state = AsyncError(e, st);
+    }
+  }
+
+  Future<void> cleanCategory(List<String> types) async {
+    state = const AsyncLoading();
+    try {
+      final service = ref.read(smartCleanupServiceProvider.notifier);
+      final result = await service.cleanCategory(types);
+
+      if (result['background'] == true) {
+        await _pollCleanupStatus();
+      } else {
+        ref.read(dashboardControllerProvider.notifier).refresh();
+        ref.invalidateSelf(); // Exit AsyncLoading → rebuild with fresh data
       }
     } catch (e, st) {
       state = AsyncError(e, st);

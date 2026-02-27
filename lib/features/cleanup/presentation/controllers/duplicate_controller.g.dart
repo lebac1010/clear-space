@@ -7,7 +7,7 @@ part of 'duplicate_controller.dart';
 // **************************************************************************
 
 String _$duplicateControllerHash() =>
-    r'a841f522c711440bc14d45bed9d1c73022480be2';
+    r'2aa1ce5a3c856678d98fe1ad762f110b64005bcf';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,10 +33,12 @@ class _SystemHash {
 abstract class _$DuplicateController
     extends BuildlessAutoDisposeAsyncNotifier<List<CleanupGroup>> {
   late final CleanupType type;
+  late final bool autoSmartSelect;
 
   FutureOr<List<CleanupGroup>> build(
-    CleanupType type,
-  );
+    CleanupType type, {
+    bool autoSmartSelect = false,
+  });
 }
 
 /// See also [DuplicateController].
@@ -50,10 +52,12 @@ class DuplicateControllerFamily extends Family<AsyncValue<List<CleanupGroup>>> {
 
   /// See also [DuplicateController].
   DuplicateControllerProvider call(
-    CleanupType type,
-  ) {
+    CleanupType type, {
+    bool autoSmartSelect = false,
+  }) {
     return DuplicateControllerProvider(
       type,
+      autoSmartSelect: autoSmartSelect,
     );
   }
 
@@ -63,6 +67,7 @@ class DuplicateControllerFamily extends Family<AsyncValue<List<CleanupGroup>>> {
   ) {
     return call(
       provider.type,
+      autoSmartSelect: provider.autoSmartSelect,
     );
   }
 
@@ -86,9 +91,12 @@ class DuplicateControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
     DuplicateController, List<CleanupGroup>> {
   /// See also [DuplicateController].
   DuplicateControllerProvider(
-    CleanupType type,
-  ) : this._internal(
-          () => DuplicateController()..type = type,
+    CleanupType type, {
+    bool autoSmartSelect = false,
+  }) : this._internal(
+          () => DuplicateController()
+            ..type = type
+            ..autoSmartSelect = autoSmartSelect,
           from: duplicateControllerProvider,
           name: r'duplicateControllerProvider',
           debugGetCreateSourceHash:
@@ -99,6 +107,7 @@ class DuplicateControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
           allTransitiveDependencies:
               DuplicateControllerFamily._allTransitiveDependencies,
           type: type,
+          autoSmartSelect: autoSmartSelect,
         );
 
   DuplicateControllerProvider._internal(
@@ -109,9 +118,11 @@ class DuplicateControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.type,
+    required this.autoSmartSelect,
   }) : super.internal();
 
   final CleanupType type;
+  final bool autoSmartSelect;
 
   @override
   FutureOr<List<CleanupGroup>> runNotifierBuild(
@@ -119,6 +130,7 @@ class DuplicateControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
   ) {
     return notifier.build(
       type,
+      autoSmartSelect: autoSmartSelect,
     );
   }
 
@@ -127,13 +139,16 @@ class DuplicateControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: DuplicateControllerProvider._internal(
-        () => create()..type = type,
+        () => create()
+          ..type = type
+          ..autoSmartSelect = autoSmartSelect,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         type: type,
+        autoSmartSelect: autoSmartSelect,
       ),
     );
   }
@@ -146,13 +161,16 @@ class DuplicateControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is DuplicateControllerProvider && other.type == type;
+    return other is DuplicateControllerProvider &&
+        other.type == type &&
+        other.autoSmartSelect == autoSmartSelect;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, type.hashCode);
+    hash = _SystemHash.combine(hash, autoSmartSelect.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -162,6 +180,9 @@ mixin DuplicateControllerRef
     on AutoDisposeAsyncNotifierProviderRef<List<CleanupGroup>> {
   /// The parameter `type` of this provider.
   CleanupType get type;
+
+  /// The parameter `autoSmartSelect` of this provider.
+  bool get autoSmartSelect;
 }
 
 class _DuplicateControllerProviderElement
@@ -171,6 +192,9 @@ class _DuplicateControllerProviderElement
 
   @override
   CleanupType get type => (origin as DuplicateControllerProvider).type;
+  @override
+  bool get autoSmartSelect =>
+      (origin as DuplicateControllerProvider).autoSmartSelect;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

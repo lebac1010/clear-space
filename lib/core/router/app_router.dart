@@ -15,6 +15,8 @@ import '../../features/cleanup/presentation/screens/junk_files_screen.dart';
 import '../../features/files/presentation/screens/files_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
+import '../services/app_settings_service.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 import 'route_constants.dart';
 
@@ -31,7 +33,33 @@ GoRouter goRouter(GoRouterRef ref) {
     navigatorKey: rootNavigatorKey,
     initialLocation: RouteConstants.dashboard,
     debugLogDiagnostics: kDebugMode,
+    redirect: (context, state) {
+      // Check if onboarding is completed
+      // Now reads synchronously since it's initialized before runApp()
+      final settings = ref.read(appSettingsServiceProvider);
+
+      final onboardingCompleted = settings.isOnboardingCompleted();
+      final isGoingToOnboarding =
+          state.matchedLocation == RouteConstants.onboarding;
+
+      if (!onboardingCompleted) {
+        return isGoingToOnboarding ? null : RouteConstants.onboarding;
+      }
+
+      if (onboardingCompleted && isGoingToOnboarding) {
+        return RouteConstants.dashboard;
+      }
+
+      return null;
+    },
     routes: [
+      // Onboarding Route (Full screen)
+      GoRoute(
+        path: RouteConstants.onboarding,
+        name: 'onboarding',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+
       // Bottom Navigation Shell
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -135,6 +163,23 @@ GoRouter goRouter(GoRouterRef ref) {
         name: 'settings',
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const SettingsScreen(),
+      ),
+      // Full-screen detail view for Smart Cleanup items
+      GoRoute(
+        path: RouteConstants.smartDetail,
+        name: 'smart-detail',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) {
+          final typeStr = state.uri.queryParameters['type'];
+          final autoSelectStr = state.uri.queryParameters['autoSelect'];
+
+          final type = typeStr == 'similar'
+              ? CleanupType.similar
+              : CleanupType.duplicate;
+          final autoSelect = autoSelectStr == 'true';
+
+          return DuplicateListScreen(type: type, autoSmartSelect: autoSelect);
+        },
       ),
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),

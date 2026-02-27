@@ -22,7 +22,8 @@ class DashboardController extends _$DashboardController {
     final hasPermission = await repo.checkPermissions();
 
     if (hasPermission) {
-      // This will return cache first if available (fast), or scan if no cache
+      // Returns cache if available (instant), or scans if no cache.
+      // During scan, the screen shows dashboard shell via AsyncLoading handler.
       return await repo.getStorageInfo();
     }
     return null; // No permission — show permission view

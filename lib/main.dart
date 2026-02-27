@@ -1,12 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
+import 'features/dashboard/data/providers/storage_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load SharedPreferences synchronously before app starts
+  // This ensures router has immediate access to onboarding state
+  final prefs = await SharedPreferences.getInstance();
 
   // Global error handling — sync errors (widget build, layout, painting)
   FlutterError.onError = (details) {
@@ -29,6 +35,7 @@ void main() {
   runApp(
     ProviderScope(
       observers: kDebugMode ? [_RiverpodLogger()] : [],
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
       child: const MyApp(),
     ),
   );

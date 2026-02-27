@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/route_constants.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -93,9 +95,8 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                                     )
                                     .toggleDuplicates(val ?? false);
                               },
-                              onTap: () => context.goNamed(
-                                'duplicates',
-                                queryParameters: {'type': 'duplicate'},
+                              onTap: () => context.push(
+                                '${RouteConstants.smartDetail}?type=duplicate${state.duplicatesSelected ? '&autoSelect=true' : ''}',
                               ),
                             ),
                             const Divider(height: 1),
@@ -113,9 +114,8 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                                     )
                                     .toggleSimilarPhotos(val ?? false);
                               },
-                              onTap: () => context.goNamed(
-                                'duplicates',
-                                queryParameters: {'type': 'similar'},
+                              onTap: () => context.push(
+                                '${RouteConstants.smartDetail}?type=similar${state.similarPhotosSelected ? '&autoSelect=true' : ''}',
                               ),
                             ),
                             const Divider(height: 1),
@@ -270,9 +270,9 @@ class _AnimatedHeroHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 180,
-      height: 180,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      width: 200,
+      height: 200,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         color: AppColors.surface,
         shape: BoxShape.circle,
@@ -291,24 +291,23 @@ class _AnimatedHeroHeader extends StatelessWidget {
                 context,
               ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
             ),
-            // Animated counter
-            Flexible(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: TweenAnimationBuilder<int>(
-                  duration: const Duration(seconds: 1),
-                  tween: IntTween(begin: 0, end: savings),
-                  builder: (context, value, child) {
-                    return Text(
-                      FileUtils.formatSize(value),
-                      maxLines: 1,
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  },
-                ),
+            const Gap(4),
+            // Animated counter with FittedBox to prevent overflow
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: TweenAnimationBuilder<int>(
+                duration: const Duration(seconds: 1),
+                tween: IntTween(begin: 0, end: savings),
+                builder: (context, value, child) {
+                  return Text(
+                    FileUtils.formatSize(value),
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -365,7 +364,7 @@ class _InteractiveBreakdownItem extends StatelessWidget {
               ),
               child: Icon(icon, color: color, size: 24),
             ),
-            const Gap(16),
+            const Gap(12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,11 +375,12 @@ class _InteractiveBreakdownItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontSize: 15,
                     ),
                   ),
+                  const Gap(2),
                   Text(
-                    '$count items found',
+                    '$count items · ${FileUtils.formatSize(size)}',
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 13,
@@ -389,23 +389,11 @@ class _InteractiveBreakdownItem extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              children: [
-                Text(
-                  FileUtils.formatSize(size),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const Gap(8),
-                const Icon(
-                  Icons.chevron_right,
-                  color: AppColors.textSecondary,
-                  size: 20,
-                ),
-              ],
+            const Gap(4),
+            const Icon(
+              Icons.chevron_right,
+              color: AppColors.textSecondary,
+              size: 20,
             ),
           ],
         ),

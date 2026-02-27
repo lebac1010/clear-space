@@ -143,10 +143,11 @@ class MediaStoreScanner(private val context: Context) {
             Log.d("StorageScanner", "Phase 8.5: Similar Photos")
             // Phase 8.5: Similar Photos
             if (photoInfos.isNotEmpty()) {
-                emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, 0, photoInfos.size, 0L)))
                 // [C3] Pass defensive copy to avoid shared mutable state across coroutines
-                lastSimilarPhotos = similarPhotoDetector.findSimilarPhotos(photoInfos.toList())
-                emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, photoInfos.size, photoInfos.size, 0L)))
+                // Progress is emitted by the detector's batch callback (safe for Flow emit)
+                lastSimilarPhotos = similarPhotoDetector.findSimilarPhotos(photoInfos.toList()) { processed, total ->
+                    emit(ScanUpdate.Progress(ScanProgress(ScanPhase.SIMILAR_PHOTOS, processed, total, 0L)))
+                }
             }
             checkCancelled()
 

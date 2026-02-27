@@ -7,7 +7,7 @@ part of 'smart_cleanup_service.dart';
 // **************************************************************************
 
 String _$smartCleanupServiceHash() =>
-    r'db85aded3e33844cc37c525c177f3c3e8f303d98';
+    r'0596fad24954a5f30bb2a9cf81cd4a78acf20cc0';
 
 /// See also [SmartCleanupService].
 @ProviderFor(SmartCleanupService)

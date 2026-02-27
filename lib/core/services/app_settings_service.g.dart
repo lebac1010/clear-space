@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'safe_cleanup_controller.dart';
+part of 'app_settings_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$safeCleanupControllerHash() =>
-    r'7f27d6c39a9cd112fd968326783d80b2d25392a0';
+String _$appSettingsServiceHash() =>
+    r'68349fb9b0edc7b164c7fab979bc134697527888';
 
-/// See also [SafeCleanupController].
-@ProviderFor(SafeCleanupController)
-final safeCleanupControllerProvider =
-    AsyncNotifierProvider<SafeCleanupController, SafeCleanupInfo?>.internal(
-  SafeCleanupController.new,
-  name: r'safeCleanupControllerProvider',
+/// See also [appSettingsService].
+@ProviderFor(appSettingsService)
+final appSettingsServiceProvider = Provider<AppSettingsService>.internal(
+  appSettingsService,
+  name: r'appSettingsServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$safeCleanupControllerHash,
+      : _$appSettingsServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SafeCleanupController = AsyncNotifier<SafeCleanupInfo?>;
+typedef AppSettingsServiceRef = ProviderRef<AppSettingsService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

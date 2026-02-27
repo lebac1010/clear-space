@@ -10,12 +10,22 @@ enum CleanupType { duplicate, similar }
 @riverpod
 class DuplicateController extends _$DuplicateController {
   @override
-  Future<List<CleanupGroup>> build(CleanupType type) async {
+  Future<List<CleanupGroup>> build(
+    CleanupType type, {
+    bool autoSmartSelect = false,
+  }) async {
     final repository = await ref.watch(cleanupRepositoryProvider.future);
+    List<CleanupGroup> groups;
     if (type == CleanupType.similar) {
-      return repository.getSimilarPhotos();
+      groups = await repository.getSimilarPhotos();
+    } else {
+      groups = await repository.getDuplicateFiles();
     }
-    return repository.getDuplicateFiles();
+
+    if (autoSmartSelect) {
+      return _applySmartSelectLogic(groups);
+    }
+    return groups;
   }
 
   /// Toggle selection of a file
@@ -40,42 +50,39 @@ class DuplicateController extends _$DuplicateController {
     );
   }
 
-  /// Smart Select:
-  /// - Duplicates: Keep Newest (Default) - or Oldest? Usually we keep the one we want. keeping newest is safer?
-  ///   Actually, typically "Keep Oldest" (original) is preferred for duplicates if they are identical.
-  ///   But User didn't specify for Duplicates.
-  /// - Similar: Keep Best (Largest Size) or Newest.
   void smartSelect() {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = AsyncData(
-      currentState.map((group) {
-        final sortedItems = List.of(group.items);
+    state = AsyncData(_applySmartSelectLogic(currentState));
+  }
 
-        if (type == CleanupType.similar) {
-          // Similar: Prioritize Size (Quality) then Date
-          sortedItems.sort((a, b) {
-            final sizeCompare = b.size.compareTo(a.size); // Desecending size
-            if (sizeCompare != 0) return sizeCompare;
-            return b.dateModified.compareTo(a.dateModified); // Descending date
-          });
-        } else {
-          // Duplicates: Sort by date (newest first)
-          sortedItems.sort((a, b) => b.dateModified.compareTo(a.dateModified));
-        }
+  List<CleanupGroup> _applySmartSelectLogic(List<CleanupGroup> currentGroups) {
+    return currentGroups.map((group) {
+      final sortedItems = List.of(group.items);
 
-        // Keep the first one (Best/Newest), select others
-        if (sortedItems.isNotEmpty) {
-          final keepId = sortedItems.first.id;
-          final updatedItems = group.items.map((item) {
-            return item.copyWith(isSelected: item.id != keepId);
-          }).toList();
-          return group.copyWith(items: updatedItems);
-        }
-        return group;
-      }).toList(),
-    );
+      if (type == CleanupType.similar) {
+        // Similar: Prioritize Size (Quality) then Date
+        sortedItems.sort((a, b) {
+          final sizeCompare = b.size.compareTo(a.size); // Desecending size
+          if (sizeCompare != 0) return sizeCompare;
+          return b.dateModified.compareTo(a.dateModified); // Descending date
+        });
+      } else {
+        // Duplicates: Sort by date (newest first)
+        sortedItems.sort((a, b) => b.dateModified.compareTo(a.dateModified));
+      }
+
+      // Keep the first one (Best/Newest), select others
+      if (sortedItems.isNotEmpty) {
+        final keepId = sortedItems.first.id;
+        final updatedItems = group.items.map((item) {
+          return item.copyWith(isSelected: item.id != keepId);
+        }).toList();
+        return group.copyWith(items: updatedItems);
+      }
+      return group;
+    }).toList();
   }
 
   /// Delete selected files

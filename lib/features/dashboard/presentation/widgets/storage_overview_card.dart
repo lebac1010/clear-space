@@ -41,24 +41,21 @@ class StorageOverviewCard extends ConsumerWidget {
     // Determine progress bar value
     String statusText = '$percentage% Used';
 
-    // Override if scanning
-    // FIX #9: Guard against division by zero
-    if (currentProgress != null && currentProgress.totalItems > 0) {
-      final total = currentProgress.totalItems;
-      final processed = currentProgress.processedItems;
-      // Safe division - clamp to valid percentage range
-      final p = total > 0 ? (processed / total).clamp(0.0, 1.0) : 0.0;
+    // Override if scanning — show phase name for better UX
+    if (currentProgress != null) {
+      final phaseName = _phaseName(currentProgress.phase);
 
-      // Show scanning indicator if not merely calculating
-      if (currentProgress.phase != ScanPhase.calculating) {
-        final volumeName = currentProgress.currentVolume ?? 'storage';
-        statusText = 'Scanning $volumeName... (${(p * 100).toInt()}%)';
-      } else {
+      if (currentProgress.totalItems > 0) {
+        final total = currentProgress.totalItems;
+        final processed = currentProgress.processedItems;
+        final p = (processed / total).clamp(0.0, 1.0);
+        statusText = 'Scanning $phaseName... (${(p * 100).toInt()}%)';
+      } else if (currentProgress.phase == ScanPhase.calculating) {
         statusText = 'Calculating...';
+      } else {
+        // Phase just started, totalItems not yet known
+        statusText = 'Scanning $phaseName...';
       }
-    } else if (currentProgress != null) {
-      // totalItems is 0 or negative - show indeterminate state
-      statusText = 'Scanning...';
     }
 
     return AppCard(
@@ -203,6 +200,31 @@ class StorageOverviewCard extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _phaseName(ScanPhase phase) {
+    switch (phase) {
+      case ScanPhase.diskSpace:
+        return 'Disk';
+      case ScanPhase.photos:
+        return 'Photos';
+      case ScanPhase.videos:
+        return 'Videos';
+      case ScanPhase.audio:
+        return 'Audio';
+      case ScanPhase.documents:
+        return 'Documents';
+      case ScanPhase.junk:
+        return 'Junk Files';
+      case ScanPhase.emptyFolders:
+        return 'Folders';
+      case ScanPhase.apks:
+        return 'APKs';
+      case ScanPhase.similarPhotos:
+        return 'Similar Photos';
+      default:
+        return 'Storage';
+    }
   }
 }
 

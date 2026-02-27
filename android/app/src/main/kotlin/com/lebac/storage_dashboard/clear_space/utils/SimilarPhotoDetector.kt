@@ -57,7 +57,7 @@ class SimilarPhotoDetector(private val context: Context) {
     private val SIMILARITY_THRESHOLD = 5
     
     // Max parallel hash computations (limit memory pressure on low-end devices)
-    private val MAX_PARALLEL = 4
+    private val MAX_PARALLEL = 6
     
     // Safety: Exclude specific folders to avoid false positives on docs/screenshots
     private val EXCLUDED_FOLDERS = listOf("documents", "document", "screenshot", "screenshots", "notes", "invoice", "receipt")
@@ -75,10 +75,20 @@ class SimilarPhotoDetector(private val context: Context) {
     )
 
     /**
-     * Find similar photos using parallel pHash computation.
+     * Find similar photos using parallel pHash computation in sequential batches.
      * Returns list of groups where each group has 2+ visually similar photos.
+     *
+     * THREADING: onProgress is called BETWEEN batches on the caller's coroutine context,
+     * making it safe to use inside a Kotlin Flow's emit(). DO NOT call it from inside
+     * async{} blocks — that violates Flow's threading invariant.
+     *
+     * @param onProgress Callback indicating how many photos have been processed so far.
+     *                   Called on the caller's coroutine context (safe for Flow emit).
      */
-    suspend fun findSimilarPhotos(photos: List<PhotoInfo>): List<DuplicateFileInfo> = coroutineScope {
+    suspend fun findSimilarPhotos(
+        photos: List<PhotoInfo>,
+        onProgress: (suspend (processed: Int, total: Int) -> Unit)? = null
+    ): List<DuplicateFileInfo> {
         Log.d("SimilarPhotoDetector", "findSimilarPhotos called with ${photos.size} photos")
         val startTime = System.currentTimeMillis()
         
@@ -86,43 +96,66 @@ class SimilarPhotoDetector(private val context: Context) {
         val candidates = photos.filter { photoInfo ->
             !isExcludedFolder(photoInfo.path) && photoInfo.fileSize >= 50 * 1024
         }
-        Log.d("SimilarPhotoDetector", "After filter: ${candidates.size} candidates (excluded ${photos.size - candidates.size})")
-        
-        // Step 2: Compute pHash for all candidates in parallel (limited concurrency)
-        val semaphore = Semaphore(MAX_PARALLEL)
-        val hashResults: List<Deferred<HashResult?>> = candidates.map { photoInfo ->
-            async(Dispatchers.Default) {
-                semaphore.withPermit {
-                    try {
-                        val hash = computePHash(photoInfo.contentUri) ?: return@withPermit null
-                        
-                        HashResult(
-                            photoInfo = photoInfo,
-                            hash = hash
-                        )
-                    } catch (e: Exception) {
-                        Log.w("SimilarPhotoDetector", "Error processing ${photoInfo.path}: ${e.message}")
-                        null
-                    }
-                }
-            }
+        val totalCandidates = candidates.size
+        Log.d("SimilarPhotoDetector", "After filter: $totalCandidates candidates (excluded ${photos.size - candidates.size})")
+
+        if (totalCandidates == 0) {
+            return emptyList()
         }
         
-        // Step 3: Await all results
-        val validResults = hashResults.awaitAll().filterNotNull()
-        val hashTime = System.currentTimeMillis() - startTime
-        Log.d("SimilarPhotoDetector", "Hashed ${validResults.size} photos in ${hashTime}ms")
+        // Report initial filtered count so Flutter knows the real total
+        onProgress?.invoke(0, totalCandidates)
 
-        // Step 4: Group by similarity (single-threaded, fast — just integer comparison)
+        // Step 2: Compute pHash in sequential BATCHES of BATCH_SIZE.
+        // Each batch runs its items in parallel (limited by semaphore), but we
+        // await the entire batch before emitting progress. This ensures onProgress
+        // is called from the SAME sequential coroutine — safe for Flow emit().
+        val BATCH_SIZE = 50
+        val allResults = mutableListOf<HashResult>()
+        var processedSoFar = 0
+        
+        for (batchStart in candidates.indices step BATCH_SIZE) {
+            val batchEnd = minOf(batchStart + BATCH_SIZE, totalCandidates)
+            val batch = candidates.subList(batchStart, batchEnd)
+            
+            // Run this batch in parallel, but await all before continuing
+            val batchResults = coroutineScope {
+                val semaphore = Semaphore(MAX_PARALLEL)
+                batch.map { photoInfo ->
+                    async(Dispatchers.Default) {
+                        semaphore.withPermit {
+                            try {
+                                val hash = computePHash(photoInfo.contentUri) ?: return@withPermit null
+                                HashResult(photoInfo = photoInfo, hash = hash)
+                            } catch (e: Exception) {
+                                Log.w("SimilarPhotoDetector", "Error processing ${photoInfo.path}: ${e.message}")
+                                null
+                            }
+                        }
+                    }
+                }.awaitAll().filterNotNull()
+            }
+            
+            allResults.addAll(batchResults)
+            processedSoFar = batchEnd
+            
+            // Safe: this runs on the caller's coroutine, not inside async{}
+            onProgress?.invoke(processedSoFar, totalCandidates)
+        }
+        
+        val hashTime = System.currentTimeMillis() - startTime
+        Log.d("SimilarPhotoDetector", "Hashed ${allResults.size} photos in ${hashTime}ms")
+
+        // Step 3: Group by similarity (single-threaded, fast — just integer comparison)
         // [P3] O(N×G) with Long.bitCount intrinsic (~2ns each). Acceptable for <50K photos.
         val groups = mutableListOf<SimilarGroup>()
         
-        for (result in validResults) {
+        for (hashResult in allResults) {
             var addedToGroup = false
             for (group in groups) {
-                val distance = calculateHammingDistance(group.representativeHash, result.hash)
+                val distance = calculateHammingDistance(group.representativeHash, hashResult.hash)
                 if (distance <= SIMILARITY_THRESHOLD) {
-                    group.items.add(result.toDuplicateItem())
+                    group.items.add(hashResult.toDuplicateItem())
                     addedToGroup = true
                     break
                 }
@@ -131,14 +164,14 @@ class SimilarPhotoDetector(private val context: Context) {
             if (!addedToGroup) {
                 groups.add(
                     SimilarGroup(
-                        representativeHash = result.hash,
-                        items = mutableListOf(result.toDuplicateItem())
+                        representativeHash = hashResult.hash,
+                        items = mutableListOf(hashResult.toDuplicateItem())
                     )
                 )
             }
         }
 
-        // Step 5: Convert to result format (only groups with > 1 item)
+        // Step 4: Convert to result format (only groups with > 1 item)
         val result = groups
             .filter { it.items.size > 1 }
             .map { group ->
@@ -156,7 +189,7 @@ class SimilarPhotoDetector(private val context: Context) {
         
         val totalTime = System.currentTimeMillis() - startTime
         Log.d("SimilarPhotoDetector", "findSimilarPhotos complete: ${result.size} groups in ${totalTime}ms (hash: ${hashTime}ms)")
-        result
+        return result
     }
     
     private fun isExcludedFolder(path: String): Boolean {
@@ -169,16 +202,19 @@ class SimilarPhotoDetector(private val context: Context) {
      * [C1] Fixed bitmap leak: recycles original decoded bitmap before scaling.
      * [F4] Fixed InputStream leak: uses .use{} block for safe resource management.
      * [P2] Uses partial DCT: only computes 8x8 output (not full 32x32).
+     * [PERF] Single-pass with inSampleSize=32: decodes 12MP → 125x94 (47KB) instead of
+     *        1000x750 (3MB). Avoids double-stream overhead on Samsung Kumiho devices.
      */
     private fun computePHash(uriString: String): Long? {
         try {
             val uri = Uri.parse(uriString)
             
             // [F4] Use .use{} to guarantee stream closure even on exception
+            // [PERF] inSampleSize=32: single I/O pass, ~64x less memory than inSampleSize=4
             val decoded = context.contentResolver.openInputStream(uri)?.use { inputStream ->
                 val options = BitmapFactory.Options().apply {
                     inPreferredConfig = Bitmap.Config.ARGB_8888
-                    inSampleSize = 4
+                    inSampleSize = 32
                 }
                 BitmapFactory.decodeStream(inputStream, null, options)
             } ?: return null
@@ -186,7 +222,7 @@ class SimilarPhotoDetector(private val context: Context) {
             // [C1] Resize to 32x32, then recycle original if a new bitmap was created
             val scaled = Bitmap.createScaledBitmap(decoded, N, N, true)
             if (scaled !== decoded) {
-                decoded.recycle() // Recycle the large original bitmap
+                decoded.recycle() // Recycle the intermediate bitmap
             }
             
             // Extract grayscale values using batch getPixels (faster than per-pixel)

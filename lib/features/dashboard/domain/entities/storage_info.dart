@@ -45,6 +45,41 @@ class StorageInfo with _$StorageInfo {
 
   const StorageInfo._();
 
+  /// Empty shell for progressive loading — dashboard shows immediately
+  factory StorageInfo.empty() => const StorageInfo(
+    totalSpace: 0,
+    freeSpace: 0,
+    usedSpace: 0,
+    photosCount: 0,
+    photosSize: 0,
+    videosCount: 0,
+    videosSize: 0,
+    audioCount: 0,
+    audioSize: 0,
+    documentsCount: 0,
+    documentsSize: 0,
+    filesCount: 0,
+    filesSize: 0,
+    systemSize: 0,
+    appsCount: 0,
+    duplicateCount: 0,
+    duplicateSize: 0,
+    potentialSavings: 0,
+    similarPhotoCount: 0,
+    similarPhotoSize: 0,
+    largeFiles: [],
+    storageVolumes: [],
+    cloudOnlyCount: 0,
+    scanDurationMs: 0,
+    lastUpdated: 0,
+    isEstimated: true,
+    junkCount: 0,
+    junkSize: 0,
+    emptyFolderCount: 0,
+    apkCount: 0,
+    apkSize: 0,
+  );
+
   factory StorageInfo.fromJson(Map<String, dynamic> json) =>
       _$StorageInfoFromJson(json);
 

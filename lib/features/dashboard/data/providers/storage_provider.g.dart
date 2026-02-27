@@ -6,11 +6,11 @@ part of 'storage_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sharedPreferencesHash() => r'25eceea0052302f519f44a896409ba30ede45562';
+String _$sharedPreferencesHash() => r'2eb1800d04a893bba4c2f55aea48cd000c3d38b4';
 
 /// See also [sharedPreferences].
 @ProviderFor(sharedPreferences)
-final sharedPreferencesProvider = FutureProvider<SharedPreferences>.internal(
+final sharedPreferencesProvider = Provider<SharedPreferences>.internal(
   sharedPreferences,
   name: r'sharedPreferencesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,7 +20,7 @@ final sharedPreferencesProvider = FutureProvider<SharedPreferences>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef SharedPreferencesRef = FutureProviderRef<SharedPreferences>;
+typedef SharedPreferencesRef = ProviderRef<SharedPreferences>;
 String _$nativeStorageScannerHash() =>
     r'e9e47bebb45aa5cc734bc952e7294a54717b8043';
 
@@ -38,12 +38,11 @@ final nativeStorageScannerProvider = Provider<NativeStorageScanner>.internal(
 
 typedef NativeStorageScannerRef = ProviderRef<NativeStorageScanner>;
 String _$storageCacheServiceHash() =>
-    r'6215c8b9b2c2780d52fece3e06862f0442d9500f';
+    r'cee251c7ebf47f56d56a73011df73037862fb50e';
 
 /// See also [storageCacheService].
 @ProviderFor(storageCacheService)
-final storageCacheServiceProvider =
-    FutureProvider<StorageCacheService>.internal(
+final storageCacheServiceProvider = Provider<StorageCacheService>.internal(
   storageCacheService,
   name: r'storageCacheServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -53,8 +52,8 @@ final storageCacheServiceProvider =
   allTransitiveDependencies: null,
 );
 
-typedef StorageCacheServiceRef = FutureProviderRef<StorageCacheService>;
-String _$storageRepositoryHash() => r'79284e9332135ad24852ecde9f33e6d476c0b180';
+typedef StorageCacheServiceRef = ProviderRef<StorageCacheService>;
+String _$storageRepositoryHash() => r'64b5cda05b530c2f84e8eb3f53454b07e161da17';
 
 /// See also [storageRepository].
 @ProviderFor(storageRepository)
