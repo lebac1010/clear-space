@@ -35,4 +35,10 @@ abstract class StorageRepository {
     int limit = 50,
     int offset = 0,
   });
+
+  /// Get installed user applications
+  Future<List<Map<String, dynamic>>> getInstalledApps();
+
+  /// Trigger system uninstall UI for an application
+  Future<bool> uninstallApp(String packageName);
 }

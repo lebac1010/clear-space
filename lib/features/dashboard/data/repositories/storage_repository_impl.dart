@@ -170,4 +170,14 @@ class StorageRepositoryImpl implements StorageRepository {
       offset: offset,
     );
   }
+
+  @override
+  Future<List<Map<String, dynamic>>> getInstalledApps() async {
+    return await _nativeScanner.getInstalledApps();
+  }
+
+  @override
+  Future<bool> uninstallApp(String packageName) async {
+    return await _nativeScanner.uninstallApp(packageName);
+  }
 }

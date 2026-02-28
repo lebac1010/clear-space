@@ -7,6 +7,7 @@ abstract class RouteConstants {
   static const String cleanup = '/cleanup';
   static const String photos = '/photos';
   static const String files = '/files';
+  static const String apps = '/apps';
 
   // Non-tab routes
   static const String contacts = '/contacts';

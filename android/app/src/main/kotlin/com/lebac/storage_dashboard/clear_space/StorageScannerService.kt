@@ -189,6 +189,13 @@ class StorageScannerService : Service() {
         return scanner?.getMediaFiles(type, limit, offset) ?: emptyList()
     }
 
+    fun getInstalledApps(): List<Map<String, Any>> {
+        if (scanner == null) {
+            scanner = MediaStoreScanner(this)
+        }
+        return scanner?.getInstalledApps() ?: emptyList()
+    }
+
 
     fun requestDelete(uris: List<String>, permanent: Boolean, callback: (android.content.IntentSender?) -> Unit) {
         // Use service scope to ensure operation completes even if app backgrounds

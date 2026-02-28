@@ -1392,6 +1392,112 @@ class MediaStoreScanner(private val context: Context) {
             0
         }
     }
+
+    /**
+     * Get a list of installed user apps safely without QUERY_ALL_PACKAGES.
+     * Uses Intent action MAIN and category LAUNCHER with <queries> tag in Manifest.
+     * Extracts name, package name, version, install date, size (sourceDir), and Base64 icon.
+     *
+     * Policy-safe: filters system apps, scales icons to 48dp, uses WEBP for small payloads.
+     */
+    fun getInstalledApps(): List<Map<String, Any>> {
+        val appsList = mutableListOf<Map<String, Any>>()
+        val mainIntent = android.content.Intent(android.content.Intent.ACTION_MAIN, null)
+        mainIntent.addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+        
+        val resolveInfoList = try {
+            context.packageManager.queryIntentActivities(mainIntent, 0)
+        } catch (e: Exception) {
+            Log.e("MediaStoreScanner", "Failed to query launcher activities", e)
+            return emptyList()
+        }
+
+        // Target icon size: 48dp * 3 (xxxhdpi) = 144px — good balance of quality vs size
+        val iconSizePx = 144
+        // Deduplicate: queryIntentActivities can return same package multiple times
+        // if it has multiple launcher Activities
+        val seenPackages = mutableSetOf<String>()
+        
+        for (resolveInfo in resolveInfoList) {
+            try {
+                val appInfo = resolveInfo.activityInfo.applicationInfo
+                val packageName = appInfo.packageName
+                
+                // Skip our own app
+                if (packageName == context.packageName) continue
+                
+                // Deduplicate
+                if (!seenPackages.add(packageName)) continue
+                
+                // Skip non-updatable system apps (cannot be uninstalled)
+                val isSystemApp = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
+                val isUpdatedSystemApp = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
+                if (isSystemApp && !isUpdatedSystemApp) continue
+
+                val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+                val appName = appInfo.loadLabel(context.packageManager).toString()
+                
+                // Get size safely without PACKAGE_USAGE_STATS (Base APK + Split APKs)
+                var size = java.io.File(appInfo.sourceDir).length()
+                appInfo.splitSourceDirs?.forEach { splitFile ->
+                    size += java.io.File(splitFile).length()
+                }
+                
+                // Install date
+                val installDate = packageInfo.firstInstallTime
+                val versionName = packageInfo.versionName ?: "Unknown"
+
+                // Extract Icon: scale to iconSizePx and encode as WEBP@80
+                val drawable = appInfo.loadIcon(context.packageManager)
+                val isBitmapDrawable = drawable is android.graphics.drawable.BitmapDrawable
+                val rawBitmap = if (isBitmapDrawable) {
+                    // BitmapDrawable.bitmap comes from the system's shared bitmap cache.
+                    // We must NOT recycle it — only recycle bitmaps we created ourselves.
+                    (drawable as android.graphics.drawable.BitmapDrawable).bitmap
+                } else {
+                    // VectorDrawables, AdaptiveIcons, etc.
+                    val width = if (drawable.intrinsicWidth <= 0) iconSizePx else drawable.intrinsicWidth
+                    val height = if (drawable.intrinsicHeight <= 0) iconSizePx else drawable.intrinsicHeight
+                    val b = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888)
+                    val canvas = android.graphics.Canvas(b)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+                    b
+                }
+                
+                // Scale down to target size for smaller MethodChannel payload
+                val needsScale = rawBitmap.width > iconSizePx || rawBitmap.height > iconSizePx
+                val scaledBitmap = if (needsScale) {
+                    android.graphics.Bitmap.createScaledBitmap(rawBitmap, iconSizePx, iconSizePx, true)
+                } else {
+                    rawBitmap
+                }
+                
+                val outputStream = java.io.ByteArrayOutputStream()
+                scaledBitmap.compress(android.graphics.Bitmap.CompressFormat.WEBP, 80, outputStream)
+                val iconBase64 = android.util.Base64.encodeToString(outputStream.toByteArray(), android.util.Base64.NO_WRAP)
+                outputStream.close()
+                
+                // Recycle only bitmaps WE created (not system-cached BitmapDrawable bitmaps)
+                if (!isBitmapDrawable) rawBitmap.recycle()
+                if (needsScale) scaledBitmap.recycle()
+
+                appsList.add(mapOf(
+                    "packageName" to packageName,
+                    "name" to appName,
+                    "version" to versionName,
+                    "size" to size,
+                    "installDate" to installDate,
+                    "iconBase64" to iconBase64
+                ))
+            } catch (e: Exception) {
+                // Single app failure should not break the entire list
+                Log.w("MediaStoreScanner", "Skipping app: ${resolveInfo.activityInfo?.packageName}: ${e.message}")
+            }
+        }
+        
+        return appsList
+    }
 }
 
 sealed class ScanUpdate {

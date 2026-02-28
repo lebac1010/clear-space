@@ -276,4 +276,22 @@ class NativeStorageScanner {
       return getPhotoBytes(uri);
     }
   }
+
+  /// Get list of installed applications
+  Future<List<Map<String, dynamic>>> getInstalledApps() async {
+    final result = await _methodChannel.invokeMethod<List>('getInstalledApps');
+    return result?.map((e) => Map<String, dynamic>.from(e)).toList() ?? [];
+  }
+
+  /// Trigger uninstall prompt for a specific package
+  Future<bool> uninstallApp(String packageName) async {
+    try {
+      final result = await _methodChannel.invokeMethod<bool>('uninstallApp', {
+        'packageName': packageName,
+      });
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -13,6 +13,7 @@ import '../../features/contacts/presentation/screens/contacts_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/cleanup/presentation/screens/junk_files_screen.dart';
 import '../../features/files/presentation/screens/media_explorer_screen.dart';
+import '../../features/apps/presentation/screens/app_manager_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -164,6 +165,12 @@ GoRouter goRouter(GoRouterRef ref) {
       ),
 
       // Other Routes (Hide Bottom Nav)
+      GoRoute(
+        path: RouteConstants.apps,
+        name: 'apps',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const AppManagerScreen(),
+      ),
       GoRoute(
         path: RouteConstants.contacts,
         name: 'contacts',

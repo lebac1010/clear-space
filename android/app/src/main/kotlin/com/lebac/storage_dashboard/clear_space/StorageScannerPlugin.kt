@@ -233,6 +233,37 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     withContext(Dispatchers.Main) { result.success(media) }
                 }
             }
+            "getInstalledApps" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                getScope().launch(Dispatchers.IO) {
+                    val apps = scannerService?.getInstalledApps() ?: emptyList()
+                    withContext(Dispatchers.Main) { result.success(apps) }
+                }
+            }
+            "uninstallApp" -> {
+                val packageName = call.argument<String>("packageName")
+                if (packageName == null) {
+                    result.error("INVALID_ARGS", "Missing packageName", null)
+                    return
+                }
+                try {
+                    val intent = android.content.Intent(android.content.Intent.ACTION_DELETE)
+                    intent.data = android.net.Uri.parse("package:$packageName")
+                    // If activity is available, use it (results in a smoother dialog without needing NEW_TASK)
+                    if (activity != null) {
+                        activity?.startActivity(intent)
+                    } else {
+                        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    }
+                    result.success(true)
+                } catch (e: Exception) {
+                    result.error("UNINSTALL_ERROR", e.message, null)
+                }
+            }
             "cleanJunk" -> {
                 if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)

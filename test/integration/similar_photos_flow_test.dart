@@ -69,6 +69,12 @@ class FakeStorageRepository implements StorageRepository {
   Future<bool> requestPermissions() async => true;
 
   @override
+  Future<List<Map<String, dynamic>>> getInstalledApps() async => [];
+
+  @override
+  Future<bool> uninstallApp(String packageName) async => false;
+
+  @override
   Stream<ScanProgress> get scanProgress => const Stream.empty();
 
   @override

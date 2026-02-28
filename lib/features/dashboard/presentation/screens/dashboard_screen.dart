@@ -220,7 +220,7 @@ class DashboardScreen extends ConsumerWidget {
                   ? info.systemSize / info.totalSpace
                   : 0,
               isScanning: isScanning,
-              onTap: () => context.go('${RouteConstants.files}?category=apps'),
+              onTap: () => context.push(RouteConstants.apps),
             ),
           ],
         ),
