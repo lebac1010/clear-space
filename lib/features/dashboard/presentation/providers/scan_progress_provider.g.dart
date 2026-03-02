@@ -6,11 +6,11 @@ part of 'scan_progress_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$scanProgressHash() => r'dd523873c89226275d4f7d3a80c3657700bd063c';
+String _$scanProgressHash() => r'440b6202d83d1e6eab588edb7e1816632e42c822';
 
 /// See also [scanProgress].
 @ProviderFor(scanProgress)
-final scanProgressProvider = AutoDisposeStreamProvider<ScanProgress>.internal(
+final scanProgressProvider = StreamProvider<ScanProgress>.internal(
   scanProgress,
   name: r'scanProgressProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final scanProgressProvider = AutoDisposeStreamProvider<ScanProgress>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef ScanProgressRef = AutoDisposeStreamProviderRef<ScanProgress>;
+typedef ScanProgressRef = StreamProviderRef<ScanProgress>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -23,10 +23,11 @@ class StorageOverviewCard extends ConsumerWidget {
     ScanProgress? currentProgress;
     if (scanAsync.hasValue) {
       currentProgress = scanAsync.value;
-      // If complete/error, ignore progress and rely on info (which should update shortly)
+      // If complete/error/invalidated, ignore progress and rely on info (which should update shortly)
       if (currentProgress?.phase == ScanPhase.complete ||
           currentProgress?.phase == ScanPhase.error ||
-          currentProgress?.phase == ScanPhase.cancelled) {
+          currentProgress?.phase == ScanPhase.cancelled ||
+          currentProgress?.phase == ScanPhase.cacheInvalidated) {
         currentProgress = null;
       }
     }
@@ -43,18 +44,22 @@ class StorageOverviewCard extends ConsumerWidget {
 
     // Override if scanning — show phase name for better UX
     if (currentProgress != null) {
-      final phaseName = _phaseName(currentProgress.phase);
-
-      if (currentProgress.totalItems > 0) {
-        final total = currentProgress.totalItems;
-        final processed = currentProgress.processedItems;
-        final p = (processed / total).clamp(0.0, 1.0);
-        statusText = 'Scanning $phaseName... (${(p * 100).toInt()}%)';
-      } else if (currentProgress.phase == ScanPhase.calculating) {
-        statusText = 'Calculating...';
+      if (currentProgress.phase == ScanPhase.paused) {
+        statusText = 'Scan Paused (Battery Low)';
       } else {
-        // Phase just started, totalItems not yet known
-        statusText = 'Scanning $phaseName...';
+        final phaseName = _phaseName(currentProgress.phase);
+
+        if (currentProgress.totalItems > 0) {
+          final total = currentProgress.totalItems;
+          final processed = currentProgress.processedItems;
+          final p = (processed / total).clamp(0.0, 1.0);
+          statusText = 'Scanning $phaseName... (${(p * 100).toInt()}%)';
+        } else if (currentProgress.phase == ScanPhase.calculating) {
+          statusText = 'Calculating...';
+        } else {
+          // Phase just started, totalItems not yet known
+          statusText = 'Scanning $phaseName...';
+        }
       }
     }
 

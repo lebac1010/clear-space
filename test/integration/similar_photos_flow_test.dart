@@ -75,6 +75,16 @@ class FakeStorageRepository implements StorageRepository {
   Future<bool> uninstallApp(String packageName) async => false;
 
   @override
+  Future<List<Map<String, dynamic>>> getJunkData(String type) async => [];
+
+  @override
+  Future<Map<String, dynamic>> deleteSpecificJunk(List<String> paths) async => {
+    'deletedCount': 0,
+    'deletedBytes': 0,
+    'skippedCount': 0,
+  };
+
+  @override
   Stream<ScanProgress> get scanProgress => const Stream.empty();
 
   @override

@@ -18,6 +18,7 @@ abstract class RouteConstants {
   static const String junkFiles = '/cleanup/junk';
   static const String onboarding = '/onboarding';
   static const String smartDetail = '/smart-detail';
+  static const String junkDetail = '/cleanup/junk-detail';
 }
 
 /// 404 Not Found Screen for unknown routes.

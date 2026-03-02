@@ -4,7 +4,7 @@ import '../../data/providers/storage_provider.dart';
 
 part 'scan_progress_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<ScanProgress> scanProgress(ScanProgressRef ref) async* {
   final repository = await ref.watch(storageRepositoryProvider.future);
   yield* repository.scanProgress;

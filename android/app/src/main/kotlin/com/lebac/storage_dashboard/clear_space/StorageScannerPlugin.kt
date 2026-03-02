@@ -274,6 +274,26 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     result.success(stats)
                 }
             }
+            "getJunkData" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val type = call.argument<String>("type") ?: ""
+                // Synchronous: reads from in-memory cache, no IO needed
+                val data = scannerService?.getJunkData(type) ?: emptyList<Map<String, Any>>()
+                result.success(data)
+            }
+            "deleteSpecificJunk" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val paths = call.argument<List<String>>("paths") ?: emptyList()
+                scannerService?.deleteSpecificJunk(paths) { stats ->
+                    result.success(stats)
+                }
+            }
             "cleanJunkBackground" -> {
                 val types = call.argument<List<String>>("types") ?: emptyList()
                 val workManager = androidx.work.WorkManager.getInstance(context)

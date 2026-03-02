@@ -250,7 +250,9 @@ class StorageScannerService : Service() {
         } else {
             stopForeground(true)
         }
-        stopSelf()
+        // Do NOT call stopSelf() here — the service must stay alive
+        // so that junk/duplicate/media caches remain accessible.
+        // Service lifecycle is managed by the plugin's bindService().
     }
 
     private fun createNotificationChannel() {
@@ -276,6 +278,26 @@ class StorageScannerService : Service() {
                 scanner = MediaStoreScanner(this@StorageScannerService)
             }
             val stats = scanner?.cleanJunk(types) ?: mapOf("count" to 0, "bytes" to 0L)
+            callback(stats)
+        }
+    }
+
+    fun getJunkData(type: String): List<Map<String, Any>> {
+        if (scanner == null) {
+            scanner = MediaStoreScanner(this)
+        }
+        return scanner?.getJunkData(type) ?: emptyList()
+    }
+
+    fun deleteSpecificJunk(paths: List<String>, callback: (Map<String, Any>) -> Unit) {
+        val scope = serviceScope ?: CoroutineScope(Dispatchers.Main + SupervisorJob()).also { serviceScope = it }
+        scope.launch {
+            if (scanner == null) {
+                scanner = MediaStoreScanner(this@StorageScannerService)
+            }
+            val stats = scanner?.deleteSpecificJunk(paths) ?: mapOf(
+                "deletedCount" to 0, "deletedBytes" to 0L, "skippedCount" to 0
+            )
             callback(stats)
         }
     }

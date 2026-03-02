@@ -2,7 +2,9 @@ import 'package:clear_space/core/utils/file_utils.dart';
 import 'package:clear_space/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/route_constants.dart';
 import '../controllers/safe_cleanup_controller.dart';
 
 class JunkFilesScreen extends ConsumerStatefulWidget {
@@ -113,11 +115,13 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                     color: Colors.orange,
                     title: 'Temporary & Log Files',
                     subtitle: '${FileUtils.formatSize(info.junkSize)} found',
-                    trailing: Text('${info.junkCount} items'),
+                    trailing: const Icon(Icons.chevron_right),
                     onTap: isCleaning
                         ? null
                         : () {
-                            _cleanCategory(['junk']);
+                            context.push(
+                              '${RouteConstants.junkDetail}?type=junk',
+                            );
                           },
                   ),
                   const SizedBox(height: 12),
@@ -130,7 +134,9 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                     onTap: isCleaning
                         ? null
                         : () {
-                            _cleanCategory(['empty_folders']);
+                            context.push(
+                              '${RouteConstants.junkDetail}?type=empty_folders',
+                            );
                           },
                   ),
                   const SizedBox(height: 12),
@@ -139,11 +145,13 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                     color: Colors.green,
                     title: 'Safe APK Installers',
                     subtitle: 'Clean installed/old APKs',
-                    trailing: Text('${info.apkCount} total'),
+                    trailing: const Icon(Icons.chevron_right),
                     onTap: isCleaning
                         ? null
                         : () {
-                            _cleanCategory(['apks']);
+                            context.push(
+                              '${RouteConstants.junkDetail}?type=apks',
+                            );
                           },
                   ),
                 ],
@@ -188,11 +196,6 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
     );
-  }
-
-  void _cleanCategory(List<String> types) {
-    setState(() => _hasStartedCleanup = true);
-    ref.read(safeCleanupControllerProvider.notifier).cleanCategory(types);
   }
 }
 

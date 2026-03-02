@@ -49,6 +49,8 @@ class MediaStoreScanner(private val context: Context) {
     private val junkFilesCache = mutableListOf<String>()
     private val emptyFoldersCache = mutableListOf<String>()
     private val safeApkFilesCache = mutableListOf<String>()
+    // Size map: path -> size in bytes (populated during scan from MediaStore)
+    private val junkSizeMap = mutableMapOf<String, Long>()
     
     @Volatile
     private var isPaused = false
@@ -70,6 +72,7 @@ class MediaStoreScanner(private val context: Context) {
             junkFilesCache.clear()
             emptyFoldersCache.clear()
             safeApkFilesCache.clear()
+            junkSizeMap.clear()
             audioCache.clear()
             videoCache.clear()
             documentCache.clear()
@@ -216,6 +219,11 @@ class MediaStoreScanner(private val context: Context) {
                 apkSize = apkResult.size
             )
 
+            Log.i("StorageScanner", "FINAL NATIVE SCAN RESULTS: " +
+                "junkCount=${junkResult.count} (size=${junkResult.size}), " +
+                "emptyFolderCount=$emptyFolderCount, " +
+                "apkCount=${apkResult.count} (size=${apkResult.size})")
+
             Log.d("StorageScanner", "Phase 10: Complete")
             // Phase 10: Complete
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.COMPLETE, 100, 100, 0L)))
@@ -264,7 +272,7 @@ class MediaStoreScanner(private val context: Context) {
                 "%.temp"
             )
 
-            val cursor = context.contentResolver.query(
+        val cursor = context.contentResolver.query(
                 MediaStore.Files.getContentUri("external"),
                 projection,
                 selection,
@@ -276,20 +284,19 @@ class MediaStoreScanner(private val context: Context) {
                 val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
                 // Need DATA column for path
                 val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
-
-                totalCount = cursor.count
+                val queryTotal = cursor.count
 
                 while (cursor.moveToNext()) {
                     waitIfPaused()
                     
                     val size = cursor.getLong(sizeIndex)
-                    if (size > 0) {
+                    val path = cursor.getString(dataIndex)
+                    
+                    if (size > 0 && path != null) {
                         totalSize += size
-                        // Add to cache
-                        val path = cursor.getString(dataIndex)
-                        if (path != null) {
-                            junkFilesCache.add(path)
-                        }
+                        totalCount++
+                        junkFilesCache.add(path)
+                        junkSizeMap[path] = size
                     }
                     processedSoFar++
 
@@ -298,7 +305,7 @@ class MediaStoreScanner(private val context: Context) {
                             ScanProgress(
                                 phase = ScanPhase.JUNK,
                                 processedItems = processedSoFar,
-                                totalItems = totalCount,
+                                totalItems = queryTotal,
                                 currentBytes = totalSize,
                                 currentVolume = "External"
                             )
@@ -313,13 +320,13 @@ class MediaStoreScanner(private val context: Context) {
             ScanProgress(
                 phase = ScanPhase.JUNK,
                 processedItems = processedSoFar,
-                totalItems = totalCount,
+                totalItems = processedSoFar,
                 currentBytes = totalSize
             )
         )
 
         return MediaResult(
-            count = processedSoFar,
+            count = totalCount,
             size = totalSize
         )
     }
@@ -776,7 +783,7 @@ class MediaStoreScanner(private val context: Context) {
         cursor?.use {
             val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
             val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
-            totalCount = cursor.count
+            val queryTotal = cursor.count
 
             while (cursor.moveToNext()) {
                 waitIfPaused()
@@ -784,31 +791,20 @@ class MediaStoreScanner(private val context: Context) {
                 val size = cursor.getLong(sizeIndex)
                 val path = cursor.getString(dataIndex)
                 
-                // Verify it's an APK logic (Optional: PackageParser)
-                // We just count for now, and ideally we would identify which are "junk" (installed) vs "keep"
-                // For this phase, we are just counting ALL APKs found in public storage.
-                // Refinement: If we want to identify "Safe to Delete", we need more logic.
-                // Let's implement the basic check if possible.
-                
                 var isInstalled = false
                 try {
                     val packageInfo = context.packageManager.getPackageArchiveInfo(path, 0)
                     if (packageInfo != null) {
                         val packageName = packageInfo.packageName
-                        // Check if installed
                         try {
                             val installedInfo = context.packageManager.getPackageInfo(packageName, 0)
-                            // If installed, check version
-                            // If installed version >= apk version, it's redundant/safe to delete.
-                            // If installed version < apk version, it's an update (Keep).
-                            
                             val installedVersion = installedInfo.longVersionCodeCompat()
                             val apkVersion = packageInfo.longVersionCodeCompat()
                             
                             if (installedVersion >= apkVersion) {
                                 isInstalled = true
-                                // Safe to delete (Installed)
                                 safeApkFilesCache.add(path)
+                                junkSizeMap[path] = size
                             }
                         } catch (e: Exception) {
                             // Not installed or hidden
@@ -818,10 +814,9 @@ class MediaStoreScanner(private val context: Context) {
                    // Corrupt APK?
                 }
 
-                if (size > 0) {
-                    // For now, allow user to review ALL APKs, but we highlight installed ones in the UI list later.
-                    // Here we aggregate total APKs size occupying space.
+                if (isInstalled && size > 0) {
                     totalSize += size
+                    totalCount++
                 }
                 processedSoFar++
 
@@ -830,7 +825,7 @@ class MediaStoreScanner(private val context: Context) {
                         ScanProgress(
                             phase = ScanPhase.APKS,
                             processedItems = processedSoFar,
-                            totalItems = totalCount,
+                            totalItems = queryTotal,
                             currentBytes = totalSize,
                             currentVolume = "External"
                         )
@@ -844,13 +839,13 @@ class MediaStoreScanner(private val context: Context) {
             ScanProgress(
                 phase = ScanPhase.APKS,
                 processedItems = processedSoFar,
-                totalItems = totalCount,
+                totalItems = processedSoFar,
                 currentBytes = totalSize
             )
         )
 
         return MediaResult(
-            count = processedSoFar,
+            count = totalCount,
             size = totalSize
         )
     }
@@ -1347,6 +1342,88 @@ class MediaStoreScanner(private val context: Context) {
         }
         
         return mapOf("count" to deletedCount, "bytes" to deletedBytes)
+    }
+
+    /**
+     * Returns a snapshot of cached junk items for a specific type.
+     * Derives name from path parsing (no filesystem access needed).
+     * Size uses best-effort File.length() with fallback to 0.
+     * Does NOT filter by File.exists() because on Android 11+ Scoped Storage,
+     * File.exists() returns false for paths discovered via MediaStore even though
+     * the files are real. The cache was populated by the scan, so paths are valid.
+     * Thread-safe via synchronized to prevent ConcurrentModificationException.
+     */
+    fun getJunkData(type: String): List<Map<String, Any>> {
+        val cache: List<String> = when (type) {
+            "junk" -> synchronized(junkFilesCache) { junkFilesCache.toList() }
+            "empty_folders" -> synchronized(emptyFoldersCache) { emptyFoldersCache.toList() }
+            "apks" -> synchronized(safeApkFilesCache) { safeApkFilesCache.toList() }
+            else -> emptyList()
+        }
+
+        Log.d("MediaStoreScanner", "getJunkData($type): cache has ${cache.size} items")
+
+        return cache.map { path ->
+            val file = java.io.File(path)
+            // Use cached size from scan (MediaStore data), not File.length() (Scoped Storage blocked)
+            val size = junkSizeMap[path] ?: 0L
+            mapOf(
+                "path" to path,
+                "name" to file.name, // File.name just parses path string, no FS access
+                "size" to size
+            )
+        }
+    }
+
+    /**
+     * Deletes specific files/folders by their paths.
+     * - Sorts folders deepest-first to handle nested empty folders (Issue #5).
+     * - Removes deleted paths from ALL caches (Issue #4).
+     * - Reports skipped (non-existent) items separately (Issue #7).
+     */
+    suspend fun deleteSpecificJunk(paths: List<String>): Map<String, Any> {
+        var deletedCount = 0
+        var deletedBytes = 0L
+        var skippedCount = 0
+        val successfullyDeleted = mutableSetOf<String>()
+
+        // Sort by path depth descending so nested folders delete before parent (Issue #5)
+        val sortedPaths = paths.sortedByDescending { it.count { c -> c == '/' || c == '\\' } }
+
+        for (path in sortedPaths) {
+            // Use cached size from scan; don't rely on File.length() (Scoped Storage)
+            val fileSize = junkSizeMap[path] ?: 0L
+
+            // Try to delete — deleteSingleFile handles both direct + MediaStore fallback
+            if (deleteSingleFile(path)) {
+                deletedCount++
+                deletedBytes += fileSize
+                successfullyDeleted.add(path)
+            } else {
+                // Check if file is already gone (externally deleted)
+                val file = java.io.File(path)
+                if (!file.exists()) {
+                    skippedCount++
+                    successfullyDeleted.add(path) // Remove stale entry from cache
+                }
+                // else: file exists but couldn't delete (permission?) — leave in cache for retry
+            }
+        }
+
+        // Only remove successfully deleted paths from caches (Bug fix #1)
+        if (successfullyDeleted.isNotEmpty()) {
+            synchronized(junkFilesCache) { junkFilesCache.removeAll(successfullyDeleted) }
+            synchronized(emptyFoldersCache) { emptyFoldersCache.removeAll(successfullyDeleted) }
+            synchronized(safeApkFilesCache) { safeApkFilesCache.removeAll(successfullyDeleted) }
+            // Also clean size map
+            for (path in successfullyDeleted) { junkSizeMap.remove(path) }
+        }
+
+        return mapOf(
+            "deletedCount" to deletedCount,
+            "deletedBytes" to deletedBytes,
+            "skippedCount" to skippedCount
+        )
     }
 
     /**

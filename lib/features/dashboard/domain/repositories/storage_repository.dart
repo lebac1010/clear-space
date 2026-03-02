@@ -41,4 +41,10 @@ abstract class StorageRepository {
 
   /// Trigger system uninstall UI for an application
   Future<bool> uninstallApp(String packageName);
+
+  /// Get detailed junk data for a specific type (junk, empty_folders, apks)
+  Future<List<Map<String, dynamic>>> getJunkData(String type);
+
+  /// Delete specific junk files/folders by their paths
+  Future<Map<String, dynamic>> deleteSpecificJunk(List<String> paths);
 }

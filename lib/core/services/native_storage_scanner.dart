@@ -294,4 +294,21 @@ class NativeStorageScanner {
       return false;
     }
   }
+
+  /// Get detailed junk data for a specific type (junk, empty_folders, apks)
+  Future<List<Map<String, dynamic>>> getJunkData(String type) async {
+    final result = await _methodChannel.invokeMethod<List>('getJunkData', {
+      'type': type,
+    });
+    return result?.map((e) => Map<String, dynamic>.from(e)).toList() ?? [];
+  }
+
+  /// Delete specific junk files/folders by their paths
+  Future<Map<String, dynamic>> deleteSpecificJunk(List<String> paths) async {
+    final result = await _methodChannel.invokeMethod<Map>(
+      'deleteSpecificJunk',
+      {'paths': paths},
+    );
+    return result != null ? Map<String, dynamic>.from(result) : {};
+  }
 }

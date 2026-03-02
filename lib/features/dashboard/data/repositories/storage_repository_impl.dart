@@ -180,4 +180,14 @@ class StorageRepositoryImpl implements StorageRepository {
   Future<bool> uninstallApp(String packageName) async {
     return await _nativeScanner.uninstallApp(packageName);
   }
+
+  @override
+  Future<List<Map<String, dynamic>>> getJunkData(String type) async {
+    return await _nativeScanner.getJunkData(type);
+  }
+
+  @override
+  Future<Map<String, dynamic>> deleteSpecificJunk(List<String> paths) async {
+    return await _nativeScanner.deleteSpecificJunk(paths);
+  }
 }

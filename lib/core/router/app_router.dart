@@ -12,6 +12,7 @@ import '../../features/cleanup/presentation/controllers/duplicate_controller.dar
 import '../../features/contacts/presentation/screens/contacts_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/cleanup/presentation/screens/junk_files_screen.dart';
+import '../../features/cleanup/presentation/screens/junk_detail_screen.dart';
 import '../../features/files/presentation/screens/media_explorer_screen.dart';
 import '../../features/apps/presentation/screens/app_manager_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
@@ -198,6 +199,16 @@ GoRouter goRouter(GoRouterRef ref) {
           final autoSelect = autoSelectStr == 'true';
 
           return DuplicateListScreen(type: type, autoSmartSelect: autoSelect);
+        },
+      ),
+      // Full-screen detail view for Junk categories
+      GoRoute(
+        path: RouteConstants.junkDetail,
+        name: 'junk-detail',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) {
+          final type = state.uri.queryParameters['type'] ?? 'junk';
+          return JunkDetailScreen(type: type);
         },
       ),
     ],

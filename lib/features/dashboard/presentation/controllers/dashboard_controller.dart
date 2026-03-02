@@ -22,9 +22,15 @@ class DashboardController extends _$DashboardController {
     final hasPermission = await repo.checkPermissions();
 
     if (hasPermission) {
-      // Returns cache if available (instant), or scans if no cache.
-      // During scan, the screen shows dashboard shell via AsyncLoading handler.
-      return await repo.getStorageInfo();
+      // Get cached data instantly
+      final cached = await repo.getStorageInfo(forceRefresh: false);
+
+      // FIX: The app used to just return cache and STOP.
+      // This caused old bugged data to be permanently stuck on screen.
+      // We must ALWAYS trigger a background scan on boot to refresh the cache.
+      Future.microtask(() => startScan());
+
+      return cached;
     }
     return null; // No permission — show permission view
   }
@@ -66,6 +72,14 @@ class DashboardController extends _$DashboardController {
     try {
       final repo = await ref.read(storageRepositoryProvider.future);
       final info = await repo.getStorageInfo(forceRefresh: true);
+
+      debugPrint(
+        'FLUTTER DASHBOARD RECEIVED: '
+        'junkCount=${info.junkCount} (size=${info.junkSize}), '
+        'emptyFolderCount=${info.emptyFolderCount}, '
+        'apkCount=${info.apkCount} (size=${info.apkSize})',
+      );
+
       state = AsyncData(info);
     } catch (e, st) {
       debugPrint('Scan failed: $e');

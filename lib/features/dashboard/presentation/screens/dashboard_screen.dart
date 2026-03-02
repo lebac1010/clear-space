@@ -28,7 +28,8 @@ class DashboardScreen extends ConsumerWidget {
         scanAsync.value != null &&
         scanAsync.value!.phase != ScanPhase.complete &&
         scanAsync.value!.phase != ScanPhase.error &&
-        scanAsync.value!.phase != ScanPhase.cancelled;
+        scanAsync.value!.phase != ScanPhase.cancelled &&
+        scanAsync.value!.phase != ScanPhase.cacheInvalidated;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -89,140 +90,146 @@ class DashboardScreen extends ConsumerWidget {
     return Stack(
       children: [
         // Scrollable Content
-        ListView(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
-            bottom: 100, // Space for fixed button
-          ),
-          children: [
-            StorageOverviewCard(info: info),
+        RefreshIndicator(
+          onRefresh: () =>
+              ref.read(dashboardControllerProvider.notifier).refresh(),
+          child: ListView(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: 100, // Space for fixed button
+            ),
+            children: [
+              StorageOverviewCard(info: info),
 
-            const Gap(24),
+              const Gap(24),
 
-            if (!isScanning &&
-                (info.junkSize > 0 ||
-                    info.emptyFolderCount > 0 ||
-                    info.apkCount > 0))
-              Card(
-                color: Theme.of(context).colorScheme.errorContainer,
-                child: ListTile(
-                  leading: Icon(
-                    Icons.delete_sweep,
-                    color: Theme.of(context).colorScheme.onErrorContainer,
-                  ),
-                  title: Text(
-                    'Junk Files Found',
-                    style: TextStyle(
+              if (!isScanning &&
+                  (info.junkSize > 0 ||
+                      info.emptyFolderCount > 0 ||
+                      info.apkCount > 0))
+                Card(
+                  color: Theme.of(context).colorScheme.errorContainer,
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.delete_sweep,
                       color: Theme.of(context).colorScheme.onErrorContainer,
+                    ),
+                    title: Text(
+                      'Junk Files Found',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onErrorContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      '${info.emptyFolderCount + info.apkCount + info.junkCount} items can be cleaned',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onErrorContainer,
+                      ),
+                    ),
+                    trailing: FilledButton.icon(
+                      onPressed: () => context.push(RouteConstants.junkFiles),
+                      icon: const Icon(Icons.arrow_forward, size: 16),
+                      label: const Text('Review'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        foregroundColor: Theme.of(context).colorScheme.onError,
+                      ),
+                    ),
+                  ),
+                ),
+
+              const Gap(24),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Storage Breakdown',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  subtitle: Text(
-                    '${info.emptyFolderCount + info.apkCount + info.junkCount} items can be cleaned',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onErrorContainer,
-                    ),
+                  TextButton(
+                    onPressed: () => context.go(RouteConstants.files),
+                    child: const Text('View Details'),
                   ),
-                  trailing: FilledButton.icon(
-                    onPressed: () => context.push(RouteConstants.junkFiles),
-                    icon: const Icon(Icons.arrow_forward, size: 16),
-                    label: const Text('Review'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                      foregroundColor: Theme.of(context).colorScheme.onError,
-                    ),
-                  ),
-                ),
+                ],
               ),
 
-            const Gap(24),
+              const Gap(8),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Storage Breakdown',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                TextButton(
-                  onPressed: () => context.go(RouteConstants.files),
-                  child: const Text('View Details'),
-                ),
-              ],
-            ),
-
-            const Gap(8),
-
-            StorageCategoryTile(
-              icon: Icons.image_outlined,
-              color: Colors.purple,
-              title: 'Photos & Images',
-              count: info.photosCount,
-              sizeBytes: info.photosSize,
-              percentage: info.totalSpace > 0
-                  ? info.photosSize / info.totalSpace
-                  : 0,
-              isScanning: isScanning,
-              onTap: () => context.go(RouteConstants.photos),
-            ),
-            const Gap(12),
-            StorageCategoryTile(
-              icon: Icons.movie_outlined,
-              color: Colors.pink,
-              title: 'Videos',
-              count: info.videosCount,
-              sizeBytes: info.videosSize,
-              percentage: info.totalSpace > 0
-                  ? info.videosSize / info.totalSpace
-                  : 0,
-              isScanning: isScanning,
-              onTap: () => context.go('${RouteConstants.files}?category=video'),
-            ),
-            const Gap(12),
-            StorageCategoryTile(
-              icon: Icons.audiotrack_outlined,
-              color: Colors.deepOrange,
-              title: 'Audio',
-              count: info.audioCount,
-              sizeBytes: info.audioSize,
-              percentage: info.totalSpace > 0
-                  ? info.audioSize / info.totalSpace
-                  : 0,
-              isScanning: isScanning,
-              onTap: () => context.go('${RouteConstants.files}?category=audio'),
-            ),
-            const Gap(12),
-            StorageCategoryTile(
-              icon: Icons.folder_open_outlined,
-              color: Colors.orange,
-              title: 'Documents & Files',
-              count: info.filesCount,
-              sizeBytes: info.filesSize,
-              percentage: info.totalSpace > 0
-                  ? info.filesSize / info.totalSpace
-                  : 0,
-              isScanning: isScanning,
-              onTap: () =>
-                  context.go('${RouteConstants.files}?category=document'),
-            ),
-            const Gap(12),
-            StorageCategoryTile(
-              icon: Icons.dns_outlined,
-              color: Colors.blueGrey,
-              title: 'System & Apps',
-              count: info.appsCount,
-              sizeBytes: info.systemSize,
-              percentage: info.totalSpace > 0
-                  ? info.systemSize / info.totalSpace
-                  : 0,
-              isScanning: isScanning,
-              onTap: () => context.push(RouteConstants.apps),
-            ),
-          ],
+              StorageCategoryTile(
+                icon: Icons.image_outlined,
+                color: Colors.purple,
+                title: 'Photos & Images',
+                count: info.photosCount,
+                sizeBytes: info.photosSize,
+                percentage: info.totalSpace > 0
+                    ? info.photosSize / info.totalSpace
+                    : 0,
+                isScanning: isScanning,
+                onTap: () => context.go(RouteConstants.photos),
+              ),
+              const Gap(12),
+              StorageCategoryTile(
+                icon: Icons.movie_outlined,
+                color: Colors.pink,
+                title: 'Videos',
+                count: info.videosCount,
+                sizeBytes: info.videosSize,
+                percentage: info.totalSpace > 0
+                    ? info.videosSize / info.totalSpace
+                    : 0,
+                isScanning: isScanning,
+                onTap: () =>
+                    context.go('${RouteConstants.files}?category=video'),
+              ),
+              const Gap(12),
+              StorageCategoryTile(
+                icon: Icons.audiotrack_outlined,
+                color: Colors.deepOrange,
+                title: 'Audio',
+                count: info.audioCount,
+                sizeBytes: info.audioSize,
+                percentage: info.totalSpace > 0
+                    ? info.audioSize / info.totalSpace
+                    : 0,
+                isScanning: isScanning,
+                onTap: () =>
+                    context.go('${RouteConstants.files}?category=audio'),
+              ),
+              const Gap(12),
+              StorageCategoryTile(
+                icon: Icons.folder_open_outlined,
+                color: Colors.orange,
+                title: 'Documents & Files',
+                count: info.documentsCount,
+                sizeBytes: info.documentsSize,
+                percentage: info.totalSpace > 0
+                    ? info.documentsSize / info.totalSpace
+                    : 0,
+                isScanning: isScanning,
+                onTap: () =>
+                    context.go('${RouteConstants.files}?category=document'),
+              ),
+              const Gap(12),
+              StorageCategoryTile(
+                icon: Icons.dns_outlined,
+                color: Colors.blueGrey,
+                title: 'System & Apps',
+                count: info.appsCount,
+                sizeBytes: info.systemSize,
+                percentage: info.totalSpace > 0
+                    ? info.systemSize / info.totalSpace
+                    : 0,
+                isScanning: isScanning,
+                onTap: () => context.push(RouteConstants.apps),
+              ),
+            ],
+          ),
         ),
 
         // Bottom Fixed CTA

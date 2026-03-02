@@ -93,17 +93,18 @@ class DuplicateDetector {
         cachedDuplicates = null // [P1] Invalidate cache
     }
     
-    /**
-     * [F1] Improved signature to reduce false positives.
-     * Uses normalized name + size + extension for better discrimination.
-     * Two files with same name and size but different extensions are NOT duplicates.
-     */
     private fun createSignature(name: String, size: Long): String {
-        val normalizedName = name.lowercase().trim()
-        val extension = normalizedName.substringAfterLast('.', "")
-        // Separate extension in signature ensures "photo.jpg" (100KB) and "photo.png" (100KB)
-        // are NOT treated as duplicates even if they happen to have the same size.
-        return "${normalizedName}_${extension}_$size"
+        val extension = name.substringAfterLast('.', "").lowercase().trim()
+        val nameWithoutExt = name.substringBeforeLast('.')
+        
+        // Strip common Android duplicate suffixes: " (1)", "-1", "_copy"
+        val cleanedName = nameWithoutExt
+            .replace(Regex("(\\s\\(\\d+\\)|-\\d+|_copy)$", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("(\\s\\d+)$"), "") // Sometimes just " 1"
+            .lowercase()
+            .trim()
+            
+        return "${cleanedName}_${extension}_$size"
     }
     
     /**
