@@ -37,27 +37,18 @@ class DashboardScreen extends ConsumerWidget {
         backgroundColor: AppColors.surface,
         elevation: 0,
         centerTitle: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {}, // TODO: Drawer
-            ),
-            const Gap(8),
-            Text(
-              'Storage Dashboard',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-          ],
+        title: Text(
+          'Storage Dashboard',
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
-        titleSpacing: 0,
+        titleSpacing: 16, // Better alignment after removing menu
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () {
-              // Context is valid here for GoRouter if needed
+              context.push(RouteConstants.settings);
             },
           ),
           const Gap(8),

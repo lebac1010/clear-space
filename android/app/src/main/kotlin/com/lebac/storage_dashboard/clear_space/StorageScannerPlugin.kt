@@ -129,10 +129,14 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     result.error("NOT_BOUND", "Service not bound yet", null)
                     return
                 }
+                
+                // Extract sensitivity from Flutter arguments
+                val sensitivity = call.argument<Int>("sensitivity") ?: 5
+                
                 val intent = Intent(context, StorageScannerService::class.java)
                 context.startService(intent)
                 
-                scannerService?.startScan(result)
+                scannerService?.startScan(result, sensitivity)
             }
             "pauseScan" -> {
                 scannerService?.pauseScan()

@@ -1,0 +1,8 @@
+Analyzing clear-space...
+
+  error - lib\features\settings\presentation\screens\settings_screen.dart:194:38 - Undefined name 'appSettingsServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\settings\presentation\screens\settings_screen.dart:260:45 - Undefined name 'appSettingsServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+   info - lib\features\settings\presentation\screens\settings_screen.dart:99:5 - 'Share' is deprecated and shouldn't be used. Use SharePlus instead. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - lib\features\settings\presentation\screens\settings_screen.dart:99:11 - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+
+4 issues found.

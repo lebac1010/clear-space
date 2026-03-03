@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/services/native_storage_scanner.dart';
 import '../../../../core/services/storage_cache_service.dart';
 import '../../domain/entities/scan_progress.dart';
@@ -12,8 +13,13 @@ import '../../domain/repositories/storage_repository.dart';
 class StorageRepositoryImpl implements StorageRepository {
   final NativeStorageScanner _nativeScanner;
   final StorageCacheService _cacheService;
+  final AppSettingsService _appSettings;
 
-  StorageRepositoryImpl(this._nativeScanner, this._cacheService);
+  StorageRepositoryImpl(
+    this._nativeScanner,
+    this._cacheService,
+    this._appSettings,
+  );
 
   @override
   Stream<ScanProgress> get scanProgress => _nativeScanner.onProgress;
@@ -94,7 +100,8 @@ class StorageRepositoryImpl implements StorageRepository {
     }
 
     try {
-      final info = await _nativeScanner.scan();
+      final sensitivity = _appSettings.getSimilarPhotoSensitivity();
+      final info = await _nativeScanner.scan(sensitivity: sensitivity);
       await _cacheService.cacheStorageInfo(info);
       return info;
     } catch (e) {

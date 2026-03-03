@@ -53,9 +53,6 @@ class SimilarPhotoDetector(private val context: Context) {
         }
     }
 
-    // Threshold for Hamming Distance (0-64). <= 5 implies ~90% similarity.
-    private val SIMILARITY_THRESHOLD = 5
-    
     // Max parallel hash computations (limit memory pressure on low-end devices)
     private val MAX_PARALLEL = 6
     
@@ -82,11 +79,13 @@ class SimilarPhotoDetector(private val context: Context) {
      * making it safe to use inside a Kotlin Flow's emit(). DO NOT call it from inside
      * async{} blocks — that violates Flow's threading invariant.
      *
+     * @param sensitivity The hamming distance threshold (e.g. 3=strict, 5=normal, 8=loose)
      * @param onProgress Callback indicating how many photos have been processed so far.
      *                   Called on the caller's coroutine context (safe for Flow emit).
      */
     suspend fun findSimilarPhotos(
         photos: List<PhotoInfo>,
+        sensitivity: Int = 5,
         onProgress: (suspend (processed: Int, total: Int) -> Unit)? = null
     ): List<DuplicateFileInfo> {
         Log.d("SimilarPhotoDetector", "findSimilarPhotos called with ${photos.size} photos")
@@ -154,7 +153,7 @@ class SimilarPhotoDetector(private val context: Context) {
             var addedToGroup = false
             for (group in groups) {
                 val distance = calculateHammingDistance(group.representativeHash, hashResult.hash)
-                if (distance <= SIMILARITY_THRESHOLD) {
+                if (distance <= sensitivity) {
                     group.items.add(hashResult.toDuplicateItem())
                     addedToGroup = true
                     break

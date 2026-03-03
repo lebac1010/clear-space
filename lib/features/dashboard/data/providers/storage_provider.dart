@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/services/native_storage_scanner.dart';
 import '../../../../core/services/storage_cache_service.dart';
 import '../../domain/repositories/storage_repository.dart';
@@ -27,5 +28,6 @@ StorageCacheService storageCacheService(StorageCacheServiceRef ref) {
 Future<StorageRepository> storageRepository(StorageRepositoryRef ref) async {
   final cacheService = ref.watch(storageCacheServiceProvider);
   final nativeScanner = ref.watch(nativeStorageScannerProvider);
-  return StorageRepositoryImpl(nativeScanner, cacheService);
+  final appSettings = ref.watch(appSettingsServiceProvider);
+  return StorageRepositoryImpl(nativeScanner, cacheService, appSettings);
 }

@@ -6,6 +6,7 @@ part 'app_settings_service.g.dart';
 
 class AppSettingsService {
   static const String _keyOnboardingCompleted = 'onboarding_completed';
+  static const String _keyPhotoSensitivity = 'photo_sensitivity';
 
   final SharedPreferences _prefs;
 
@@ -17,6 +18,17 @@ class AppSettingsService {
 
   Future<void> setOnboardingCompleted(bool completed) async {
     await _prefs.setBool(_keyOnboardingCompleted, completed);
+  }
+
+  /// Gets the similar photo sensitivity threshold (Hamming distance).
+  /// Lower number = stricter (more similar).
+  /// 3 = Strict (95%), 5 = Normal (85%), 8 = Loose (75%).
+  int getSimilarPhotoSensitivity() {
+    return _prefs.getInt(_keyPhotoSensitivity) ?? 5; // Default is Normal (5)
+  }
+
+  Future<void> setSimilarPhotoSensitivity(int value) async {
+    await _prefs.setInt(_keyPhotoSensitivity, value);
   }
 }
 
