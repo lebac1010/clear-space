@@ -24,7 +24,7 @@ final largeFileFilterNotifierProvider = AutoDisposeNotifierProvider<
 
 typedef _$LargeFileFilterNotifier = AutoDisposeNotifier<LargeFileFilter>;
 String _$largeFileControllerHash() =>
-    r'6ae201f1bb10141c160151fa7969c95075bcc14f';
+    r'fc6e5f629275c451746eaeb9bceeae3ec323f0e8';
 
 /// See also [LargeFileController].
 @ProviderFor(LargeFileController)

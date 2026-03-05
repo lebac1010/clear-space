@@ -225,6 +225,32 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     withContext(Dispatchers.Main) { result.success(photos) }
                 }
             }
+            "getScreenshots" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val limit = call.argument<Int>("limit") ?: 50
+                val offset = call.argument<Int>("offset") ?: 0
+                val olderThanDays = call.argument<Int>("olderThanDays") ?: 0
+                getScope().launch(Dispatchers.IO) {
+                    val screenshots = scannerService?.getScreenshots(limit, offset, olderThanDays) ?: emptyList()
+                    withContext(Dispatchers.Main) { result.success(screenshots) }
+                }
+            }
+            "getDownloads" -> {
+                if (scannerService == null) {
+                    result.error("NOT_BOUND", "Service not bound yet", null)
+                    return
+                }
+                val limit = call.argument<Int>("limit") ?: 50
+                val offset = call.argument<Int>("offset") ?: 0
+                val olderThanDays = call.argument<Int>("olderThanDays") ?: 0
+                getScope().launch(Dispatchers.IO) {
+                    val downloads = scannerService?.getDownloads(limit, offset, olderThanDays) ?: emptyList()
+                    withContext(Dispatchers.Main) { result.success(downloads) }
+                }
+            }
             "getMediaFiles" -> {
                 if (scannerService == null) {
                     result.error("NOT_BOUND", "Service not bound yet", null)

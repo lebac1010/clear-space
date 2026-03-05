@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:in_app_review/in_app_review.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/router/route_constants.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/widgets/app_card.dart';
 
@@ -132,9 +134,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       const storeUrl =
           'https://play.google.com/store/apps/details?id=com.lebac.storage_dashboard.clear_space';
 
-      Share.share(
-        'Hey! Check out Clear Space. It helped me clean up gigabytes of junk files instantly! Download here: $storeUrl',
-        subject: 'Keep your phone clean with Clear Space',
+      SharePlus.instance.share(
+        ShareParams(
+          text:
+              'Hey! Check out Clear Space. It helped me clean up gigabytes of junk files instantly! Download here: $storeUrl',
+          title: 'Keep your phone clean with Clear Space',
+        ),
       );
     } catch (_) {
       if (!mounted) return;
@@ -532,6 +537,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             padding: EdgeInsets.zero,
             child: Column(
               children: [
+                _SettingsTile(
+                  icon: Icons.history_rounded,
+                  title: 'Cleanup History',
+                  subtitle: 'View your past cleaning activities',
+                  color: AppColors.primary,
+                  onTap: () => context.push(RouteConstants.history),
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
                 _SettingsTile(
                   icon: Icons.mark_email_read_outlined,
                   title: 'Send Feedback',

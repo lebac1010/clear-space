@@ -47,4 +47,13 @@ abstract class StorageRepository {
 
   /// Delete specific junk files/folders by their paths
   Future<Map<String, dynamic>> deleteSpecificJunk(List<String> paths);
+
+  /// Log cleanup history
+  Future<void> logHistory({
+    required String type,
+    required int count,
+    required int size,
+    List<String> details = const [],
+    Map<String, int> mimeBreakdown = const {},
+  });
 }

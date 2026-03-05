@@ -1297,8 +1297,197 @@ class MediaStoreScanner(private val context: Context) {
             Log.e("MediaStoreScanner", "Error fetching photos: ${e.message}", e)
         }
         
-        Log.d("MediaStoreScanner", "getPhotos END: returning ${photos.size} photos")
+    Log.d("MediaStoreScanner", "getPhotos END: returning ${photos.size} photos")
         return photos
+    }
+
+    /**
+     * Get screenshots with pagination and optional age filter.
+     * Robustly identifies screenshots via display name and path markers.
+     */
+    fun getScreenshots(limit: Int, offset: Int, olderThanDays: Int = 0): List<Map<String, Any>> {
+        val screenshots = mutableListOf<Map<String, Any>>()
+        
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        }
+
+        val projection = mutableListOf(
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media.DATE_MODIFIED,
+            MediaStore.Images.Media.DATA
+        ).toTypedArray()
+
+        // Vendor-agnostic screenshot detection
+        val screenshotMarkers = listOf(
+            "%Screenshots%",
+            "%Screenshot%",
+            "%Screencapture%",
+            "%Pictures/Screenshots%",
+            "%DCIM/Screenshots%",
+            "%DCIM/Screencaptures%"
+        )
+        
+        var selection = "("
+        screenshotMarkers.forEachIndexed { index, marker ->
+            selection += "LOWER(${MediaStore.Images.Media.DATA}) LIKE LOWER(?)"
+            if (index < screenshotMarkers.size - 1) selection += " OR "
+        }
+        selection += ")"
+        
+        val selectionArgs = screenshotMarkers.toMutableList()
+
+        if (olderThanDays > 0) {
+            val thresholdSec = (System.currentTimeMillis() / 1000) - (olderThanDays * 24 * 3600)
+            selection += " AND ${MediaStore.Images.Media.DATE_MODIFIED} < ?"
+            selectionArgs.add(thresholdSec.toString())
+        }
+
+        try {
+            val cursor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val bundle = android.os.Bundle().apply {
+                    putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
+                    putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
+                    putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(MediaStore.Images.Media.DATE_MODIFIED))
+                    putInt(ContentResolver.QUERY_ARG_SORT_DIRECTION, ContentResolver.QUERY_SORT_DIRECTION_DESCENDING)
+                    putString(ContentResolver.QUERY_ARG_SQL_SELECTION, selection)
+                    putStringArray(ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS, selectionArgs.toTypedArray())
+                }
+                context.contentResolver.query(collection, projection, bundle, null)
+            } else {
+                val sortOrder = "${MediaStore.Images.Media.DATE_MODIFIED} DESC LIMIT $limit OFFSET $offset"
+                context.contentResolver.query(collection, projection, selection, selectionArgs.toTypedArray(), sortOrder)
+            }
+
+            cursor?.use {
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+                val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
+                val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
+                val dateColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)
+                val dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+                
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(idColumn)
+                    val name = cursor.getString(nameColumn) ?: "unknown"
+                    val size = cursor.getLong(sizeColumn)
+                    val dateModified = cursor.getLong(dateColumn)
+                    val path = if (dataColumn >= 0) cursor.getString(dataColumn) ?: "" else ""
+                    
+                    val contentUri = ContentUris.withAppendedId(collection, id)
+
+                    screenshots.add(mapOf(
+                        "id" to id,
+                        "name" to name,
+                        "size" to size,
+                        "dateModified" to dateModified,
+                        "path" to path,
+                        "uri" to contentUri.toString()
+                    ))
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("MediaStoreScanner", "Error fetching screenshots: ${e.message}", e)
+        }
+        
+        return screenshots
+    }
+
+    /**
+     * Get all files in the Downloads folder with pagination and age filter
+     */
+    fun getDownloads(limit: Int, offset: Int, olderThanDays: Int): List<Map<String, Any>> {
+        val downloads = mutableListOf<Map<String, Any>>()
+        
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Files.getContentUri("external")
+        }
+
+        val projection = mutableListOf(
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.Files.FileColumns.DISPLAY_NAME,
+            MediaStore.Files.FileColumns.SIZE,
+            MediaStore.Files.FileColumns.DATE_MODIFIED,
+            MediaStore.Files.FileColumns.DATA,
+            MediaStore.Files.FileColumns.MIME_TYPE
+        ).toTypedArray()
+
+        // Multi-volume support: Check for "Download/" or "Downloads/" relative paths
+        // We look for any directory starting with Download/ in any external volume
+        var selection = "(${MediaStore.Files.FileColumns.RELATIVE_PATH} LIKE ? OR ${MediaStore.Files.FileColumns.RELATIVE_PATH} LIKE ?)"
+        val selectionArgs = mutableListOf("Download/%", "Downloads/%")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            selection += " AND ${MediaStore.Files.FileColumns.IS_PENDING} = 0"
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            selection += " AND ${MediaStore.Files.FileColumns.IS_TRASHED} = 0"
+        }
+
+        if (olderThanDays > 0) {
+            val thresholdSec = (System.currentTimeMillis() / 1000) - (olderThanDays * 24 * 3600)
+            selection += " AND ${MediaStore.Files.FileColumns.DATE_MODIFIED} < ?"
+            selectionArgs.add(thresholdSec.toString())
+        }
+
+        try {
+            val cursor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val bundle = android.os.Bundle().apply {
+                    putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
+                    putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
+                    putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(MediaStore.Files.FileColumns.DATE_MODIFIED))
+                    putInt(ContentResolver.QUERY_ARG_SORT_DIRECTION, ContentResolver.QUERY_SORT_DIRECTION_DESCENDING)
+                    putString(ContentResolver.QUERY_ARG_SQL_SELECTION, selection)
+                    putStringArray(ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS, selectionArgs.toTypedArray())
+                }
+                context.contentResolver.query(collection, projection, bundle, null)
+            } else {
+                val sortOrder = "${MediaStore.Files.FileColumns.DATE_MODIFIED} DESC LIMIT $limit OFFSET $offset"
+                context.contentResolver.query(collection, projection, selection, selectionArgs.toTypedArray(), sortOrder)
+            }
+
+            cursor?.use {
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+                val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+                val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
+                val dateColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED)
+                val dataColumn = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA)
+                val mimeColumn = cursor.getColumnIndex(MediaStore.Files.FileColumns.MIME_TYPE)
+                
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(idColumn)
+                    val name = cursor.getString(nameColumn) ?: "unknown"
+                    val size = cursor.getLong(sizeColumn)
+                    val dateModified = cursor.getLong(dateColumn)
+                    val path = if (dataColumn >= 0) cursor.getString(dataColumn) ?: "" else ""
+                    val mimeType = if (mimeColumn >= 0) cursor.getString(mimeColumn) ?: "" else ""
+                    
+                    // Filter system files / directories if any
+                    if (size == 0L && path.endsWith("/")) continue
+
+                    val contentUri = ContentUris.withAppendedId(collection, id)
+
+                    downloads.add(mapOf(
+                        "id" to id,
+                        "name" to name,
+                        "size" to size,
+                        "dateModified" to dateModified,
+                        "path" to path,
+                        "mimeType" to mimeType,
+                        "uri" to contentUri.toString()
+                    ))
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("MediaStoreScanner", "Error fetching downloads: ${e.message}", e)
+        }
+        
+        return downloads
     }
 
     // Data classes

@@ -20,19 +20,28 @@ class CleanupScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        title: Text(
+          'Cleanup',
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        titleSpacing: 16,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push(RouteConstants.settings),
+          ),
+          const Gap(8),
+        ],
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            floating: true,
-            title: Text(
-              'Cleanup',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: AppColors.background,
-            surfaceTintColor: Colors.transparent,
-          ),
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverList(
@@ -111,15 +120,23 @@ class CleanupScreen extends ConsumerWidget {
                   },
                 ),
                 const Gap(12),
-                // Hidden for now as logic is not ready
-                // CleanupCategoryTile(
-                //   title: 'Old Screenshots',
-                //   subtitle: 'Older than 6 months',
-                //   size: 'Coming Soon',
-                //   color: AppColors.warning,
-                //   icon: Icons.screenshot_rounded,
-                //   onTap: () {},
-                // ),
+                CleanupCategoryTile(
+                  title: 'Screenshots',
+                  subtitle: 'Find and delete screenshots',
+                  size: '',
+                  color: AppColors.orange,
+                  icon: Icons.screenshot_rounded,
+                  onTap: () => context.push(RouteConstants.screenshots),
+                ),
+                const Gap(12),
+                CleanupCategoryTile(
+                  title: 'Downloads',
+                  subtitle: 'Manage your downloaded files',
+                  size: '',
+                  color: AppColors.primary,
+                  icon: Icons.download_rounded,
+                  onTap: () => context.push(RouteConstants.downloads),
+                ),
               ]),
             ),
           ),

@@ -19,6 +19,9 @@ abstract class RouteConstants {
   static const String onboarding = '/onboarding';
   static const String smartDetail = '/smart-detail';
   static const String junkDetail = '/cleanup/junk-detail';
+  static const String screenshots = '/cleanup/screenshots';
+  static const String downloads = '/cleanup/downloads';
+  static const String history = '/cleanup/history';
 }
 
 /// 404 Not Found Screen for unknown routes.

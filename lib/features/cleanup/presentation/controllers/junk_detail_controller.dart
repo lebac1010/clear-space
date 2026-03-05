@@ -107,9 +107,29 @@ class JunkDetailController extends StateNotifier<JunkDetailState> {
         state.selectedPaths.toList(),
       );
 
-      // Re-fetch from native cache to get accurate remaining items
-      // (handles partial deletion failures — items that couldn't be
-      // deleted will still appear in the list)
+      // Log history
+      if (result['deletedCount'] != 0) {
+        final breakdown = <String, int>{};
+        if (state.type == 'apks') {
+          breakdown['application/vnd.android.package-archive'] =
+              result['deletedCount'] as int;
+        } else if (state.type == 'empty_folders') {
+          breakdown['inode/directory'] = result['deletedCount'] as int;
+        } else {
+          breakdown['application/octet-stream'] = result['deletedCount'] as int;
+        }
+
+        await repo.logHistory(
+          type: state.type,
+          count: result['deletedCount'] as int,
+          size: result['deletedBytes'] as int,
+          details: state.selectedPaths
+              .take(3)
+              .map((p) => p.split('/').last)
+              .toList(),
+          mimeBreakdown: breakdown,
+        );
+      }
       if (mounted) {
         final rawItems = await repo.getJunkData(state.type);
         final items = rawItems.map((map) => JunkItem.fromMap(map)).toList();

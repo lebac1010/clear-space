@@ -219,6 +219,54 @@ class NativeStorageScanner {
     return [];
   }
 
+  /// Get screenshots with pagination and optional age filter
+  Future<List<Map<String, dynamic>>> getScreenshots({
+    int limit = 50,
+    int offset = 0,
+    int olderThanDays = 0,
+  }) async {
+    debugPrint(
+      '[NativeStorageScanner] getScreenshots called: limit=$limit, offset=$offset, olderThanDays=$olderThanDays',
+    );
+    final result = await _methodChannel.invokeMethod('getScreenshots', {
+      'limit': limit,
+      'offset': offset,
+      'olderThanDays': olderThanDays,
+    });
+
+    if (result == null) return [];
+
+    final converted = deepConvertPlatformData(result);
+    if (converted is List) {
+      return converted.whereType<Map<String, dynamic>>().toList();
+    }
+    return [];
+  }
+
+  /// Get downloads with pagination and optional age filter
+  Future<List<Map<String, dynamic>>> getDownloads({
+    int limit = 50,
+    int offset = 0,
+    int olderThanDays = 0,
+  }) async {
+    debugPrint(
+      '[NativeStorageScanner] getDownloads called: limit=$limit, offset=$offset, olderThanDays=$olderThanDays',
+    );
+    final result = await _methodChannel.invokeMethod('getDownloads', {
+      'limit': limit,
+      'offset': offset,
+      'olderThanDays': olderThanDays,
+    });
+
+    if (result == null) return [];
+
+    final converted = deepConvertPlatformData(result);
+    if (converted is List) {
+      return converted.whereType<Map<String, dynamic>>().toList();
+    }
+    return [];
+  }
+
   /// Get media files (audio, video, documents) with pagination
   /// Returns List<Map<String, dynamic>>
   Future<List<Map<String, dynamic>>> getMediaFiles({

@@ -6,6 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/services/native_storage_scanner.dart';
 import '../../../../core/services/storage_cache_service.dart';
+import '../../../../core/services/cleanup_history_service.dart';
+import '../../../cleanup/domain/entities/cleanup_history_record.dart';
 import '../../domain/entities/scan_progress.dart';
 import '../../domain/entities/storage_info.dart';
 import '../../domain/repositories/storage_repository.dart';
@@ -14,11 +16,13 @@ class StorageRepositoryImpl implements StorageRepository {
   final NativeStorageScanner _nativeScanner;
   final StorageCacheService _cacheService;
   final AppSettingsService _appSettings;
+  final CleanupHistoryService _historyService;
 
   StorageRepositoryImpl(
     this._nativeScanner,
     this._cacheService,
     this._appSettings,
+    this._historyService,
   );
 
   @override
@@ -128,6 +132,27 @@ class StorageRepositoryImpl implements StorageRepository {
       _cacheService.clearCache();
     }
     return success;
+  }
+
+  @override
+  Future<void> logHistory({
+    required String type,
+    required int count,
+    required int size,
+    List<String> details = const [],
+    Map<String, int> mimeBreakdown = const {},
+  }) async {
+    await _historyService.addRecord(
+      CleanupHistoryRecord(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        timestamp: DateTime.now(),
+        cleanupType: type,
+        itemsCount: count,
+        totalSizeInBytes: size,
+        fileNames: details,
+        mimeTypeBreakdown: mimeBreakdown,
+      ),
+    );
   }
 
   @override

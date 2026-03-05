@@ -18,6 +18,9 @@ import '../../features/apps/presentation/screens/app_manager_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
+import '../../features/cleanup/presentation/screens/screenshots_cleaner_screen.dart';
+import '../../features/cleanup/presentation/screens/downloads_cleaner_screen.dart';
+import '../../features/cleanup/presentation/screens/cleanup_history_screen.dart';
 import '../services/app_settings_service.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 import 'route_constants.dart';
@@ -113,6 +116,25 @@ GoRouter goRouter(GoRouterRef ref) {
                     name: 'junk-files',
                     parentNavigatorKey: rootNavigatorKey, // Full screen
                     builder: (context, state) => const JunkFilesScreen(),
+                  ),
+                  GoRoute(
+                    path: 'screenshots',
+                    name: 'screenshots',
+                    parentNavigatorKey: rootNavigatorKey, // Full screen
+                    builder: (context, state) =>
+                        const ScreenshotsCleanerScreen(),
+                  ),
+                  GoRoute(
+                    path: 'downloads',
+                    name: 'downloads',
+                    parentNavigatorKey: rootNavigatorKey, // Full screen
+                    builder: (context, state) => const DownloadsCleanerScreen(),
+                  ),
+                  GoRoute(
+                    path: 'history',
+                    name: 'history',
+                    parentNavigatorKey: rootNavigatorKey, // Full screen
+                    builder: (context, state) => const CleanupHistoryScreen(),
                   ),
                 ],
               ),

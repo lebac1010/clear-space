@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/services/native_storage_scanner.dart';
 import '../../../../core/services/storage_cache_service.dart';
+import '../../../../core/services/cleanup_history_service.dart';
 import '../../domain/repositories/storage_repository.dart';
 import '../repositories/storage_repository_impl.dart';
 
@@ -29,5 +30,11 @@ Future<StorageRepository> storageRepository(StorageRepositoryRef ref) async {
   final cacheService = ref.watch(storageCacheServiceProvider);
   final nativeScanner = ref.watch(nativeStorageScannerProvider);
   final appSettings = ref.watch(appSettingsServiceProvider);
-  return StorageRepositoryImpl(nativeScanner, cacheService, appSettings);
+  final historyService = ref.watch(cleanupHistoryServiceProvider);
+  return StorageRepositoryImpl(
+    nativeScanner,
+    cacheService,
+    appSettings,
+    historyService,
+  );
 }

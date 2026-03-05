@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/router/route_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -78,18 +81,24 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: Colors.transparent,
+        backgroundColor: AppColors.surface,
         elevation: 0,
-        centerTitle: true,
-        title: const Text(
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        title: Text(
           'Media Explorer',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: AppColors.textPrimary,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
+        titleSpacing: 16,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push(RouteConstants.settings),
+          ),
+          const Gap(8),
+        ],
       ),
       body: Column(
         children: [

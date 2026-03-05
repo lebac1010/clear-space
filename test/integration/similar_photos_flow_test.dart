@@ -103,6 +103,15 @@ class FakeStorageRepository implements StorageRepository {
   }
 
   @override
+  Future<void> logHistory({
+    required String type,
+    required int count,
+    required int size,
+    List<String> details = const [],
+    Map<String, int> mimeBreakdown = const {},
+  }) async {}
+
+  @override
   Future<List<Map<String, dynamic>>> getMediaFiles({
     required String type,
     int limit = 50,

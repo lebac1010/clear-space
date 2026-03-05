@@ -181,6 +181,20 @@ class StorageScannerService : Service() {
         return result
     }
 
+    fun getScreenshots(limit: Int, offset: Int, olderThanDays: Int): List<Map<String, Any>> {
+        if (scanner == null) {
+            scanner = MediaStoreScanner(this)
+        }
+        return scanner?.getScreenshots(limit, offset, olderThanDays) ?: emptyList()
+    }
+
+    fun getDownloads(limit: Int, offset: Int, olderThanDays: Int): List<Map<String, Any>> {
+        if (scanner == null) {
+            scanner = MediaStoreScanner(this)
+        }
+        return scanner?.getDownloads(limit, offset, olderThanDays) ?: emptyList()
+    }
+
     fun getMediaFiles(type: String, limit: Int, offset: Int): List<Map<String, Any>> {
         Log.d("StorageScannerService", "getMediaFiles called: type=$type, limit=$limit, offset=$offset")
         if (scanner == null) {

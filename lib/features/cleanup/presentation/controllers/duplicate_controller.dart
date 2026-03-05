@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../dashboard/data/providers/storage_provider.dart';
 import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
 import '../../domain/entities/cleanup_group.dart';
+import '../../domain/entities/cleanup_item.dart';
 import '../providers/cleanup_provider.dart';
 
 part 'duplicate_controller.g.dart';
@@ -64,9 +67,9 @@ class DuplicateController extends _$DuplicateController {
       if (type == CleanupType.similar) {
         // Similar: Prioritize Size (Quality) then Date
         sortedItems.sort((a, b) {
-          final sizeCompare = b.size.compareTo(a.size); // Desecending size
+          final sizeCompare = b.size.compareTo(a.size);
           if (sizeCompare != 0) return sizeCompare;
-          return b.dateModified.compareTo(a.dateModified); // Descending date
+          return b.dateModified.compareTo(a.dateModified);
         });
       } else {
         // Duplicates: Sort by date (newest first)
@@ -90,44 +93,96 @@ class DuplicateController extends _$DuplicateController {
     final currentState = state.value;
     if (currentState == null) return false;
 
-    // Collect all selected URIs
-    final selectedUris = <String>[];
+    // Collect all selected items
+    final selectedItems = <CleanupItem>[];
     for (final group in currentState) {
       for (final item in group.items) {
         if (item.isSelected) {
-          selectedUris.add(item.uri);
+          selectedItems.add(item);
         }
       }
     }
 
-    if (selectedUris.isEmpty) return true;
+    final selectedUris = selectedItems.map((item) => item.uri).toList();
+    final totalSize = selectedItems.fold(0, (sum, item) => sum + item.size);
 
-    state = const AsyncLoading(); // Show loading while deleting
+    if (selectedUris.isEmpty) return false; // [Bug #4 fix] Consistent: false
+
+    // Save for rollback
+    final previousData = currentState;
+
+    // [Bug #11 fix] Keep groups with 1 remaining item; only remove completely empty groups
+    final optimisticGroups = currentState
+        .map((group) {
+          final remainingItems = group.items
+              .where((item) => !item.isSelected)
+              .toList();
+          return group.copyWith(items: remainingItems);
+        })
+        .where(
+          (group) => group.items.isNotEmpty,
+        ) // Only remove truly empty groups
+        .toList();
+
+    state = AsyncData(optimisticGroups);
 
     try {
       final repository = await ref.read(cleanupRepositoryProvider.future);
-
-      // Use "Smart Delete" (Move to Trash)
       final success = await repository.deleteItems(
         selectedUris,
         permanent: false,
       );
 
       if (success) {
-        // Refresh list
-        ref.invalidateSelf();
-        // [D1] Trigger background re-scan instead of invalidating (which causes full re-scan loop)
-        // Cache was already cleared by deleteFiles() in the repository
+        // [Bug #9 fix] Isolate logHistory so failure doesn't trigger rollback
+        try {
+          // [Bug #5 fix] Use mediaType field instead of hardcoding image/
+          final breakdown = <String, int>{};
+          for (var item in selectedItems) {
+            final mime = _getMimeFromType(item.mediaType);
+            breakdown[mime] = (breakdown[mime] ?? 0) + 1;
+          }
+
+          final storageRepo = await ref.read(storageRepositoryProvider.future);
+          await storageRepo.logHistory(
+            type: type == CleanupType.similar ? 'similar_photos' : 'duplicates',
+            count: selectedItems.length,
+            size: totalSize,
+            details: selectedItems.take(3).map((e) => e.name).toList(),
+            mimeBreakdown: breakdown,
+          );
+        } catch (e) {
+          debugPrint('Failed to log duplicate cleanup history: $e');
+        }
+
         ref.read(dashboardControllerProvider.notifier).startScan();
+        return true;
       } else {
-        // Restore state if failed (or partially failed?)
-        // Ideally we should reload
-        ref.invalidateSelf();
+        state = AsyncData(previousData);
+        return false;
       }
-      return success;
-    } catch (e, st) {
-      state = AsyncError(e, st);
+    } catch (e) {
+      state = AsyncData(previousData);
       return false;
+    }
+  }
+
+  /// [Bug #5 fix] Proper MIME from mediaType field
+  String _getMimeFromType(String? type) {
+    if (type == null) return 'application/octet-stream';
+    switch (type.toLowerCase()) {
+      case 'video':
+        return 'video/*';
+      case 'image':
+        return 'image/*';
+      case 'audio':
+        return 'audio/*';
+      case 'document':
+        return 'application/document';
+      case 'archive':
+        return 'application/archive';
+      default:
+        return 'application/octet-stream';
     }
   }
 }
