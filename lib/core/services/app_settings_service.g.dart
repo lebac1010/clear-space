@@ -22,5 +22,21 @@ final appSettingsServiceProvider = Provider<AppSettingsService>.internal(
 );
 
 typedef AppSettingsServiceRef = ProviderRef<AppSettingsService>;
+String _$largeFileThresholdHash() =>
+    r'ea8c8ce151aa63fd7e74b8ba5270224795e67c27';
+
+/// See also [largeFileThreshold].
+@ProviderFor(largeFileThreshold)
+final largeFileThresholdProvider = AutoDisposeProvider<int>.internal(
+  largeFileThreshold,
+  name: r'largeFileThresholdProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$largeFileThresholdHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef LargeFileThresholdRef = AutoDisposeProviderRef<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

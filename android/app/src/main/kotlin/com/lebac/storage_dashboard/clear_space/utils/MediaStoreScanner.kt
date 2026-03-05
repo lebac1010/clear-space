@@ -61,7 +61,7 @@ class MediaStoreScanner(private val context: Context) {
     /**
      * Main scan function that returns a Flow of progress updates
      */
-    fun scanStorage(): Flow<ScanUpdate> = flow {
+    fun scanStorage(sensitivity: Int = 5, largeFileThreshold: Long = 10485760L): Flow<ScanUpdate> = flow {
         val startTime = System.currentTimeMillis()
         
         try {
@@ -95,7 +95,8 @@ class MediaStoreScanner(private val context: Context) {
             val photosResult = scanMediaType(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 ScanPhase.PHOTOS,
-                MediaType.IMAGE
+                MediaType.IMAGE,
+                largeFileThreshold
             ) { progress: ScanProgress, cloud: Int -> 
                 emit(ScanUpdate.Progress(progress))
                 cloudOnlyCount += cloud
@@ -108,7 +109,8 @@ class MediaStoreScanner(private val context: Context) {
             val videosResult = scanMediaType(
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 ScanPhase.VIDEOS,
-                MediaType.VIDEO
+                MediaType.VIDEO,
+                largeFileThreshold
             ) { progress: ScanProgress, cloud: Int -> 
                 emit(ScanUpdate.Progress(progress))
                 cloudOnlyCount += cloud
@@ -121,7 +123,8 @@ class MediaStoreScanner(private val context: Context) {
             val audioResult = scanMediaType(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 ScanPhase.AUDIO,
-                MediaType.AUDIO
+                MediaType.AUDIO,
+                largeFileThreshold
             ) { progress: ScanProgress, cloud: Int -> 
                 emit(ScanUpdate.Progress(progress))
                 cloudOnlyCount += cloud
@@ -131,7 +134,7 @@ class MediaStoreScanner(private val context: Context) {
             Log.d("StorageScanner", "Phase 5: Documents")
             // Phase 5: Documents
             emit(ScanUpdate.Progress(ScanProgress(ScanPhase.DOCUMENTS, 0, 100, 0L)))
-            val documentsResult = scanDocuments { progress: ScanProgress ->
+            val documentsResult = scanDocuments(largeFileThreshold) { progress: ScanProgress ->
                 emit(ScanUpdate.Progress(progress))
             }
             checkCancelled()
@@ -440,6 +443,7 @@ class MediaStoreScanner(private val context: Context) {
      * Scan for documents (PDF, DOC, XLS, TXT, etc.)
      */
     private suspend fun scanDocuments(
+        largeFileThreshold: Long = 10485760L,
         onProgress: suspend (ScanProgress) -> Unit
     ): MediaResult {
         var totalCount = 0
@@ -512,6 +516,9 @@ class MediaStoreScanner(private val context: Context) {
 
                 if (size > 0 && path != null) {
                     totalSize += size
+                    
+                    val fileUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id).toString()
+                    
                     documentCache.add(
                         FileInfo(
                             id = id,
@@ -520,9 +527,23 @@ class MediaStoreScanner(private val context: Context) {
                             path = path,
                             mimeType = mimeType ?: "application/octet-stream",
                             dateModified = dateModified,
-                            uri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id).toString()
+                            uri = fileUri
                         )
                     )
+
+                    // Track large files
+                    if (size >= largeFileThreshold) {
+                        largeFileTracker.addFile(
+                            id = id,
+                            name = name ?: "Unknown",
+                            size = size,
+                            mimeType = mimeType ?: "application/octet-stream",
+                            dateModified = dateModified,
+                            uri = fileUri,
+                            path = path,
+                            mediaType = MediaType.DOCUMENT
+                        )
+                    }
                 }
                 processedSoFar++
 
@@ -933,6 +954,7 @@ class MediaStoreScanner(private val context: Context) {
         uri: Uri,
         phase: ScanPhase,
         mediaType: MediaType,
+        largeFileThreshold: Long = 10485760L,
         onProgress: suspend (ScanProgress, Int) -> Unit
     ): MediaResult {
         
@@ -1044,16 +1066,18 @@ class MediaStoreScanner(private val context: Context) {
                         }
                         
                         // Track large files
-                        largeFileTracker.addFile(
-                            id = id,
-                            name = name,
-                            size = size,
-                            mimeType = mimeType,
-                            dateModified = dateModified,
-                            uri = fileUri,
-                            path = path,
-                            mediaType = mediaType
-                        )
+                        if (size >= largeFileThreshold) {
+                            largeFileTracker.addFile(
+                                id = id,
+                                name = name,
+                                size = size,
+                                mimeType = mimeType,
+                                dateModified = dateModified,
+                                uri = fileUri,
+                                path = path,
+                                mediaType = mediaType
+                            )
+                        }
                         
                         // Add to appropriate media cache
                         val fileInfo = FileInfo(id, name, size, path, mimeType, dateModified, fileUri)

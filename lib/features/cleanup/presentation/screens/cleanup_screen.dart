@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../widgets/cleanup_category_tile.dart';
 
@@ -83,20 +84,31 @@ class CleanupScreen extends ConsumerWidget {
                   ),
                 ),
                 const Gap(12),
-                CleanupCategoryTile(
-                  title: 'Large Files',
-                  subtitle: 'Files larger than 10MB',
-                  size: storageAsync.when(
-                    data: (info) => info != null
-                        ? FileUtils.formatSize(info.largeFilesTotalSize)
-                        : '0 B',
-                    loading: () => 'Analyzing...',
-                    error: (_, __) => 'Error',
-                  ),
-                  color: AppColors.error,
-                  icon: Icons.video_file_rounded,
-                  // [A9] Use go (not push) for consistent navigation within shell branch
-                  onTap: () => context.go(RouteConstants.largeFiles),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final threshold = ref.watch(largeFileThresholdProvider);
+                    String label = '10MB';
+                    if (threshold >= 1024 * 1024 * 1024) {
+                      label = '${(threshold / (1024 * 1024 * 1024)).toInt()}GB';
+                    } else {
+                      label = '${(threshold / (1024 * 1024)).toInt()}MB';
+                    }
+
+                    return CleanupCategoryTile(
+                      title: 'Large Files',
+                      subtitle: 'Files larger than $label',
+                      size: storageAsync.when(
+                        data: (info) => info != null
+                            ? FileUtils.formatSize(info.largeFilesTotalSize)
+                            : '0 B',
+                        loading: () => 'Analyzing...',
+                        error: (_, __) => 'Error',
+                      ),
+                      color: AppColors.error,
+                      icon: Icons.video_file_rounded,
+                      onTap: () => context.go(RouteConstants.largeFiles),
+                    );
+                  },
                 ),
                 const Gap(12),
                 // Hidden for now as logic is not ready

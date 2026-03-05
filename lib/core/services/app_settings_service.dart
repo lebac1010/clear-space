@@ -7,6 +7,7 @@ part 'app_settings_service.g.dart';
 class AppSettingsService {
   static const String _keyOnboardingCompleted = 'onboarding_completed';
   static const String _keyPhotoSensitivity = 'photo_sensitivity';
+  static const String _keyLargeFileThreshold = 'large_file_threshold';
 
   final SharedPreferences _prefs;
 
@@ -30,10 +31,25 @@ class AppSettingsService {
   Future<void> setSimilarPhotoSensitivity(int value) async {
     await _prefs.setInt(_keyPhotoSensitivity, value);
   }
+
+  /// Gets the large file threshold in bytes.
+  /// Default is 10MB (10 * 1024 * 1024).
+  int getLargeFileThreshold() {
+    return _prefs.getInt(_keyLargeFileThreshold) ?? 10 * 1024 * 1024;
+  }
+
+  Future<void> setLargeFileThreshold(int bytes) async {
+    await _prefs.setInt(_keyLargeFileThreshold, bytes);
+  }
 }
 
 @Riverpod(keepAlive: true)
 AppSettingsService appSettingsService(AppSettingsServiceRef ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
   return AppSettingsService(prefs);
+}
+
+@riverpod
+int largeFileThreshold(LargeFileThresholdRef ref) {
+  return ref.watch(appSettingsServiceProvider).getLargeFileThreshold();
 }

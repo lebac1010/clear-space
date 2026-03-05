@@ -73,9 +73,13 @@ class NativeStorageScanner {
 
   /// Start storage scan
   /// Returns the final StorageInfo
-  Future<StorageInfo> scan({int sensitivity = 5}) async {
+  Future<StorageInfo> scan({
+    int sensitivity = 5,
+    int largeFileThreshold = 10 * 1024 * 1024,
+  }) async {
     final result = await _methodChannel.invokeMethod('startScan', {
       'sensitivity': sensitivity,
+      'largeFileThreshold': largeFileThreshold,
     });
     // Deep convert to handle nested largeFiles and storageVolumes
     final jsonMap = convertToJsonMap(result);

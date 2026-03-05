@@ -101,7 +101,11 @@ class StorageRepositoryImpl implements StorageRepository {
 
     try {
       final sensitivity = _appSettings.getSimilarPhotoSensitivity();
-      final info = await _nativeScanner.scan(sensitivity: sensitivity);
+      final threshold = _appSettings.getLargeFileThreshold();
+      final info = await _nativeScanner.scan(
+        sensitivity: sensitivity,
+        largeFileThreshold: threshold,
+      );
       await _cacheService.cacheStorageInfo(info);
       return info;
     } catch (e) {

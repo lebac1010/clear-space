@@ -53,7 +53,7 @@ final storageCacheServiceProvider = Provider<StorageCacheService>.internal(
 );
 
 typedef StorageCacheServiceRef = ProviderRef<StorageCacheService>;
-String _$storageRepositoryHash() => r'64b5cda05b530c2f84e8eb3f53454b07e161da17';
+String _$storageRepositoryHash() => r'714b2a3d0c7311c713e6d0d31863dbbb91712fe2';
 
 /// See also [storageRepository].
 @ProviderFor(storageRepository)

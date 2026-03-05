@@ -86,7 +86,7 @@ class StorageScannerService : Service() {
         this.progressHandler = handler
     }
 
-    fun startScan(result: MethodChannel.Result, sensitivity: Int = 5) {
+    fun startScan(result: MethodChannel.Result, sensitivity: Int = 5, largeFileThreshold: Long = 10485760L) {
         if (currentJob?.isActive == true) {
             result.error("SCAN_IN_PROGRESS", "Scan already running", null)
             return
@@ -125,7 +125,7 @@ class StorageScannerService : Service() {
                 // [P5] Suppress ContentObserver during scan to prevent self-invalidation
                 contentObserver?.isSuppressed = true
                 
-                scanner!!.scanStorage(sensitivity)
+                scanner!!.scanStorage(sensitivity, largeFileThreshold)
                     .catch { e ->
                         Log.e("StorageScannerService", "Scan error caught: ${e.message}", e)
                         progressHandler?.sendError("SCAN_ERROR", e.message ?: "Unknown")

@@ -130,13 +130,14 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                     return
                 }
                 
-                // Extract sensitivity from Flutter arguments
+                // Extract parameters from Flutter arguments
                 val sensitivity = call.argument<Int>("sensitivity") ?: 5
+                val largeFileThreshold = (call.argument<Int>("largeFileThreshold") ?: 10485760).toLong()
                 
                 val intent = Intent(context, StorageScannerService::class.java)
                 context.startService(intent)
                 
-                scannerService?.startScan(result, sensitivity)
+                scannerService?.startScan(result, sensitivity, largeFileThreshold)
             }
             "pauseScan" -> {
                 scannerService?.pauseScan()

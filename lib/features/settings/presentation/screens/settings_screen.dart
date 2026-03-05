@@ -1,7 +1,8 @@
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
@@ -9,6 +10,7 @@ import 'package:in_app_review/in_app_review.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/app_settings_service.dart';
+import '../../../../core/widgets/app_card.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -57,7 +59,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       query: _encodeQueryParameters(<String, String>{
         'subject': '[Clear Space] Bug Report / Feedback',
         'body':
-            'App Version: $_appVersion\nOS: ${Platform.operatingSystem} ${Platform.operatingSystemVersion}\n\nPlease describe your issue below:\n\n',
+            'App Version: $_appVersion\nOS: ${io.Platform.operatingSystem} ${io.Platform.operatingSystemVersion}\n\nPlease describe your issue below:\n\n',
       }),
     );
 
@@ -127,9 +129,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   void _shareApp() {
     try {
-      final storeUrl = Platform.isIOS
-          ? 'https://clearspace.com/download/ios'
-          : 'https://play.google.com/store/apps/details?id=com.lebac.storage_dashboard.clear_space';
+      const storeUrl =
+          'https://play.google.com/store/apps/details?id=com.lebac.storage_dashboard.clear_space';
 
       Share.share(
         'Hey! Check out Clear Space. It helped me clean up gigabytes of junk files instantly! Download here: $storeUrl',
@@ -151,58 +152,97 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
       builder: (context) {
         return SafeArea(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Similar Photo Sensitivity',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.lg,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Handle bar
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.border,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
+
+                  Text(
+                    'Similar Photo Sensitivity',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Gap(AppSpacing.sm),
+                  Text(
                     'Choose how strictly the app identifies similar photos. '
                     'A stricter setting means photos must look nearly identical to be flagged.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 13,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const Gap(AppSpacing.lg),
+
+                  // Options in a card
+                  AppCard(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        _buildSensitivityOption(
+                          context,
+                          ref,
+                          icon: Icons.filter_1_rounded,
+                          title: 'Strict',
+                          description: '95% Match — Nearly identical only',
+                          value: 3,
+                          currentValue: currentValue,
+                        ),
+                        const Divider(
+                          height: 1,
+                          color: AppColors.border,
+                          indent: 70,
+                        ),
+                        _buildSensitivityOption(
+                          context,
+                          ref,
+                          icon: Icons.filter_2_rounded,
+                          title: 'Normal',
+                          description: '85% Match — Recommended',
+                          value: 5,
+                          currentValue: currentValue,
+                        ),
+                        const Divider(
+                          height: 1,
+                          color: AppColors.border,
+                          indent: 70,
+                        ),
+                        _buildSensitivityOption(
+                          context,
+                          ref,
+                          icon: Icons.filter_3_rounded,
+                          title: 'Loose',
+                          description: '75% Match — Catches more variations',
+                          value: 8,
+                          currentValue: currentValue,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                _buildSensitivityOption(
-                  context,
-                  ref,
-                  'Strict (95% Match)',
-                  3,
-                  currentValue,
-                ),
-                _buildSensitivityOption(
-                  context,
-                  ref,
-                  'Normal (85% Match)',
-                  5,
-                  currentValue,
-                ),
-                _buildSensitivityOption(
-                  context,
-                  ref,
-                  'Loose (75% Match)',
-                  8,
-                  currentValue,
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const Gap(AppSpacing.md),
+                ],
+              ),
             ),
           ),
         );
@@ -212,34 +252,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildSensitivityOption(
     BuildContext context,
-    WidgetRef ref,
-    String title,
-    int value,
-    int currentValue,
-  ) {
+    WidgetRef ref, {
+    required IconData icon,
+    required String title,
+    required String description,
+    required int value,
+    required int currentValue,
+  }) {
     final isSelected = value == currentValue;
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          color: isSelected
-              ? Theme.of(context).colorScheme.primary
-              : AppColors.textPrimary,
-        ),
-      ),
-      trailing: isSelected
-          ? Icon(
-              Icons.check_circle,
-              color: Theme.of(context).colorScheme.primary,
-            )
-          : null,
+    return InkWell(
       onTap: () async {
         final appSettings = ref.read(appSettingsServiceProvider);
         await appSettings.setSimilarPhotoSensitivity(value);
         if (context.mounted) {
-          Navigator.pop(context); // Close bottom sheet
-          // Update surgical state provider to trigger isolated rebuild instead of root setState
+          Navigator.pop(context);
           ref.read(_sensitivityLocalProvider.notifier).state = value;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -250,18 +276,235 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           );
         }
       },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.primary.withValues(alpha: 0.1)
+                    : AppColors.surfaceContainer,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: Icon(
+                icon,
+                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                size: 22,
+              ),
+            ),
+            const Gap(AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? AppColors.primary
+                          : AppColors.textPrimary,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const Gap(2),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isSelected)
+              const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.primary,
+                size: 22,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showThresholdDialog(
+    BuildContext context,
+    WidgetRef ref,
+    int currentValue,
+  ) {
+    final options = [
+      {'label': '10MB', 'value': 10 * 1024 * 1024},
+      {'label': '50MB', 'value': 50 * 1024 * 1024},
+      {'label': '100MB', 'value': 100 * 1024 * 1024},
+      {'label': '500MB', 'value': 500 * 1024 * 1024},
+      {'label': '1GB', 'value': 1024 * 1024 * 1024},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.lg,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.border,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  Text(
+                    'Large File Threshold',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Gap(AppSpacing.sm),
+                  Text(
+                    'Files larger than this value will be flagged for cleanup.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const Gap(AppSpacing.lg),
+                  AppCard(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < options.length; i++) ...[
+                          _buildThresholdOption(
+                            context,
+                            ref,
+                            title: options[i]['label'] as String,
+                            value: options[i]['value'] as int,
+                            currentValue: currentValue,
+                          ),
+                          if (i < options.length - 1)
+                            const Divider(
+                              height: 1,
+                              color: AppColors.border,
+                              indent: 70,
+                            ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const Gap(AppSpacing.md),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildThresholdOption(
+    BuildContext context,
+    WidgetRef ref, {
+    required String title,
+    required int value,
+    required int currentValue,
+  }) {
+    final isSelected = value == currentValue;
+    return InkWell(
+      onTap: () async {
+        final appSettings = ref.read(appSettingsServiceProvider);
+        await appSettings.setLargeFileThreshold(value);
+        if (context.mounted) {
+          Navigator.pop(context);
+          ref.read(_thresholdLocalProvider.notifier).state = value;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Threshold updated. It will apply on the next scan.',
+              ),
+            ),
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.primary.withValues(alpha: 0.1)
+                    : AppColors.surfaceContainer,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: Icon(
+                Icons.folder_zip_outlined,
+                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                size: 22,
+              ),
+            ),
+            const Gap(AppSpacing.md),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.primary,
+                size: 22,
+              ),
+          ],
+        ),
+      ),
     );
   }
 
   // Micro-optimization: Isolated reactive state to prevent root scaffold global rebuilds
-  late final StateProvider<int> _sensitivityLocalProvider;
+  late StateProvider<int> _sensitivityLocalProvider;
+  late StateProvider<int> _thresholdLocalProvider;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Initialize standard provider with cached state
+    // Initialize providers with cached state
     _sensitivityLocalProvider = StateProvider<int>((ref) {
       return ref.read(appSettingsServiceProvider).getSimilarPhotoSensitivity();
+    });
+    _thresholdLocalProvider = StateProvider<int>((ref) {
+      return ref.read(appSettingsServiceProvider).getLargeFileThreshold();
     });
   }
 
@@ -270,145 +513,209 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: AppColors.surface,
+        title: const Text('Settings'),
+        backgroundColor: AppColors.background,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
       ),
       body: ListView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.lg,
+        ),
         children: [
-          const _SettingsHeader(title: 'Support & Engagement'),
+          // ── Support & Engagement ──
+          const _SectionHeader(title: 'Support & Engagement'),
+          const Gap(AppSpacing.sm),
 
-          _SettingsTile(
-            icon: Icons.mark_email_read_outlined,
-            title: 'Send Feedback / Bug Report',
-            subtitle: 'Let us know how we can improve',
-            color: Colors.blue,
-            onTap: _sendFeedbackEmail,
+          AppCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                _SettingsTile(
+                  icon: Icons.mark_email_read_outlined,
+                  title: 'Send Feedback',
+                  subtitle: 'Report bugs or suggest improvements',
+                  color: AppColors.primary,
+                  onTap: _sendFeedbackEmail,
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
+                _SettingsTile(
+                  icon: Icons.star_rounded,
+                  title: 'Rate Us 5 Stars',
+                  subtitle: 'Help others find Clear Space',
+                  color: AppColors.warning,
+                  onTap: _requestReview,
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
+                _SettingsTile(
+                  icon: Icons.share_rounded,
+                  title: 'Share with Friends',
+                  subtitle: 'Recommend the app via messages',
+                  color: AppColors.success,
+                  onTap: _shareApp,
+                ),
+              ],
+            ),
           ),
 
-          _SettingsTile(
-            icon: Icons.star_rate_rounded,
-            title: 'Rate Us 5 Stars',
-            subtitle: 'Help others find Clear Space',
-            color: Colors.orange,
-            onTap: _requestReview,
+          const Gap(AppSpacing.lg),
+
+          // ── Scan Preferences ──
+          const _SectionHeader(title: 'Scan Preferences'),
+          const Gap(AppSpacing.sm),
+
+          AppCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                Consumer(
+                  builder: (context, ref, child) {
+                    final currentSensitivity = ref.watch(
+                      _sensitivityLocalProvider,
+                    );
+
+                    String subtitle = 'Normal (85% Match)';
+                    if (currentSensitivity <= 3) {
+                      subtitle = 'Strict (95% Match)';
+                    }
+                    if (currentSensitivity >= 8) {
+                      subtitle = 'Loose (75% Match)';
+                    }
+
+                    return _SettingsTile(
+                      icon: Icons.tune_rounded,
+                      title: 'Similar Photo Sensitivity',
+                      subtitle: subtitle,
+                      color: AppColors.purple,
+                      onTap: () {
+                        _showSensitivityDialog(
+                          context,
+                          ref,
+                          currentSensitivity,
+                        );
+                      },
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final currentThreshold = ref.watch(_thresholdLocalProvider);
+
+                    String label = '10MB';
+                    if (currentThreshold >= 1024 * 1024 * 1024) {
+                      label =
+                          '${(currentThreshold / (1024 * 1024 * 1024)).toInt()}GB';
+                    } else {
+                      label = '${(currentThreshold / (1024 * 1024)).toInt()}MB';
+                    }
+
+                    final subtitle = 'Larger than $label';
+
+                    return _SettingsTile(
+                      icon: Icons.straighten_rounded,
+                      title: 'Large File Threshold',
+                      subtitle: subtitle,
+                      color: AppColors.orange,
+                      onTap: () {
+                        _showThresholdDialog(context, ref, currentThreshold);
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
 
-          _SettingsTile(
-            icon: Icons.ios_share_rounded,
-            title: 'Share with Friends',
-            subtitle: 'Recommend the app via messages',
-            color: Colors.green,
-            onTap: _shareApp,
+          const Gap(AppSpacing.lg),
+
+          // ── Legal & App Info ──
+          const _SectionHeader(title: 'Legal & App Info'),
+          const Gap(AppSpacing.sm),
+
+          AppCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                _SettingsTile(
+                  icon: Icons.shield_outlined,
+                  title: 'Privacy Policy',
+                  subtitle: 'How we protect your data',
+                  color: AppColors.secondary,
+                  onTap: () => _openLink(
+                    'https://policies.google.com/privacy',
+                  ), // Placeholder
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
+                _SettingsTile(
+                  icon: Icons.description_outlined,
+                  title: 'Terms of Service',
+                  subtitle: 'Rules and guidelines',
+                  color: AppColors.secondary,
+                  onTap: () => _openLink(
+                    'https://policies.google.com/terms',
+                  ), // Placeholder
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
+                _SettingsTile(
+                  icon: Icons.info_outline_rounded,
+                  title: 'App Version',
+                  subtitle: _appVersion,
+                  color: AppColors.secondary,
+                  showChevron: false,
+                ),
+              ],
+            ),
           ),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Divider(height: 32),
-          ),
+          const Gap(AppSpacing.xl),
 
-          const _SettingsHeader(title: 'Scan Preferences'),
-
-          Consumer(
-            builder: (context, ref, child) {
-              final currentSensitivity = ref.watch(_sensitivityLocalProvider);
-
-              String subtitle = 'Normal (85% Match)';
-              if (currentSensitivity <= 3) subtitle = 'Strict (95% Match)';
-              if (currentSensitivity >= 8) subtitle = 'Loose (75% Match)';
-
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.purple.withValues(alpha: 0.1),
-                  child: const Icon(
-                    Icons.tune_outlined,
-                    color: Colors.purple,
-                    size: 20,
+          // ── Footer ──
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  'Clear Space',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textTertiary,
                   ),
                 ),
-                title: const Text('Similar Photo Sensitivity'),
-                subtitle: Text(subtitle),
-                trailing: const Icon(
-                  Icons.chevron_right,
-                  size: 20,
-                  color: AppColors.textTertiary,
+                const Gap(AppSpacing.xs),
+                Text(
+                  'Made with ❤️ for a cleaner phone',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textTertiary,
+                  ),
                 ),
-                onTap: () {
-                  _showSensitivityDialog(context, ref, currentSensitivity);
-                },
-              );
-            },
-          ),
-
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Divider(height: 32),
-          ),
-
-          const _SettingsHeader(title: 'Legal & App Info'),
-
-          _SettingsTile(
-            icon: Icons.privacy_tip_outlined,
-            title: 'Privacy Policy',
-            subtitle: 'How we protect your data',
-            color: Colors.grey,
-            onTap: () =>
-                _openLink('https://policies.google.com/privacy'), // Placeholder
-          ),
-
-          _SettingsTile(
-            icon: Icons.description_outlined,
-            title: 'Terms of Service',
-            subtitle: 'Rules and guidelines',
-            color: Colors.grey,
-            onTap: () =>
-                _openLink('https://policies.google.com/terms'), // Placeholder
-          ),
-
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.grey.withValues(alpha: 0.1),
-              child: const Icon(
-                Icons.info_outline,
-                color: Colors.grey,
-                size: 20,
-              ),
+              ],
             ),
-            title: const Text('App Version'),
-            subtitle: Text(_appVersion),
-            onTap: () {
-              // Easter egg could go here
-            },
           ),
 
-          const SizedBox(height: 48), // Bottom padding
+          const Gap(AppSpacing.xl),
         ],
       ),
     );
   }
 }
 
-class _SettingsHeader extends StatelessWidget {
+// ─── Sub-widgets ───────────────────────────────────────────────────────────────
+
+class _SectionHeader extends StatelessWidget {
   final String title;
 
-  const _SettingsHeader({required this.title});
+  const _SectionHeader({required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(
-        title.toUpperCase(),
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+    return Text(
+      title.toUpperCase(),
+      style: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1.2,
+        color: AppColors.textSecondary,
       ),
     );
   }
@@ -419,34 +726,70 @@ class _SettingsTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final Color color;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final bool showChevron;
 
   const _SettingsTile({
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.color,
-    required this.onTap,
+    this.onTap,
+    this.showChevron = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: color.withValues(alpha: 0.1),
-        child: Icon(icon, color: color, size: 20),
-      ),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
-      ),
-      trailing: const Icon(
-        Icons.chevron_right,
-        size: 20,
-        color: AppColors.textTertiary,
-      ),
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: Icon(icon, color: color, size: 22),
+            ),
+            const Gap(AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const Gap(2),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (showChevron)
+              const Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textTertiary,
+                size: 22,
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
