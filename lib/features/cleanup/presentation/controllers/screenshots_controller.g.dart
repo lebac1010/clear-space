@@ -7,7 +7,7 @@ part of 'screenshots_controller.dart';
 // **************************************************************************
 
 String _$screenshotsControllerHash() =>
-    r'bcd02a816521b648b06acd51e369d507102e26ac';
+    r'7d13ff4c23e32ea42c3ada3a719c9d908f1ab6f4';
 
 /// See also [ScreenshotsController].
 @ProviderFor(ScreenshotsController)

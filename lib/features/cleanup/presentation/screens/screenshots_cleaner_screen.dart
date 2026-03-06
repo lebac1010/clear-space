@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/data/providers/storage_provider.dart';
 import '../../domain/entities/screenshot_item.dart';
 import '../controllers/screenshots_controller.dart';
 import '../controllers/screenshots_state.dart';
@@ -205,16 +207,68 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
   }
 }
 
-class _ScreenshotGridTile extends StatelessWidget {
+class _ScreenshotGridTile extends ConsumerStatefulWidget {
   final ScreenshotItem item;
   final VoidCallback onToggle;
 
   const _ScreenshotGridTile({required this.item, required this.onToggle});
 
   @override
+  ConsumerState<_ScreenshotGridTile> createState() => _ScreenshotGridTileState();
+}
+
+class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
+  Uint8List? _thumbBytes;
+  bool _isLoadingThumb = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThumbnail();
+  }
+
+  @override
+  void didUpdateWidget(covariant _ScreenshotGridTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.item.uri != widget.item.uri ||
+        oldWidget.item.path != widget.item.path) {
+      _thumbBytes = null;
+      _isLoadingThumb = true;
+      _loadThumbnail();
+    }
+  }
+
+  Future<void> _loadThumbnail() async {
+    // Prefer content URI thumbnail (scoped storage safe).
+    if (widget.item.uri.isNotEmpty) {
+      try {
+        final scanner = ref.read(nativeStorageScannerProvider);
+        final bytes = await scanner.getPhotoThumbnail(
+          widget.item.uri,
+          width: 300,
+          height: 400,
+        );
+        if (!mounted) return;
+        setState(() {
+          _thumbBytes = bytes;
+          _isLoadingThumb = false;
+        });
+        return;
+      } catch (_) {
+        // Fall through to path fallback.
+      }
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _isLoadingThumb = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onToggle,
+      onTap: widget.onToggle,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -222,15 +276,14 @@ class _ScreenshotGridTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: item.isSelected
+                color: widget.item.isSelected
                     ? AppColors.primary
                     : Colors.grey.withValues(alpha: 0.2),
-                width: item.isSelected ? 2 : 1,
+                width: widget.item.isSelected ? 2 : 1,
               ),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              // [Bug #10 fix] Use Image.file for local paths instead of Image.network
               child: _buildThumbnail(),
             ),
           ),
@@ -243,8 +296,10 @@ class _ScreenshotGridTile extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                item.isSelected ? Icons.check_circle : Icons.circle_outlined,
-                color: item.isSelected ? AppColors.primary : Colors.grey,
+                widget.item.isSelected
+                    ? Icons.check_circle
+                    : Icons.circle_outlined,
+                color: widget.item.isSelected ? AppColors.primary : Colors.grey,
                 size: 24,
               ),
             ),
@@ -262,7 +317,7 @@ class _ScreenshotGridTile extends StatelessWidget {
                 ),
               ),
               child: Text(
-                FileUtils.formatSize(item.size),
+                FileUtils.formatSize(widget.item.size),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white, fontSize: 10),
               ),
@@ -273,11 +328,36 @@ class _ScreenshotGridTile extends StatelessWidget {
     );
   }
 
-  /// [Bug #10 fix] Handles both local file paths and content URIs
   Widget _buildThumbnail() {
-    // Try local file path first
-    if (item.path.isNotEmpty) {
-      final file = File(item.path);
+    if (_thumbBytes != null) {
+      return Image.memory(
+        _thumbBytes!,
+        fit: BoxFit.cover,
+        cacheWidth: 300,
+        cacheHeight: 400,
+        errorBuilder: (context, error, stackTrace) => Container(
+          color: Colors.grey[200],
+          child: const Icon(Icons.image, color: Colors.grey),
+        ),
+      );
+    }
+
+    if (_isLoadingThumb) {
+      return Container(
+        color: Colors.grey[100],
+        child: const Center(
+          child: SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 1.8),
+          ),
+        ),
+      );
+    }
+
+    // Fallback to legacy file path if URI thumbnail failed.
+    if (widget.item.path.isNotEmpty) {
+      final file = File(widget.item.path);
       return Image.file(
         file,
         fit: BoxFit.cover,
@@ -289,7 +369,7 @@ class _ScreenshotGridTile extends StatelessWidget {
         ),
       );
     }
-    // Fallback placeholder
+
     return Container(
       color: Colors.grey[200],
       child: const Icon(Icons.image, color: Colors.grey),

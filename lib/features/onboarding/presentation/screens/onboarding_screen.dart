@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/services/app_settings_service.dart';
@@ -38,6 +39,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -49,9 +52,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 physics: const NeverScrollableScrollPhysics(), // Disable swipe
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: [
-                  _buildPage1(context),
-                  _buildPage3(context, ref), // Permissions is now second
-                  _buildPage2(context), // Features is now third
+                  _buildPage1(context, l10n),
+                  _buildPage3(context, ref, l10n), // Permissions is now second
+                  _buildPage2(context, l10n), // Features is now third
                 ],
               ),
             ),
@@ -91,28 +94,28 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const Gap(24),
                   if (_currentPage == 0)
                     AppButton(
-                      text: 'Next',
+                      text: l10n.next,
                       isFullWidth: true,
                       onPressed: _nextPage,
                     )
                   else if (_currentPage == 1)
                     AppButton(
-                      text: 'Grant Permission',
+                      text: l10n.grantPermission,
                       isFullWidth: true,
                       onPressed: () => _requestPermission(context, ref),
                     )
                   else
                     AppButton(
-                      text: 'Get Started',
+                      text: l10n.getStarted,
                       isFullWidth: true,
                       icon: const Icon(Icons.arrow_forward),
                       onPressed: () => _finishOnboarding(context, ref),
                     ),
                   const Gap(16),
-                  const Text(
-                    'By continuing, you agree to our Terms of Service & Privacy Policy.',
+                  Text(
+                    l10n.termsDesc,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.textTertiary,
                     ),
@@ -126,7 +129,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Widget _buildPage1(BuildContext context) {
+  Widget _buildPage1(BuildContext context, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -149,7 +152,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           const Gap(40),
           Text(
-            'Clear Space',
+            l10n.appTitle,
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.w900,
               color: AppColors.textPrimary,
@@ -157,7 +160,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           const Gap(16),
           Text(
-            'Welcome to the smartest way to keep your device clean, fast, and secure.',
+            l10n.onboardingWelcome,
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
@@ -168,7 +171,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Widget _buildPage2(BuildContext context) {
+  Widget _buildPage2(BuildContext context, AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -176,7 +179,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         children: [
           const Gap(40),
           Text(
-            'Powerful Features',
+            l10n.onboardingFeaturesTitle,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
@@ -184,7 +187,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           const Gap(12),
           Text(
-            'Everything you need to manage your storage efficiently.',
+            l10n.onboardingFeaturesDesc,
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
@@ -194,27 +197,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             context,
             icon: Icons.pie_chart_rounded,
             color: AppColors.primary,
-            title: 'Understand your storage',
-            description:
-                'Get a clear visual breakdown of what\'s taking up space.',
+            title: l10n.feature1Title,
+            description: l10n.feature1Desc,
           ),
           const Gap(16),
           _buildFeatureItem(
             context,
             icon: Icons.security_rounded,
             color: AppColors.success,
-            title: 'Clean safely',
-            description:
-                'Remove unnecessary files with safe deletion protocols.',
+            title: l10n.feature2Title,
+            description: l10n.feature2Desc,
           ),
           const Gap(16),
           _buildFeatureItem(
             context,
             icon: Icons.rocket_launch_rounded,
             color: AppColors.purple,
-            title: 'Free up space',
-            description:
-                'Instantly find and remove junk, large files, and duplicates.',
+            title: l10n.feature3Title,
+            description: l10n.feature3Desc,
           ),
           const Gap(40),
         ],
@@ -222,7 +222,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Widget _buildPage3(BuildContext context, WidgetRef ref) {
+  Widget _buildPage3(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -242,7 +246,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           const Gap(32),
           Text(
-            'Storage Access Required',
+            l10n.storageAccessRequired,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
@@ -251,7 +255,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           const Gap(16),
           Text(
-            'Clear Space needs "All files access" to scan your device for duplicates, large files, and junk files.\n\nYou will be directed to System Settings to grant this permission when you tap Grant Permission.',
+            l10n.storageAccessDesc,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppColors.textSecondary,
               height: 1.5,

@@ -72,6 +72,7 @@ class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
+      extensions: const [CustomColors.light],
       // Modern ColorScheme without deprecated properties
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
@@ -214,6 +215,221 @@ class AppTheme {
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: AppColors.textSecondary,
+          );
+        }),
+      ),
+    );
+  }
+
+  static ThemeData get dark {
+    final baseTextTheme = Typography.material2021().white.apply(
+      fontFamily: 'Inter',
+    );
+
+    final textTheme = baseTextTheme.copyWith(
+      displayLarge: baseTextTheme.displayLarge?.copyWith(
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimaryDark,
+      ),
+      displayMedium: baseTextTheme.displayMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimaryDark,
+      ),
+      displaySmall: baseTextTheme.displaySmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimaryDark,
+      ),
+      headlineLarge: baseTextTheme.headlineLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimaryDark,
+      ),
+      headlineMedium: baseTextTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimaryDark,
+      ),
+      headlineSmall: baseTextTheme.headlineSmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimaryDark,
+      ),
+      titleLarge: baseTextTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimaryDark,
+      ),
+      titleMedium: baseTextTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.w500,
+        color: AppColors.textPrimaryDark,
+      ),
+      titleSmall: baseTextTheme.titleSmall?.copyWith(
+        fontWeight: FontWeight.w500,
+        color: AppColors.textPrimaryDark,
+      ),
+      bodyLarge: baseTextTheme.bodyLarge?.copyWith(
+        color: AppColors.textPrimaryDark,
+      ),
+      bodyMedium: baseTextTheme.bodyMedium?.copyWith(
+        color: AppColors.textSecondaryDark,
+      ),
+      bodySmall: baseTextTheme.bodySmall?.copyWith(
+        color: AppColors.textSecondaryDark,
+      ),
+      labelLarge: baseTextTheme.labelLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimaryDark,
+      ),
+      labelMedium: baseTextTheme.labelMedium?.copyWith(
+        fontWeight: FontWeight.w500,
+        color: AppColors.textSecondaryDark,
+      ),
+      labelSmall: baseTextTheme.labelSmall?.copyWith(
+        color: AppColors.textSecondaryDark,
+      ),
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      extensions: const [CustomColors.dark],
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.primary,
+        onPrimary: Colors.white,
+        surface: AppColors.surfaceDark,
+        onSurface: AppColors.textPrimaryDark,
+        surfaceContainerLowest: AppColors.backgroundDark,
+        surfaceContainerLow: AppColors.surfaceContainerDark,
+        error: AppColors.errorDark,
+        onError: Colors.black,
+      ),
+      scaffoldBackgroundColor: AppColors.backgroundDark,
+
+      // Typography
+      textTheme: textTheme,
+
+      // AppBar
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.surfaceDark,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: AppColors.textPrimaryDark),
+        scrolledUnderElevation: 0,
+      ),
+
+      // Buttons
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+          ),
+          textStyle: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w600,
+          ),
+          elevation: 0,
+          minimumSize: const Size(0, 48),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+        ),
+      ),
+
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.borderDark),
+          foregroundColor: AppColors.textPrimaryDark,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+          ),
+          minimumSize: const Size(0, 48),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+        ),
+      ),
+
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.textSecondaryDark,
+          minimumSize: const Size(0, 48),
+        ),
+      ),
+
+      // Cards
+      cardTheme: CardThemeData(
+        color: AppColors.surfaceDark,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          side: const BorderSide(color: AppColors.borderDark),
+        ),
+        margin: EdgeInsets.zero,
+      ),
+
+      // Inputs
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surfaceDark,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          borderSide: const BorderSide(color: AppColors.borderDark),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          borderSide: const BorderSide(color: AppColors.borderDark),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          borderSide: const BorderSide(color: AppColors.errorDark),
+        ),
+      ),
+
+      // ListTile
+      listTileTheme: ListTileThemeData(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+      ),
+
+      // Bottom Navigation Bar
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.surfaceDark,
+        surfaceTintColor: Colors.transparent,
+        indicatorColor: AppColors.primary.withValues(alpha: 0.2),
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: AppColors.primary);
+          }
+          return const IconThemeData(color: AppColors.textSecondaryDark);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.primary,
+            );
+          }
+          return const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textSecondaryDark,
           );
         }),
       ),

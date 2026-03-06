@@ -7,7 +7,7 @@ part of 'downloads_controller.dart';
 // **************************************************************************
 
 String _$downloadsControllerHash() =>
-    r'14626214261a98653757e28a8f396c684ee69f71';
+    r'7dda2c29ad254e11f713bd47fb56ad0af23d0200';
 
 /// [Bug #1 fix] Rewrote from StateNotifier to @riverpod Notifier to avoid
 /// force-unwrapping nullable repo on cold start. Now uses the same safe

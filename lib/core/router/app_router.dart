@@ -17,6 +17,7 @@ import '../../features/files/presentation/screens/media_explorer_screen.dart';
 import '../../features/apps/presentation/screens/app_manager_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/onboarding/presentation/screens/language_selection_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/cleanup/presentation/screens/screenshots_cleaner_screen.dart';
 import '../../features/cleanup/presentation/screens/downloads_cleaner_screen.dart';
@@ -43,21 +44,37 @@ GoRouter goRouter(GoRouterRef ref) {
       // Now reads synchronously since it's initialized before runApp()
       final settings = ref.read(appSettingsServiceProvider);
 
+      final hasSelectedLanguage = settings.hasSelectedLanguage();
       final onboardingCompleted = settings.isOnboardingCompleted();
+
+      final isGoingToLang =
+          state.matchedLocation == RouteConstants.languageSelection;
       final isGoingToOnboarding =
           state.matchedLocation == RouteConstants.onboarding;
 
+      if (!hasSelectedLanguage) {
+        return isGoingToLang ? null : RouteConstants.languageSelection;
+      }
+
       if (!onboardingCompleted) {
+        if (isGoingToLang) return RouteConstants.onboarding;
         return isGoingToOnboarding ? null : RouteConstants.onboarding;
       }
 
-      if (onboardingCompleted && isGoingToOnboarding) {
+      if (onboardingCompleted && (isGoingToOnboarding || isGoingToLang)) {
         return RouteConstants.dashboard;
       }
 
       return null;
     },
     routes: [
+      // Language Selection Route (Full screen)
+      GoRoute(
+        path: RouteConstants.languageSelection,
+        name: 'language-selection',
+        builder: (context, state) => const LanguageSelectionScreen(),
+      ),
+
       // Onboarding Route (Full screen)
       GoRoute(
         path: RouteConstants.onboarding,

@@ -26,6 +26,22 @@ abstract class AppColors {
   // Overlay
   static const Color overlay = Colors.black54;
 
+  // Dark Mode Neutral Colors
+  static const Color backgroundDark = Color(0xFF111315); // Deep gray
+  static const Color surfaceDark = Color(0xFF1E2022); // Elevated dark surface
+  static const Color surfaceContainerDark = Color(
+    0xFF282A2C,
+  ); // Darker container
+  static const Color textPrimaryDark = Color(0xFFE2E2E2);
+  static const Color textSecondaryDark = Color(0xFFA1A3A6);
+  static const Color textTertiaryDark = Color(0xFF757575);
+  static const Color borderDark = Color(0xFF333538);
+
+  // Status Colors (Dark mode adjusted)
+  static const Color errorDark = Color(0xFFE57373);
+  static const Color successDark = Color(0xFF81C784);
+  static const Color warningDark = Color(0xFFFFB74D);
+
   // Feature Colors
   static const Color orange = Color(0xFFFF9800);
   static const Color purple = Color(0xFF9C27B0);
@@ -46,4 +62,60 @@ abstract class AppRadius {
   static const double md = 12;
   static const double lg = 16;
   static const double xl = 24;
+}
+
+/// Custom colors that are not fully supported by standard ColorScheme
+class CustomColors extends ThemeExtension<CustomColors> {
+  final Color orange;
+  final Color purple;
+  final Color secondary;
+  final Color success;
+
+  const CustomColors({
+    required this.orange,
+    required this.purple,
+    required this.secondary,
+    required this.success,
+  });
+
+  @override
+  CustomColors copyWith({
+    Color? orange,
+    Color? purple,
+    Color? secondary,
+    Color? success,
+  }) {
+    return CustomColors(
+      orange: orange ?? this.orange,
+      purple: purple ?? this.purple,
+      secondary: secondary ?? this.secondary,
+      success: success ?? this.success,
+    );
+  }
+
+  @override
+  CustomColors lerp(ThemeExtension<CustomColors>? other, double t) {
+    if (other is! CustomColors) return this;
+    return CustomColors(
+      orange: Color.lerp(orange, other.orange, t) ?? orange,
+      purple: Color.lerp(purple, other.purple, t) ?? purple,
+      secondary: Color.lerp(secondary, other.secondary, t) ?? secondary,
+      success: Color.lerp(success, other.success, t) ?? success,
+    );
+  }
+
+  static const light = CustomColors(
+    orange: AppColors.orange,
+    purple: AppColors.purple,
+    secondary: AppColors.secondary,
+    success: AppColors.success,
+  );
+
+  static const dark = CustomColors(
+    // Desaturated colors for dark mode to reduce eye strain
+    orange: Color(0xFFFFB74D),
+    purple: Color(0xFFBA68C8),
+    secondary: Color(0xFF9E9E9E),
+    success: Color(0xFF81C784),
+  );
 }

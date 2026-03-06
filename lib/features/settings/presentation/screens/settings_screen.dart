@@ -149,6 +149,262 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
   }
 
+  String _getLanguageName(Locale locale) {
+    final code = locale.toString();
+    switch (code) {
+      case 'en':
+        return 'English (US)';
+      case 'en_GB':
+        return 'English (UK)';
+      case 'es':
+        return 'Español (Latinoamérica)';
+      case 'es_ES':
+        return 'Español (España)';
+      case 'pt':
+        return 'Português (Brasil)';
+      case 'hi':
+        return 'हिन्दी';
+      case 'id':
+        return 'Bahasa Indonesia';
+      case 'tr':
+        return 'Türkçe';
+      case 'de':
+        return 'Deutsch';
+      case 'fr':
+        return 'Français';
+      case 'fil':
+        return 'Filipino';
+      case 'vi':
+        return 'Tiếng Việt';
+      default:
+        return 'English (US)';
+    }
+  }
+
+  void _showLanguageDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Locale currentLocale,
+  ) {
+    final languages = [
+      {'code': 'en', 'emoji': '🇺🇸', 'title': 'English (US)'},
+      {'code': 'en_GB', 'emoji': '🇬🇧', 'title': 'English (UK)'},
+      {'code': 'es', 'emoji': '🇲🇽', 'title': 'Español'},
+      {'code': 'es_ES', 'emoji': '🇪🇸', 'title': 'Español (España)'},
+      {'code': 'pt', 'emoji': '🇧🇷', 'title': 'Português'},
+      {'code': 'hi', 'emoji': '🇮🇳', 'title': 'हिन्दी'},
+      {'code': 'id', 'emoji': '🇮🇩', 'title': 'Bahasa Indonesia'},
+      {'code': 'tr', 'emoji': '🇹🇷', 'title': 'Türkçe'},
+      {'code': 'de', 'emoji': '🇩🇪', 'title': 'Deutsch'},
+      {'code': 'fr', 'emoji': '🇫🇷', 'title': 'Français'},
+      {'code': 'fil', 'emoji': '🇵🇭', 'title': 'Filipino'},
+      {'code': 'vi', 'emoji': '🇻🇳', 'title': 'Tiếng Việt'},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+      ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.7,
+          minChildSize: 0.5,
+          maxChildSize: 0.9,
+          expand: false,
+          builder: (context, scrollController) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    Text(
+                      'Language',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Gap(AppSpacing.lg),
+                    Expanded(
+                      child: AppCard(
+                        padding: EdgeInsets.zero,
+                        child: ListView.separated(
+                          controller: scrollController,
+                          itemCount: languages.length,
+                          separatorBuilder: (context, index) => const Divider(
+                            height: 1,
+                            color: AppColors.border,
+                            indent: 16,
+                            endIndent: 16,
+                          ),
+                          itemBuilder: (context, index) {
+                            final lang = languages[index];
+                            final isSelected =
+                                currentLocale.toString() == lang['code'];
+
+                            return ListTile(
+                              leading: Text(
+                                lang['emoji']!,
+                                style: const TextStyle(fontSize: 22),
+                              ),
+                              title: Text(lang['title']!),
+                              trailing: isSelected
+                                  ? Icon(
+                                      Icons.check,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    )
+                                  : null,
+                              onTap: () {
+                                ref
+                                    .read(localeControllerProvider.notifier)
+                                    .setLocale(lang['code']!);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showThemeDialog(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeMode currentTheme,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Text(
+                'Theme',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const Gap(AppSpacing.lg),
+              AppCard(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(
+                        Icons.brightness_auto,
+                        color: AppColors.textPrimary,
+                      ),
+                      title: const Text('System Default'),
+                      trailing: currentTheme == ThemeMode.system
+                          ? Icon(
+                              Icons.check,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        ref
+                            .read(themeModeControllerProvider.notifier)
+                            .setThemeMode(ThemeMode.system);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Divider(
+                      height: 1,
+                      color: AppColors.border,
+                      indent: 56,
+                      endIndent: 16,
+                    ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.light_mode,
+                        color: AppColors.textPrimary,
+                      ),
+                      title: const Text('Light'),
+                      trailing: currentTheme == ThemeMode.light
+                          ? Icon(
+                              Icons.check,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        ref
+                            .read(themeModeControllerProvider.notifier)
+                            .setThemeMode(ThemeMode.light);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Divider(
+                      height: 1,
+                      color: AppColors.border,
+                      indent: 56,
+                      endIndent: 16,
+                    ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.dark_mode,
+                        color: AppColors.textPrimary,
+                      ),
+                      title: const Text('Dark'),
+                      trailing: currentTheme == ThemeMode.dark
+                          ? Icon(
+                              Icons.check,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        ref
+                            .read(themeModeControllerProvider.notifier)
+                            .setThemeMode(ThemeMode.dark);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showSensitivityDialog(
     BuildContext context,
     WidgetRef ref,
@@ -529,6 +785,50 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           vertical: AppSpacing.lg,
         ),
         children: [
+          // ── Appearance & Language ──
+          const _SectionHeader(title: 'Appearance & Language'),
+          const Gap(AppSpacing.sm),
+          AppCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                Consumer(
+                  builder: (context, ref, child) {
+                    final currentLocale = ref.watch(localeControllerProvider);
+
+                    return _SettingsTile(
+                      icon: Icons.language_rounded,
+                      title: 'Language',
+                      subtitle: _getLanguageName(currentLocale),
+                      color: AppColors.primary,
+                      onTap: () =>
+                          _showLanguageDialog(context, ref, currentLocale),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final currentTheme = ref.watch(themeModeControllerProvider);
+                    String themeName = 'System Default';
+                    if (currentTheme == ThemeMode.light) themeName = 'Light';
+                    if (currentTheme == ThemeMode.dark) themeName = 'Dark';
+
+                    return _SettingsTile(
+                      icon: Icons.palette_rounded,
+                      title: 'Theme',
+                      subtitle: themeName,
+                      color: AppColors.purple,
+                      onTap: () => _showThemeDialog(context, ref, currentTheme),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          const Gap(AppSpacing.lg),
+
           // ── Support & Engagement ──
           const _SectionHeader(title: 'Support & Engagement'),
           const Gap(AppSpacing.sm),

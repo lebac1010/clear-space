@@ -1,0 +1,6 @@
+Analyzing clear-space...
+
+  error - lib\features\onboarding\presentation\screens\language_selection_screen.dart:109:28 - The named parameter 'emoji' is required, but there's no corresponding argument. Try adding the required argument. - missing_required_argument
+  error - lib\features\onboarding\presentation\screens\language_selection_screen.dart:112:23 - The named parameter 'code' isn't defined. Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'code'. - undefined_named_parameter
+
+2 issues found.
