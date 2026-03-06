@@ -10,6 +10,7 @@ class AppCard extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final Color? color;
   final BorderSide? border;
+  final Clip? clipBehavior;
 
   const AppCard({
     super.key,
@@ -19,6 +20,7 @@ class AppCard extends StatelessWidget {
     this.margin,
     this.color,
     this.border,
+    this.clipBehavior,
   });
 
   @override
@@ -42,6 +44,7 @@ class AppCard extends StatelessWidget {
     return Card(
       color: color, // Defaults to cardTheme.color if null
       margin: margin ?? EdgeInsets.zero,
+      clipBehavior: clipBehavior,
       shape: border != null
           ? RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppRadius.lg),

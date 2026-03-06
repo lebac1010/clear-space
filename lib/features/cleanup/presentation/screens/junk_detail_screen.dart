@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -45,9 +46,9 @@ class JunkDetailScreen extends ConsumerWidget {
     final controller = ref.read(junkDetailControllerProvider(type).notifier);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.appBackground,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -56,8 +57,7 @@ class JunkDetailScreen extends ConsumerWidget {
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            color: AppColors.textPrimary,
-          ),
+          ).copyWith(color: context.appTextPrimary),
         ),
         actions: [
           if (state.items.hasValue && state.items.value!.isNotEmpty)
@@ -90,23 +90,23 @@ class JunkDetailScreen extends ConsumerWidget {
                   Icon(
                     _icon,
                     size: 64,
-                    color: AppColors.textTertiary.withValues(alpha: 0.5),
+                    color: context.appTextTertiary.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'No items found',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textSecondary,
+                      color: context.appTextSecondary,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'All clean!',
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.textTertiary,
+                      color: context.appTextTertiary,
                     ),
                   ),
                 ],
@@ -117,7 +117,7 @@ class JunkDetailScreen extends ConsumerWidget {
           return Column(
             children: [
               // Summary bar
-              _buildSummaryBar(state, items),
+              _buildSummaryBar(context, state, items),
               // List
               Expanded(
                 child: Scrollbar(
@@ -152,7 +152,11 @@ class JunkDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSummaryBar(JunkDetailState state, List<JunkItem> items) {
+  Widget _buildSummaryBar(
+    BuildContext context,
+    JunkDetailState state,
+    List<JunkItem> items,
+  ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: Row(
@@ -162,8 +166,7 @@ class JunkDetailScreen extends ConsumerWidget {
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
-            ),
+            ).copyWith(color: context.appTextSecondary),
           ),
           const Spacer(),
           if (state.selectedCount > 0)
@@ -189,8 +192,8 @@ class JunkDetailScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.background.withValues(alpha: 0.95),
-        border: const Border(top: BorderSide(color: AppColors.border)),
+        color: context.appBackground.withValues(alpha: 0.95),
+        border: Border(top: BorderSide(color: context.appBorder)),
       ),
       child: SafeArea(
         child: FilledButton.icon(
@@ -309,12 +312,12 @@ class _JunkItemTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.error.withValues(alpha: 0.06)
-              : AppColors.surface,
+              : context.appSurface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
                 ? AppColors.error.withValues(alpha: 0.3)
-                : AppColors.border,
+                : context.appBorder,
           ),
         ),
         child: Row(
@@ -334,7 +337,7 @@ class _JunkItemTile extends StatelessWidget {
             Icon(
               _getIcon(),
               size: 24,
-              color: isSelected ? AppColors.error : AppColors.textTertiary,
+              color: isSelected ? AppColors.error : context.appTextTertiary,
             ),
             const SizedBox(width: 12),
             // Name + path
@@ -351,7 +354,7 @@ class _JunkItemTile extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: isSelected
                           ? AppColors.error
-                          : AppColors.textPrimary,
+                          : context.appTextPrimary,
                     ),
                   ),
                   if (item.path != item.name) ...[
@@ -360,9 +363,9 @@ class _JunkItemTile extends StatelessWidget {
                       _shortenPath(item.path),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.textTertiary,
+                        color: context.appTextTertiary,
                       ),
                     ),
                   ],

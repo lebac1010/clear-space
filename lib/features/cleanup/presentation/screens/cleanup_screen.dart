@@ -5,8 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../controllers/downloads_controller.dart';
+import '../controllers/screenshots_controller.dart';
 import '../widgets/cleanup_category_tile.dart';
 
 import '../../../../core/utils/file_utils.dart';
@@ -17,11 +20,13 @@ class CleanupScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final storageAsync = ref.watch(dashboardControllerProvider);
+    final screenshotsState = ref.watch(screenshotsControllerProvider);
+    final downloadsState = ref.watch(downloadsControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.appSurface,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
@@ -48,12 +53,12 @@ class CleanupScreen extends ConsumerWidget {
               delegate: SliverChildListDelegate([
                 const _CleanupHeader(),
                 const Gap(24),
-                const Text(
+                Text(
                   'Suggestions',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const Gap(16),
@@ -123,7 +128,11 @@ class CleanupScreen extends ConsumerWidget {
                 CleanupCategoryTile(
                   title: 'Screenshots',
                   subtitle: 'Find and delete screenshots',
-                  size: '',
+                  size: screenshotsState.isLoading
+                      ? 'Analyzing...'
+                      : screenshotsState.errorMessage != null
+                      ? 'Error'
+                      : FileUtils.formatSize(screenshotsState.totalSize),
                   color: AppColors.orange,
                   icon: Icons.screenshot_rounded,
                   onTap: () => context.push(RouteConstants.screenshots),
@@ -132,7 +141,11 @@ class CleanupScreen extends ConsumerWidget {
                 CleanupCategoryTile(
                   title: 'Downloads',
                   subtitle: 'Manage your downloaded files',
-                  size: '',
+                  size: downloadsState.isLoading
+                      ? 'Analyzing...'
+                      : downloadsState.errorMessage != null
+                      ? 'Error'
+                      : FileUtils.formatSize(downloadsState.totalSize),
                   color: AppColors.primary,
                   icon: Icons.download_rounded,
                   onTap: () => context.push(RouteConstants.downloads),
@@ -158,7 +171,7 @@ class _CleanupHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: context.colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -168,19 +181,19 @@ class _CleanupHeader extends StatelessWidget {
             ),
           ),
           const Gap(16),
-          const Text(
+          Text(
             'Keep your storage healthy',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
           const Gap(8),
-          const Text(
+          Text(
             'We found some files you might want to remove to free up space.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.textSecondary, height: 1.5),
+            style: TextStyle(color: context.appTextSecondary, height: 1.5),
           ),
         ],
       ),

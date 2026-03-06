@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../extensions/build_context_x.dart';
 import '../theme/app_colors.dart';
 
 class ErrorView extends StatelessWidget {
@@ -31,7 +32,7 @@ class ErrorView extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.textSecondary),
+              style: TextStyle(color: context.appTextSecondary),
             ),
             if (onRetry != null) ...[
               const SizedBox(height: 24),

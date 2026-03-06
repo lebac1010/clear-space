@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -18,7 +19,7 @@ class CleanupHistoryScreen extends ConsumerWidget {
     final historyAsync = ref.watch(cleanupHistoryProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         title: const Text('Cleanup History'),
         actions: [
@@ -31,10 +32,10 @@ class CleanupHistoryScreen extends ConsumerWidget {
       ),
       body: historyAsync.when(
         data: (history) => history.isEmpty
-            ? const Center(
+            ? Center(
                 child: Text(
                   'No cleanup history yet',
-                  style: TextStyle(color: AppColors.textSecondary),
+                  style: TextStyle(color: context.appTextSecondary),
                 ),
               )
             : ListView.builder(
@@ -121,8 +122,8 @@ class _HistoryCard extends StatelessWidget {
                     ),
                     Text(
                       dateFormat.format(record.timestamp),
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
+                      style: TextStyle(
+                        color: context.appTextSecondary,
                         fontSize: 12,
                       ),
                     ),
@@ -142,8 +143,8 @@ class _HistoryCard extends StatelessWidget {
                   ),
                   Text(
                     '${record.itemsCount} items',
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
+                    style: TextStyle(
+                      color: context.appTextSecondary,
                       fontSize: 12,
                     ),
                   ),
@@ -155,9 +156,9 @@ class _HistoryCard extends StatelessWidget {
             const Divider(height: 24),
             Text(
               'Files: ${record.fileNames.join(", ")}${record.itemsCount > record.fileNames.length ? "..." : ""}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: AppColors.textSecondary,
+                color: context.appTextSecondary,
                 fontStyle: FontStyle.italic,
               ),
               maxLines: 1,
@@ -177,14 +178,14 @@ class _HistoryCard extends StatelessWidget {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceContainer,
+                    color: context.appSurfaceContainer,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     '$label: ${entry.value}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 10,
-                      color: AppColors.textSecondary,
+                      color: context.appTextSecondary,
                     ),
                   ),
                 );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../extensions/build_context_x.dart';
 import '../theme/app_colors.dart';
 import 'app_card.dart';
 
@@ -35,10 +36,12 @@ class AppActionTile extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(
-            color: iconBackgroundColor ?? AppColors.primaryLight,
+            color:
+                iconBackgroundColor ??
+                context.colorScheme.primaryContainer.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
-          child: Icon(icon, color: iconColor ?? AppColors.primary),
+          child: Icon(icon, color: iconColor ?? context.colorScheme.primary),
         ),
         title: Text(
           title,
@@ -47,10 +50,7 @@ class AppActionTile extends StatelessWidget {
           ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
-        trailing: const Icon(
-          Icons.chevron_right,
-          color: AppColors.textSecondary,
-        ),
+        trailing: Icon(Icons.chevron_right, color: context.appTextSecondary),
       ),
     );
   }

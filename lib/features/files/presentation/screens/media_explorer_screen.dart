@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
@@ -79,9 +80,9 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.appSurface,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
@@ -108,7 +109,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: AppColors.surfaceContainer,
+                color: context.appSurfaceContainer,
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
               child: Row(
@@ -121,13 +122,15 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           color: isActive
-                              ? AppColors.surface
+                              ? context.appSurface
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(AppRadius.sm),
                           boxShadow: isActive
                               ? [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.06),
+                                    color: context.appShadow.withValues(
+                                      alpha: 0.3,
+                                    ),
                                     blurRadius: 6,
                                     offset: const Offset(0, 2),
                                   ),
@@ -142,7 +145,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                               size: 16,
                               color: isActive
                                   ? AppColors.primary
-                                  : AppColors.textTertiary,
+                                  : context.appTextTertiary,
                             ),
                             const SizedBox(width: 6),
                             Text(
@@ -154,7 +157,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                                     : FontWeight.w500,
                                 color: isActive
                                     ? AppColors.primary
-                                    : AppColors.textSecondary,
+                                    : context.appTextSecondary,
                               ),
                             ),
                           ],
@@ -262,21 +265,21 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
                 Icon(
                   _iconForType(widget.type),
                   size: 64,
-                  color: AppColors.textTertiary.withValues(alpha: 0.5),
+                  color: context.appTextTertiary.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'No files found',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
+                Text(
                   'Run a scan from Dashboard first',
-                  style: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+                  style: TextStyle(fontSize: 13, color: context.appTextTertiary),
                 ),
               ],
             ),
@@ -296,7 +299,7 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
+                      color: context.colorScheme.primary.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -334,7 +337,7 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
                       ),
                     ),
                     style: TextButton.styleFrom(
-                      foregroundColor: AppColors.primary,
+                      foregroundColor: context.colorScheme.primary,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                     ),
                   ),
@@ -404,8 +407,8 @@ class _MediaItemCard extends StatelessWidget {
 
     return Material(
       color: isSelected
-          ? AppColors.primary.withValues(alpha: 0.04)
-          : AppColors.surface,
+          ? context.colorScheme.primary.withValues(alpha: 0.08)
+          : context.appSurface,
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: InkWell(
         onTap: onTap,
@@ -417,7 +420,7 @@ class _MediaItemCard extends StatelessWidget {
             border: Border.all(
               color: isSelected
                   ? AppColors.primary.withValues(alpha: 0.3)
-                  : AppColors.border.withValues(alpha: 0.5),
+                  : context.appBorder.withValues(alpha: 0.5),
               width: 1,
             ),
           ),
@@ -441,7 +444,7 @@ class _MediaItemCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.textPrimary,
+                            : context.appTextPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -449,16 +452,16 @@ class _MediaItemCard extends StatelessWidget {
                       children: [
                         Text(
                           FileUtils.formatSize(file.size),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.textSecondary,
+                            color: context.appTextSecondary,
                           ),
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           '•',
-                          style: TextStyle(color: AppColors.textTertiary),
+                          style: TextStyle(color: context.appTextTertiary),
                         ),
                         const SizedBox(width: 6),
                         Expanded(
@@ -466,9 +469,9 @@ class _MediaItemCard extends StatelessWidget {
                             _formattedDate(file.dateModified),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
-                              color: AppColors.textTertiary,
+                              color: context.appTextTertiary,
                             ),
                           ),
                         ),
@@ -490,12 +493,16 @@ class _MediaItemCard extends StatelessWidget {
                   border: Border.all(
                     color: isSelected
                         ? AppColors.primary
-                        : AppColors.textTertiary,
+                        : context.appTextTertiary,
                     width: 1.5,
                   ),
                 ),
                 child: isSelected
-                    ? const Icon(Icons.check, size: 14, color: Colors.white)
+                    ? Icon(
+                        Icons.check,
+                        size: 14,
+                        color: context.colorScheme.onPrimary,
+                      )
                     : null,
               ),
             ],
@@ -526,9 +533,9 @@ class _IconAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (IconData icon, Color color) = switch (type) {
-      'audio' => (Icons.audiotrack_rounded, const Color(0xFF9C27B0)),
-      'video' => (Icons.movie_rounded, const Color(0xFFE91E63)),
-      _ => (Icons.description_rounded, const Color(0xFFFF9800)),
+      'audio' => (Icons.audiotrack_rounded, context.customColors.purple),
+      'video' => (Icons.movie_rounded, const Color(0xFFE57373)),
+      _ => (Icons.description_rounded, context.customColors.orange),
     };
 
     return Container(
@@ -572,11 +579,11 @@ class _FloatingActionPanel extends ConsumerWidget {
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         borderRadius: BorderRadius.circular(AppRadius.xl),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: context.appShadow.withValues(alpha: 0.45),
             blurRadius: 20,
             offset: const Offset(0, -4),
           ),
@@ -595,7 +602,7 @@ class _FloatingActionPanel extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.08),
+                color: context.colorScheme.primary.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: Column(
@@ -630,17 +637,17 @@ class _FloatingActionPanel extends ConsumerWidget {
                 children: [
                   Text(
                     FileUtils.formatSize(selectedSize),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                      color: context.appTextPrimary,
                     ),
                   ),
-                  const Text(
+                  Text(
                     'will be freed',
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondary,
+                      color: context.appTextSecondary,
                     ),
                   ),
                 ],
@@ -655,7 +662,7 @@ class _FloatingActionPanel extends ConsumerWidget {
               label: const Text('Delete'),
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.error,
-                foregroundColor: Colors.white,
+                foregroundColor: context.colorScheme.onError,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 12,
@@ -699,7 +706,7 @@ class _FloatingActionPanel extends ConsumerWidget {
         content: Text(
           'Are you sure you want to delete $count selected files?\n\n'
           'Items will be moved to Trash if supported, or permanently deleted.',
-          style: const TextStyle(color: AppColors.textSecondary, height: 1.5),
+          style: TextStyle(color: context.appTextSecondary, height: 1.5),
         ),
         actions: [
           TextButton(

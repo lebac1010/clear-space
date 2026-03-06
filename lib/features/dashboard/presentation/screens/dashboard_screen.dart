@@ -1,5 +1,5 @@
-import 'package:clear_space/core/theme/app_colors.dart';
 import 'package:clear_space/core/widgets/app_button.dart';
+import 'package:clear_space/core/extensions/build_context_x.dart';
 import 'package:clear_space/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:clear_space/features/dashboard/presentation/providers/scan_progress_provider.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +32,9 @@ class DashboardScreen extends ConsumerWidget {
         scanAsync.value!.phase != ScanPhase.cacheInvalidated;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.appSurface,
         elevation: 0,
         centerTitle: false,
         title: Text(
@@ -154,7 +154,7 @@ class DashboardScreen extends ConsumerWidget {
 
               StorageCategoryTile(
                 icon: Icons.image_outlined,
-                color: Colors.purple,
+                color: context.customColors.purple,
                 title: 'Photos & Images',
                 count: info.photosCount,
                 sizeBytes: info.photosSize,
@@ -167,7 +167,7 @@ class DashboardScreen extends ConsumerWidget {
               const Gap(12),
               StorageCategoryTile(
                 icon: Icons.movie_outlined,
-                color: Colors.pink,
+                color: const Color(0xFFE573B4),
                 title: 'Videos',
                 count: info.videosCount,
                 sizeBytes: info.videosSize,
@@ -181,7 +181,7 @@ class DashboardScreen extends ConsumerWidget {
               const Gap(12),
               StorageCategoryTile(
                 icon: Icons.audiotrack_outlined,
-                color: Colors.deepOrange,
+                color: const Color(0xFFFF8A65),
                 title: 'Audio',
                 count: info.audioCount,
                 sizeBytes: info.audioSize,
@@ -195,7 +195,7 @@ class DashboardScreen extends ConsumerWidget {
               const Gap(12),
               StorageCategoryTile(
                 icon: Icons.folder_open_outlined,
-                color: Colors.orange,
+                color: context.customColors.orange,
                 title: 'Documents & Files',
                 count: info.documentsCount,
                 sizeBytes: info.documentsSize,
@@ -209,7 +209,7 @@ class DashboardScreen extends ConsumerWidget {
               const Gap(12),
               StorageCategoryTile(
                 icon: Icons.dns_outlined,
-                color: Colors.blueGrey,
+                color: context.customColors.secondary,
                 title: 'System & Apps',
                 count: info.appsCount,
                 sizeBytes: info.systemSize,
@@ -231,8 +231,8 @@ class DashboardScreen extends ConsumerWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.background.withValues(alpha: 0.95),
-              border: const Border(top: BorderSide(color: AppColors.border)),
+              color: context.appBackground.withValues(alpha: 0.95),
+              border: Border(top: BorderSide(color: context.appBorder)),
             ),
             child: AppButton(
               text: 'Smart Cleanup Plan',

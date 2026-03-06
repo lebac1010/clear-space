@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../theme/app_colors.dart';
+import '../extensions/build_context_x.dart';
 
 /// Button variants matching design system.
 enum AppButtonVariant { primary, secondary, ghost, outline }
@@ -62,20 +62,20 @@ class AppButton extends StatelessWidget {
   }) : variant = AppButtonVariant.ghost;
 
   /// Returns the correct indicator color based on variant.
-  Color _getIndicatorColor() {
+  Color _getIndicatorColor(BuildContext context) {
     switch (variant) {
       case AppButtonVariant.primary:
       case AppButtonVariant.secondary:
         return Colors.white;
       case AppButtonVariant.outline:
       case AppButtonVariant.ghost:
-        return AppColors.primary;
+        return context.colorScheme.primary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final indicatorColor = _getIndicatorColor();
+    final indicatorColor = _getIndicatorColor(context);
 
     final buttonContent = Row(
       mainAxisSize: MainAxisSize.min,

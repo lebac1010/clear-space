@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -20,7 +21,7 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
     final controller = ref.read(screenshotsControllerProvider.notifier);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         title: const Text('Screenshots Cleaner'),
         actions: [
@@ -46,15 +47,15 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
               onRetry: () => controller.loadScreenshots(),
             )
           : state.items.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
                 'No screenshots found',
-                style: TextStyle(color: AppColors.textSecondary),
+                style: TextStyle(color: context.appTextSecondary),
               ),
             )
           : Column(
               children: [
-                _buildSummaryBar(state),
+                _buildSummaryBar(context, state),
                 Expanded(
                   child: GridView.builder(
                     padding: const EdgeInsets.all(8),
@@ -82,10 +83,10 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSummaryBar(ScreenshotsState state) {
+  Widget _buildSummaryBar(BuildContext context, ScreenshotsState state) {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: AppColors.surface,
+      color: context.appSurface,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -98,10 +99,10 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
               ),
               Text(
                 FileUtils.formatSize(state.totalSize),
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
+                style: TextStyle(
+                  color: context.appTextSecondary,
                   fontSize: 12,
-                ),
+                ).copyWith(color: context.appTextSecondary),
               ),
             ],
           ),
@@ -127,10 +128,10 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.appShadow.withValues(alpha: 0.35),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -194,11 +195,11 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
         } else {
           // [Bug #8 fix] Show error feedback on deletion failure
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
                 'Failed to delete some screenshots. Please try again.',
               ),
-              backgroundColor: Colors.red,
+              backgroundColor: context.colorScheme.error,
             ),
           );
         }
@@ -278,7 +279,7 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
               border: Border.all(
                 color: widget.item.isSelected
                     ? AppColors.primary
-                    : Colors.grey.withValues(alpha: 0.2),
+                    : context.appBorder.withValues(alpha: 0.5),
                 width: widget.item.isSelected ? 2 : 1,
               ),
             ),
@@ -299,7 +300,9 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
                 widget.item.isSelected
                     ? Icons.check_circle
                     : Icons.circle_outlined,
-                color: widget.item.isSelected ? AppColors.primary : Colors.grey,
+                color: widget.item.isSelected
+                    ? AppColors.primary
+                    : context.appTextTertiary,
                 size: 24,
               ),
             ),
@@ -311,7 +314,7 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.5),
+                color: context.appOverlay.withValues(alpha: 0.7),
                 borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(6),
                 ),
@@ -336,15 +339,15 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
         cacheWidth: 300,
         cacheHeight: 400,
         errorBuilder: (context, error, stackTrace) => Container(
-          color: Colors.grey[200],
-          child: const Icon(Icons.image, color: Colors.grey),
+          color: context.imagePlaceholder,
+          child: Icon(Icons.image, color: context.appTextTertiary),
         ),
       );
     }
 
     if (_isLoadingThumb) {
       return Container(
-        color: Colors.grey[100],
+        color: context.imagePlaceholderMuted,
         child: const Center(
           child: SizedBox(
             width: 16,
@@ -364,15 +367,15 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
         cacheWidth: 300,
         cacheHeight: 400,
         errorBuilder: (context, error, stackTrace) => Container(
-          color: Colors.grey[200],
-          child: const Icon(Icons.image, color: Colors.grey),
+          color: context.imagePlaceholder,
+          child: Icon(Icons.image, color: context.appTextTertiary),
         ),
       );
     }
 
     return Container(
-      color: Colors.grey[200],
-      child: const Icon(Icons.image, color: Colors.grey),
+      color: context.imagePlaceholder,
+      child: Icon(Icons.image, color: context.appTextTertiary),
     );
   }
 }

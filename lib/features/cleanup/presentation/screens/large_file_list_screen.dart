@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -17,10 +18,10 @@ class LargeFileListScreen extends ConsumerWidget {
     final filter = ref.watch(largeFileFilterNotifierProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         title: const Text('Large Files'),
-        backgroundColor: AppColors.background,
+        backgroundColor: context.appBackground,
         surfaceTintColor: Colors.transparent,
         actions: [
           TextButton(
@@ -126,18 +127,18 @@ class _FilterBar extends ConsumerWidget {
                     .read(largeFileFilterNotifierProvider.notifier)
                     .setFilter(filter);
               },
-              backgroundColor: AppColors.background,
+              backgroundColor: context.appSurfaceContainer,
               selectedColor: AppColors.primary.withValues(alpha: 0.1),
               checkmarkColor: AppColors.primary,
               labelStyle: TextStyle(
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                color: isSelected ? AppColors.primary : context.appTextSecondary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 fontSize: 13,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: BorderSide(
-                  color: isSelected ? AppColors.primary : AppColors.border,
+                  color: isSelected ? AppColors.primary : context.appBorder,
                 ),
               ),
             ),
@@ -187,10 +188,10 @@ class _BottomActionPanel extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.appShadow.withValues(alpha: 0.35),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -207,15 +208,14 @@ class _BottomActionPanel extends ConsumerWidget {
                   '$selectedCount items selected',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
+                  ).copyWith(color: context.appTextPrimary),
                 ),
                 Text(
                   FileUtils.formatSize(selectedSize),
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
+                  style: TextStyle(
+                    color: context.appTextSecondary,
                     fontSize: 12,
-                  ),
+                  ).copyWith(color: context.appTextSecondary),
                 ),
               ],
             ),

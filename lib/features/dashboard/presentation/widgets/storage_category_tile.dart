@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
 
@@ -119,14 +119,15 @@ class _StorageCategoryTileState extends State<StorageCategoryTile>
                         child: Container(
                           height: 6,
                           decoration: BoxDecoration(
-                            color: AppColors.background,
+                            color: context.appSurfaceContainerHigh,
                             borderRadius: BorderRadius.circular(100),
                           ),
                           child: showAnalyzing
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: LinearProgressIndicator(
-                                    backgroundColor: AppColors.background,
+                                    backgroundColor:
+                                        context.appSurfaceContainerHigh,
                                     color: widget.color.withValues(alpha: 0.5),
                                     minHeight: 6,
                                   ),
@@ -181,9 +182,9 @@ class _StorageCategoryTileState extends State<StorageCategoryTile>
                     context,
                   ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                const Icon(
+                Icon(
                   Icons.chevron_right,
-                  color: AppColors.textSecondary,
+                  color: context.appTextSecondary,
                   size: 20,
                 ),
               ],

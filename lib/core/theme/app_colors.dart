@@ -47,6 +47,131 @@ abstract class AppColors {
   static const Color purple = Color(0xFF9C27B0);
 }
 
+class AppThemeColors extends ThemeExtension<AppThemeColors> {
+  final Color background;
+  final Color surface;
+  final Color surfaceContainer;
+  final Color surfaceContainerHigh;
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color textTertiary;
+  final Color border;
+  final Color shadow;
+  final Color overlay;
+  final Color imagePlaceholder;
+  final Color imagePlaceholderMuted;
+
+  const AppThemeColors({
+    required this.background,
+    required this.surface,
+    required this.surfaceContainer,
+    required this.surfaceContainerHigh,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.textTertiary,
+    required this.border,
+    required this.shadow,
+    required this.overlay,
+    required this.imagePlaceholder,
+    required this.imagePlaceholderMuted,
+  });
+
+  @override
+  AppThemeColors copyWith({
+    Color? background,
+    Color? surface,
+    Color? surfaceContainer,
+    Color? surfaceContainerHigh,
+    Color? textPrimary,
+    Color? textSecondary,
+    Color? textTertiary,
+    Color? border,
+    Color? shadow,
+    Color? overlay,
+    Color? imagePlaceholder,
+    Color? imagePlaceholderMuted,
+  }) {
+    return AppThemeColors(
+      background: background ?? this.background,
+      surface: surface ?? this.surface,
+      surfaceContainer: surfaceContainer ?? this.surfaceContainer,
+      surfaceContainerHigh: surfaceContainerHigh ?? this.surfaceContainerHigh,
+      textPrimary: textPrimary ?? this.textPrimary,
+      textSecondary: textSecondary ?? this.textSecondary,
+      textTertiary: textTertiary ?? this.textTertiary,
+      border: border ?? this.border,
+      shadow: shadow ?? this.shadow,
+      overlay: overlay ?? this.overlay,
+      imagePlaceholder: imagePlaceholder ?? this.imagePlaceholder,
+      imagePlaceholderMuted:
+          imagePlaceholderMuted ?? this.imagePlaceholderMuted,
+    );
+  }
+
+  @override
+  AppThemeColors lerp(ThemeExtension<AppThemeColors>? other, double t) {
+    if (other is! AppThemeColors) return this;
+    return AppThemeColors(
+      background: Color.lerp(background, other.background, t) ?? background,
+      surface: Color.lerp(surface, other.surface, t) ?? surface,
+      surfaceContainer:
+          Color.lerp(surfaceContainer, other.surfaceContainer, t) ??
+          surfaceContainer,
+      surfaceContainerHigh:
+          Color.lerp(surfaceContainerHigh, other.surfaceContainerHigh, t) ??
+          surfaceContainerHigh,
+      textPrimary: Color.lerp(textPrimary, other.textPrimary, t) ?? textPrimary,
+      textSecondary:
+          Color.lerp(textSecondary, other.textSecondary, t) ?? textSecondary,
+      textTertiary:
+          Color.lerp(textTertiary, other.textTertiary, t) ?? textTertiary,
+      border: Color.lerp(border, other.border, t) ?? border,
+      shadow: Color.lerp(shadow, other.shadow, t) ?? shadow,
+      overlay: Color.lerp(overlay, other.overlay, t) ?? overlay,
+      imagePlaceholder:
+          Color.lerp(imagePlaceholder, other.imagePlaceholder, t) ??
+          imagePlaceholder,
+      imagePlaceholderMuted:
+          Color.lerp(
+            imagePlaceholderMuted,
+            other.imagePlaceholderMuted,
+            t,
+          ) ??
+          imagePlaceholderMuted,
+    );
+  }
+
+  static const light = AppThemeColors(
+    background: AppColors.background,
+    surface: AppColors.surface,
+    surfaceContainer: AppColors.surfaceContainer,
+    surfaceContainerHigh: Color(0xFFE8ECEF),
+    textPrimary: AppColors.textPrimary,
+    textSecondary: AppColors.textSecondary,
+    textTertiary: AppColors.textTertiary,
+    border: AppColors.border,
+    shadow: Color(0x14000000),
+    overlay: Color(0x8A000000),
+    imagePlaceholder: Color(0xFFE5E7EB),
+    imagePlaceholderMuted: Color(0xFFF3F4F6),
+  );
+
+  static const dark = AppThemeColors(
+    background: AppColors.backgroundDark,
+    surface: AppColors.surfaceDark,
+    surfaceContainer: AppColors.surfaceContainerDark,
+    surfaceContainerHigh: Color(0xFF323438),
+    textPrimary: AppColors.textPrimaryDark,
+    textSecondary: AppColors.textSecondaryDark,
+    textTertiary: AppColors.textTertiaryDark,
+    border: AppColors.borderDark,
+    shadow: Color(0x52000000),
+    overlay: Color(0xB3000000),
+    imagePlaceholder: Color(0xFF30343A),
+    imagePlaceholderMuted: Color(0xFF212429),
+  );
+}
+
 /// Centralized spacing values for consistent UI.
 abstract class AppSpacing {
   static const double xs = 4;

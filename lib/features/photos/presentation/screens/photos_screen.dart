@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
@@ -22,9 +22,9 @@ class PhotosScreen extends ConsumerWidget {
     final photosAsync = ref.watch(photosControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.appSurface,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
@@ -67,7 +67,7 @@ class PhotosScreen extends ConsumerWidget {
                           Text(
                             FileUtils.formatSize(info.photosSize),
                             style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: AppColors.textSecondary),
+                                ?.copyWith(color: context.appTextSecondary),
                           ),
                         ],
                       );
@@ -171,7 +171,7 @@ class PhotosScreen extends ConsumerWidget {
                 title: 'Duplicates',
                 subtitle: '${FileUtils.formatSize(duplicateSize)} potential',
                 icon: Icons.copy,
-                color: AppColors.orange,
+                color: context.customColors.orange,
                 onTap: () {
                   // Navigate to Photos tab's duplicates sub-route
                   context.go('/photos/duplicates?type=duplicate');
@@ -185,7 +185,7 @@ class PhotosScreen extends ConsumerWidget {
                 title: 'Similar',
                 subtitle: '${FileUtils.formatSize(similarSize)} potential',
                 icon: Icons.photo_library_outlined,
-                color: AppColors.purple,
+                color: context.customColors.purple,
                 onTap: () {
                   context.go('/photos/duplicates?type=similar');
                 },
@@ -242,8 +242,8 @@ class _AnalysisCard extends StatelessWidget {
           const Gap(4),
           Text(
             subtitle,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
+            style: TextStyle(
+              color: context.appTextSecondary,
               fontSize: 13,
             ),
           ),
@@ -307,7 +307,7 @@ class _PhotoGridItemState extends ConsumerState<_PhotoGridItem> {
   Widget build(BuildContext context) {
     if (_loading) {
       return Container(
-        color: Colors.grey[200],
+        color: context.imagePlaceholder,
         child: const Center(
           child: SizedBox(
             width: 16,
@@ -320,22 +320,30 @@ class _PhotoGridItemState extends ConsumerState<_PhotoGridItem> {
 
     if (_hasError || _bytes == null) {
       return Container(
-        color: Colors.grey[200],
-        child: const Center(
-          child: Icon(Icons.broken_image, size: 20, color: Colors.grey),
+        color: context.imagePlaceholder,
+        child: Center(
+          child: Icon(
+            Icons.broken_image,
+            size: 20,
+            color: context.appTextTertiary,
+          ),
         ),
       );
     }
 
     return Container(
-      color: Colors.grey[200],
+      color: context.imagePlaceholder,
       child: Image.memory(
         _bytes!,
         fit: BoxFit.cover,
         cacheWidth: 200,
         errorBuilder: (context, error, stackTrace) {
-          return const Center(
-            child: Icon(Icons.broken_image, size: 20, color: Colors.grey),
+          return Center(
+            child: Icon(
+              Icons.broken_image,
+              size: 20,
+              color: context.appTextTertiary,
+            ),
           );
         },
       ),

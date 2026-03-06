@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -19,7 +20,7 @@ class DownloadsCleanerScreen extends ConsumerWidget {
     final controller = ref.read(downloadsControllerProvider.notifier);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         title: const Text('Downloads Cleaner'),
         actions: [
@@ -44,22 +45,22 @@ class DownloadsCleanerScreen extends ConsumerWidget {
           else if (state.errorMessage != null)
             Expanded(child: ErrorView(message: state.errorMessage!))
           else if (state.items.isEmpty)
-            const Expanded(
+            Expanded(
               child: Center(
                 child: Text(
                   'No downloads found',
-                  style: TextStyle(color: AppColors.textSecondary),
+                  style: TextStyle(color: context.appTextSecondary),
                 ),
               ),
             )
           else ...[
-            _buildSummaryBar(state),
+            _buildSummaryBar(context, state),
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.all(16),
                 itemCount: state.items.length,
                 separatorBuilder: (context, index) =>
-                    const Divider(height: 1, color: Colors.black12),
+                    Divider(height: 1, color: context.appBorder),
                 itemBuilder: (context, index) {
                   final item = state.items[index];
                   return _DownloadListTile(
@@ -77,10 +78,10 @@ class DownloadsCleanerScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSummaryBar(DownloadsState state) {
+  Widget _buildSummaryBar(BuildContext context, DownloadsState state) {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: AppColors.surface,
+      color: context.appSurface,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -93,10 +94,10 @@ class DownloadsCleanerScreen extends ConsumerWidget {
               ),
               Text(
                 FileUtils.formatSize(state.totalSize),
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
+                style: TextStyle(
+                  color: context.appTextSecondary,
                   fontSize: 12,
-                ),
+                ).copyWith(color: context.appTextSecondary),
               ),
             ],
           ),
@@ -122,10 +123,10 @@ class DownloadsCleanerScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.appShadow.withValues(alpha: 0.35),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -191,9 +192,9 @@ class DownloadsCleanerScreen extends ConsumerWidget {
         } else {
           // [Bug #8 fix] Show error feedback on deletion failure
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text('Failed to delete some files. Please try again.'),
-              backgroundColor: Colors.red,
+              backgroundColor: context.colorScheme.error,
             ),
           );
         }
@@ -221,15 +222,15 @@ class _DownloadListTile extends StatelessWidget {
       ),
       subtitle: Text(
         '${FileUtils.formatSize(item.size)} • ${item.mimeType}',
-        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+        style: TextStyle(fontSize: 12, color: context.appTextSecondary),
       ),
-      secondary: _buildFileIcon(item),
+      secondary: _buildFileIcon(context, item),
       activeColor: AppColors.primary,
       contentPadding: EdgeInsets.zero,
     );
   }
 
-  Widget _buildFileIcon(DownloadItem item) {
+  Widget _buildFileIcon(BuildContext context, DownloadItem item) {
     final isImage = item.mimeType.startsWith('image/');
 
     // [Bug #10 fix] Use Image.file for local paths
@@ -239,7 +240,7 @@ class _DownloadListTile extends StatelessWidget {
         height: 48,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Colors.grey[200],
+          color: context.imagePlaceholder,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
@@ -248,18 +249,19 @@ class _DownloadListTile extends StatelessWidget {
             fit: BoxFit.cover,
             cacheWidth: 150,
             cacheHeight: 150,
-            errorBuilder: (_, __, ___) => _getPlaceholderIcon(item.mimeType),
+            errorBuilder: (_, __, ___) =>
+                _getPlaceholderIcon(context, item.mimeType),
           ),
         ),
       );
     }
 
-    return _getPlaceholderIcon(item.mimeType);
+    return _getPlaceholderIcon(context, item.mimeType);
   }
 
-  Widget _getPlaceholderIcon(String mime) {
+  Widget _getPlaceholderIcon(BuildContext context, String mime) {
     IconData icon = Icons.insert_drive_file_outlined;
-    Color color = Colors.grey;
+    Color color = context.appTextTertiary;
 
     if (mime.contains('pdf')) {
       icon = Icons.picture_as_pdf_outlined;

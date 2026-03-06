@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/extensions/build_context_x.dart';
 
 class FilesScreen extends StatelessWidget {
   const FilesScreen({super.key});
@@ -29,13 +29,13 @@ class FilesScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 64, color: AppColors.textSecondary),
+            Icon(icon, size: 64, color: context.appTextSecondary),
             const SizedBox(height: 16),
             Text(title, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'File listing coming soon.',
-              style: TextStyle(color: AppColors.textSecondary),
+              style: TextStyle(color: context.appTextSecondary),
             ),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -112,7 +113,7 @@ class StorageOverviewCard extends ConsumerWidget {
                     '$totalSize Total',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: context.appTextPrimary,
                     ),
                   ),
                   const Gap(2),
@@ -132,15 +133,15 @@ class StorageOverviewCard extends ConsumerWidget {
             height: 12,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: context.appSurfaceContainerHigh,
               borderRadius: BorderRadius.circular(100),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
               child: currentProgress != null
-                  ? const LinearProgressIndicator(
-                      backgroundColor: AppColors.background,
-                      color: AppColors.primary,
+                  ? LinearProgressIndicator(
+                      backgroundColor: context.appSurfaceContainerHigh,
+                      color: context.colorScheme.primary,
                     )
                   : FractionallySizedBox(
                       alignment: Alignment.centerLeft,
@@ -179,7 +180,7 @@ class StorageOverviewCard extends ConsumerWidget {
           ),
 
           const Gap(16),
-          const Divider(height: 1, color: AppColors.border),
+          Divider(height: 1, color: context.appBorder),
           const Gap(16),
 
           // Quick Stats
@@ -253,9 +254,9 @@ class _QuickStat extends StatelessWidget {
     return Expanded(
       child: Container(
         decoration: hasBorder
-            ? const BoxDecoration(
+            ? BoxDecoration(
                 border: Border.symmetric(
-                  vertical: BorderSide(color: AppColors.border),
+                  vertical: BorderSide(color: context.appBorder),
                 ),
               )
             : null,

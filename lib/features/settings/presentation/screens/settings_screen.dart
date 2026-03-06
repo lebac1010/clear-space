@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:in_app_review/in_app_review.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/services/app_settings_service.dart';
@@ -243,9 +244,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         child: ListView.separated(
                           controller: scrollController,
                           itemCount: languages.length,
-                          separatorBuilder: (context, index) => const Divider(
+                          separatorBuilder: (context, index) => Divider(
                             height: 1,
-                            color: AppColors.border,
+                            color: context.appBorder,
                             indent: 16,
                             endIndent: 16,
                           ),
@@ -327,9 +328,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.brightness_auto,
-                        color: AppColors.textPrimary,
+                        color: context.appTextPrimary,
                       ),
                       title: const Text('System Default'),
                       trailing: currentTheme == ThemeMode.system
@@ -345,16 +346,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Navigator.pop(context);
                       },
                     ),
-                    const Divider(
+                    Divider(
                       height: 1,
-                      color: AppColors.border,
+                      color: context.appBorder,
                       indent: 56,
                       endIndent: 16,
                     ),
                     ListTile(
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.light_mode,
-                        color: AppColors.textPrimary,
+                        color: context.appTextPrimary,
                       ),
                       title: const Text('Light'),
                       trailing: currentTheme == ThemeMode.light
@@ -370,16 +371,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Navigator.pop(context);
                       },
                     ),
-                    const Divider(
+                    Divider(
                       height: 1,
-                      color: AppColors.border,
+                      color: context.appBorder,
                       indent: 56,
                       endIndent: 16,
                     ),
                     ListTile(
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.dark_mode,
-                        color: AppColors.textPrimary,
+                        color: context.appTextPrimary,
                       ),
                       title: const Text('Dark'),
                       trailing: currentTheme == ThemeMode.dark
@@ -413,7 +414,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.appSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
@@ -436,7 +437,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     height: 4,
                     margin: const EdgeInsets.only(bottom: AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: AppColors.border,
+                      color: context.appBorder,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -470,9 +471,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           value: 3,
                           currentValue: currentValue,
                         ),
-                        const Divider(
+                        Divider(
                           height: 1,
-                          color: AppColors.border,
+                          color: context.appBorder,
                           indent: 70,
                         ),
                         _buildSensitivityOption(
@@ -484,9 +485,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           value: 5,
                           currentValue: currentValue,
                         ),
-                        const Divider(
+                        Divider(
                           height: 1,
-                          color: AppColors.border,
+                          color: context.appBorder,
                           indent: 70,
                         ),
                         _buildSensitivityOption(
@@ -549,12 +550,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.primary.withValues(alpha: 0.1)
-                    : AppColors.surfaceContainer,
+                    : context.appSurfaceContainer,
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: Icon(
                 icon,
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                color: isSelected ? AppColors.primary : context.appTextSecondary,
                 size: 22,
               ),
             ),
@@ -571,15 +572,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           : FontWeight.w500,
                       color: isSelected
                           ? AppColors.primary
-                          : AppColors.textPrimary,
+                          : context.appTextPrimary,
                       fontSize: 15,
                     ),
                   ),
                   const Gap(2),
                   Text(
                     description,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
+                    style: TextStyle(
+                      color: context.appTextSecondary,
                       fontSize: 13,
                     ),
                   ),
@@ -614,7 +615,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.appSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
@@ -636,7 +637,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     height: 4,
                     margin: const EdgeInsets.only(bottom: AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: AppColors.border,
+                      color: context.appBorder,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -666,9 +667,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             currentValue: currentValue,
                           ),
                           if (i < options.length - 1)
-                            const Divider(
+                            Divider(
                               height: 1,
-                              color: AppColors.border,
+                              color: context.appBorder,
                               indent: 70,
                             ),
                         ],
@@ -721,12 +722,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.primary.withValues(alpha: 0.1)
-                    : AppColors.surfaceContainer,
+                    : context.appSurfaceContainer,
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: Icon(
                 Icons.folder_zip_outlined,
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                color: isSelected ? AppColors.primary : context.appTextSecondary,
                 size: 22,
               ),
             ),
@@ -736,7 +737,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 title,
                 style: TextStyle(
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                  color: isSelected ? AppColors.primary : context.appTextPrimary,
                   fontSize: 15,
                 ),
               ),
@@ -772,10 +773,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         title: const Text('Settings'),
-        backgroundColor: AppColors.background,
+        backgroundColor: context.appBackground,
         elevation: 0,
         centerTitle: true,
       ),
@@ -806,7 +807,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     );
                   },
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 Consumer(
                   builder: (context, ref, child) {
                     final currentTheme = ref.watch(themeModeControllerProvider);
@@ -818,7 +819,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       icon: Icons.palette_rounded,
                       title: 'Theme',
                       subtitle: themeName,
-                      color: AppColors.purple,
+                      color: context.customColors.purple,
                       onTap: () => _showThemeDialog(context, ref, currentTheme),
                     );
                   },
@@ -844,7 +845,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   color: AppColors.primary,
                   onTap: () => context.push(RouteConstants.history),
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.mark_email_read_outlined,
                   title: 'Send Feedback',
@@ -852,7 +853,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   color: AppColors.primary,
                   onTap: _sendFeedbackEmail,
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.star_rounded,
                   title: 'Rate Us 5 Stars',
@@ -860,12 +861,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   color: AppColors.warning,
                   onTap: _requestReview,
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.share_rounded,
                   title: 'Share with Friends',
                   subtitle: 'Recommend the app via messages',
-                  color: AppColors.success,
+                  color: context.customColors.success,
                   onTap: _shareApp,
                 ),
               ],
@@ -900,7 +901,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       icon: Icons.tune_rounded,
                       title: 'Similar Photo Sensitivity',
                       subtitle: subtitle,
-                      color: AppColors.purple,
+                      color: context.customColors.purple,
                       onTap: () {
                         _showSensitivityDialog(
                           context,
@@ -911,7 +912,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     );
                   },
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 Consumer(
                   builder: (context, ref, child) {
                     final currentThreshold = ref.watch(_thresholdLocalProvider);
@@ -930,7 +931,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       icon: Icons.straighten_rounded,
                       title: 'Large File Threshold',
                       subtitle: subtitle,
-                      color: AppColors.orange,
+                      color: context.customColors.orange,
                       onTap: () {
                         _showThresholdDialog(context, ref, currentThreshold);
                       },
@@ -955,27 +956,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   icon: Icons.shield_outlined,
                   title: 'Privacy Policy',
                   subtitle: 'How we protect your data',
-                  color: AppColors.secondary,
+                  color: context.customColors.secondary,
                   onTap: () => _openLink(
                     'https://policies.google.com/privacy',
                   ), // Placeholder
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.description_outlined,
                   title: 'Terms of Service',
                   subtitle: 'Rules and guidelines',
-                  color: AppColors.secondary,
+                  color: context.customColors.secondary,
                   onTap: () => _openLink(
                     'https://policies.google.com/terms',
                   ), // Placeholder
                 ),
-                const Divider(height: 1, color: AppColors.border, indent: 70),
+                Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.info_outline_rounded,
                   title: 'App Version',
                   subtitle: _appVersion,
-                  color: AppColors.secondary,
+                  color: context.customColors.secondary,
                   showChevron: false,
                 ),
               ],
@@ -992,14 +993,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   'Clear Space',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textTertiary,
+                    color: context.appTextTertiary,
                   ),
                 ),
                 const Gap(AppSpacing.xs),
                 Text(
                   'Made with ❤️ for a cleaner phone',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: context.appTextTertiary,
                   ),
                 ),
               ],
@@ -1024,11 +1025,11 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title.toUpperCase(),
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w600,
         letterSpacing: 1.2,
-        color: AppColors.textSecondary,
+        color: context.appTextSecondary,
       ),
     );
   }
@@ -1086,8 +1087,8 @@ class _SettingsTile extends StatelessWidget {
                   const Gap(2),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
+                    style: TextStyle(
+                      color: context.appTextSecondary,
                       fontSize: 13,
                     ),
                   ),
@@ -1095,9 +1096,9 @@ class _SettingsTile extends StatelessWidget {
               ),
             ),
             if (showChevron)
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.textTertiary,
+                color: context.appTextTertiary,
                 size: 22,
               ),
           ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/widgets/app_card.dart';
 
 class CleanupCategoryTile extends StatelessWidget {
@@ -43,41 +43,38 @@ class CleanupCategoryTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 Text(
                   subtitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              size,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+          const Gap(16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                size,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-          ),
-          const Gap(8),
-          const Icon(
-            Icons.chevron_right_rounded,
-            color: AppColors.textSecondary,
+              Icon(
+                Icons.chevron_right,
+                color: context.appTextSecondary,
+                size: 20,
+              ),
+            ],
           ),
         ],
       ),

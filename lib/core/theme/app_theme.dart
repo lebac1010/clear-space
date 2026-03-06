@@ -5,6 +5,7 @@ import 'app_colors.dart';
 /// Uses Material 3 with custom tokens from Stitch designs.
 class AppTheme {
   static ThemeData get light {
+    const themeColors = AppThemeColors.light;
     // Use local Inter font defined in pubspec.yaml
     final baseTextTheme = Typography.material2021().black.apply(
       fontFamily: 'Inter',
@@ -72,13 +73,18 @@ class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
-      extensions: const [CustomColors.light],
+      extensions: const [CustomColors.light, AppThemeColors.light],
       // Modern ColorScheme without deprecated properties
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         onPrimary: Colors.white,
+        primaryContainer: AppColors.primaryLight,
+        onPrimaryContainer: AppColors.primary,
         surface: AppColors.surface,
         onSurface: AppColors.textPrimary,
+        onSurfaceVariant: AppColors.textSecondary,
+        outline: AppColors.border,
+        outlineVariant: Color(0xFFDDE2E6),
         surfaceContainerLowest: AppColors.background,
         surfaceContainerLow: AppColors.surfaceContainer,
         error: AppColors.error,
@@ -92,6 +98,7 @@ class AppTheme {
       // AppBar
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textPrimary,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.textPrimary),
@@ -136,7 +143,7 @@ class AppTheme {
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.textSecondary,
+          foregroundColor: AppColors.primary,
           minimumSize: const Size(0, 48),
         ),
       ),
@@ -184,14 +191,52 @@ class AppTheme {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
+        iconColor: themeColors.textSecondary,
+        textColor: themeColors.textPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
       ),
 
+      dividerTheme: const DividerThemeData(
+        color: AppColors.border,
+        thickness: 1,
+        space: 1,
+      ),
+
+      dialogTheme: DialogThemeData(
+        backgroundColor: themeColors.surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+      ),
+
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.surface,
+        surfaceTintColor: Colors.transparent,
+      ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: AppColors.textPrimary,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(color: Colors.white),
+        behavior: SnackBarBehavior.floating,
+      ),
+
+      checkboxTheme: CheckboxThemeData(
+        side: const BorderSide(color: AppColors.border),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.primary,
+      ),
+
       // Bottom Navigation Bar
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: themeColors.surface,
         surfaceTintColor: Colors.transparent,
         indicatorColor: AppColors.primaryLight,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
@@ -222,6 +267,7 @@ class AppTheme {
   }
 
   static ThemeData get dark {
+    const themeColors = AppThemeColors.dark;
     final baseTextTheme = Typography.material2021().white.apply(
       fontFamily: 'Inter',
     );
@@ -288,12 +334,17 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      extensions: const [CustomColors.dark],
+      extensions: const [CustomColors.dark, AppThemeColors.dark],
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
         onPrimary: Colors.white,
+        primaryContainer: Color(0xFF0F3A66),
+        onPrimaryContainer: Color(0xFFD7E9FF),
         surface: AppColors.surfaceDark,
         onSurface: AppColors.textPrimaryDark,
+        onSurfaceVariant: AppColors.textSecondaryDark,
+        outline: AppColors.borderDark,
+        outlineVariant: Color(0xFF3E4246),
         surfaceContainerLowest: AppColors.backgroundDark,
         surfaceContainerLow: AppColors.surfaceContainerDark,
         error: AppColors.errorDark,
@@ -307,6 +358,7 @@ class AppTheme {
       // AppBar
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.surfaceDark,
+        foregroundColor: AppColors.textPrimaryDark,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.textPrimaryDark),
@@ -351,7 +403,7 @@ class AppTheme {
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.textSecondaryDark,
+          foregroundColor: AppColors.primary,
           minimumSize: const Size(0, 48),
         ),
       ),
@@ -399,14 +451,54 @@ class AppTheme {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
+        iconColor: themeColors.textSecondary,
+        textColor: themeColors.textPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
       ),
 
+      dividerTheme: const DividerThemeData(
+        color: AppColors.borderDark,
+        thickness: 1,
+        space: 1,
+      ),
+
+      dialogTheme: DialogThemeData(
+        backgroundColor: themeColors.surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+      ),
+
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.surfaceDark,
+        surfaceTintColor: Colors.transparent,
+      ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: const Color(0xFF272A2E),
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: AppColors.textPrimaryDark,
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+
+      checkboxTheme: CheckboxThemeData(
+        side: const BorderSide(color: AppColors.borderDark),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.primary,
+      ),
+
       // Bottom Navigation Bar
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.surfaceDark,
+        backgroundColor: themeColors.surface,
         surfaceTintColor: Colors.transparent,
         indicatorColor: AppColors.primary.withValues(alpha: 0.2),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,

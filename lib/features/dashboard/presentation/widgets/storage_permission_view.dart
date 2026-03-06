@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../controllers/dashboard_controller.dart';
@@ -63,7 +64,9 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: context.colorScheme.primaryContainer.withValues(
+                  alpha: 0.6,
+                ),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

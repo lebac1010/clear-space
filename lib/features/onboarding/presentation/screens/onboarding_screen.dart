@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../l10n/app_localizations.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -42,7 +43,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -62,10 +63,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: context.appSurface,
                 border: Border(
                   top: BorderSide(
-                    color: AppColors.border.withValues(alpha: 0.5),
+                    color: context.appBorder.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -92,6 +93,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     ),
                   ),
                   const Gap(24),
+                  Text(
+                    l10n.termsDesc,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: context.appTextTertiary,
+                    ),
+                  ),
+                  const Gap(16),
                   if (_currentPage == 0)
                     AppButton(
                       text: l10n.next,
@@ -111,15 +121,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       icon: const Icon(Icons.arrow_forward),
                       onPressed: () => _finishOnboarding(context, ref),
                     ),
-                  const Gap(16),
-                  Text(
-                    l10n.termsDesc,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textTertiary,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -155,7 +156,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             l10n.appTitle,
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.w900,
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
           const Gap(16),
@@ -164,7 +165,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+            ).textTheme.bodyLarge?.copyWith(color: context.appTextSecondary),
           ),
         ],
       ),
@@ -182,7 +183,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             l10n.onboardingFeaturesTitle,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
           const Gap(12),
@@ -190,7 +191,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             l10n.onboardingFeaturesDesc,
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+            ).textTheme.bodyLarge?.copyWith(color: context.appTextSecondary),
           ),
           const Gap(40),
           _buildFeatureItem(
@@ -204,7 +205,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           _buildFeatureItem(
             context,
             icon: Icons.security_rounded,
-            color: AppColors.success,
+            color: context.customColors.success,
             title: l10n.feature2Title,
             description: l10n.feature2Desc,
           ),
@@ -212,7 +213,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           _buildFeatureItem(
             context,
             icon: Icons.rocket_launch_rounded,
-            color: AppColors.purple,
+            color: context.customColors.purple,
             title: l10n.feature3Title,
             description: l10n.feature3Desc,
           ),
@@ -235,13 +236,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.orange.withValues(alpha: 0.1),
+              color: context.customColors.orange.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.shield_outlined,
               size: 64,
-              color: AppColors.orange,
+              color: context.customColors.orange,
             ),
           ),
           const Gap(32),
@@ -249,7 +250,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             l10n.storageAccessRequired,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -257,7 +258,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           Text(
             l10n.storageAccessDesc,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
               height: 1.5,
             ),
             textAlign: TextAlign.center,
@@ -277,12 +278,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.5)),
+        border: Border.all(color: context.appBorder.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: context.appShadow.withValues(alpha: 0.12),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -306,18 +307,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const Gap(4),
                 Text(
                   description,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                     height: 1.4,
                   ),
                 ),

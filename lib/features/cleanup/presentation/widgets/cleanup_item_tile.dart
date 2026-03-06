@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../dashboard/data/providers/storage_provider.dart';
 import '../../domain/entities/cleanup_item.dart';
@@ -71,18 +72,18 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: AppColors.surfaceContainer,
+                color: context.appSurfaceContainer,
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: widget.item.isSelected
                       ? AppColors.primary
-                      : AppColors.border.withValues(alpha: 0.5),
+                      : context.appBorder.withValues(alpha: 0.5),
                   width: 1.5,
                 ),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(9),
-                child: _buildThumbnail(),
+                child: _buildThumbnail(context),
               ),
             ),
             if (widget.item.isSelected)
@@ -90,8 +91,8 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
                 right: -2,
                 bottom: -2,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: context.appSurface,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -113,30 +114,30 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
           fontWeight: FontWeight.w600,
           color: widget.item.isSelected
               ? AppColors.primary
-              : AppColors.textPrimary,
+              : context.appTextPrimary,
         ),
       ),
       subtitle: Row(
         children: [
           Text(
             _formatSize(widget.item.size),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(width: 8),
-          const Text('•', style: TextStyle(color: AppColors.textTertiary)),
+          Text('•', style: TextStyle(color: context.appTextTertiary)),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               widget.item.path.split('/').last,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: AppColors.textTertiary,
+                color: context.appTextTertiary,
               ),
             ),
           ),
@@ -151,21 +152,21 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
     );
   }
 
-  Widget _buildThumbnail() {
+  Widget _buildThumbnail(BuildContext context) {
     // Show real image thumbnail if loaded
     if (_thumbBytes != null) {
       return Image.memory(
         _thumbBytes!,
         fit: BoxFit.cover,
         cacheWidth: 200,
-        errorBuilder: (_, __, ___) => _buildIconThumbnail(),
+        errorBuilder: (_, __, ___) => _buildIconThumbnail(context),
       );
     }
 
     // Show loading indicator while thumbnail is being fetched
     if (!_thumbLoaded) {
       return Container(
-        color: Colors.grey[100],
+        color: context.imagePlaceholderMuted,
         child: const Center(
           child: SizedBox(
             width: 14,
@@ -176,10 +177,10 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
       );
     }
 
-    return _buildIconThumbnail();
+    return _buildIconThumbnail(context);
   }
 
-  Widget _buildIconThumbnail() {
+  Widget _buildIconThumbnail(BuildContext context) {
     final ext = widget.item.name.split('.').last.toLowerCase();
 
     IconData icon;
@@ -191,28 +192,28 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
       case 'png':
       case 'webp':
         icon = Icons.image_outlined;
-        color = Colors.blue;
+        color = AppColors.primary;
       case 'mp4':
       case 'mkv':
       case 'mov':
         icon = Icons.video_library_outlined;
-        color = Colors.orange;
+        color = context.customColors.orange;
       case 'mp3':
       case 'wav':
       case 'm4a':
         icon = Icons.audiotrack_outlined;
-        color = Colors.purple;
+        color = context.customColors.purple;
       case 'pdf':
         icon = Icons.picture_as_pdf_outlined;
-        color = Colors.red;
+        color = context.colorScheme.error;
       case 'zip':
       case 'rar':
       case '7z':
         icon = Icons.archive_outlined;
-        color = Colors.amber;
+        color = context.colorScheme.tertiary;
       default:
         icon = Icons.insert_drive_file_outlined;
-        color = Colors.grey;
+        color = context.appTextSecondary;
     }
 
     return Container(
@@ -283,7 +284,7 @@ class _FullImagePreviewDialogState
     final displayBytes = _fullBytes ?? widget.thumbBytes;
 
     return Dialog(
-      backgroundColor: Colors.black,
+      backgroundColor: context.appOverlay,
       insetPadding: const EdgeInsets.all(16),
       child: Stack(
         children: [
@@ -294,7 +295,7 @@ class _FullImagePreviewDialogState
           ),
           // Loading indicator while full-res loads
           if (_loading)
-            const Positioned(
+            Positioned(
               top: 16,
               left: 0,
               right: 0,
@@ -304,7 +305,7 @@ class _FullImagePreviewDialogState
                   height: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),
@@ -313,7 +314,11 @@ class _FullImagePreviewDialogState
             top: 8,
             right: 8,
             child: IconButton(
-              icon: const Icon(Icons.close, color: Colors.white, size: 28),
+              icon: Icon(
+                Icons.close,
+                color: Theme.of(context).colorScheme.onPrimary,
+                size: 28,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
           ),
@@ -324,7 +329,7 @@ class _FullImagePreviewDialogState
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.black54,
+                color: context.appOverlay.withValues(alpha: 0.75),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -333,8 +338,8 @@ class _FullImagePreviewDialogState
                 children: [
                   Text(
                     widget.item.name,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
@@ -344,7 +349,12 @@ class _FullImagePreviewDialogState
                   const SizedBox(height: 4),
                   Text(
                     '${_formatSize(widget.item.size)} • ${widget.item.path}',
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withValues(alpha: 0.8),
+                      fontSize: 12,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

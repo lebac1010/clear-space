@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -20,10 +21,10 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
     final stateAsync = ref.watch(smartCleanupControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         title: const Text('Smart Cleanup Plan'),
-        backgroundColor: AppColors.background,
+        backgroundColor: context.appBackground,
         elevation: 0,
         centerTitle: true,
       ),
@@ -119,21 +120,21 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                               ),
                             ),
                             const Divider(height: 1),
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Row(
                                 children: [
                                   Icon(
                                     Icons.info_outline_rounded,
                                     size: 20,
-                                    color: AppColors.textSecondary,
+                                    color: context.appTextSecondary,
                                   ),
                                   Gap(12),
                                   Expanded(
                                     child: Text(
                                       'We automatically keep the best version of your photos and files.',
                                       style: TextStyle(
-                                        color: AppColors.textSecondary,
+                                        color: context.appTextSecondary,
                                         fontSize: 13,
                                       ),
                                     ),
@@ -157,10 +158,10 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: context.appSurface,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: context.appShadow.withValues(alpha: 0.35),
                       blurRadius: 10,
                       offset: const Offset(0, -4),
                     ),
@@ -211,8 +212,7 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
             'You saved ${FileUtils.formatSize(savings)}',
             style: const TextStyle(
               fontSize: 16,
-              color: AppColors.textSecondary,
-            ),
+            ).copyWith(color: context.appTextSecondary),
           ),
           const Gap(32),
           AppButton(
@@ -249,7 +249,7 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
           const Gap(8),
           const Text(
             'No duplicate or similar files found.',
-            style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
+            style: TextStyle(fontSize: 16),
           ),
           const Gap(32),
           AppButton(
@@ -274,7 +274,7 @@ class _AnimatedHeroHeader extends StatelessWidget {
       height: 200,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         shape: BoxShape.circle,
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.2),
@@ -289,7 +289,7 @@ class _AnimatedHeroHeader extends StatelessWidget {
               'Save',
               style: Theme.of(
                 context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+              ).textTheme.bodyLarge?.copyWith(color: context.appTextSecondary),
             ),
             const Gap(4),
             // Animated counter with FittedBox to prevent overflow
@@ -381,20 +381,16 @@ class _InteractiveBreakdownItem extends StatelessWidget {
                   const Gap(2),
                   Text(
                     '$count items · ${FileUtils.formatSize(size)}',
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
+                    style: TextStyle(
+                      color: context.appTextSecondary,
                       fontSize: 13,
-                    ),
+                    ).copyWith(color: context.appTextSecondary),
                   ),
                 ],
               ),
             ),
             const Gap(4),
-            const Icon(
-              Icons.chevron_right,
-              color: AppColors.textSecondary,
-              size: 20,
-            ),
+            Icon(Icons.chevron_right, color: context.appTextSecondary, size: 20),
           ],
         ),
       ),

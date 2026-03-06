@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -47,19 +48,19 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     final controller = ref.read(appManagerControllerProvider.notifier);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appBackground,
       appBar: AppBar(
         // Consistent with DuplicateListScreen, LargeFileListScreen, MediaExplorerScreen
-        backgroundColor: AppColors.background,
+        backgroundColor: context.appBackground,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'App Manager',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            color: AppColors.textPrimary,
+            color: context.appTextPrimary,
           ),
         ),
         actions: [
@@ -109,7 +110,7 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                             Icon(
                               Icons.apps_rounded,
                               size: 64,
-                              color: AppColors.textTertiary.withValues(
+                              color: context.appTextTertiary.withValues(
                                 alpha: 0.5,
                               ),
                             ),
@@ -118,10 +119,10 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                               state.searchQuery.isEmpty
                                   ? 'No apps found'
                                   : 'No matching apps',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textSecondary,
+                                color: context.appTextSecondary,
                               ),
                             ),
                           ],
@@ -153,7 +154,7 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
           // Loading overlay during uninstall
           if (state.isUninstalling)
             Container(
-              color: Colors.black26,
+              color: context.appOverlay.withValues(alpha: 0.3),
               child: const Center(
                 child: Card(
                   child: Padding(
@@ -214,26 +215,26 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
       child: Container(
         height: 44,
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.appSurface,
           borderRadius: BorderRadius.circular(22),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: [
-            const Icon(
+            Icon(
               Icons.search_rounded,
               size: 20,
-              color: AppColors.textTertiary,
+              color: context.appTextTertiary,
             ),
             const SizedBox(width: 8),
             Expanded(
               child: TextField(
                 controller: _searchController,
                 onChanged: controller.setSearchQuery,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Search apps...',
                   hintStyle: TextStyle(
-                    color: AppColors.textTertiary,
+                    color: context.appTextTertiary,
                     fontSize: 14,
                   ),
                   border: InputBorder.none,
@@ -243,9 +244,9 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.textPrimary,
+                  color: context.appTextPrimary,
                 ),
               ),
             ),
@@ -272,10 +273,10 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
         children: [
           Text(
             showing,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
             ),
           ),
           const SizedBox(width: 8),
@@ -293,20 +294,21 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
             height: 32,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: context.appSurface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: context.appBorder),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<AppSortOption>(
                 value: state.sortOption,
                 isDense: true,
                 icon: const Icon(Icons.arrow_drop_down, size: 18),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
+                  color: context.appTextSecondary,
                 ),
+                dropdownColor: context.appSurface,
                 items: const [
                   DropdownMenuItem(
                     value: AppSortOption.sizeDesc,
@@ -348,9 +350,9 @@ class _AppItemCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.appSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.appBorder),
       ),
       child: Row(
         children: [
@@ -382,10 +384,10 @@ class _AppItemCard extends StatelessWidget {
                   app.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -400,9 +402,9 @@ class _AppItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Text(
+                    Text(
                       '•',
-                      style: TextStyle(color: AppColors.textTertiary),
+                      style: TextStyle(color: context.appTextTertiary),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -410,9 +412,9 @@ class _AppItemCard extends StatelessWidget {
                         'v${app.version}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.textTertiary,
+                          color: context.appTextTertiary,
                         ),
                       ),
                     ),

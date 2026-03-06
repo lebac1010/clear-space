@@ -4,9 +4,12 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../l10n/app_localizations.dart';
 
+import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/services/app_settings_service.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_card.dart';
 
 class LanguageSelectionScreen extends ConsumerStatefulWidget {
   const LanguageSelectionScreen({super.key});
@@ -117,42 +120,125 @@ class _LanguageSelectionScreenState
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: 24.0,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(40),
+              const Gap(16),
               Text(
-                'Select Your Language\nChọn Ngôn Ngữ',
+                'Select Your Language',
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
-              const Gap(16),
+              const Gap(8),
               Text(
                 'You can change this later in Settings.',
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              const Gap(40),
+              const Gap(24),
 
               Expanded(
-                child: ListView.separated(
-                  itemCount: languages.length,
-                  separatorBuilder: (_, __) => const Gap(12),
-                  itemBuilder: (context, index) {
-                    final lang = languages[index];
-                    return _LanguageTile(
-                      emoji: lang['emoji']!,
-                      title: lang['title']!,
-                      subtitle: lang['subtitle']!,
-                      isSelected: _selectedLanguageCode == lang['code'],
-                      onTap: () =>
-                          setState(() => _selectedLanguageCode = lang['code']!),
-                    );
-                  },
+                child: AppCard(
+                  padding: EdgeInsets.zero,
+                  clipBehavior: Clip.hardEdge,
+                  child: ListView.separated(
+                    itemCount: languages.length,
+                    separatorBuilder: (_, __) => Divider(
+                      height: 1,
+                      color: context.appBorder,
+                      indent: 64,
+                    ),
+                    itemBuilder: (context, index) {
+                      final lang = languages[index];
+                      final isSelected = _selectedLanguageCode == lang['code'];
+
+                      return InkWell(
+                        onTap: () => setState(
+                          () => _selectedLanguageCode = lang['code']!,
+                        ),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          color: isSelected
+                              ? theme.colorScheme.primary.withValues(
+                                  alpha: 0.05,
+                                )
+                              : Colors.transparent,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md,
+                            vertical: AppSpacing.md,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? theme.colorScheme.primary.withValues(
+                                          alpha: 0.1,
+                                        )
+                                      : theme
+                                            .colorScheme
+                                            .surfaceContainerHighest,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    lang['emoji']!,
+                                    style: const TextStyle(fontSize: 22),
+                                  ),
+                                ),
+                              ),
+                              const Gap(AppSpacing.sm),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      lang['title']!,
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                            fontWeight: isSelected
+                                                ? FontWeight.bold
+                                                : FontWeight.w600,
+                                            color: isSelected
+                                                ? theme.colorScheme.primary
+                                                : theme.colorScheme.onSurface,
+                                          ),
+                                    ),
+                                    const Gap(2),
+                                    Text(
+                                      lang['subtitle']!,
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            color: theme
+                                                .colorScheme
+                                                .onSurfaceVariant,
+                                            fontSize: 13,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (isSelected)
+                                Icon(
+                                  Icons.check_circle_rounded,
+                                  color: theme.colorScheme.primary,
+                                  size: 24,
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
 
@@ -162,92 +248,6 @@ class _LanguageSelectionScreenState
                 isFullWidth: true,
                 onPressed: _continue,
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LanguageTile extends StatelessWidget {
-  final String emoji;
-  final String title;
-  final String subtitle;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _LanguageTile({
-    required this.emoji,
-    required this.title,
-    required this.subtitle,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return IgnorePointer(
-      ignoring: isSelected,
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                : theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: isSelected
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.outlineVariant,
-              width: isSelected ? 2 : 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(emoji, style: const TextStyle(fontSize: 24)),
-                ),
-              ),
-              const Gap(16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
-                    const Gap(4),
-                    Text(
-                      subtitle,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (isSelected)
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: theme.colorScheme.primary,
-                ),
             ],
           ),
         ),

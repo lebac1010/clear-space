@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../extensions/build_context_x.dart';
+
 /// Centralized route path constants to avoid magic strings.
 abstract class RouteConstants {
   static const String dashboard = '/dashboard';
@@ -37,14 +39,21 @@ class NotFoundScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+            Icon(
+              Icons.error_outline,
+              size: 64,
+              color: context.appTextTertiary,
+            ),
             const SizedBox(height: 16),
             Text(
               '404 - Page Not Found',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
-            const Text('The page you are looking for does not exist.'),
+            Text(
+              'The page you are looking for does not exist.',
+              style: TextStyle(color: context.appTextSecondary),
+            ),
             const SizedBox(height: 24),
             FilledButton(
               // [A8] Safely navigate to dashboard instead of pop (which fails at root)
