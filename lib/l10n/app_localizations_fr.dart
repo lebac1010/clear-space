@@ -130,8 +130,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectLanguage => 'Select Your Language';
 
   @override
-  String get changeLaterInSettings =>
-      'You can change this later in Settings. (fr)';
+  String get changeLaterInSettings => 'You can change this later in Settings.';
 
   @override
   String get photosAndImages => 'Photos & Images';
@@ -242,11 +241,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get browserLaunchFailed => 'Could not launch browser.';
 
   @override
-  String get storeUnavailable => 'Store service temporarily unavailable. (fr)';
+  String get storeUnavailable => 'Store service temporarily unavailable.';
 
   @override
-  String get browserRestricted =>
-      'Browser access restricted on this device. (fr)';
+  String get browserRestricted => 'Browser access restricted on this device.';
 
   @override
   String get shareUnavailable => 'Share functionality unavailable.';
@@ -362,7 +360,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get screenshotsDeletedSuccess => 'Screenshots deleted successfully';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (fr)';
+  String get junkFilesFound => 'Fichiers résiduels trouvés';
 
   @override
   String get noPhotosFound => 'No photos found';
@@ -398,76 +396,76 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noFilesMatchFilter => 'No files match this filter';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (fr)';
+  String get refreshingAppList => 'Actualisation...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (fr)';
+  String get openingUninstaller => 'Ouverture de la désinstallation...';
 
   @override
-  String get uninstallApp => 'Uninstall App (fr)';
+  String get uninstallApp => 'Désinstaller l\'application';
 
   @override
-  String get uninstall => 'Uninstall (fr)';
+  String get uninstall => 'Désinstaller';
 
   @override
-  String get sortLargest => 'Largest (fr)';
+  String get sortLargest => 'Plus gros';
 
   @override
-  String get sortSmallest => 'Smallest (fr)';
+  String get sortSmallest => 'Plus petit';
 
   @override
-  String get sortNewest => 'Newest (fr)';
+  String get sortNewest => 'Plus récents';
 
   @override
-  String get sortAZ => 'A-Z (fr)';
+  String get sortAZ => 'A-Z';
 
   @override
-  String get pageNotFound => 'Page Not Found (fr)';
+  String get pageNotFound => 'Page introuvable';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (fr)';
+  String get goToDashboard => 'Aller à l\'accueil';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (fr)';
+  String get deleteFilesTitle => 'Supprimer les fichiers';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (fr)';
+  String get smartCleanupPlanTitle => 'Plan de nettoyage intelligent';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (fr)';
+  String get screenshotsCleanerTitle => 'Nettoyage des captures';
 
   @override
-  String get tryAgain => 'Try Again (fr)';
+  String get tryAgain => 'Réessayer';
 
   @override
-  String get appManagerTitle => 'App Manager (fr)';
+  String get appManagerTitle => 'Gestionnaire d\'applications';
 
   @override
-  String get searchApps => 'Search apps... (fr)';
+  String get searchApps => 'Rechercher...';
 
   @override
-  String get noAppsFound => 'No apps found (fr)';
+  String get noAppsFound => 'Aucune application';
 
   @override
-  String get noMatchingApps => 'No matching apps (fr)';
+  String get noMatchingApps => 'Aucun résultat';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (fr)';
+    return 'Voulez-vous désinstaller \"$appName\" ($size)?';
   }
 
   @override
   String get uninstallActionDesc =>
-      'This will remove the app and all its data. (fr)';
+      'L\'application et ses données seront supprimées.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (fr)';
+    return '$count applications';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (fr)';
+    return '$showing / $total applications';
   }
 
   @override
@@ -483,74 +481,74 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pageNotFoundDesc => 'The page you are looking for does not exist.';
 
   @override
-  String get allClean => 'All clean! (fr)';
+  String get allClean => 'Tout propre !';
 
   @override
-  String get deleting => 'Deleting... (fr)';
+  String get deleting => 'Suppression...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (fr)';
+    return 'Supprimer $count éléments ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (fr)';
+    return '$count éléments supprimés ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (fr)';
+  String get actionCannotBeUndone => 'Cette action est irréversible.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (fr)';
+  String get cleanupBreakdown => 'Bilan de nettoyage';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (fr)';
+      'Nous gardons automatiquement la meilleure version de vos fichiers.';
 
   @override
-  String get cleaning => 'Cleaning... (fr)';
+  String get cleaning => 'Nettoyage...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (fr)';
+    return 'Nettoyer $size';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (fr)';
+    return 'Vous avez libéré $size';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (fr)';
+  String get youreAllSet => 'Tout est prêt !';
 
   @override
-  String get noSmartCleanupItems => 'No duplicate or similar files found. (fr)';
+  String get noSmartCleanupItems => 'Aucun doublon trouvé.';
 
   @override
-  String get save => 'Save (fr)';
+  String get save => 'Sauvegarder';
 
   @override
-  String get keep => 'KEEP (fr)';
+  String get keep => 'GARDER';
 
   @override
-  String get deselectAll => 'Deselect All (fr)';
+  String get deselectAll => 'Tout désélectionner';
 
   @override
-  String get images => 'Images (fr)';
+  String get images => 'Images';
 
   @override
-  String get docs => 'Docs (fr)';
+  String get docs => 'Docs';
 
   @override
-  String get others => 'Others (fr)';
+  String get others => 'Autres';
 
   @override
-  String get all => 'All (fr)';
+  String get all => 'Tout';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (fr)';
+    return 'Voulez-vous vraiment supprimer les fichiers sélectionnés ?';
   }
 
   @override
@@ -558,193 +556,187 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count screenshots',
-      one: '1 screenshot',
-      zero: 'No screenshots',
+      other: '$count captures',
+      one: '1 capture',
+      zero: 'Aucune',
     );
-    return '$_temp0 (fr)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (fr)';
+    return 'Sélection : $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (fr)';
+    return 'Effacer la sélection ($size)';
   }
 
   @override
-  String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (fr)';
+  String get deleteFailedGeneral => 'Échec de suppression.';
 
   @override
-  String get systemDefault => 'System Default (fr)';
+  String get systemDefault => 'Système par défaut';
 
   @override
-  String get light => 'Light (fr)';
+  String get light => 'Clair';
 
   @override
-  String get dark => 'Dark (fr)';
+  String get dark => 'Sombre';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (fr)';
+  String get strictSensitivity => 'Strict (Correspondance 95%)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (fr)';
+  String get normalSensitivity => 'Normal (Correspondance 85%)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (fr)';
+  String get looseSensitivity => 'Souple (Correspondance 75%)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (fr)';
+      'Choisissez comment les photos similaires sont identifiées.';
 
   @override
-  String get strictSensitivityDesc => '95% Match — Nearly identical only (fr)';
+  String get strictSensitivityDesc => 'Seulement presque identiques';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (fr)';
+  String get normalSensitivityDesc => 'Recommandé';
 
   @override
-  String get looseSensitivityDesc => '75% Match — Catches more variations (fr)';
+  String get looseSensitivityDesc => 'Variations plus larges';
 
   @override
-  String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (fr)';
+  String get sensitivityUpdated => 'Paramètre de sensibilité mis à jour.';
 
   @override
-  String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (fr)';
+  String get thresholdDesc => 'Fichiers plus grands que cette valeur ciblés.';
 
   @override
-  String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (fr)';
+  String get thresholdUpdated => 'Seuil mis à jour.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (fr)';
+    return 'Supérieur à $size';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (fr)';
+  String get madeWithHeart => 'Fait avec ❤️ pour nettoyer votre mobile';
 
   @override
-  String get versionUnavailable => 'Version unavailable (fr)';
+  String get versionUnavailable => 'Version non disponible';
 
   @override
-  String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (fr)';
+  String get emailNotSupported => 'Action d\'email non supportée.';
 
   @override
-  String get clearSpace => 'Clear Space (fr)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (fr)';
+  String get storageDashboard => 'Tableau de Bord';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (fr)';
+    return '$count fichiers à nettoyer';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (fr)';
+  String get storageBreakdown => 'Détail de l\'espace';
 
   @override
-  String get cleanup => 'Cleanup (fr)';
+  String get cleanup => 'Nettoyage';
 
   @override
-  String get suggestions => 'Suggestions (fr)';
+  String get suggestions => 'Suggestions';
 
   @override
-  String get analyzing => 'Analyzing... (fr)';
+  String get analyzing => 'Analyse...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (fr)';
+  String get keepStorageHealthy => 'Gardez votre stockage à flot';
 
   @override
-  String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (fr)';
+  String get cleanupHeaderDesc => 'Fichiers pouvant être supprimés.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (fr)';
+    return '$percentage% Utilisé';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (fr)';
+  String get scanPausedBattery => 'Analyse Pause (Batterie)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (fr)';
+    return 'Scanner $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (fr)';
+    return 'Scanner $phase... ($percentage%)';
   }
 
   @override
-  String get calculating => 'Calculating... (fr)';
+  String get calculating => 'Calcul...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (fr)';
+  String get internalStorage => 'STOCKAGE INTERNE';
 
   @override
-  String get free => 'Free (fr)';
+  String get free => 'Libre';
 
   @override
-  String get used => 'Used (fr)';
+  String get used => 'Utilisé';
 
   @override
-  String get total => 'Total (fr)';
+  String get total => 'Total';
 
   @override
-  String get phaseDisk => 'Disk (fr)';
+  String get phaseDisk => 'Disque';
 
   @override
-  String get phasePhotos => 'Photos (fr)';
+  String get phasePhotos => 'Photos';
 
   @override
-  String get phaseVideos => 'Videos (fr)';
+  String get phaseVideos => 'Vidéos';
 
   @override
-  String get phaseAudio => 'Audio (fr)';
+  String get phaseAudio => 'Audio';
 
   @override
-  String get phaseDocuments => 'Documents (fr)';
+  String get phaseDocuments => 'Documents';
 
   @override
-  String get phaseJunk => 'Junk Files (fr)';
+  String get phaseJunk => 'Résiduels';
 
   @override
-  String get phaseFolders => 'Folders (fr)';
+  String get phaseFolders => 'Dossiers';
 
   @override
-  String get phaseApks => 'APKs (fr)';
+  String get phaseApks => 'APKs';
 
   @override
-  String get phaseSimilar => 'Similar Photos (fr)';
+  String get phaseSimilar => 'Similaires';
 
   @override
-  String get phaseStorage => 'Storage (fr)';
+  String get phaseStorage => 'Espace';
 
   @override
   String totalSize(String size) {
-    return '$size Total (fr)';
+    return '$size Total';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (fr)';
+    return '$size Utilisé';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (fr)';
+  String get largeFilesTitle => 'Fichiers Volumineux';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (fr)';
+  String get selectYourLanguage => 'Sélectionnez votre Langue';
 
   @override
   String get analyzingLabel => 'Analyse en cours...';
@@ -1103,7 +1095,7 @@ class AppLocalizationsFrFr extends AppLocalizationsFr {
       'Captures d\'écran supprimées avec succès';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (fr_FR)';
+  String get junkFilesFound => 'Fichiers résiduels trouvés';
 
   @override
   String get noPhotosFound => 'Aucune photo trouvée';
@@ -1139,148 +1131,147 @@ class AppLocalizationsFrFr extends AppLocalizationsFr {
   String get noFilesMatchFilter => 'Aucun fichier ne correspond à ce filtre';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (fr_FR)';
+  String get refreshingAppList => 'Actualisation...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (fr_FR)';
+  String get openingUninstaller => 'Ouverture de la désinstallation...';
 
   @override
-  String get uninstallApp => 'Uninstall App (fr_FR)';
+  String get uninstallApp => 'Désinstaller l\'application';
 
   @override
-  String get uninstall => 'Uninstall (fr_FR)';
+  String get uninstall => 'Désinstaller';
 
   @override
-  String get sortLargest => 'Largest (fr_FR)';
+  String get sortLargest => 'Plus gros';
 
   @override
-  String get sortSmallest => 'Smallest (fr_FR)';
+  String get sortSmallest => 'Plus petit';
 
   @override
-  String get sortNewest => 'Newest (fr_FR)';
+  String get sortNewest => 'Plus récents';
 
   @override
-  String get sortAZ => 'A-Z (fr_FR)';
+  String get sortAZ => 'A-Z';
 
   @override
-  String get pageNotFound => 'Page Not Found (fr_FR)';
+  String get pageNotFound => 'Page introuvable';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (fr_FR)';
+  String get goToDashboard => 'Aller à l\'accueil';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (fr_FR)';
+  String get deleteFilesTitle => 'Supprimer les fichiers';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (fr_FR)';
+  String get smartCleanupPlanTitle => 'Plan de nettoyage intelligent';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (fr_FR)';
+  String get screenshotsCleanerTitle => 'Nettoyage des captures';
 
   @override
-  String get tryAgain => 'Try Again (fr_FR)';
+  String get tryAgain => 'Réessayer';
 
   @override
-  String get appManagerTitle => 'App Manager (fr_FR)';
+  String get appManagerTitle => 'Gestionnaire d\'applications';
 
   @override
-  String get searchApps => 'Search apps... (fr_FR)';
+  String get searchApps => 'Rechercher...';
 
   @override
-  String get noAppsFound => 'No apps found (fr_FR)';
+  String get noAppsFound => 'Aucune application';
 
   @override
-  String get noMatchingApps => 'No matching apps (fr_FR)';
+  String get noMatchingApps => 'Aucun résultat';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (fr_FR)';
+    return 'Voulez-vous désinstaller \"$appName\" ($size)?';
   }
 
   @override
   String get uninstallActionDesc =>
-      'This will remove the app and all its data. (fr_FR)';
+      'L\'application et ses données seront supprimées.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (fr_FR)';
+    return '$count applications';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (fr_FR)';
+    return '$showing / $total applications';
   }
 
   @override
-  String get allClean => 'All clean! (fr_FR)';
+  String get allClean => 'Tout propre !';
 
   @override
-  String get deleting => 'Deleting... (fr_FR)';
+  String get deleting => 'Suppression...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (fr_FR)';
+    return 'Supprimer $count éléments ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (fr_FR)';
+    return '$count éléments supprimés ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (fr_FR)';
+  String get actionCannotBeUndone => 'Cette action est irréversible.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (fr_FR)';
+  String get cleanupBreakdown => 'Bilan de nettoyage';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (fr_FR)';
+      'Nous gardons automatiquement la meilleure version de vos fichiers.';
 
   @override
-  String get cleaning => 'Cleaning... (fr_FR)';
+  String get cleaning => 'Nettoyage...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (fr_FR)';
+    return 'Nettoyer $size';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (fr_FR)';
+    return 'Vous avez libéré $size';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (fr_FR)';
+  String get youreAllSet => 'Tout est prêt !';
 
   @override
-  String get noSmartCleanupItems =>
-      'No duplicate or similar files found. (fr_FR)';
+  String get noSmartCleanupItems => 'Aucun doublon trouvé.';
 
   @override
-  String get save => 'Save (fr_FR)';
+  String get save => 'Sauvegarder';
 
   @override
-  String get keep => 'KEEP (fr_FR)';
+  String get keep => 'GARDER';
 
   @override
-  String get deselectAll => 'Deselect All (fr_FR)';
+  String get deselectAll => 'Tout désélectionner';
 
   @override
-  String get images => 'Images (fr_FR)';
+  String get images => 'Images';
 
   @override
-  String get docs => 'Docs (fr_FR)';
+  String get docs => 'Docs';
 
   @override
-  String get others => 'Others (fr_FR)';
+  String get others => 'Autres';
 
   @override
-  String get all => 'All (fr_FR)';
+  String get all => 'Tout';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (fr_FR)';
+    return 'Voulez-vous vraiment supprimer les fichiers sélectionnés ?';
   }
 
   @override
@@ -1288,193 +1279,185 @@ class AppLocalizationsFrFr extends AppLocalizationsFr {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count screenshots',
-      one: '1 screenshot',
-      zero: 'No screenshots',
+      other: '$count captures',
+      one: '1 capture',
+      zero: 'Aucune',
     );
-    return '$_temp0 (fr_FR)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (fr_FR)';
+    return 'Sélection : $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (fr_FR)';
+    return 'Effacer la sélection ($size)';
   }
 
   @override
-  String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (fr_FR)';
+  String get deleteFailedGeneral => 'Échec de suppression.';
 
   @override
-  String get systemDefault => 'System Default (fr_FR)';
+  String get systemDefault => 'Système par défaut';
 
   @override
-  String get light => 'Light (fr_FR)';
+  String get light => 'Clair';
 
   @override
-  String get dark => 'Dark (fr_FR)';
+  String get dark => 'Sombre';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (fr_FR)';
+  String get strictSensitivity => 'Strict (Correspondance 95%)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (fr_FR)';
+  String get normalSensitivity => 'Normal (Correspondance 85%)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (fr_FR)';
+  String get looseSensitivity => 'Souple (Correspondance 75%)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (fr_FR)';
+      'Choisissez comment les photos similaires sont identifiées.';
 
   @override
-  String get strictSensitivityDesc =>
-      '95% Match — Nearly identical only (fr_FR)';
+  String get strictSensitivityDesc => 'Seulement presque identiques';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (fr_FR)';
+  String get normalSensitivityDesc => 'Recommandé';
 
   @override
-  String get looseSensitivityDesc =>
-      '75% Match — Catches more variations (fr_FR)';
+  String get looseSensitivityDesc => 'Variations plus larges';
 
   @override
-  String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (fr_FR)';
+  String get sensitivityUpdated => 'Paramètre de sensibilité mis à jour.';
 
   @override
-  String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (fr_FR)';
+  String get thresholdDesc => 'Fichiers plus grands que cette valeur ciblés.';
 
   @override
-  String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (fr_FR)';
+  String get thresholdUpdated => 'Seuil mis à jour.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (fr_FR)';
+    return 'Supérieur à $size';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (fr_FR)';
+  String get madeWithHeart => 'Fait avec ❤️ pour nettoyer votre mobile';
 
   @override
-  String get versionUnavailable => 'Version unavailable (fr_FR)';
+  String get versionUnavailable => 'Version non disponible';
 
   @override
-  String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (fr_FR)';
+  String get emailNotSupported => 'Action d\'email non supportée.';
 
   @override
-  String get clearSpace => 'Clear Space (fr_FR)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (fr_FR)';
+  String get storageDashboard => 'Tableau de Bord';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (fr_FR)';
+    return '$count fichiers à nettoyer';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (fr_FR)';
+  String get storageBreakdown => 'Détail de l\'espace';
 
   @override
-  String get cleanup => 'Cleanup (fr_FR)';
+  String get cleanup => 'Nettoyage';
 
   @override
-  String get suggestions => 'Suggestions (fr_FR)';
+  String get suggestions => 'Suggestions';
 
   @override
-  String get analyzing => 'Analyzing... (fr_FR)';
+  String get analyzing => 'Analyse...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (fr_FR)';
+  String get keepStorageHealthy => 'Gardez votre stockage à flot';
 
   @override
-  String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (fr_FR)';
+  String get cleanupHeaderDesc => 'Fichiers pouvant être supprimés.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (fr_FR)';
+    return '$percentage% Utilisé';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (fr_FR)';
+  String get scanPausedBattery => 'Analyse Pause (Batterie)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (fr_FR)';
+    return 'Scanner $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (fr_FR)';
+    return 'Scanner $phase... ($percentage%)';
   }
 
   @override
-  String get calculating => 'Calculating... (fr_FR)';
+  String get calculating => 'Calcul...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (fr_FR)';
+  String get internalStorage => 'STOCKAGE INTERNE';
 
   @override
-  String get free => 'Free (fr_FR)';
+  String get free => 'Libre';
 
   @override
-  String get used => 'Used (fr_FR)';
+  String get used => 'Utilisé';
 
   @override
-  String get total => 'Total (fr_FR)';
+  String get total => 'Total';
 
   @override
-  String get phaseDisk => 'Disk (fr_FR)';
+  String get phaseDisk => 'Disque';
 
   @override
-  String get phasePhotos => 'Photos (fr_FR)';
+  String get phasePhotos => 'Photos';
 
   @override
-  String get phaseVideos => 'Videos (fr_FR)';
+  String get phaseVideos => 'Vidéos';
 
   @override
-  String get phaseAudio => 'Audio (fr_FR)';
+  String get phaseAudio => 'Audio';
 
   @override
-  String get phaseDocuments => 'Documents (fr_FR)';
+  String get phaseDocuments => 'Documents';
 
   @override
-  String get phaseJunk => 'Junk Files (fr_FR)';
+  String get phaseJunk => 'Résiduels';
 
   @override
-  String get phaseFolders => 'Folders (fr_FR)';
+  String get phaseFolders => 'Dossiers';
 
   @override
-  String get phaseApks => 'APKs (fr_FR)';
+  String get phaseApks => 'APKs';
 
   @override
-  String get phaseSimilar => 'Similar Photos (fr_FR)';
+  String get phaseSimilar => 'Similaires';
 
   @override
-  String get phaseStorage => 'Storage (fr_FR)';
+  String get phaseStorage => 'Espace';
 
   @override
   String totalSize(String size) {
-    return '$size Total (fr_FR)';
+    return '$size Total';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (fr_FR)';
+    return '$size Utilisé';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (fr_FR)';
+  String get largeFilesTitle => 'Fichiers Volumineux';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (fr_FR)';
+  String get selectYourLanguage => 'Sélectionnez votre Langue';
 }

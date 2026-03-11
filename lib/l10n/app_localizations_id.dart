@@ -357,7 +357,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get screenshotsDeletedSuccess => 'Tangkapan layar berhasil dihapus';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (id)';
+  String get junkFilesFound => 'File Sampah Ditemukan';
 
   @override
   String get noPhotosFound => 'Tidak ada foto yang ditemukan';
@@ -394,76 +394,76 @@ class AppLocalizationsId extends AppLocalizations {
       'Tidak ada file yang cocok dengan filter ini';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (id)';
+  String get refreshingAppList => 'Menyegarkan daftar aplikasi...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (id)';
+  String get openingUninstaller => 'Membuka pencopot pemasangan...';
 
   @override
-  String get uninstallApp => 'Uninstall App (id)';
+  String get uninstallApp => 'Copot Aplikasi';
 
   @override
-  String get uninstall => 'Uninstall (id)';
+  String get uninstall => 'Copot Pemasangan';
 
   @override
-  String get sortLargest => 'Largest (id)';
+  String get sortLargest => 'Terbesar';
 
   @override
-  String get sortSmallest => 'Smallest (id)';
+  String get sortSmallest => 'Terkecil';
 
   @override
-  String get sortNewest => 'Newest (id)';
+  String get sortNewest => 'Terbaru';
 
   @override
-  String get sortAZ => 'A-Z (id)';
+  String get sortAZ => 'A-Z';
 
   @override
-  String get pageNotFound => 'Page Not Found (id)';
+  String get pageNotFound => 'Halaman Tidak Ditemukan';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (id)';
+  String get goToDashboard => 'Ke Dasbor';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (id)';
+  String get deleteFilesTitle => 'Hapus File';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (id)';
+  String get smartCleanupPlanTitle => 'Rencana Pembersihan Pintar';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (id)';
+  String get screenshotsCleanerTitle => 'Pembersih Tangkapan Layar';
 
   @override
-  String get tryAgain => 'Try Again (id)';
+  String get tryAgain => 'Coba Lagi';
 
   @override
-  String get appManagerTitle => 'App Manager (id)';
+  String get appManagerTitle => 'Manajer Aplikasi';
 
   @override
-  String get searchApps => 'Search apps... (id)';
+  String get searchApps => 'Cari aplikasi...';
 
   @override
-  String get noAppsFound => 'No apps found (id)';
+  String get noAppsFound => 'Tidak ada aplikasi';
 
   @override
-  String get noMatchingApps => 'No matching apps (id)';
+  String get noMatchingApps => 'Tidak ada aplikasi cocok';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (id)';
+    return 'Apakah Anda yakin ingin mencopot \"$appName\" ($size)?';
   }
 
   @override
   String get uninstallActionDesc =>
-      'This will remove the app and all its data. (id)';
+      'Ini akan menghapus aplikasi dan semua datanya.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (id)';
+    return '$count aplikasi';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (id)';
+    return '$showing / $total aplikasi';
   }
 
   @override
@@ -479,74 +479,74 @@ class AppLocalizationsId extends AppLocalizations {
   String get pageNotFoundDesc => 'The page you are looking for does not exist.';
 
   @override
-  String get allClean => 'All clean! (id)';
+  String get allClean => 'Semua bersih!';
 
   @override
-  String get deleting => 'Deleting... (id)';
+  String get deleting => 'Menghapus...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (id)';
+    return 'Hapus $count item ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (id)';
+    return '$count item dihapus ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (id)';
+  String get actionCannotBeUndone => 'Tindakan tak dapat dibatalkan.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (id)';
+  String get cleanupBreakdown => 'Rincian Pembersihan';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (id)';
+      'Kami secara otomatis menyimpan versi terbaik foto dan file Anda.';
 
   @override
-  String get cleaning => 'Cleaning... (id)';
+  String get cleaning => 'Membersihkan...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (id)';
+    return 'Bersihkan $size';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (id)';
+    return 'Anda menghemat $size';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (id)';
+  String get youreAllSet => 'Semuanya Beres!';
 
   @override
-  String get noSmartCleanupItems => 'No duplicate or similar files found. (id)';
+  String get noSmartCleanupItems => 'Tidak ditemukan file duplikat.';
 
   @override
-  String get save => 'Save (id)';
+  String get save => 'Simpan';
 
   @override
-  String get keep => 'KEEP (id)';
+  String get keep => 'SIMPAN';
 
   @override
-  String get deselectAll => 'Deselect All (id)';
+  String get deselectAll => 'Batalkan Pilihan Semua';
 
   @override
-  String get images => 'Images (id)';
+  String get images => 'Gambar';
 
   @override
-  String get docs => 'Docs (id)';
+  String get docs => 'Dokumen';
 
   @override
-  String get others => 'Others (id)';
+  String get others => 'Lainnya';
 
   @override
-  String get all => 'All (id)';
+  String get all => 'Semua';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (id)';
+    return 'Apakah Anda yakin ingin menghapus $count file yang dipilih?\n\nFile akan dihapus secara permanen.';
   }
 
   @override
@@ -554,193 +554,190 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count screenshots',
-      one: '1 screenshot',
-      zero: 'No screenshots',
+      other: '$count tangkapan layar',
+      one: '1 tangkapan layar',
+      zero: 'Tidak ada tangkapan layar',
     );
-    return '$_temp0 (id)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (id)';
+    return 'Terpilih: $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (id)';
+    return 'Hapus Terpilih ($size)';
   }
 
   @override
-  String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (id)';
+  String get deleteFailedGeneral => 'Gagal menghapus file. Coba lagi.';
 
   @override
-  String get systemDefault => 'System Default (id)';
+  String get systemDefault => 'Standar Sistem';
 
   @override
-  String get light => 'Light (id)';
+  String get light => 'Terang';
 
   @override
-  String get dark => 'Dark (id)';
+  String get dark => 'Gelap';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (id)';
+  String get strictSensitivity => 'Ketat (Cocok 95%)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (id)';
+  String get normalSensitivity => 'Normal (Cocok 85%)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (id)';
+  String get looseSensitivity => 'Longgar (Cocok 75%)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (id)';
+      'Seberapa ketat aplikasi saat mengidentifikasi foto serupa.';
 
   @override
-  String get strictSensitivityDesc => '95% Match — Nearly identical only (id)';
+  String get strictSensitivityDesc => 'Ketat — Hanya yang sangat mirip';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (id)';
+  String get normalSensitivityDesc => 'Normal — Disarankan';
 
   @override
-  String get looseSensitivityDesc => '75% Match — Catches more variations (id)';
+  String get looseSensitivityDesc => 'Longgar — Banyak variasi foto';
 
   @override
   String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (id)';
+      'Sensitivitas diperbarui. Akan digunakan pada pemindaian berikutnya.';
 
   @override
   String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (id)';
+      'File lebih besar dari ini akan ditandai untuk dihapus.';
 
   @override
   String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (id)';
+      'Batas diperbarui. Akan digunakan pada pemindaian berikutnya.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (id)';
+    return 'Lebih besar dari $size';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (id)';
+  String get madeWithHeart => 'Dibuat dengan ❤️ untuk ponsel yang lebih bersih';
 
   @override
-  String get versionUnavailable => 'Version unavailable (id)';
+  String get versionUnavailable => 'Versi tidak tersedia';
 
   @override
-  String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (id)';
+  String get emailNotSupported => 'Gagal membuka email.';
 
   @override
-  String get clearSpace => 'Clear Space (id)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (id)';
+  String get storageDashboard => 'Dasbor Penyimpanan';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (id)';
+    return '$count item siap dibersihkan';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (id)';
+  String get storageBreakdown => 'Rincian Penyimpanan';
 
   @override
-  String get cleanup => 'Cleanup (id)';
+  String get cleanup => 'Pembersihan';
 
   @override
-  String get suggestions => 'Suggestions (id)';
+  String get suggestions => 'Saran';
 
   @override
-  String get analyzing => 'Analyzing... (id)';
+  String get analyzing => 'Menganalisis...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (id)';
+  String get keepStorageHealthy => 'Jaga ruang ponsel Anda';
 
   @override
-  String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (id)';
+  String get cleanupHeaderDesc => 'File ini dapat dihapus untuk ruang kosong.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (id)';
+    return '$percentage% Digunakan';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (id)';
+  String get scanPausedBattery => 'Jeda (Baterai Lemah)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (id)';
+    return 'Memindai $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (id)';
+    return 'Memindai $phase... ($percentage%)';
   }
 
   @override
-  String get calculating => 'Calculating... (id)';
+  String get calculating => 'Menghitung...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (id)';
+  String get internalStorage => 'PENYIMPANAN INTERNAL';
 
   @override
-  String get free => 'Free (id)';
+  String get free => 'Kosong';
 
   @override
-  String get used => 'Used (id)';
+  String get used => 'Digunakan';
 
   @override
-  String get total => 'Total (id)';
+  String get total => 'Total';
 
   @override
-  String get phaseDisk => 'Disk (id)';
+  String get phaseDisk => 'Disk';
 
   @override
-  String get phasePhotos => 'Photos (id)';
+  String get phasePhotos => 'Foto';
 
   @override
-  String get phaseVideos => 'Videos (id)';
+  String get phaseVideos => 'Video';
 
   @override
-  String get phaseAudio => 'Audio (id)';
+  String get phaseAudio => 'Audio';
 
   @override
-  String get phaseDocuments => 'Documents (id)';
+  String get phaseDocuments => 'Dokumen';
 
   @override
-  String get phaseJunk => 'Junk Files (id)';
+  String get phaseJunk => 'Berkas Sampah';
 
   @override
-  String get phaseFolders => 'Folders (id)';
+  String get phaseFolders => 'Folder';
 
   @override
-  String get phaseApks => 'APKs (id)';
+  String get phaseApks => 'APK';
 
   @override
-  String get phaseSimilar => 'Similar Photos (id)';
+  String get phaseSimilar => 'Foto Mirip';
 
   @override
-  String get phaseStorage => 'Storage (id)';
+  String get phaseStorage => 'Penyimpanan';
 
   @override
   String totalSize(String size) {
-    return '$size Total (id)';
+    return '$size Total';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (id)';
+    return '$size Digunakan';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (id)';
+  String get largeFilesTitle => 'File Besar';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (id)';
+  String get selectYourLanguage => 'Pilih Bahasa';
 
   @override
   String get analyzingLabel => 'Menganalisis...';

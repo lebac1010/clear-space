@@ -365,7 +365,7 @@ class AppLocalizationsFil extends AppLocalizations {
       'Matagumpay na natanggal ang mga screenshot';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (fil)';
+  String get junkFilesFound => 'Mga Basurang Nahanap';
 
   @override
   String get noPhotosFound => 'Walang nakitang mga larawan';
@@ -403,76 +403,75 @@ class AppLocalizationsFil extends AppLocalizations {
       'Walang mga file na tumutugma sa filter na ito';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (fil)';
+  String get refreshingAppList => 'Nire-refresh ang apps...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (fil)';
+  String get openingUninstaller => 'Binubuksan ang uninstaller...';
 
   @override
-  String get uninstallApp => 'Uninstall App (fil)';
+  String get uninstallApp => 'I-uninstall ang App';
 
   @override
-  String get uninstall => 'Uninstall (fil)';
+  String get uninstall => 'I-uninstall';
 
   @override
-  String get sortLargest => 'Largest (fil)';
+  String get sortLargest => 'Pinakamalaki';
 
   @override
-  String get sortSmallest => 'Smallest (fil)';
+  String get sortSmallest => 'Pinakamaliit';
 
   @override
-  String get sortNewest => 'Newest (fil)';
+  String get sortNewest => 'Pinakabago';
 
   @override
-  String get sortAZ => 'A-Z (fil)';
+  String get sortAZ => 'A-Z';
 
   @override
-  String get pageNotFound => 'Page Not Found (fil)';
+  String get pageNotFound => 'Pahina Hindi Nahanap';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (fil)';
+  String get goToDashboard => 'Pumunta sa Dashboard';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (fil)';
+  String get deleteFilesTitle => 'Burahin ang Files';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (fil)';
+  String get smartCleanupPlanTitle => 'Smart na Plano';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (fil)';
+  String get screenshotsCleanerTitle => 'Screenshot Cleaner';
 
   @override
-  String get tryAgain => 'Try Again (fil)';
+  String get tryAgain => 'Subukang muli';
 
   @override
-  String get appManagerTitle => 'App Manager (fil)';
+  String get appManagerTitle => 'App Manager';
 
   @override
-  String get searchApps => 'Search apps... (fil)';
+  String get searchApps => 'Maghanap ng app...';
 
   @override
-  String get noAppsFound => 'No apps found (fil)';
+  String get noAppsFound => 'Walang nakitang apps';
 
   @override
-  String get noMatchingApps => 'No matching apps (fil)';
+  String get noMatchingApps => 'Walang tumugma';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (fil)';
+    return 'Sigurado ka bang i-uninstall ang \"$appName\" ($size)?';
   }
 
   @override
-  String get uninstallActionDesc =>
-      'This will remove the app and all its data. (fil)';
+  String get uninstallActionDesc => 'Tatanggalin nito ang app at ang data.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (fil)';
+    return '$count apps';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (fil)';
+    return '$showing / $total apps';
   }
 
   @override
@@ -488,75 +487,74 @@ class AppLocalizationsFil extends AppLocalizations {
   String get pageNotFoundDesc => 'The page you are looking for does not exist.';
 
   @override
-  String get allClean => 'All clean! (fil)';
+  String get allClean => 'Lahat malinis!';
 
   @override
-  String get deleting => 'Deleting... (fil)';
+  String get deleting => 'Binubura...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (fil)';
+    return 'Burahin $count aytem ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (fil)';
+    return 'Nabura ang $count aytem ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (fil)';
+  String get actionCannotBeUndone => 'Hindi na babalik ang nabura.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (fil)';
+  String get cleanupBreakdown => 'Bahagi ng Nilinis';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (fil)';
+      'Pinapanatili ang pinakamagandang kuha ng mga litrato mo.';
 
   @override
-  String get cleaning => 'Cleaning... (fil)';
+  String get cleaning => 'Naglilinis...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (fil)';
+    return 'Linisin $size';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (fil)';
+    return 'Nakatipid ka ng $size';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (fil)';
+  String get youreAllSet => 'Handa na lahat!';
 
   @override
-  String get noSmartCleanupItems =>
-      'No duplicate or similar files found. (fil)';
+  String get noSmartCleanupItems => 'Walang duplicate na nakita.';
 
   @override
-  String get save => 'Save (fil)';
+  String get save => 'I-save';
 
   @override
-  String get keep => 'KEEP (fil)';
+  String get keep => 'PANATILIHIN';
 
   @override
-  String get deselectAll => 'Deselect All (fil)';
+  String get deselectAll => 'Tanggalin ang Pili Lahat';
 
   @override
-  String get images => 'Images (fil)';
+  String get images => 'Mga Larawan';
 
   @override
-  String get docs => 'Docs (fil)';
+  String get docs => 'Dokumento';
 
   @override
-  String get others => 'Others (fil)';
+  String get others => 'Iba pa';
 
   @override
-  String get all => 'All (fil)';
+  String get all => 'Lahat';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (fil)';
+    return 'Sigurado ka bang buburahin ang $count file?\n\nAng mga ito ay permenenteng mbubura.';
   }
 
   @override
@@ -566,192 +564,187 @@ class AppLocalizationsFil extends AppLocalizations {
       locale: localeName,
       other: '$count screenshots',
       one: '1 screenshot',
-      zero: 'No screenshots',
+      zero: 'Walang screenshots',
     );
-    return '$_temp0 (fil)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (fil)';
+    return 'Pinili: $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (fil)';
+    return 'Burahin ang Napili ($size)';
   }
 
   @override
-  String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (fil)';
+  String get deleteFailedGeneral => 'Bigo na burahin ang ilang files.';
 
   @override
-  String get systemDefault => 'System Default (fil)';
+  String get systemDefault => 'System Default';
 
   @override
-  String get light => 'Light (fil)';
+  String get light => 'Liwanag';
 
   @override
-  String get dark => 'Dark (fil)';
+  String get dark => 'Dilim';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (fil)';
+  String get strictSensitivity => 'Mahigpit (95% Match)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (fil)';
+  String get normalSensitivity => 'Normal (85% Match)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (fil)';
+  String get looseSensitivity => 'Maluwag (75% Match)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (fil)';
+      'Gaano kahigpit kukunin ng app ang magkaparehong mga larawan.';
 
   @override
-  String get strictSensitivityDesc => '95% Match — Nearly identical only (fil)';
+  String get strictSensitivityDesc =>
+      'Mahigpit — Ang halos saktong pareho lang';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (fil)';
+  String get normalSensitivityDesc => 'Normal — Para sa inyo';
 
   @override
-  String get looseSensitivityDesc =>
-      '75% Match — Catches more variations (fil)';
+  String get looseSensitivityDesc => 'Maluwag — Higit pang makukuha';
 
   @override
   String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (fil)';
+      'Pagbabago nakasave. Gagamitin ito sa susunod.';
 
   @override
-  String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (fil)';
+  String get thresholdDesc => 'Ang mga file na mas malaki dito ay makukuha.';
 
   @override
-  String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (fil)';
+  String get thresholdUpdated => 'Limitasyon nakasave.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (fil)';
+    return 'Mas malaki sa $size';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (fil)';
+  String get madeWithHeart => 'Ginawa may pagmamahal ❤️';
 
   @override
-  String get versionUnavailable => 'Version unavailable (fil)';
+  String get versionUnavailable => 'Bersyon hindi handa';
 
   @override
-  String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (fil)';
+  String get emailNotSupported => 'Email system walang galaw.';
 
   @override
-  String get clearSpace => 'Clear Space (fil)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (fil)';
+  String get storageDashboard => 'Imbakang Dasboard';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (fil)';
+    return '$count aytem pwedeng linisin';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (fil)';
+  String get storageBreakdown => 'Lagayan Ng Espasyo';
 
   @override
-  String get cleanup => 'Cleanup (fil)';
+  String get cleanup => 'Linisin';
 
   @override
-  String get suggestions => 'Suggestions (fil)';
+  String get suggestions => 'Pangyayari';
 
   @override
-  String get analyzing => 'Analyzing... (fil)';
+  String get analyzing => 'Nagsusuri...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (fil)';
+  String get keepStorageHealthy => 'Gawing Mabilis ang Phone Mo';
 
   @override
-  String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (fil)';
+  String get cleanupHeaderDesc => 'Files pwedeng tanggalin upang makatipid.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (fil)';
+    return '$percentage% Ginamit';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (fil)';
+  String get scanPausedBattery => 'Tumigil (Low Battery)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (fil)';
+    return 'Sinasakan: $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (fil)';
+    return 'Sinasakan: $phase... ($percentage%)';
   }
 
   @override
-  String get calculating => 'Calculating... (fil)';
+  String get calculating => 'Kinakalkula...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (fil)';
+  String get internalStorage => 'PANLOOB NA ESPASYO';
 
   @override
-  String get free => 'Free (fil)';
+  String get free => 'Libre';
 
   @override
-  String get used => 'Used (fil)';
+  String get used => 'Ginamit';
 
   @override
-  String get total => 'Total (fil)';
+  String get total => 'Lahat';
 
   @override
-  String get phaseDisk => 'Disk (fil)';
+  String get phaseDisk => 'Disk';
 
   @override
-  String get phasePhotos => 'Photos (fil)';
+  String get phasePhotos => 'Larawan';
 
   @override
-  String get phaseVideos => 'Videos (fil)';
+  String get phaseVideos => 'Mga Video';
 
   @override
-  String get phaseAudio => 'Audio (fil)';
+  String get phaseAudio => 'Music';
 
   @override
-  String get phaseDocuments => 'Documents (fil)';
+  String get phaseDocuments => 'Dokumento';
 
   @override
-  String get phaseJunk => 'Junk Files (fil)';
+  String get phaseJunk => 'Mga Basura';
 
   @override
-  String get phaseFolders => 'Folders (fil)';
+  String get phaseFolders => 'Folders';
 
   @override
-  String get phaseApks => 'APKs (fil)';
+  String get phaseApks => 'Mga APKs';
 
   @override
-  String get phaseSimilar => 'Similar Photos (fil)';
+  String get phaseSimilar => 'Dobleng Larawan';
 
   @override
-  String get phaseStorage => 'Storage (fil)';
+  String get phaseStorage => 'Bara';
 
   @override
   String totalSize(String size) {
-    return '$size Total (fil)';
+    return 'Lahat $size';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (fil)';
+    return 'Ginamit na $size';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (fil)';
+  String get largeFilesTitle => 'Malalaking File';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (fil)';
+  String get selectYourLanguage => 'Piliin ang Lenggwahe';
 
   @override
   String get analyzingLabel => 'Sinusuri...';

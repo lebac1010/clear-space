@@ -130,8 +130,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get selectLanguage => 'Select Your Language';
 
   @override
-  String get changeLaterInSettings =>
-      'You can change this later in Settings. (tr)';
+  String get changeLaterInSettings => 'You can change this later in Settings.';
 
   @override
   String get photosAndImages => 'Photos & Images';
@@ -242,11 +241,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get browserLaunchFailed => 'Could not launch browser.';
 
   @override
-  String get storeUnavailable => 'Store service temporarily unavailable. (tr)';
+  String get storeUnavailable => 'Store service temporarily unavailable.';
 
   @override
-  String get browserRestricted =>
-      'Browser access restricted on this device. (tr)';
+  String get browserRestricted => 'Browser access restricted on this device.';
 
   @override
   String get shareUnavailable => 'Share functionality unavailable.';
@@ -362,7 +360,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get screenshotsDeletedSuccess => 'Screenshots deleted successfully';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (tr)';
+  String get junkFilesFound => 'Gereksiz Dosyalar Bulundu';
 
   @override
   String get noPhotosFound => 'No photos found';
@@ -398,76 +396,75 @@ class AppLocalizationsTr extends AppLocalizations {
   String get noFilesMatchFilter => 'No files match this filter';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (tr)';
+  String get refreshingAppList => 'Uygulama listesi yenileniyor...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (tr)';
+  String get openingUninstaller => 'Kaldırıcı açılıyor...';
 
   @override
-  String get uninstallApp => 'Uninstall App (tr)';
+  String get uninstallApp => 'Uygulamayı Kaldır';
 
   @override
-  String get uninstall => 'Uninstall (tr)';
+  String get uninstall => 'Kaldır';
 
   @override
-  String get sortLargest => 'Largest (tr)';
+  String get sortLargest => 'En büyük';
 
   @override
-  String get sortSmallest => 'Smallest (tr)';
+  String get sortSmallest => 'En küçük';
 
   @override
-  String get sortNewest => 'Newest (tr)';
+  String get sortNewest => 'En yeni';
 
   @override
-  String get sortAZ => 'A-Z (tr)';
+  String get sortAZ => 'A\'dan Z\'ye';
 
   @override
-  String get pageNotFound => 'Page Not Found (tr)';
+  String get pageNotFound => 'Sayfa bulunamadı';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (tr)';
+  String get goToDashboard => 'Panele Git';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (tr)';
+  String get deleteFilesTitle => 'Dosyaları Sil';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (tr)';
+  String get smartCleanupPlanTitle => 'Akıllı Temizlik Planı';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (tr)';
+  String get screenshotsCleanerTitle => 'Ekran Görüntüsü Temizleyici';
 
   @override
-  String get tryAgain => 'Try Again (tr)';
+  String get tryAgain => 'Tekrar dene';
 
   @override
-  String get appManagerTitle => 'App Manager (tr)';
+  String get appManagerTitle => 'Uygulama Yöneticisi';
 
   @override
-  String get searchApps => 'Search apps... (tr)';
+  String get searchApps => 'Uygulama ara...';
 
   @override
-  String get noAppsFound => 'No apps found (tr)';
+  String get noAppsFound => 'Uygulama bulunamadı';
 
   @override
-  String get noMatchingApps => 'No matching apps (tr)';
+  String get noMatchingApps => 'Eşleşen uygulama yok';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (tr)';
+    return '\"$appName\" ($size) uygulamasını kaldırmak istiyor musunuz?';
   }
 
   @override
-  String get uninstallActionDesc =>
-      'This will remove the app and all its data. (tr)';
+  String get uninstallActionDesc => 'Uygulama ve tüm verileri silinecektir.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (tr)';
+    return '$count uygulama';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (tr)';
+    return '$showing / $total uygulama gösteriliyor';
   }
 
   @override
@@ -483,74 +480,74 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pageNotFoundDesc => 'The page you are looking for does not exist.';
 
   @override
-  String get allClean => 'All clean! (tr)';
+  String get allClean => 'Tertemiz!';
 
   @override
-  String get deleting => 'Deleting... (tr)';
+  String get deleting => 'Siliniyor...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (tr)';
+    return '$count öğeyi sil ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (tr)';
+    return '$count öğe silindi ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (tr)';
+  String get actionCannotBeUndone => 'Bu işlem geri alınamaz.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (tr)';
+  String get cleanupBreakdown => 'Temizlik Dağılımı';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (tr)';
+      'Benzer fotoğrafların ve dosyaların en iyi sürümünü otomatik tutuyoruz.';
 
   @override
-  String get cleaning => 'Cleaning... (tr)';
+  String get cleaning => 'Temizleniyor...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (tr)';
+    return '$size Temizle';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (tr)';
+    return '$size yer açtınız';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (tr)';
+  String get youreAllSet => 'Her Şey Hazır!';
 
   @override
-  String get noSmartCleanupItems => 'No duplicate or similar files found. (tr)';
+  String get noSmartCleanupItems => 'Hiç kopya dosya bulunamadı.';
 
   @override
-  String get save => 'Save (tr)';
+  String get save => 'Kaydet';
 
   @override
-  String get keep => 'KEEP (tr)';
+  String get keep => 'TUT';
 
   @override
-  String get deselectAll => 'Deselect All (tr)';
+  String get deselectAll => 'Tümünü Kaldır';
 
   @override
-  String get images => 'Images (tr)';
+  String get images => 'Resimler';
 
   @override
-  String get docs => 'Docs (tr)';
+  String get docs => 'Belgeler';
 
   @override
-  String get others => 'Others (tr)';
+  String get others => 'Diğer';
 
   @override
-  String get all => 'All (tr)';
+  String get all => 'Tümü';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (tr)';
+    return 'Seçilen $count dosyayı silmek istediğinizden emin misiniz?';
   }
 
   @override
@@ -558,193 +555,188 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count screenshots',
-      one: '1 screenshot',
-      zero: 'No screenshots',
+      other: '$count görüntü',
+      one: '1 görüntü',
+      zero: 'Ekran görüntüsü yok',
     );
-    return '$_temp0 (tr)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (tr)';
+    return 'Seçilen: $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (tr)';
+    return 'Seçilenleri Sil ($size)';
   }
 
   @override
-  String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (tr)';
+  String get deleteFailedGeneral => 'Bazı öğeler silinemedi. Tekrar deneyin.';
 
   @override
-  String get systemDefault => 'System Default (tr)';
+  String get systemDefault => 'Sistem Varsayılanı';
 
   @override
-  String get light => 'Light (tr)';
+  String get light => 'Açık';
 
   @override
-  String get dark => 'Dark (tr)';
+  String get dark => 'Koyu';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (tr)';
+  String get strictSensitivity => 'Katı (%95 Eşleşme)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (tr)';
+  String get normalSensitivity => 'Normal (%85 Eşleşme)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (tr)';
+  String get looseSensitivity => 'Gevşek (%75 Eşleşme)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (tr)';
+      'Uygulamanın benzer fotoğrafları nasıl tanımlayacağını seçin.';
 
   @override
-  String get strictSensitivityDesc => '95% Match — Nearly identical only (tr)';
+  String get strictSensitivityDesc => 'Sadece neredeyse birebir aynı';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (tr)';
+  String get normalSensitivityDesc => 'Önerilen ayar';
 
   @override
-  String get looseSensitivityDesc => '75% Match — Catches more variations (tr)';
+  String get looseSensitivityDesc => 'Daha fazla benzerlik bulur';
 
   @override
-  String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (tr)';
+  String get sensitivityUpdated => 'Hassasiyet ayarı güncellendi.';
 
   @override
-  String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (tr)';
+  String get thresholdDesc => 'Bu değerden büyük dosyalar işaretlenir.';
 
   @override
-  String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (tr)';
+  String get thresholdUpdated => 'Limit güncellendi.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (tr)';
+    return '$size boyutundan büyük';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (tr)';
+  String get madeWithHeart => 'Daha temiz bir telefon için ❤️ ile yapıldı';
 
   @override
-  String get versionUnavailable => 'Version unavailable (tr)';
+  String get versionUnavailable => 'Sürüm yok';
 
   @override
-  String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (tr)';
+  String get emailNotSupported => 'E-posta desteklenmiyor.';
 
   @override
-  String get clearSpace => 'Clear Space (tr)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (tr)';
+  String get storageDashboard => 'Depolama Paneli';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (tr)';
+    return '$count öğe temizlenebilir';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (tr)';
+  String get storageBreakdown => 'Depolama Kullanımı';
 
   @override
-  String get cleanup => 'Cleanup (tr)';
+  String get cleanup => 'Temizlik';
 
   @override
-  String get suggestions => 'Suggestions (tr)';
+  String get suggestions => 'Önerilenler';
 
   @override
-  String get analyzing => 'Analyzing... (tr)';
+  String get analyzing => 'İnceleniyor...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (tr)';
+  String get keepStorageHealthy => 'Depolamanızı koruyun';
 
   @override
   String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (tr)';
+      'Yer açmak için silebileceğiniz dosyaları bulduk.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (tr)';
+    return '%$percentage Dolu';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (tr)';
+  String get scanPausedBattery => 'Tarama Durduruldu (Düşük Pil)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (tr)';
+    return 'Taranıyor: $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (tr)';
+    return 'Taranıyor: $phase... (%$percentage)';
   }
 
   @override
-  String get calculating => 'Calculating... (tr)';
+  String get calculating => 'Hesaplanıyor...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (tr)';
+  String get internalStorage => 'DAHİLİ DEPOLAMA';
 
   @override
-  String get free => 'Free (tr)';
+  String get free => 'Boş';
 
   @override
-  String get used => 'Used (tr)';
+  String get used => 'Kullanılan';
 
   @override
-  String get total => 'Total (tr)';
+  String get total => 'Toplam';
 
   @override
-  String get phaseDisk => 'Disk (tr)';
+  String get phaseDisk => 'Disk';
 
   @override
-  String get phasePhotos => 'Photos (tr)';
+  String get phasePhotos => 'Fotoğraflar';
 
   @override
-  String get phaseVideos => 'Videos (tr)';
+  String get phaseVideos => 'Videolar';
 
   @override
-  String get phaseAudio => 'Audio (tr)';
+  String get phaseAudio => 'Ses';
 
   @override
-  String get phaseDocuments => 'Documents (tr)';
+  String get phaseDocuments => 'Belgeler';
 
   @override
-  String get phaseJunk => 'Junk Files (tr)';
+  String get phaseJunk => 'Gereksiz';
 
   @override
-  String get phaseFolders => 'Folders (tr)';
+  String get phaseFolders => 'Klasörler';
 
   @override
-  String get phaseApks => 'APKs (tr)';
+  String get phaseApks => 'Kurulumlar';
 
   @override
-  String get phaseSimilar => 'Similar Photos (tr)';
+  String get phaseSimilar => 'Benzer Resimler';
 
   @override
-  String get phaseStorage => 'Storage (tr)';
+  String get phaseStorage => 'Depolama';
 
   @override
   String totalSize(String size) {
-    return '$size Total (tr)';
+    return '$size Toplam';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (tr)';
+    return '$size Kullanımda';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (tr)';
+  String get largeFilesTitle => 'Büyük Dosyalar';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (tr)';
+  String get selectYourLanguage => 'Dilinizi Seçin';
 
   @override
   String get analyzingLabel => 'Analiz ediliyor...';
@@ -1098,7 +1090,7 @@ class AppLocalizationsTrTr extends AppLocalizationsTr {
   String get screenshotsDeletedSuccess => 'Ekran görüntüleri başarıyla silindi';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (tr_TR)';
+  String get junkFilesFound => 'Gereksiz Dosyalar Bulundu';
 
   @override
   String get noPhotosFound => 'Fotoğraf bulunamadı';
@@ -1134,148 +1126,146 @@ class AppLocalizationsTrTr extends AppLocalizationsTr {
   String get noFilesMatchFilter => 'Bu filtreyle eşleşen dosya yok';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (tr_TR)';
+  String get refreshingAppList => 'Uygulama listesi yenileniyor...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (tr_TR)';
+  String get openingUninstaller => 'Kaldırıcı açılıyor...';
 
   @override
-  String get uninstallApp => 'Uninstall App (tr_TR)';
+  String get uninstallApp => 'Uygulamayı Kaldır';
 
   @override
-  String get uninstall => 'Uninstall (tr_TR)';
+  String get uninstall => 'Kaldır';
 
   @override
-  String get sortLargest => 'Largest (tr_TR)';
+  String get sortLargest => 'En büyük';
 
   @override
-  String get sortSmallest => 'Smallest (tr_TR)';
+  String get sortSmallest => 'En küçük';
 
   @override
-  String get sortNewest => 'Newest (tr_TR)';
+  String get sortNewest => 'En yeni';
 
   @override
-  String get sortAZ => 'A-Z (tr_TR)';
+  String get sortAZ => 'A\'dan Z\'ye';
 
   @override
-  String get pageNotFound => 'Page Not Found (tr_TR)';
+  String get pageNotFound => 'Sayfa bulunamadı';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (tr_TR)';
+  String get goToDashboard => 'Panele Git';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (tr_TR)';
+  String get deleteFilesTitle => 'Dosyaları Sil';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (tr_TR)';
+  String get smartCleanupPlanTitle => 'Akıllı Temizlik Planı';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (tr_TR)';
+  String get screenshotsCleanerTitle => 'Ekran Görüntüsü Temizleyici';
 
   @override
-  String get tryAgain => 'Try Again (tr_TR)';
+  String get tryAgain => 'Tekrar dene';
 
   @override
-  String get appManagerTitle => 'App Manager (tr_TR)';
+  String get appManagerTitle => 'Uygulama Yöneticisi';
 
   @override
-  String get searchApps => 'Search apps... (tr_TR)';
+  String get searchApps => 'Uygulama ara...';
 
   @override
-  String get noAppsFound => 'No apps found (tr_TR)';
+  String get noAppsFound => 'Uygulama bulunamadı';
 
   @override
-  String get noMatchingApps => 'No matching apps (tr_TR)';
+  String get noMatchingApps => 'Eşleşen uygulama yok';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (tr_TR)';
+    return '\"$appName\" ($size) uygulamasını kaldırmak istiyor musunuz?';
   }
 
   @override
-  String get uninstallActionDesc =>
-      'This will remove the app and all its data. (tr_TR)';
+  String get uninstallActionDesc => 'Uygulama ve tüm verileri silinecektir.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (tr_TR)';
+    return '$count uygulama';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (tr_TR)';
+    return '$showing / $total uygulama gösteriliyor';
   }
 
   @override
-  String get allClean => 'All clean! (tr_TR)';
+  String get allClean => 'Tertemiz!';
 
   @override
-  String get deleting => 'Deleting... (tr_TR)';
+  String get deleting => 'Siliniyor...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (tr_TR)';
+    return '$count öğeyi sil ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (tr_TR)';
+    return '$count öğe silindi ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (tr_TR)';
+  String get actionCannotBeUndone => 'Bu işlem geri alınamaz.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (tr_TR)';
+  String get cleanupBreakdown => 'Temizlik Dağılımı';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (tr_TR)';
+      'Benzer fotoğrafların ve dosyaların en iyi sürümünü otomatik tutuyoruz.';
 
   @override
-  String get cleaning => 'Cleaning... (tr_TR)';
+  String get cleaning => 'Temizleniyor...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (tr_TR)';
+    return '$size Temizle';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (tr_TR)';
+    return '$size yer açtınız';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (tr_TR)';
+  String get youreAllSet => 'Her Şey Hazır!';
 
   @override
-  String get noSmartCleanupItems =>
-      'No duplicate or similar files found. (tr_TR)';
+  String get noSmartCleanupItems => 'Hiç kopya dosya bulunamadı.';
 
   @override
-  String get save => 'Save (tr_TR)';
+  String get save => 'Kaydet';
 
   @override
-  String get keep => 'KEEP (tr_TR)';
+  String get keep => 'TUT';
 
   @override
-  String get deselectAll => 'Deselect All (tr_TR)';
+  String get deselectAll => 'Tümünü Kaldır';
 
   @override
-  String get images => 'Images (tr_TR)';
+  String get images => 'Resimler';
 
   @override
-  String get docs => 'Docs (tr_TR)';
+  String get docs => 'Belgeler';
 
   @override
-  String get others => 'Others (tr_TR)';
+  String get others => 'Diğer';
 
   @override
-  String get all => 'All (tr_TR)';
+  String get all => 'Tümü';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (tr_TR)';
+    return 'Seçilen $count dosyayı silmek istediğinizden emin misiniz?';
   }
 
   @override
@@ -1283,193 +1273,186 @@ class AppLocalizationsTrTr extends AppLocalizationsTr {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count screenshots',
-      one: '1 screenshot',
-      zero: 'No screenshots',
+      other: '$count görüntü',
+      one: '1 görüntü',
+      zero: 'Ekran görüntüsü yok',
     );
-    return '$_temp0 (tr_TR)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (tr_TR)';
+    return 'Seçilen: $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (tr_TR)';
+    return 'Seçilenleri Sil ($size)';
   }
 
   @override
-  String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (tr_TR)';
+  String get deleteFailedGeneral => 'Bazı öğeler silinemedi. Tekrar deneyin.';
 
   @override
-  String get systemDefault => 'System Default (tr_TR)';
+  String get systemDefault => 'Sistem Varsayılanı';
 
   @override
-  String get light => 'Light (tr_TR)';
+  String get light => 'Açık';
 
   @override
-  String get dark => 'Dark (tr_TR)';
+  String get dark => 'Koyu';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (tr_TR)';
+  String get strictSensitivity => 'Katı (%95 Eşleşme)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (tr_TR)';
+  String get normalSensitivity => 'Normal (%85 Eşleşme)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (tr_TR)';
+  String get looseSensitivity => 'Gevşek (%75 Eşleşme)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (tr_TR)';
+      'Uygulamanın benzer fotoğrafları nasıl tanımlayacağını seçin.';
 
   @override
-  String get strictSensitivityDesc =>
-      '95% Match — Nearly identical only (tr_TR)';
+  String get strictSensitivityDesc => 'Sadece neredeyse birebir aynı';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (tr_TR)';
+  String get normalSensitivityDesc => 'Önerilen ayar';
 
   @override
-  String get looseSensitivityDesc =>
-      '75% Match — Catches more variations (tr_TR)';
+  String get looseSensitivityDesc => 'Daha fazla benzerlik bulur';
 
   @override
-  String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (tr_TR)';
+  String get sensitivityUpdated => 'Hassasiyet ayarı güncellendi.';
 
   @override
-  String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (tr_TR)';
+  String get thresholdDesc => 'Bu değerden büyük dosyalar işaretlenir.';
 
   @override
-  String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (tr_TR)';
+  String get thresholdUpdated => 'Limit güncellendi.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (tr_TR)';
+    return '$size boyutundan büyük';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (tr_TR)';
+  String get madeWithHeart => 'Daha temiz bir telefon için ❤️ ile yapıldı';
 
   @override
-  String get versionUnavailable => 'Version unavailable (tr_TR)';
+  String get versionUnavailable => 'Sürüm yok';
 
   @override
-  String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (tr_TR)';
+  String get emailNotSupported => 'E-posta desteklenmiyor.';
 
   @override
-  String get clearSpace => 'Clear Space (tr_TR)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (tr_TR)';
+  String get storageDashboard => 'Depolama Paneli';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (tr_TR)';
+    return '$count öğe temizlenebilir';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (tr_TR)';
+  String get storageBreakdown => 'Depolama Kullanımı';
 
   @override
-  String get cleanup => 'Cleanup (tr_TR)';
+  String get cleanup => 'Temizlik';
 
   @override
-  String get suggestions => 'Suggestions (tr_TR)';
+  String get suggestions => 'Önerilenler';
 
   @override
-  String get analyzing => 'Analyzing... (tr_TR)';
+  String get analyzing => 'İnceleniyor...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (tr_TR)';
+  String get keepStorageHealthy => 'Depolamanızı koruyun';
 
   @override
   String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (tr_TR)';
+      'Yer açmak için silebileceğiniz dosyaları bulduk.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (tr_TR)';
+    return '%$percentage Dolu';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (tr_TR)';
+  String get scanPausedBattery => 'Tarama Durduruldu (Düşük Pil)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (tr_TR)';
+    return 'Taranıyor: $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (tr_TR)';
+    return 'Taranıyor: $phase... (%$percentage)';
   }
 
   @override
-  String get calculating => 'Calculating... (tr_TR)';
+  String get calculating => 'Hesaplanıyor...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (tr_TR)';
+  String get internalStorage => 'DAHİLİ DEPOLAMA';
 
   @override
-  String get free => 'Free (tr_TR)';
+  String get free => 'Boş';
 
   @override
-  String get used => 'Used (tr_TR)';
+  String get used => 'Kullanılan';
 
   @override
-  String get total => 'Total (tr_TR)';
+  String get total => 'Toplam';
 
   @override
-  String get phaseDisk => 'Disk (tr_TR)';
+  String get phaseDisk => 'Disk';
 
   @override
-  String get phasePhotos => 'Photos (tr_TR)';
+  String get phasePhotos => 'Fotoğraflar';
 
   @override
-  String get phaseVideos => 'Videos (tr_TR)';
+  String get phaseVideos => 'Videolar';
 
   @override
-  String get phaseAudio => 'Audio (tr_TR)';
+  String get phaseAudio => 'Ses';
 
   @override
-  String get phaseDocuments => 'Documents (tr_TR)';
+  String get phaseDocuments => 'Belgeler';
 
   @override
-  String get phaseJunk => 'Junk Files (tr_TR)';
+  String get phaseJunk => 'Gereksiz';
 
   @override
-  String get phaseFolders => 'Folders (tr_TR)';
+  String get phaseFolders => 'Klasörler';
 
   @override
-  String get phaseApks => 'APKs (tr_TR)';
+  String get phaseApks => 'Kurulumlar';
 
   @override
-  String get phaseSimilar => 'Similar Photos (tr_TR)';
+  String get phaseSimilar => 'Benzer Resimler';
 
   @override
-  String get phaseStorage => 'Storage (tr_TR)';
+  String get phaseStorage => 'Depolama';
 
   @override
   String totalSize(String size) {
-    return '$size Total (tr_TR)';
+    return '$size Toplam';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (tr_TR)';
+    return '$size Kullanımda';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (tr_TR)';
+  String get largeFilesTitle => 'Büyük Dosyalar';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (tr_TR)';
+  String get selectYourLanguage => 'Dilinizi Seçin';
 }

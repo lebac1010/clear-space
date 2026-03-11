@@ -356,7 +356,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get screenshotsDeletedSuccess => 'Đã xóa ảnh chụp màn hình thành công';
 
   @override
-  String get junkFilesFound => 'Junk Files Found (vi)';
+  String get junkFilesFound => 'Đã tìm thấy Tệp Rác';
 
   @override
   String get noPhotosFound => 'Không tìm thấy ảnh';
@@ -392,76 +392,76 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noFilesMatchFilter => 'Không có tệp nào khớp với bộ lọc này';
 
   @override
-  String get refreshingAppList => 'Refreshing app list... (vi)';
+  String get refreshingAppList => 'Đang làm mới danh sách ứng dụng...';
 
   @override
-  String get openingUninstaller => 'Opening uninstaller... (vi)';
+  String get openingUninstaller => 'Đang mở trình gỡ cài đặt...';
 
   @override
-  String get uninstallApp => 'Uninstall App (vi)';
+  String get uninstallApp => 'Gỡ cài đặt';
 
   @override
-  String get uninstall => 'Uninstall (vi)';
+  String get uninstall => 'Gỡ cài đặt';
 
   @override
-  String get sortLargest => 'Largest (vi)';
+  String get sortLargest => 'Lớn nhất';
 
   @override
-  String get sortSmallest => 'Smallest (vi)';
+  String get sortSmallest => 'Nhỏ nhất';
 
   @override
-  String get sortNewest => 'Newest (vi)';
+  String get sortNewest => 'Mới nhất';
 
   @override
-  String get sortAZ => 'A-Z (vi)';
+  String get sortAZ => 'A-Z';
 
   @override
-  String get pageNotFound => 'Page Not Found (vi)';
+  String get pageNotFound => 'Không tìm thấy trang';
 
   @override
-  String get goToDashboard => 'Go to Dashboard (vi)';
+  String get goToDashboard => 'Về Tổng quan';
 
   @override
-  String get deleteFilesTitle => 'Delete Files (vi)';
+  String get deleteFilesTitle => 'Xóa Tệp';
 
   @override
-  String get smartCleanupPlanTitle => 'Smart Cleanup Plan (vi)';
+  String get smartCleanupPlanTitle => 'Kế hoạch Dọn dẹp Thông minh';
 
   @override
-  String get screenshotsCleanerTitle => 'Screenshots Cleaner (vi)';
+  String get screenshotsCleanerTitle => 'Dọn dẹp Ảnh chụp màn hình';
 
   @override
-  String get tryAgain => 'Try Again (vi)';
+  String get tryAgain => 'Thử lại';
 
   @override
-  String get appManagerTitle => 'App Manager (vi)';
+  String get appManagerTitle => 'Quản lý Ứng dụng';
 
   @override
-  String get searchApps => 'Search apps... (vi)';
+  String get searchApps => 'Tìm kiếm ứng dụng...';
 
   @override
-  String get noAppsFound => 'No apps found (vi)';
+  String get noAppsFound => 'Không tìm thấy ứng dụng';
 
   @override
-  String get noMatchingApps => 'No matching apps (vi)';
+  String get noMatchingApps => 'Không có ứng dụng phù hợp';
 
   @override
   String uninstallConfirmMsg(String appName, String size) {
-    return 'Are you sure you want to uninstall \"$appName\" ($size)? (vi)';
+    return 'Bạn có chắc muốn gỡ cài đặt \"$appName\" ($size)?';
   }
 
   @override
   String get uninstallActionDesc =>
-      'This will remove the app and all its data. (vi)';
+      'Hành động này sẽ xóa ứng dụng và toàn bộ dữ liệu của nó.';
 
   @override
   String appsCount(int count) {
-    return '$count apps (vi)';
+    return '$count ứng dụng';
   }
 
   @override
   String appsShowingCount(int showing, int total) {
-    return '$showing / $total apps (vi)';
+    return '$showing / $total ứng dụng';
   }
 
   @override
@@ -477,74 +477,75 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pageNotFoundDesc => 'The page you are looking for does not exist.';
 
   @override
-  String get allClean => 'All clean! (vi)';
+  String get allClean => 'Đã sạch sẽ!';
 
   @override
-  String get deleting => 'Deleting... (vi)';
+  String get deleting => 'Đang xóa...';
 
   @override
   String deleteItemsCount(int count, String size) {
-    return 'Delete $count items ($size) (vi)';
+    return 'Xóa $count mục ($size)';
   }
 
   @override
   String deletedCountMsg(int count, String size) {
-    return 'Deleted $count items ($size) (vi)';
+    return 'Đã xóa $count mục ($size)';
   }
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone. (vi)';
+  String get actionCannotBeUndone => 'Hành động này không thể hoàn tác.';
 
   @override
-  String get cleanupBreakdown => 'Cleanup Breakdown (vi)';
+  String get cleanupBreakdown => 'Chi tiết Dọn dẹp';
 
   @override
   String get smartCleanupDesc =>
-      'We automatically keep the best version of your photos and files. (vi)';
+      'Chúng tôi tự động giữ lại phiên bản tốt nhất của ảnh và tệp của bạn.';
 
   @override
-  String get cleaning => 'Cleaning... (vi)';
+  String get cleaning => 'Đang dọn dẹp...';
 
   @override
   String cleanUpSize(String size) {
-    return 'Clean Up $size (vi)';
+    return 'Dọn dẹp $size';
   }
 
   @override
   String youSavedSize(String size) {
-    return 'You saved $size (vi)';
+    return 'Bạn đã tiết kiệm được $size';
   }
 
   @override
-  String get youreAllSet => 'You\'re All Set! (vi)';
+  String get youreAllSet => 'Mọi thứ đã sẵn sàng!';
 
   @override
-  String get noSmartCleanupItems => 'No duplicate or similar files found. (vi)';
+  String get noSmartCleanupItems =>
+      'Không tìm thấy tệp trùng lặp hoặc tương tự.';
 
   @override
-  String get save => 'Save (vi)';
+  String get save => 'Lưu';
 
   @override
-  String get keep => 'KEEP (vi)';
+  String get keep => 'GIỮ LẠI';
 
   @override
-  String get deselectAll => 'Deselect All (vi)';
+  String get deselectAll => 'Bỏ chọn tất cả';
 
   @override
-  String get images => 'Images (vi)';
+  String get images => 'Hình ảnh';
 
   @override
-  String get docs => 'Docs (vi)';
+  String get docs => 'Tài liệu';
 
   @override
-  String get others => 'Others (vi)';
+  String get others => 'Khác';
 
   @override
-  String get all => 'All (vi)';
+  String get all => 'Tất cả';
 
   @override
   String deleteConfirmMsg(int count) {
-    return 'Are you sure you want to delete $count selected files?\n\nItems will be moved to Trash if supported, or permanently deleted. (vi)';
+    return 'Bạn có chắc chắn muốn xóa $count tệp đã chọn?\n\nCác mục sẽ được chuyển vào Thùng rác nếu được hỗ trợ, hoặc bị xóa vĩnh viễn.';
   }
 
   @override
@@ -552,193 +553,194 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count screenshots',
-      one: '1 screenshot',
-      zero: 'No screenshots',
+      other: '$count ảnh chụp màn hình',
+      one: '1 ảnh chụp màn hình',
+      zero: 'Không có ảnh chụp màn hình',
     );
-    return '$_temp0 (vi)';
+    return '$_temp0';
   }
 
   @override
   String selectedCountSize(int count, String size) {
-    return 'Selected: $count ($size) (vi)';
+    return 'Đã chọn: $count ($size)';
   }
 
   @override
   String deleteSelectedSize(String size) {
-    return 'Delete Selected ($size) (vi)';
+    return 'Xóa mục đã chọn ($size)';
   }
 
   @override
   String get deleteFailedGeneral =>
-      'Failed to delete some items. Please try again. (vi)';
+      'Không thể xóa một số mục. Vui lòng thử lại.';
 
   @override
-  String get systemDefault => 'System Default (vi)';
+  String get systemDefault => 'Mặc định hệ thống';
 
   @override
-  String get light => 'Light (vi)';
+  String get light => 'Sáng';
 
   @override
-  String get dark => 'Dark (vi)';
+  String get dark => 'Tối';
 
   @override
-  String get strictSensitivity => 'Strict (95% Match) (vi)';
+  String get strictSensitivity => 'Nghiêm ngặt (Khớp 95%)';
 
   @override
-  String get normalSensitivity => 'Normal (85% Match) (vi)';
+  String get normalSensitivity => 'Bình thường (Khớp 85%)';
 
   @override
-  String get looseSensitivity => 'Loose (75% Match) (vi)';
+  String get looseSensitivity => 'Lỏng lẻo (Khớp 75%)';
 
   @override
   String get sensitivityDesc =>
-      'Choose how strictly the app identifies similar photos. A stricter setting means photos must look nearly identical to be flagged. (vi)';
+      'Chọn mức độ nghiêm ngặt để ứng dụng xác định ảnh tương tự. Cài đặt càng nghiêm ngặt, các ảnh phải gần như giống hệt nhau mới được đánh dấu.';
 
   @override
-  String get strictSensitivityDesc => '95% Match — Nearly identical only (vi)';
+  String get strictSensitivityDesc =>
+      'Khớp 95% — Chỉ những ảnh gần như giống hệt nhau';
 
   @override
-  String get normalSensitivityDesc => '85% Match — Recommended (vi)';
+  String get normalSensitivityDesc => 'Khớp 85% — Khuyên dùng';
 
   @override
-  String get looseSensitivityDesc => '75% Match — Catches more variations (vi)';
+  String get looseSensitivityDesc => 'Khớp 75% — Bắt được nhiều biến thể hơn';
 
   @override
   String get sensitivityUpdated =>
-      'Sensitivity setting updated. It will apply on the next scan. (vi)';
+      'Cài đặt độ nhạy đã được cập nhật. Sẽ áp dụng vào lần quét tiếp theo.';
 
   @override
   String get thresholdDesc =>
-      'Files larger than this value will be flagged for cleanup. (vi)';
+      'Các tệp lớn hơn giá trị này sẽ được đánh dấu để dọn dẹp.';
 
   @override
   String get thresholdUpdated =>
-      'Threshold updated. It will apply on the next scan. (vi)';
+      'Ngưỡng đã được cập nhật. Sẽ áp dụng vào lần quét tiếp theo.';
 
   @override
   String largerThanSize(String size) {
-    return 'Larger than $size (vi)';
+    return 'Lớn hơn $size';
   }
 
   @override
-  String get madeWithHeart => 'Made with ❤️ for a cleaner phone (vi)';
+  String get madeWithHeart => 'Làm bằng ❤️ cho một chiếc điện thoại sạch hơn';
 
   @override
-  String get versionUnavailable => 'Version unavailable (vi)';
+  String get versionUnavailable => 'Phiên bản không khả dụng';
 
   @override
   String get emailNotSupported =>
-      'Could not open email client. Please email us directly. (vi)';
+      'Không thể mở ứng dụng gửi email. Vui lòng gửi email trực tiếp cho chúng tôi.';
 
   @override
-  String get clearSpace => 'Clear Space (vi)';
+  String get clearSpace => 'Clear Space';
 
   @override
-  String get storageDashboard => 'Storage Dashboard (vi)';
+  String get storageDashboard => 'Tổng quan Lưu trữ';
 
   @override
   String itemsCanBeCleaned(int count) {
-    return '$count items can be cleaned (vi)';
+    return '$count mục có thể được dọn dẹp';
   }
 
   @override
-  String get storageBreakdown => 'Storage Breakdown (vi)';
+  String get storageBreakdown => 'Phân bổ Bộ nhớ';
 
   @override
-  String get cleanup => 'Cleanup (vi)';
+  String get cleanup => 'Dọn dẹp';
 
   @override
-  String get suggestions => 'Suggestions (vi)';
+  String get suggestions => 'Đề xuất';
 
   @override
-  String get analyzing => 'Analyzing... (vi)';
+  String get analyzing => 'Đang phân tích...';
 
   @override
-  String get keepStorageHealthy => 'Keep your storage healthy (vi)';
+  String get keepStorageHealthy => 'Giữ cho bộ nhớ của bạn khỏe mạnh';
 
   @override
   String get cleanupHeaderDesc =>
-      'We found some files you might want to remove to free up space. (vi)';
+      'Chúng tôi tìm thấy một số tệp bạn có thể muốn xóa để giải phóng dung lượng.';
 
   @override
   String percentUsed(int percentage) {
-    return '$percentage% Used (vi)';
+    return 'Đã sử dụng $percentage%';
   }
 
   @override
-  String get scanPausedBattery => 'Scan Paused (Battery Low) (vi)';
+  String get scanPausedBattery => 'Đã tạm dừng quét (Pin yếu)';
 
   @override
   String scanningPhase(String phase) {
-    return 'Scanning $phase... (vi)';
+    return 'Đang quét $phase...';
   }
 
   @override
   String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanning $phase... ($percentage%) (vi)';
+    return 'Đang quét $phase... ($percentage%)';
   }
 
   @override
-  String get calculating => 'Calculating... (vi)';
+  String get calculating => 'Đang tính toán...';
 
   @override
-  String get internalStorage => 'INTERNAL STORAGE (vi)';
+  String get internalStorage => 'BỘ NHỚ TRONG';
 
   @override
-  String get free => 'Free (vi)';
+  String get free => 'Trống';
 
   @override
-  String get used => 'Used (vi)';
+  String get used => 'Đã dùng';
 
   @override
-  String get total => 'Total (vi)';
+  String get total => 'Tổng';
 
   @override
-  String get phaseDisk => 'Disk (vi)';
+  String get phaseDisk => 'Ổ đĩa';
 
   @override
-  String get phasePhotos => 'Photos (vi)';
+  String get phasePhotos => 'Ảnh';
 
   @override
-  String get phaseVideos => 'Videos (vi)';
+  String get phaseVideos => 'Video';
 
   @override
-  String get phaseAudio => 'Audio (vi)';
+  String get phaseAudio => 'Âm thanh';
 
   @override
-  String get phaseDocuments => 'Documents (vi)';
+  String get phaseDocuments => 'Tài liệu';
 
   @override
-  String get phaseJunk => 'Junk Files (vi)';
+  String get phaseJunk => 'Tệp rác';
 
   @override
-  String get phaseFolders => 'Folders (vi)';
+  String get phaseFolders => 'Thư mục';
 
   @override
-  String get phaseApks => 'APKs (vi)';
+  String get phaseApks => 'APKs';
 
   @override
-  String get phaseSimilar => 'Similar Photos (vi)';
+  String get phaseSimilar => 'Ảnh tương tự';
 
   @override
-  String get phaseStorage => 'Storage (vi)';
+  String get phaseStorage => 'Bộ nhớ';
 
   @override
   String totalSize(String size) {
-    return '$size Total (vi)';
+    return 'Tổng $size';
   }
 
   @override
   String usedSize(String size) {
-    return '$size Used (vi)';
+    return 'Đã dùng $size';
   }
 
   @override
-  String get largeFilesTitle => 'Large Files (vi)';
+  String get largeFilesTitle => 'Tệp Lớn';
 
   @override
-  String get selectYourLanguage => 'Select Your Language (vi)';
+  String get selectYourLanguage => 'Chọn ngôn ngữ của bạn';
 
   @override
   String get analyzingLabel => 'Đang phân tích...';
