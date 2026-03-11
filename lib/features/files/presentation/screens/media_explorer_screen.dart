@@ -42,7 +42,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
       ),
       _TabItem(
         type: 'documents',
-        label: context.l10n.documentsAndFiles,
+        label: context.l10n.docs,
         icon: Icons.description_rounded,
       ),
     ];
@@ -173,16 +173,21 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                                   : context.appTextTertiary,
                             ),
                             const SizedBox(width: 6),
-                            Text(
-                              tab.label,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: isActive
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                                color: isActive
-                                    ? context.colorScheme.primary
-                                    : context.appTextSecondary,
+                            Expanded(
+                              child: Text(
+                                tab.label,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: isActive
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  color: isActive
+                                      ? context.colorScheme.primary
+                                      : context.appTextSecondary,
+                                ),
                               ),
                             ),
                           ],
