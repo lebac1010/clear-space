@@ -165,6 +165,10 @@ if ($confirm -in @("n", "N")) {
 }
 
 Write-Step "Generating keystore"
+# Remove old keystore file to avoid 'alias already exists' error
+if (Test-Path $keystorePath) {
+    Remove-Item $keystorePath -Force
+}
 $keytoolArgs = @(
     "-genkeypair",
     "-v",

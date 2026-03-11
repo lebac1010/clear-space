@@ -141,6 +141,8 @@ if [[ "${CONFIRM}" =~ ^[Nn]$ ]]; then
 fi
 
 step "Generating keystore"
+# Remove old keystore to avoid 'alias already exists' error
+rm -f "${KEYSTORE_PATH}"
 "${KEYTOOL}" -genkeypair -v \
   -keystore "${KEYSTORE_PATH}" \
   -alias "${ALIAS}" \
