@@ -23,7 +23,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
-  String _appVersion = 'Loading...';
+  String _appVersion = '...';
   final InAppReview _inAppReview = InAppReview.instance;
 
   @override
@@ -41,7 +41,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       });
     } catch (_) {
       if (!mounted) return;
-      setState(() => _appVersion = 'Version unavailable');
+      setState(() => _appVersion = context.l10n.versionUnavailable);
     }
   }
 
@@ -71,21 +71,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         await launchUrl(emailLaunchUri);
       } else {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Could not open email client. Please email us directly.',
-            ),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.emailNotSupported)));
       }
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email functionality restricted by device.'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.emailRestricted)));
     }
   }
 
@@ -97,16 +91,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch browser.')),
+          SnackBar(content: Text(context.l10n.browserLaunchFailed)),
         );
       }
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Browser access restricted on this device.'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.browserRestricted)));
     }
   }
 
@@ -121,11 +113,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Store service temporarily unavailable.'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.storeUnavailable)));
       }
     }
   }
@@ -137,16 +127,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
       SharePlus.instance.share(
         ShareParams(
-          text:
-              'Hey! Check out Clear Space. It helped me clean up gigabytes of junk files instantly! Download here: $storeUrl',
-          title: 'Keep your phone clean with Clear Space',
+          text: '${context.l10n.keepPhoneClean} $storeUrl',
+          title: context.l10n.keepPhoneClean,
         ),
       );
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Share functionality unavailable.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.shareUnavailable)));
     }
   }
 
@@ -232,7 +221,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     Text(
-                      'Language',
+                      context.l10n.languageTitle,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -317,7 +306,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
               ),
               Text(
-                'Theme',
+                context.l10n.themeTitle,
                 style: Theme.of(
                   context,
                 ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -332,7 +321,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Icons.brightness_auto,
                         color: context.appTextPrimary,
                       ),
-                      title: const Text('System Default'),
+                      title: Text(context.l10n.systemDefault),
                       trailing: currentTheme == ThemeMode.system
                           ? Icon(
                               Icons.check,
@@ -357,7 +346,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Icons.light_mode,
                         color: context.appTextPrimary,
                       ),
-                      title: const Text('Light'),
+                      title: Text(context.l10n.light),
                       trailing: currentTheme == ThemeMode.light
                           ? Icon(
                               Icons.check,
@@ -382,7 +371,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Icons.dark_mode,
                         color: context.appTextPrimary,
                       ),
-                      title: const Text('Dark'),
+                      title: Text(context.l10n.dark),
                       trailing: currentTheme == ThemeMode.dark
                           ? Icon(
                               Icons.check,
@@ -443,15 +432,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
 
                   Text(
-                    'Similar Photo Sensitivity',
+                    context.l10n.similarPhotoSensitivity,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Gap(AppSpacing.sm),
                   Text(
-                    'Choose how strictly the app identifies similar photos. '
-                    'A stricter setting means photos must look nearly identical to be flagged.',
+                    context.l10n.sensitivityDesc,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -466,8 +454,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           context,
                           ref,
                           icon: Icons.filter_1_rounded,
-                          title: 'Strict',
-                          description: '95% Match — Nearly identical only',
+                          title: context.l10n.strict,
+                          description: context.l10n.strictSensitivityDesc,
                           value: 3,
                           currentValue: currentValue,
                         ),
@@ -480,8 +468,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           context,
                           ref,
                           icon: Icons.filter_2_rounded,
-                          title: 'Normal',
-                          description: '85% Match — Recommended',
+                          title: context.l10n.normal,
+                          description: context.l10n.normalSensitivityDesc,
                           value: 5,
                           currentValue: currentValue,
                         ),
@@ -494,8 +482,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           context,
                           ref,
                           icon: Icons.filter_3_rounded,
-                          title: 'Loose',
-                          description: '75% Match — Catches more variations',
+                          title: context.l10n.loose,
+                          description: context.l10n.looseSensitivityDesc,
                           value: 8,
                           currentValue: currentValue,
                         ),
@@ -530,11 +518,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Navigator.pop(context);
           ref.read(_sensitivityLocalProvider.notifier).state = value;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Sensitivity setting updated. It will apply on the next scan.',
-              ),
-            ),
+            SnackBar(content: Text(context.l10n.sensitivityUpdated)),
           );
         }
       },
@@ -549,13 +533,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               padding: const EdgeInsets.all(AppSpacing.sm),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.primary.withValues(alpha: 0.1)
+                    ? context.colorScheme.primary.withValues(alpha: 0.1)
                     : context.appSurfaceContainer,
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: Icon(
                 icon,
-                color: isSelected ? AppColors.primary : context.appTextSecondary,
+                color: isSelected
+                    ? context.colorScheme.primary
+                    : context.appTextSecondary,
                 size: 22,
               ),
             ),
@@ -571,7 +557,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           ? FontWeight.w600
                           : FontWeight.w500,
                       color: isSelected
-                          ? AppColors.primary
+                          ? context.colorScheme.primary
                           : context.appTextPrimary,
                       fontSize: 15,
                     ),
@@ -588,9 +574,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ),
             if (isSelected)
-              const Icon(
+              Icon(
                 Icons.check_circle_rounded,
-                color: AppColors.primary,
+                color: context.colorScheme.primary,
                 size: 22,
               ),
           ],
@@ -642,14 +628,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                   ),
                   Text(
-                    'Large File Threshold',
+                    context.l10n.largeFileThreshold,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Gap(AppSpacing.sm),
                   Text(
-                    'Files larger than this value will be flagged for cleanup.',
+                    context.l10n.thresholdDesc,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -702,11 +688,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Navigator.pop(context);
           ref.read(_thresholdLocalProvider.notifier).state = value;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Threshold updated. It will apply on the next scan.',
-              ),
-            ),
+            SnackBar(content: Text(context.l10n.thresholdUpdated)),
           );
         }
       },
@@ -721,13 +703,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               padding: const EdgeInsets.all(AppSpacing.sm),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.primary.withValues(alpha: 0.1)
+                    ? context.colorScheme.primary.withValues(alpha: 0.1)
                     : context.appSurfaceContainer,
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: Icon(
                 Icons.folder_zip_outlined,
-                color: isSelected ? AppColors.primary : context.appTextSecondary,
+                color: isSelected
+                    ? context.colorScheme.primary
+                    : context.appTextSecondary,
                 size: 22,
               ),
             ),
@@ -737,15 +721,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 title,
                 style: TextStyle(
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  color: isSelected ? AppColors.primary : context.appTextPrimary,
+                  color: isSelected
+                      ? context.colorScheme.primary
+                      : context.appTextPrimary,
                   fontSize: 15,
                 ),
               ),
             ),
             if (isSelected)
-              const Icon(
+              Icon(
                 Icons.check_circle_rounded,
-                color: AppColors.primary,
+                color: context.colorScheme.primary,
                 size: 22,
               ),
           ],
@@ -775,7 +761,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(context.l10n.settingsTitle),
         backgroundColor: context.appBackground,
         elevation: 0,
         centerTitle: true,
@@ -787,7 +773,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         children: [
           // ── Appearance & Language ──
-          const _SectionHeader(title: 'Appearance & Language'),
+          _SectionHeader(title: context.l10n.appearanceAndLanguage),
           const Gap(AppSpacing.sm),
           AppCard(
             padding: EdgeInsets.zero,
@@ -799,9 +785,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                     return _SettingsTile(
                       icon: Icons.language_rounded,
-                      title: 'Language',
+                      title: context.l10n.languageTitle,
                       subtitle: _getLanguageName(currentLocale),
-                      color: AppColors.primary,
+                      color: context.colorScheme.primary,
                       onTap: () =>
                           _showLanguageDialog(context, ref, currentLocale),
                     );
@@ -811,13 +797,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Consumer(
                   builder: (context, ref, child) {
                     final currentTheme = ref.watch(themeModeControllerProvider);
-                    String themeName = 'System Default';
-                    if (currentTheme == ThemeMode.light) themeName = 'Light';
-                    if (currentTheme == ThemeMode.dark) themeName = 'Dark';
+                    String themeName = context.l10n.systemDefault;
+                    if (currentTheme == ThemeMode.light) {
+                      themeName = context.l10n.light;
+                    }
+                    if (currentTheme == ThemeMode.dark) {
+                      themeName = context.l10n.dark;
+                    }
 
                     return _SettingsTile(
                       icon: Icons.palette_rounded,
-                      title: 'Theme',
+                      title: context.l10n.themeTitle,
                       subtitle: themeName,
                       color: context.customColors.purple,
                       onTap: () => _showThemeDialog(context, ref, currentTheme),
@@ -831,7 +821,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const Gap(AppSpacing.lg),
 
           // ── Support & Engagement ──
-          const _SectionHeader(title: 'Support & Engagement'),
+          _SectionHeader(title: context.l10n.supportAndEngagement),
           const Gap(AppSpacing.sm),
 
           AppCard(
@@ -840,32 +830,32 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               children: [
                 _SettingsTile(
                   icon: Icons.history_rounded,
-                  title: 'Cleanup History',
-                  subtitle: 'View your past cleaning activities',
-                  color: AppColors.primary,
+                  title: context.l10n.cleanupHistory,
+                  subtitle: context.l10n.viewPastCleaning,
+                  color: context.colorScheme.primary,
                   onTap: () => context.push(RouteConstants.history),
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.mark_email_read_outlined,
-                  title: 'Send Feedback',
-                  subtitle: 'Report bugs or suggest improvements',
-                  color: AppColors.primary,
+                  title: context.l10n.sendFeedback,
+                  subtitle: context.l10n.reportBugs,
+                  color: context.colorScheme.primary,
                   onTap: _sendFeedbackEmail,
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.star_rounded,
-                  title: 'Rate Us 5 Stars',
-                  subtitle: 'Help others find Clear Space',
-                  color: AppColors.warning,
+                  title: context.l10n.rateUs,
+                  subtitle: context.l10n.helpOthers,
+                  color: context.customColors.orange,
                   onTap: _requestReview,
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.share_rounded,
-                  title: 'Share with Friends',
-                  subtitle: 'Recommend the app via messages',
+                  title: context.l10n.shareWithFriends,
+                  subtitle: context.l10n.recommendApp,
                   color: context.customColors.success,
                   onTap: _shareApp,
                 ),
@@ -876,7 +866,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const Gap(AppSpacing.lg),
 
           // ── Scan Preferences ──
-          const _SectionHeader(title: 'Scan Preferences'),
+          _SectionHeader(title: context.l10n.scanPreferences),
           const Gap(AppSpacing.sm),
 
           AppCard(
@@ -889,17 +879,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       _sensitivityLocalProvider,
                     );
 
-                    String subtitle = 'Normal (85% Match)';
+                    String subtitle = context.l10n.normalSensitivity;
                     if (currentSensitivity <= 3) {
-                      subtitle = 'Strict (95% Match)';
+                      subtitle = context.l10n.strictSensitivity;
                     }
                     if (currentSensitivity >= 8) {
-                      subtitle = 'Loose (75% Match)';
+                      subtitle = context.l10n.looseSensitivity;
                     }
 
                     return _SettingsTile(
                       icon: Icons.tune_rounded,
-                      title: 'Similar Photo Sensitivity',
+                      title: context.l10n.similarPhotoSensitivity,
                       subtitle: subtitle,
                       color: context.customColors.purple,
                       onTap: () {
@@ -925,11 +915,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       label = '${(currentThreshold / (1024 * 1024)).toInt()}MB';
                     }
 
-                    final subtitle = 'Larger than $label';
+                    final subtitle = context.l10n.largerThanSize(label);
 
                     return _SettingsTile(
                       icon: Icons.straighten_rounded,
-                      title: 'Large File Threshold',
+                      title: context.l10n.largeFileThreshold,
                       subtitle: subtitle,
                       color: context.customColors.orange,
                       onTap: () {
@@ -945,7 +935,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const Gap(AppSpacing.lg),
 
           // ── Legal & App Info ──
-          const _SectionHeader(title: 'Legal & App Info'),
+          _SectionHeader(title: context.l10n.legalAndAppInfo),
           const Gap(AppSpacing.sm),
 
           AppCard(
@@ -954,8 +944,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               children: [
                 _SettingsTile(
                   icon: Icons.shield_outlined,
-                  title: 'Privacy Policy',
-                  subtitle: 'How we protect your data',
+                  title: context.l10n.privacyPolicy,
+                  subtitle: context.l10n.howWeProtectData,
                   color: context.customColors.secondary,
                   onTap: () => _openLink(
                     'https://policies.google.com/privacy',
@@ -964,8 +954,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.description_outlined,
-                  title: 'Terms of Service',
-                  subtitle: 'Rules and guidelines',
+                  title: context.l10n.termsOfService,
+                  subtitle: context.l10n.rulesAndGuidelines,
                   color: context.customColors.secondary,
                   onTap: () => _openLink(
                     'https://policies.google.com/terms',
@@ -974,7 +964,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
                   icon: Icons.info_outline_rounded,
-                  title: 'App Version',
+                  title: context.l10n.appVersion,
                   subtitle: _appVersion,
                   color: context.customColors.secondary,
                   showChevron: false,
@@ -990,7 +980,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Column(
               children: [
                 Text(
-                  'Clear Space',
+                  context.l10n.clearSpace,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: context.appTextTertiary,
@@ -998,7 +988,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
                 const Gap(AppSpacing.xs),
                 Text(
-                  'Made with ❤️ for a cleaner phone',
+                  context.l10n.madeWithHeart,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: context.appTextTertiary,
                   ),

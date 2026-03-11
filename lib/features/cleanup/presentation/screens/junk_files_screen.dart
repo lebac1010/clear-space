@@ -3,6 +3,7 @@ import 'package:clear_space/features/dashboard/presentation/controllers/dashboar
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:clear_space/core/extensions/build_context_x.dart';
 
 import '../../../../core/router/route_constants.dart';
 import '../controllers/safe_cleanup_controller.dart';
@@ -27,24 +28,27 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
       if (!_hasStartedCleanup) return;
       if (prev?.isLoading == true && !next.isLoading) {
         _hasStartedCleanup = false;
+        if (!mounted) return;
         if (next.hasError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Cleanup failed: ${next.error}')),
+            SnackBar(
+              content: Text(context.l10n.cleanupFailed(next.error.toString())),
+            ),
           );
         } else {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(const SnackBar(content: Text('Cleanup complete!')));
+          ).showSnackBar(SnackBar(content: Text(context.l10n.cleanupComplete)));
         }
       }
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Junk Files')),
+      appBar: AppBar(title: Text(context.l10n.junkFiles)),
       body: storageAsync.when(
         data: (info) {
           if (info == null) {
-            return const Center(child: Text('Please scan storage first'));
+            return Center(child: Text(context.l10n.pleaseScanStorageFirst));
           }
           final hasJunk =
               info.junkSize > 0 ||
@@ -52,17 +56,20 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
               info.apkCount > 0;
 
           if (!hasJunk) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.check_circle_outline,
                     size: 64,
-                    color: Colors.green,
+                    color: context.customColors.success,
                   ),
-                  SizedBox(height: 16),
-                  Text('No junk files found!', style: TextStyle(fontSize: 18)),
+                  const SizedBox(height: 16),
+                  Text(
+                    context.l10n.noJunkFilesFound,
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             );
@@ -89,7 +96,7 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'Total Junk Found',
+                            context.l10n.junkFilesFound,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 8),
@@ -112,9 +119,11 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                   // Categories — [Bug1] disabled while cleaning to prevent race conditions
                   _JunkCategoryTile(
                     icon: Icons.delete_sweep_outlined,
-                    color: Colors.orange,
-                    title: 'Temporary & Log Files',
-                    subtitle: '${FileUtils.formatSize(info.junkSize)} found',
+                    color: context.customColors.orange,
+                    title: context.l10n.tempAndLogFiles,
+                    subtitle: context.l10n.sizeFound(
+                      FileUtils.formatSize(info.junkSize),
+                    ),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: isCleaning
                         ? null
@@ -127,9 +136,11 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                   const SizedBox(height: 12),
                   _JunkCategoryTile(
                     icon: Icons.folder_off_outlined,
-                    color: Colors.blueGrey,
-                    title: 'Empty Folders',
-                    subtitle: '${info.emptyFolderCount} empty folders found',
+                    color: context.colorScheme.tertiary,
+                    title: context.l10n.emptyFolders,
+                    subtitle: context.l10n.emptyFoldersFound(
+                      info.emptyFolderCount,
+                    ),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: isCleaning
                         ? null
@@ -142,9 +153,9 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                   const SizedBox(height: 12),
                   _JunkCategoryTile(
                     icon: Icons.android_outlined,
-                    color: Colors.green,
-                    title: 'Safe APK Installers',
-                    subtitle: 'Clean installed/old APKs',
+                    color: context.customColors.success,
+                    title: context.l10n.safeApkInstallers,
+                    subtitle: context.l10n.cleanOldApks,
                     trailing: const Icon(Icons.chevron_right),
                     onTap: isCleaning
                         ? null
@@ -172,17 +183,19 @@ class _JunkFilesScreenState extends ConsumerState<JunkFilesScreen> {
                               .cleanNow();
                         },
                   icon: isCleaning
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white,
+                            color: context.colorScheme.onPrimary,
                           ),
                         )
                       : const Icon(Icons.cleaning_services),
                   label: Text(
-                    isCleaning ? 'Cleaning...' : 'Clean All Safe Items',
+                    isCleaning
+                        ? context.l10n.cleaning
+                        : context.l10n.cleanAllSafeItems,
                   ),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.all(16),
@@ -219,7 +232,8 @@ class _JunkCategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDisabled = onTap == null;
-    final effectiveColor = isDisabled ? color.withValues(alpha: 0.3) : color;
+    final effectiveColor =
+        isDisabled ? Theme.of(context).disabledColor : color;
 
     return Card(
       elevation: 0,

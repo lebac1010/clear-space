@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -56,19 +56,19 @@ class CleanupHistoryScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear History'),
-        content: const Text(
-          'Are you sure you want to delete all cleanup logs?',
-        ),
+        title: Text(context.l10n.clearHistory),
+        content: Text(context.l10n.clearHistoryConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Clear All'),
+            style: TextButton.styleFrom(
+              foregroundColor: context.colorScheme.error,
+            ),
+            child: Text(context.l10n.clearAll),
           ),
         ],
       ),
@@ -89,7 +89,7 @@ class _HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('MMM dd, yyyy • HH:mm');
-    final color = _getColorForType(record.cleanupType);
+    final color = _getColorForType(context, record.cleanupType);
     final icon = _getIconForType(record.cleanupType);
 
     return AppCard(
@@ -136,7 +136,7 @@ class _HistoryCard extends StatelessWidget {
                   Text(
                     FileUtils.formatSize(record.totalSizeInBytes),
                     style: TextStyle(
-                      color: AppColors.primary,
+                      color: context.colorScheme.primary,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -227,7 +227,7 @@ class _HistoryCard extends StatelessWidget {
     }
   }
 
-  Color _getColorForType(String type) {
+  Color _getColorForType(BuildContext context, String type) {
     switch (type) {
       case 'junk':
         return Colors.brown;
@@ -238,7 +238,7 @@ class _HistoryCard extends StatelessWidget {
       case 'large_files':
         return Colors.deepPurple;
       default:
-        return AppColors.primary;
+        return Theme.of(context).colorScheme.primary;
     }
   }
 }

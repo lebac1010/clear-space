@@ -143,11 +143,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               color: AppColors.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Center(
+            child: Center(
               child: Icon(
                 Icons.cleaning_services_rounded,
                 size: 80,
-                color: AppColors.primary,
+                color: context.colorScheme.primary,
               ),
             ),
           ),

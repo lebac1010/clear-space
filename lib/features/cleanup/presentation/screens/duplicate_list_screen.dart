@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../../core/utils/file_utils.dart';
@@ -30,7 +30,9 @@ class DuplicateListScreen extends ConsumerWidget {
       backgroundColor: context.appBackground,
       appBar: AppBar(
         title: Text(
-          type == CleanupType.similar ? 'Similar Photos' : 'Duplicate Files',
+          type == CleanupType.similar
+              ? context.l10n.similarPhotos
+              : context.l10n.duplicateFiles,
         ),
         backgroundColor: context.appBackground,
         surfaceTintColor: Colors.transparent,
@@ -46,14 +48,14 @@ class DuplicateListScreen extends ConsumerWidget {
                   )
                   .smartSelect();
             },
-            child: const Text('Smart Select'),
+            child: Text(context.l10n.smartSelect),
           ),
         ],
       ),
       body: duplicatesAsync.when(
         data: (groups) {
           if (groups.isEmpty) {
-            return const Center(child: Text('No duplicates found!'));
+            return Center(child: Text(context.l10n.noDuplicatesFound));
           }
 
           return Column(
@@ -131,17 +133,16 @@ class DuplicateListScreen extends ConsumerWidget {
                                         vertical: 2,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: AppColors.primary.withValues(
-                                          alpha: 0.1,
-                                        ),
+                                        color: context.colorScheme.primary
+                                            .withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(4),
                                       ),
-                                      child: const Text(
-                                        'KEEP',
+                                      child: Text(
+                                        context.l10n.keep,
                                         style: TextStyle(
                                           fontSize: 9,
                                           fontWeight: FontWeight.w800,
-                                          color: AppColors.primary,
+                                          color: context.colorScheme.primary,
                                           letterSpacing: 0.5,
                                         ),
                                       ),
@@ -209,17 +210,18 @@ class _BottomActionPanel extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '$selectedCount items selected',
-                  style: const TextStyle(
+                  context.l10n.itemsSelected(selectedCount),
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                  ).copyWith(color: context.appTextPrimary),
+                    color: context.appTextPrimary,
+                  ),
                 ),
                 Text(
                   FileUtils.formatSize(selectedSize),
                   style: TextStyle(
                     color: context.appTextSecondary,
                     fontSize: 12,
-                  ).copyWith(color: context.appTextSecondary),
+                  ),
                 ),
               ],
             ),
@@ -229,8 +231,10 @@ class _BottomActionPanel extends ConsumerWidget {
                 _showDeleteConfirmation(context, ref, selectedCount);
               },
               icon: const Icon(Icons.delete_outline_rounded),
-              label: const Text('Delete'),
-              style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+              label: Text(context.l10n.delete),
+              style: FilledButton.styleFrom(
+                backgroundColor: context.colorScheme.error,
+              ),
             ),
           ],
         ),
@@ -242,15 +246,12 @@ class _BottomActionPanel extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete files?'),
-        content: Text(
-          'Are you sure you want to delete $count selected files?\n\n'
-          'Items will be moved to Trash if supported, or permanently deleted.',
-        ),
+        title: Text(context.l10n.deleteFilesQuestion),
+        content: Text(context.l10n.deleteConfirmMsg(count)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -259,8 +260,13 @@ class _BottomActionPanel extends ConsumerWidget {
                   .read(duplicateControllerProvider(type).notifier)
                   .deleteSelected();
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Delete'),
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+            ),
+            child: Text(
+              context.l10n.delete,
+              style: TextStyle(color: context.colorScheme.onError),
+            ),
           ),
         ],
       ),

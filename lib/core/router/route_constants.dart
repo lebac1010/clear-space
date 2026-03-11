@@ -34,16 +34,12 @@ class NotFoundScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Not Found')),
+      appBar: AppBar(title: Text(context.l10n.pageNotFound)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: context.appTextTertiary,
-            ),
+            Icon(Icons.error_outline, size: 64, color: context.appTextTertiary),
             const SizedBox(height: 16),
             Text(
               '404 - Page Not Found',
@@ -58,7 +54,7 @@ class NotFoundScreen extends StatelessWidget {
             FilledButton(
               // [A8] Safely navigate to dashboard instead of pop (which fails at root)
               onPressed: () => context.go(RouteConstants.dashboard),
-              child: const Text('Go to Dashboard'),
+              child: Text(context.l10n.goToDashboard),
             ),
           ],
         ),

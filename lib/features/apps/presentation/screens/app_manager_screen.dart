@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../domain/entities/installed_app.dart';
@@ -56,7 +56,7 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'App Manager',
+          context.l10n.appManagerTitle,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -66,19 +66,17 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
-            color: AppColors.primary,
+            color: context.colorScheme.primary,
             onPressed: () {
               _searchController.clear();
               controller.refresh();
-              ScaffoldMessenger.of(context)
-                ..clearSnackBars()
-                ..showSnackBar(
-                  const SnackBar(
-                    content: Text('Refreshing app list...'),
-                    duration: Duration(seconds: 1),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(context.l10n.refreshingAppList),
+                  duration: const Duration(seconds: 1),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
             },
           ),
         ],
@@ -91,8 +89,13 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
               _buildSummaryHeader(state),
               Expanded(
                 child: state.apps.when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: AppColors.primary),
+                  loading: () => Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      child: CircularProgressIndicator(
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
                   ),
                   // Use shared ErrorView widget — consistent with rest of the app
                   error: (err, _) => ErrorView(
@@ -117,8 +120,8 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                             const SizedBox(height: 16),
                             Text(
                               state.searchQuery.isEmpty
-                                  ? 'No apps found'
-                                  : 'No matching apps',
+                                  ? context.l10n.noAppsFound
+                                  : context.l10n.noMatchingApps,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -155,16 +158,20 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
           if (state.isUninstalling)
             Container(
               color: context.appOverlay.withValues(alpha: 0.3),
-              child: const Center(
+              child: Center(
                 child: Card(
                   child: Padding(
-                    padding: EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(24),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CircularProgressIndicator(color: AppColors.primary),
-                        SizedBox(height: 16),
-                        Text('Opening uninstaller...'),
+                        Icon(
+                          Icons.system_update,
+                          color: context.colorScheme.primary,
+                          size: 32,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(context.l10n.openingUninstaller),
                       ],
                     ),
                   ),
@@ -185,15 +192,15 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Uninstall App'),
+        title: Text(context.l10n.uninstallApp),
         content: Text(
-          'Are you sure you want to uninstall "${app.name}" (${FileUtils.formatSize(app.size)})?\n\n'
-          'This will remove the app and all its data.',
+          '${context.l10n.uninstallConfirmMsg(app.name, FileUtils.formatSize(app.size))}\n\n'
+          '${context.l10n.uninstallActionDesc}',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () {
@@ -201,8 +208,10 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
               _didTriggerUninstall = true;
               controller.uninstallApp(app.packageName);
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Uninstall'),
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+            ),
+            child: Text(context.l10n.uninstall),
           ),
         ],
       ),
@@ -232,7 +241,7 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                 controller: _searchController,
                 onChanged: controller.setSearchQuery,
                 decoration: InputDecoration(
-                  hintText: 'Search apps...',
+                  hintText: context.l10n.searchApps,
                   hintStyle: TextStyle(
                     color: context.appTextTertiary,
                     fontSize: 14,
@@ -244,10 +253,7 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: context.appTextPrimary,
-                ),
+                style: TextStyle(fontSize: 14, color: context.appTextPrimary),
               ),
             ),
           ],
@@ -264,8 +270,8 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     final filtered = state.filteredAndSortedApps;
     final total = state.totalAppCount;
     final showing = state.searchQuery.isEmpty
-        ? '$total apps'
-        : '${filtered.length} / $total apps';
+        ? context.l10n.appsCount(total)
+        : context.l10n.appsShowingCount(filtered.length, total);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -282,10 +288,10 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
           const SizedBox(width: 8),
           Text(
             '•  ${FileUtils.formatSize(state.totalAppSize)}',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: AppColors.primary,
+              color: context.colorScheme.primary,
             ),
           ),
           const Spacer(),
@@ -309,22 +315,22 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
                   color: context.appTextSecondary,
                 ),
                 dropdownColor: context.appSurface,
-                items: const [
+                items: [
                   DropdownMenuItem(
                     value: AppSortOption.sizeDesc,
-                    child: Text('Largest'),
+                    child: Text(context.l10n.sortLargest),
                   ),
                   DropdownMenuItem(
                     value: AppSortOption.sizeAsc,
-                    child: Text('Smallest'),
+                    child: Text(context.l10n.sortSmallest),
                   ),
                   DropdownMenuItem(
                     value: AppSortOption.dateDesc,
-                    child: Text('Newest'),
+                    child: Text(context.l10n.sortNewest),
                   ),
                   DropdownMenuItem(
                     value: AppSortOption.nameAsc,
-                    child: Text('A-Z'),
+                    child: Text(context.l10n.sortAZ),
                   ),
                 ],
                 onChanged: (opt) {
@@ -369,9 +375,9 @@ class _AppItemCard extends StatelessWidget {
                     // Decode to exact display size for memory efficiency
                     cacheWidth: 144,
                     cacheHeight: 144,
-                    errorBuilder: (_, __, ___) => _fallbackIcon(),
+                    errorBuilder: (_, __, ___) => _fallbackIcon(context),
                   )
-                : _fallbackIcon(),
+                : _fallbackIcon(context),
           ),
           const SizedBox(width: 16),
 
@@ -395,17 +401,14 @@ class _AppItemCard extends StatelessWidget {
                   children: [
                     Text(
                       FileUtils.formatSize(app.size),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
+                        color: context.colorScheme.primary,
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      '•',
-                      style: TextStyle(color: context.appTextTertiary),
-                    ),
+                    Text('•', style: TextStyle(color: context.appTextTertiary)),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -428,13 +431,14 @@ class _AppItemCard extends StatelessWidget {
           // Uninstall Button
           IconButton(
             onPressed: onUninstall,
-            icon: const Icon(
+            icon: Icon(
               Icons.delete_outline_rounded,
-              color: AppColors.error,
+              color: context.colorScheme.error,
             ),
-            tooltip: 'Uninstall',
+            tooltip: context.l10n.uninstall,
             style: IconButton.styleFrom(
-              backgroundColor: AppColors.error.withValues(alpha: 0.1),
+              backgroundColor: context.colorScheme.error.withValues(alpha: 0.1),
+              foregroundColor: context.colorScheme.error,
             ),
           ),
         ],
@@ -442,15 +446,15 @@ class _AppItemCard extends StatelessWidget {
     );
   }
 
-  Widget _fallbackIcon() {
+  Widget _fallbackIcon(BuildContext context) {
     return Container(
       width: 48,
       height: 48,
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        color: context.colorScheme.primary.withValues(alpha: 0.1),
+        shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.android, color: AppColors.primary),
+      child: Icon(Icons.android, color: context.colorScheme.primary),
     );
   }
 }

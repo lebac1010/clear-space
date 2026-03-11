@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
+import 'package:clear_space/l10n/app_localizations.dart';
 
 /// Convenient extensions on BuildContext for accessing theme data.
 extension BuildContextX on BuildContext {
@@ -57,4 +58,7 @@ extension BuildContextX on BuildContext {
 
   /// Check if keyboard is visible.
   bool get isKeyboardVisible => mediaQuery.viewInsets.bottom > 0;
+
+  /// Access AppLocalizations
+  AppLocalizations get l10n => AppLocalizations.of(this)!;
 }

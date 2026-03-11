@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../extensions/build_context_x.dart';
-import '../theme/app_colors.dart';
 
 class ErrorView extends StatelessWidget {
   final String message;
@@ -16,14 +15,14 @@ class ErrorView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.error_outline_rounded,
               size: 48,
-              color: AppColors.error,
+              color: context.colorScheme.error,
             ),
             const SizedBox(height: 16),
             Text(
-              'Something went wrong',
+              context.l10n.somethingWentWrong,
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -39,7 +38,7 @@ class ErrorView extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Try Again'),
+                label: Text(context.l10n.tryAgain),
               ),
             ],
           ],

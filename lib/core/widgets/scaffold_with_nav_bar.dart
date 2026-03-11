@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:clear_space/core/extensions/build_context_x.dart';
 
 /// A scaffold wrapper for the bottom navigation bar.
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -22,26 +23,26 @@ class ScaffoldWithNavBar extends StatelessWidget {
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) => _onTap(context, index),
         // Style handled by AppTheme.navigationBarTheme
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: const Icon(Icons.dashboard_outlined),
+            selectedIcon: const Icon(Icons.dashboard),
+            label: context.l10n.dashboardTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.cleaning_services_outlined),
-            selectedIcon: Icon(Icons.cleaning_services),
-            label: 'Cleanup',
+            icon: const Icon(Icons.cleaning_services_outlined),
+            selectedIcon: const Icon(Icons.cleaning_services),
+            label: context.l10n.cleanupTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.photo_library_outlined),
-            selectedIcon: Icon(Icons.photo_library),
-            label: 'Photos',
+            icon: const Icon(Icons.photo_library_outlined),
+            selectedIcon: const Icon(Icons.photo_library),
+            label: context.l10n.photosTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.folder_open_outlined),
-            selectedIcon: Icon(Icons.folder_open),
-            label: 'Files',
+            icon: const Icon(Icons.folder_open_outlined),
+            selectedIcon: const Icon(Icons.folder_open),
+            label: context.l10n.filesTitle,
           ),
         ],
       ),

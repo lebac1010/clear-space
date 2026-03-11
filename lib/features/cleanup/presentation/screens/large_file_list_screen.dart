@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -20,7 +20,7 @@ class LargeFileListScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        title: const Text('Large Files'),
+        title: Text(context.l10n.largeFilesTitle),
         backgroundColor: context.appBackground,
         surfaceTintColor: Colors.transparent,
         actions: [
@@ -28,14 +28,14 @@ class LargeFileListScreen extends ConsumerWidget {
             onPressed: () {
               ref.read(largeFileControllerProvider.notifier).selectAll();
             },
-            child: const Text('Select All'),
+            child: Text(context.l10n.selectAll),
           ),
         ],
       ),
       body: largeFilesAsync.when(
         data: (files) {
           if (files.isEmpty) {
-            return const Center(child: Text('No large files found!'));
+            return Center(child: Text(context.l10n.noLargeFilesFound));
           }
 
           // Apply Filter
@@ -69,7 +69,7 @@ class LargeFileListScreen extends ConsumerWidget {
               _FilterBar(currentFilter: filter),
               Expanded(
                 child: sortedFiles.isEmpty
-                    ? const Center(child: Text('No files match this filter'))
+                    ? Center(child: Text(context.l10n.noFilesMatchFilter))
                     : ListView.builder(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -120,7 +120,7 @@ class _FilterBar extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: FilterChip(
-              label: Text(_getFilterName(filter)),
+              label: Text(_getFilterName(context, filter)),
               selected: isSelected,
               onSelected: (selected) {
                 ref
@@ -128,17 +128,21 @@ class _FilterBar extends ConsumerWidget {
                     .setFilter(filter);
               },
               backgroundColor: context.appSurfaceContainer,
-              selectedColor: AppColors.primary.withValues(alpha: 0.1),
-              checkmarkColor: AppColors.primary,
+              selectedColor: context.colorScheme.primary.withValues(alpha: 0.1),
+              checkmarkColor: context.colorScheme.primary,
               labelStyle: TextStyle(
-                color: isSelected ? AppColors.primary : context.appTextSecondary,
+                color: isSelected
+                    ? context.colorScheme.primary
+                    : context.appTextSecondary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 fontSize: 13,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: BorderSide(
-                  color: isSelected ? AppColors.primary : context.appBorder,
+                  color: isSelected
+                      ? context.colorScheme.primary
+                      : context.appBorder,
                 ),
               ),
             ),
@@ -148,20 +152,20 @@ class _FilterBar extends ConsumerWidget {
     );
   }
 
-  String _getFilterName(LargeFileFilter filter) {
+  String _getFilterName(BuildContext context, LargeFileFilter filter) {
     switch (filter) {
       case LargeFileFilter.all:
-        return 'All';
+        return context.l10n.all;
       case LargeFileFilter.image:
-        return 'Images';
+        return context.l10n.images;
       case LargeFileFilter.video:
-        return 'Videos';
+        return context.l10n.videos;
       case LargeFileFilter.audio:
-        return 'Audio';
+        return context.l10n.audio;
       case LargeFileFilter.document:
-        return 'Docs';
+        return context.l10n.docs;
       case LargeFileFilter.other:
-        return 'Others';
+        return context.l10n.others;
     }
   }
 }
@@ -205,7 +209,7 @@ class _BottomActionPanel extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '$selectedCount items selected',
+                  context.l10n.itemsSelected(selectedCount),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ).copyWith(color: context.appTextPrimary),
@@ -225,8 +229,10 @@ class _BottomActionPanel extends ConsumerWidget {
                 _showDeleteConfirmation(context, ref, selectedCount);
               },
               icon: const Icon(Icons.delete_outline_rounded),
-              label: const Text('Delete'),
-              style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+              label: Text(context.l10n.delete),
+              style: FilledButton.styleFrom(
+                backgroundColor: context.colorScheme.error,
+              ),
             ),
           ],
         ),
@@ -238,15 +244,12 @@ class _BottomActionPanel extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete files?'),
-        content: Text(
-          'Are you sure you want to delete $count selected files?\n\n'
-          'Items will be moved to Trash if supported, or permanently deleted.',
-        ),
+        title: Text(context.l10n.deleteFilesQuestion),
+        content: Text(context.l10n.deleteConfirmMsg(count)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -255,8 +258,10 @@ class _BottomActionPanel extends ConsumerWidget {
                   .read(largeFileControllerProvider.notifier)
                   .deleteSelected();
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Delete'),
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+            ),
+            child: Text(context.l10n.delete),
           ),
         ],
       ),

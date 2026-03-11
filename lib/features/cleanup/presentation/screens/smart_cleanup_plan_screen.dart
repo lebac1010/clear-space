@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -23,19 +22,19 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        title: const Text('Smart Cleanup Plan'),
+        title: Text(context.l10n.smartCleanupPlanTitle),
         backgroundColor: context.appBackground,
         elevation: 0,
         centerTitle: true,
       ),
       body: stateAsync.when(
-        loading: () => const Center(
+        loading: () => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
               Gap(16),
-              Text('Analyzing safe-to-delete files...'),
+              Text(context.l10n.analyzingSafeToDelete),
             ],
           ),
         ),
@@ -84,8 +83,8 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                           children: [
                             _InteractiveBreakdownItem(
                               icon: Icons.copy_all_rounded,
-                              color: AppColors.secondary,
-                              title: 'Duplicate Files',
+                              color: context.customColors.secondary,
+                              title: context.l10n.duplicateFiles,
                               count: state.duplicateCount,
                               size: state.duplicateSize,
                               isSelected: state.duplicatesSelected,
@@ -103,8 +102,8 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                             const Divider(height: 1),
                             _InteractiveBreakdownItem(
                               icon: Icons.photo_library_rounded,
-                              color: AppColors.primary,
-                              title: 'Similar Photos',
+                              color: context.colorScheme.primary,
+                              title: context.l10n.similarPhotos,
                               count: state.similarPhotoCount,
                               size: state.similarPhotoSize,
                               isSelected: state.similarPhotosSelected,
@@ -132,7 +131,7 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                                   Gap(12),
                                   Expanded(
                                     child: Text(
-                                      'We automatically keep the best version of your photos and files.',
+                                      context.l10n.smartCleanupDesc,
                                       style: TextStyle(
                                         color: context.appTextSecondary,
                                         fontSize: 13,
@@ -169,8 +168,10 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
                 ),
                 child: AppButton(
                   text: state.isCleaning
-                      ? 'Cleaning...'
-                      : 'Clean Up ${FileUtils.formatSize(state.totalPotentialSavings)}',
+                      ? context.l10n.cleaning
+                      : context.l10n.cleanUpSize(
+                          FileUtils.formatSize(state.totalPotentialSavings),
+                        ),
                   isLoading: state.isCleaning,
                   icon: const Icon(Icons.cleaning_services_rounded),
                   onPressed:
@@ -195,28 +196,28 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
+          Icon(
             Icons.check_circle_outline_rounded,
             size: 80,
-            color: AppColors.success,
+            color: context.customColors.success,
           ),
           const Gap(16),
-          const Text(
-            'Cleanup Complete!',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            context.l10n.cleanupComplete,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const Gap(8),
           Text(
             // Logic note: If we tracked actual deleted bytes, use that.
             // For now, using potential savings which matches what was just deleted.
-            'You saved ${FileUtils.formatSize(savings)}',
+            context.l10n.youSavedSize(FileUtils.formatSize(savings)),
             style: const TextStyle(
               fontSize: 16,
             ).copyWith(color: context.appTextSecondary),
           ),
           const Gap(32),
           AppButton(
-            text: 'Return directly to Dashboard',
+            text: context.l10n.returnDirectlyToDashboard,
             onPressed: () => context.go('/dashboard'),
           ),
         ],
@@ -232,13 +233,13 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.success.withValues(alpha: 0.1),
+              color: context.customColors.success.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.thumb_up_rounded,
               size: 64,
-              color: AppColors.success,
+              color: context.customColors.success,
             ),
           ),
           const Gap(24),
@@ -247,13 +248,13 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const Gap(8),
-          const Text(
-            'No duplicate or similar files found.',
+          Text(
+            context.l10n.noSmartCleanupItems,
             style: TextStyle(fontSize: 16),
           ),
           const Gap(32),
           AppButton(
-            text: 'Return to Dashboard',
+            text: context.l10n.returnToDashboard,
             onPressed: () => context.go('/dashboard'),
           ),
         ],
@@ -277,7 +278,7 @@ class _AnimatedHeroHeader extends StatelessWidget {
         color: context.appSurface,
         shape: BoxShape.circle,
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
+          color: context.colorScheme.primary.withValues(alpha: 0.2),
           width: 8,
         ),
       ),
@@ -286,7 +287,7 @@ class _AnimatedHeroHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Save',
+              context.l10n.save,
               style: Theme.of(
                 context,
               ).textTheme.bodyLarge?.copyWith(color: context.appTextSecondary),
@@ -303,7 +304,7 @@ class _AnimatedHeroHeader extends StatelessWidget {
                     FileUtils.formatSize(value),
                     maxLines: 1,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: AppColors.primary,
+                      color: context.colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   );
@@ -349,7 +350,7 @@ class _InteractiveBreakdownItem extends StatelessWidget {
             Checkbox(
               value: isSelected,
               onChanged: onToggle,
-              activeColor: AppColors.primary,
+              activeColor: context.colorScheme.primary,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
@@ -380,17 +381,24 @@ class _InteractiveBreakdownItem extends StatelessWidget {
                   ),
                   const Gap(2),
                   Text(
-                    '$count items · ${FileUtils.formatSize(size)}',
+                    context.l10n.selectedCountSize(
+                      count,
+                      FileUtils.formatSize(size),
+                    ),
                     style: TextStyle(
                       color: context.appTextSecondary,
                       fontSize: 13,
-                    ).copyWith(color: context.appTextSecondary),
+                    ),
                   ),
                 ],
               ),
             ),
             const Gap(4),
-            Icon(Icons.chevron_right, color: context.appTextSecondary, size: 20),
+            Icon(
+              Icons.chevron_right,
+              color: context.appTextSecondary,
+              size: 20,
+            ),
           ],
         ),
       ),

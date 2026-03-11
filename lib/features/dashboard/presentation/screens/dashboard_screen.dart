@@ -38,7 +38,7 @@ class DashboardScreen extends ConsumerWidget {
         elevation: 0,
         centerTitle: false,
         title: Text(
-          'Storage Dashboard',
+          context.l10n.storageDashboard,
           style: Theme.of(
             context,
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -108,14 +108,16 @@ class DashboardScreen extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.onErrorContainer,
                     ),
                     title: Text(
-                      'Junk Files Found',
+                      context.l10n.junkFilesFound,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onErrorContainer,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
-                      '${info.emptyFolderCount + info.apkCount + info.junkCount} items can be cleaned',
+                      context.l10n.itemsCanBeCleaned(
+                        info.emptyFolderCount + info.apkCount + info.junkCount,
+                      ),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onErrorContainer,
                       ),
@@ -123,7 +125,7 @@ class DashboardScreen extends ConsumerWidget {
                     trailing: FilledButton.icon(
                       onPressed: () => context.push(RouteConstants.junkFiles),
                       icon: const Icon(Icons.arrow_forward, size: 16),
-                      label: const Text('Review'),
+                      label: Text(context.l10n.review),
                       style: FilledButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.error,
                         foregroundColor: Theme.of(context).colorScheme.onError,
@@ -138,14 +140,14 @@ class DashboardScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Storage Breakdown',
+                    context.l10n.storageBreakdown,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextButton(
                     onPressed: () => context.go(RouteConstants.files),
-                    child: const Text('View Details'),
+                    child: Text(context.l10n.viewDetails),
                   ),
                 ],
               ),
@@ -155,7 +157,7 @@ class DashboardScreen extends ConsumerWidget {
               StorageCategoryTile(
                 icon: Icons.image_outlined,
                 color: context.customColors.purple,
-                title: 'Photos & Images',
+                title: context.l10n.photosAndImages,
                 count: info.photosCount,
                 sizeBytes: info.photosSize,
                 percentage: info.totalSpace > 0
@@ -168,7 +170,7 @@ class DashboardScreen extends ConsumerWidget {
               StorageCategoryTile(
                 icon: Icons.movie_outlined,
                 color: const Color(0xFFE573B4),
-                title: 'Videos',
+                title: context.l10n.videos,
                 count: info.videosCount,
                 sizeBytes: info.videosSize,
                 percentage: info.totalSpace > 0
@@ -182,7 +184,7 @@ class DashboardScreen extends ConsumerWidget {
               StorageCategoryTile(
                 icon: Icons.audiotrack_outlined,
                 color: const Color(0xFFFF8A65),
-                title: 'Audio',
+                title: context.l10n.audio,
                 count: info.audioCount,
                 sizeBytes: info.audioSize,
                 percentage: info.totalSpace > 0
@@ -196,7 +198,7 @@ class DashboardScreen extends ConsumerWidget {
               StorageCategoryTile(
                 icon: Icons.folder_open_outlined,
                 color: context.customColors.orange,
-                title: 'Documents & Files',
+                title: context.l10n.documentsAndFiles,
                 count: info.documentsCount,
                 sizeBytes: info.documentsSize,
                 percentage: info.totalSpace > 0
@@ -210,7 +212,7 @@ class DashboardScreen extends ConsumerWidget {
               StorageCategoryTile(
                 icon: Icons.dns_outlined,
                 color: context.customColors.secondary,
-                title: 'System & Apps',
+                title: context.l10n.systemAndApps,
                 count: info.appsCount,
                 sizeBytes: info.systemSize,
                 percentage: info.totalSpace > 0
@@ -235,7 +237,7 @@ class DashboardScreen extends ConsumerWidget {
               border: Border(top: BorderSide(color: context.appBorder)),
             ),
             child: AppButton(
-              text: 'Smart Cleanup Plan',
+              text: context.l10n.smartCleanupPlan,
               icon: const Icon(Icons.cleaning_services_outlined),
               onPressed: () {
                 context.push(RouteConstants.smartCleanup);

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../controllers/downloads_controller.dart';
@@ -33,7 +33,7 @@ class DownloadsCleanerScreen extends ConsumerWidget {
                 state.selectedCount < state.items.length
                     ? 'Select All'
                     : 'Deselect All',
-                style: const TextStyle(color: AppColors.primary),
+                style: TextStyle(color: context.colorScheme.primary),
               ),
             ),
         ],
@@ -104,8 +104,8 @@ class DownloadsCleanerScreen extends ConsumerWidget {
           if (state.selectedCount > 0)
             Text(
               'Selected: ${state.selectedCount} (${FileUtils.formatSize(state.selectedSize)})',
-              style: const TextStyle(
-                color: AppColors.primary,
+              style: TextStyle(
+                color: context.colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -138,7 +138,7 @@ class DownloadsCleanerScreen extends ConsumerWidget {
               ? null
               : () => _confirmDelete(context, ref, state, controller),
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.error,
+            backgroundColor: context.colorScheme.error,
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 54),
             shape: RoundedRectangleBorder(
@@ -175,7 +175,9 @@ class DownloadsCleanerScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
+            style: TextButton.styleFrom(
+              foregroundColor: context.colorScheme.error,
+            ),
             child: const Text('Delete'),
           ),
         ],
@@ -225,7 +227,7 @@ class _DownloadListTile extends StatelessWidget {
         style: TextStyle(fontSize: 12, color: context.appTextSecondary),
       ),
       secondary: _buildFileIcon(context, item),
-      activeColor: AppColors.primary,
+      activeColor: context.colorScheme.primary,
       contentPadding: EdgeInsets.zero,
     );
   }
@@ -265,22 +267,22 @@ class _DownloadListTile extends StatelessWidget {
 
     if (mime.contains('pdf')) {
       icon = Icons.picture_as_pdf_outlined;
-      color = Colors.red;
+      color = context.colorScheme.error;
     } else if (mime.contains('image')) {
       icon = Icons.image_outlined;
-      color = Colors.blue;
+      color = context.colorScheme.primary;
     } else if (mime.contains('video')) {
       icon = Icons.video_library_outlined;
-      color = Colors.purple;
+      color = context.customColors.secondary;
     } else if (mime.contains('audio')) {
       icon = Icons.audiotrack_outlined;
-      color = Colors.green;
+      color = context.customColors.success;
     } else if (mime.contains('zip') || mime.contains('rar')) {
       icon = Icons.archive_outlined;
-      color = Colors.orange;
+      color = context.customColors.orange;
     } else if (mime.contains('android.package-archive')) {
       icon = Icons.android_outlined;
-      color = Colors.lightGreen;
+      color = context.customColors.success;
     }
 
     return Container(

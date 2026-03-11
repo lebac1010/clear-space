@@ -36,6 +36,7 @@ abstract class AppColors {
   static const Color textSecondaryDark = Color(0xFFA1A3A6);
   static const Color textTertiaryDark = Color(0xFF757575);
   static const Color borderDark = Color(0xFF333538);
+  // Primary Brand Color from Stitch
 
   // Status Colors (Dark mode adjusted)
   static const Color errorDark = Color(0xFFE57373);
@@ -44,7 +45,9 @@ abstract class AppColors {
 
   // Feature Colors
   static const Color orange = Color(0xFFFF9800);
+  static const Color orangeDark = Color(0xFFFFB74D);
   static const Color purple = Color(0xFF9C27B0);
+  static const Color secondaryDark = Color(0xFFBA68C8);
 }
 
 class AppThemeColors extends ThemeExtension<AppThemeColors> {
@@ -132,11 +135,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(imagePlaceholder, other.imagePlaceholder, t) ??
           imagePlaceholder,
       imagePlaceholderMuted:
-          Color.lerp(
-            imagePlaceholderMuted,
-            other.imagePlaceholderMuted,
-            t,
-          ) ??
+          Color.lerp(imagePlaceholderMuted, other.imagePlaceholderMuted, t) ??
           imagePlaceholderMuted,
     );
   }

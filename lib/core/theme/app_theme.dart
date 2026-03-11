@@ -225,9 +225,7 @@ class AppTheme {
 
       checkboxTheme: CheckboxThemeData(
         side: const BorderSide(color: AppColors.border),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
 
       progressIndicatorTheme: const ProgressIndicatorThemeData(
@@ -334,7 +332,15 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      extensions: const [CustomColors.dark, AppThemeColors.dark],
+      extensions: const [
+        CustomColors(
+          success: AppColors.successDark,
+          orange: AppColors.orangeDark,
+          secondary: AppColors.secondaryDark,
+          purple: AppColors.purple,
+        ),
+        AppThemeColors.dark,
+      ],
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
         onPrimary: Colors.white,
@@ -487,9 +493,7 @@ class AppTheme {
 
       checkboxTheme: CheckboxThemeData(
         side: const BorderSide(color: AppColors.borderDark),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
 
       progressIndicatorTheme: const ProgressIndicatorThemeData(

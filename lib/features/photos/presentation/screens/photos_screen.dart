@@ -104,11 +104,11 @@ class PhotosScreen extends ConsumerWidget {
           photosAsync.when(
             data: (photos) {
               if (photos.isEmpty) {
-                return const SliverToBoxAdapter(
+                return SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
-                      child: Text('No photos found'),
+                      child: Text(context.l10n.noPhotosFound),
                     ),
                   ),
                 );
@@ -141,7 +141,9 @@ class PhotosScreen extends ConsumerWidget {
               ),
             ),
             error: (err, stack) => SliverToBoxAdapter(
-              child: Center(child: Text('Error loading photos: $err')),
+              child: Center(
+                child: Text(context.l10n.errorLoadingPhotos(err.toString())),
+              ),
             ),
           ),
 
@@ -168,8 +170,10 @@ class PhotosScreen extends ConsumerWidget {
             // Duplicates Card
             Expanded(
               child: _AnalysisCard(
-                title: 'Duplicates',
-                subtitle: '${FileUtils.formatSize(duplicateSize)} potential',
+                title: context.l10n.duplicates,
+                subtitle: context.l10n.potentialSize(
+                  FileUtils.formatSize(duplicateSize),
+                ),
                 icon: Icons.copy,
                 color: context.customColors.orange,
                 onTap: () {
@@ -182,8 +186,10 @@ class PhotosScreen extends ConsumerWidget {
             // Similar Photos Card
             Expanded(
               child: _AnalysisCard(
-                title: 'Similar',
-                subtitle: '${FileUtils.formatSize(similarSize)} potential',
+                title: context.l10n.similar,
+                subtitle: context.l10n.potentialSize(
+                  FileUtils.formatSize(similarSize),
+                ),
                 icon: Icons.photo_library_outlined,
                 color: context.customColors.purple,
                 onTap: () {
@@ -242,10 +248,7 @@ class _AnalysisCard extends StatelessWidget {
           const Gap(4),
           Text(
             subtitle,
-            style: TextStyle(
-              color: context.appTextSecondary,
-              fontSize: 13,
-            ),
+            style: TextStyle(color: context.appTextSecondary, fontSize: 13),
           ),
         ],
       ),

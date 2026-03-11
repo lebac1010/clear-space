@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/widgets/app_button.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -69,10 +69,10 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
                 ),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.shield_outlined,
                 size: 48,
-                color: AppColors.primary,
+                color: context.colorScheme.primary,
               ),
             ),
             const Gap(24),

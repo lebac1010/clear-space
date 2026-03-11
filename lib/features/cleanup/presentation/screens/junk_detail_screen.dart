@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
@@ -14,16 +14,16 @@ class JunkDetailScreen extends ConsumerWidget {
 
   const JunkDetailScreen({super.key, required this.type});
 
-  String get _title {
+  String _title(BuildContext context) {
     switch (type) {
       case 'junk':
-        return 'Temporary & Log Files';
+        return context.l10n.tempAndLogFiles;
       case 'empty_folders':
-        return 'Empty Folders';
+        return context.l10n.emptyFolders;
       case 'apks':
-        return 'Safe APK Installers';
+        return context.l10n.safeApkInstallers;
       default:
-        return 'Junk Files';
+        return context.l10n.junkFiles;
     }
   }
 
@@ -53,7 +53,7 @@ class JunkDetailScreen extends ConsumerWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          _title,
+          _title(context),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -69,13 +69,17 @@ class JunkDetailScreen extends ConsumerWidget {
                   controller.selectAll();
                 }
               },
-              child: Text(state.allSelected ? 'Deselect All' : 'Select All'),
+              child: Text(
+                state.allSelected
+                    ? context.l10n.deselectAll
+                    : context.l10n.selectAll,
+              ),
             ),
         ],
       ),
       body: state.items.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
+        loading: () => Center(
+          child: CircularProgressIndicator(color: context.colorScheme.primary),
         ),
         error: (err, _) => ErrorView(
           message: err.toString(),
@@ -94,7 +98,7 @@ class JunkDetailScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No items found',
+                    context.l10n.noItemsFound,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -103,7 +107,7 @@ class JunkDetailScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'All clean!',
+                    context.l10n.allClean,
                     style: TextStyle(
                       fontSize: 14,
                       color: context.appTextTertiary,
@@ -162,7 +166,7 @@ class JunkDetailScreen extends ConsumerWidget {
       child: Row(
         children: [
           Text(
-            '${state.selectedCount} / ${items.length} selected',
+            context.l10n.appsShowingCount(state.selectedCount, items.length),
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
@@ -172,10 +176,10 @@ class JunkDetailScreen extends ConsumerWidget {
           if (state.selectedCount > 0)
             Text(
               FileUtils.formatSize(state.selectedSize),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: AppColors.error,
+                color: context.colorScheme.error,
               ),
             ),
         ],
@@ -212,12 +216,14 @@ class JunkDetailScreen extends ConsumerWidget {
               : const Icon(Icons.delete_outline_rounded),
           label: Text(
             state.isDeleting
-                ? 'Deleting...'
-                : 'Delete ${state.selectedCount} items'
-                      ' (${FileUtils.formatSize(state.selectedSize)})',
+                ? context.l10n.deleting
+                : context.l10n.deleteItemsCount(
+                    state.selectedCount,
+                    FileUtils.formatSize(state.selectedSize),
+                  ),
           ),
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.error,
+            backgroundColor: context.colorScheme.error,
             padding: const EdgeInsets.all(16),
           ),
         ),
@@ -234,16 +240,15 @@ class JunkDetailScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete Files'),
+        title: Text(context.l10n.deleteFilesTitle),
         content: Text(
-          'Are you sure you want to delete ${state.selectedCount} items'
-          ' (${FileUtils.formatSize(state.selectedSize)})?\n\n'
-          'This action cannot be undone.',
+          '${context.l10n.deleteConfirmMsg(state.selectedCount)} (${FileUtils.formatSize(state.selectedSize)})\n\n'
+          '${context.l10n.actionCannotBeUndone}',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -264,8 +269,10 @@ class JunkDetailScreen extends ConsumerWidget {
                     ..showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Deleted $deletedCount items'
-                          ' (${FileUtils.formatSize(deletedBytes)})',
+                          context.l10n.deletedCountMsg(
+                            deletedCount,
+                            FileUtils.formatSize(deletedBytes),
+                          ),
                         ),
                         behavior: SnackBarBehavior.floating,
                       ),
@@ -276,13 +283,17 @@ class JunkDetailScreen extends ConsumerWidget {
                   ScaffoldMessenger.of(context)
                     ..clearSnackBars()
                     ..showSnackBar(
-                      SnackBar(content: Text('Delete failed: $e')),
+                      SnackBar(
+                        content: Text(context.l10n.cleanupFailed(e.toString())),
+                      ),
                     );
                 }
               }
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Delete'),
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+            ),
+            child: Text(context.l10n.delete),
           ),
         ],
       ),
@@ -311,12 +322,12 @@ class _JunkItemTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.error.withValues(alpha: 0.06)
+              ? context.colorScheme.error.withValues(alpha: 0.06)
               : context.appSurface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? AppColors.error.withValues(alpha: 0.3)
+                ? context.colorScheme.error.withValues(alpha: 0.3)
                 : context.appBorder,
           ),
         ),
@@ -326,7 +337,7 @@ class _JunkItemTile extends StatelessWidget {
             Checkbox(
               value: isSelected,
               onChanged: (_) => onTap(),
-              activeColor: AppColors.error,
+              activeColor: context.colorScheme.error,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -337,7 +348,9 @@ class _JunkItemTile extends StatelessWidget {
             Icon(
               _getIcon(),
               size: 24,
-              color: isSelected ? AppColors.error : context.appTextTertiary,
+              color: isSelected
+                  ? context.colorScheme.error
+                  : context.appTextTertiary,
             ),
             const SizedBox(width: 12),
             // Name + path
@@ -353,7 +366,7 @@ class _JunkItemTile extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: isSelected
-                          ? AppColors.error
+                          ? context.colorScheme.error
                           : context.appTextPrimary,
                     ),
                   ),
@@ -379,7 +392,9 @@ class _JunkItemTile extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? AppColors.error : AppColors.primary,
+                  color: isSelected
+                      ? context.colorScheme.error
+                      : context.colorScheme.primary,
                 ),
               ),
           ],

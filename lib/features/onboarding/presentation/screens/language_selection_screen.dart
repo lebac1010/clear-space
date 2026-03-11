@@ -129,7 +129,7 @@ class _LanguageSelectionScreenState
             children: [
               const Gap(16),
               Text(
-                'Select Your Language',
+                l10n?.selectYourLanguage ?? 'Select Your Language',
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface,
@@ -137,7 +137,8 @@ class _LanguageSelectionScreenState
               ),
               const Gap(8),
               Text(
-                'You can change this later in Settings.',
+                l10n?.changeLaterInSettings ??
+                    'You can change this later in Settings.',
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),

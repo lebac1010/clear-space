@@ -23,11 +23,29 @@ class MediaExplorerScreen extends ConsumerStatefulWidget {
 class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
   late String _selectedType;
   late PageController _pageController;
-  final List<_TabItem> _tabs = const [
-    _TabItem(type: 'audio', label: 'Audio', icon: Icons.audiotrack_rounded),
-    _TabItem(type: 'video', label: 'Video', icon: Icons.movie_rounded),
-    _TabItem(type: 'documents', label: 'Docs', icon: Icons.description_rounded),
-  ];
+  late List<_TabItem> _tabs;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _tabs = [
+      _TabItem(
+        type: 'audio',
+        label: context.l10n.audio,
+        icon: Icons.audiotrack_rounded,
+      ),
+      _TabItem(
+        type: 'video',
+        label: context.l10n.videos,
+        icon: Icons.movie_rounded,
+      ),
+      _TabItem(
+        type: 'documents',
+        label: context.l10n.documentsAndFiles,
+        icon: Icons.description_rounded,
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -144,7 +162,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                               tab.icon,
                               size: 16,
                               color: isActive
-                                  ? AppColors.primary
+                                  ? context.colorScheme.primary
                                   : context.appTextTertiary,
                             ),
                             const SizedBox(width: 6),
@@ -156,7 +174,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                                     ? FontWeight.w700
                                     : FontWeight.w500,
                                 color: isActive
-                                    ? AppColors.primary
+                                    ? context.colorScheme.primary
                                     : context.appTextSecondary,
                               ),
                             ),
@@ -252,8 +270,8 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
     );
 
     return state.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(color: AppColors.primary),
+      loading: () => Center(
+        child: CircularProgressIndicator(color: context.colorScheme.primary),
       ),
       error: (err, st) => ErrorView(message: err.toString()),
       data: (files) {
@@ -279,7 +297,10 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
                 const SizedBox(height: 4),
                 Text(
                   'Run a scan from Dashboard first',
-                  style: TextStyle(fontSize: 13, color: context.appTextTertiary),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: context.appTextTertiary,
+                  ),
                 ),
               ],
             ),
@@ -299,15 +320,17 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: context.colorScheme.primary.withValues(alpha: 0.08),
+                      color: context.colorScheme.primary.withValues(
+                        alpha: 0.08,
+                      ),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       '${files.length} items',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
+                        color: context.colorScheme.primary,
                       ),
                     ),
                   ),
@@ -419,7 +442,7 @@ class _MediaItemCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(
               color: isSelected
-                  ? AppColors.primary.withValues(alpha: 0.3)
+                  ? context.colorScheme.primary.withValues(alpha: 0.3)
                   : context.appBorder.withValues(alpha: 0.5),
               width: 1,
             ),
@@ -443,7 +466,7 @@ class _MediaItemCard extends StatelessWidget {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: isSelected
-                            ? AppColors.primary
+                            ? context.colorScheme.primary
                             : context.appTextPrimary,
                       ),
                     ),
@@ -489,10 +512,12 @@ class _MediaItemCard extends StatelessWidget {
                 height: 24,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? AppColors.primary : Colors.transparent,
+                  color: isSelected
+                      ? context.colorScheme.primary
+                      : Colors.transparent,
                   border: Border.all(
                     color: isSelected
-                        ? AppColors.primary
+                        ? context.colorScheme.primary
                         : context.appTextTertiary,
                     width: 1.5,
                   ),
@@ -546,7 +571,7 @@ class _IconAvatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.sm),
         border: Border.all(
           color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.3)
+              ? context.colorScheme.primary.withValues(alpha: 0.3)
               : color.withValues(alpha: 0.15),
           width: 1,
         ),
@@ -588,7 +613,7 @@ class _FloatingActionPanel extends ConsumerWidget {
             offset: const Offset(0, -4),
           ),
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.06),
+            color: context.colorScheme.primary.withValues(alpha: 0.06),
             blurRadius: 30,
             offset: const Offset(0, -2),
           ),
@@ -610,18 +635,18 @@ class _FloatingActionPanel extends ConsumerWidget {
                 children: [
                   Text(
                     '$selectedCount',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.primary,
+                      color: context.colorScheme.primary,
                     ),
                   ),
-                  const Text(
+                  Text(
                     'selected',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.primary,
+                      color: context.colorScheme.primary,
                     ),
                   ),
                 ],
@@ -659,9 +684,9 @@ class _FloatingActionPanel extends ConsumerWidget {
               onPressed: () =>
                   _showDeleteConfirmation(context, ref, selectedCount),
               icon: const Icon(Icons.delete_outline_rounded, size: 18),
-              label: const Text('Delete'),
+              label: Text(context.l10n.delete),
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.error,
+                backgroundColor: context.colorScheme.error,
                 foregroundColor: context.colorScheme.onError,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -690,17 +715,17 @@ class _FloatingActionPanel extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.error.withValues(alpha: 0.1),
+                color: context.colorScheme.error.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.warning_amber_rounded,
-                color: AppColors.error,
+                color: context.colorScheme.error,
                 size: 24,
               ),
             ),
             const SizedBox(width: 12),
-            const Text('Delete files?'),
+            Text(context.l10n.deleteFilesQuestion),
           ],
         ),
         content: Text(
@@ -711,7 +736,7 @@ class _FloatingActionPanel extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton.icon(
             onPressed: () async {
@@ -721,8 +746,10 @@ class _FloatingActionPanel extends ConsumerWidget {
                   .deleteSelected();
             },
             icon: const Icon(Icons.delete_outline_rounded, size: 18),
-            label: const Text('Delete'),
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+            label: Text(context.l10n.delete),
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+            ),
           ),
         ],
       ),

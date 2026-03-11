@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class MockDuplicateController extends DuplicateController {
+  MockDuplicateController() : super();
+
   // Helper to set state manually for testing
   void setTestState(List<CleanupGroup> groups) {
     state = AsyncData(groups);
@@ -16,7 +18,18 @@ void main() {
     late MockDuplicateController controller;
 
     setUp(() {
-      controller = MockDuplicateController();
+      final container = ProviderContainer(
+        overrides: [
+          duplicateControllerProvider(
+            CleanupType.duplicate,
+          ).overrideWith(() => MockDuplicateController()),
+        ],
+      );
+      controller =
+          container.read(
+                duplicateControllerProvider(CleanupType.duplicate).notifier,
+              )
+              as MockDuplicateController;
     });
 
     final item1 = CleanupItem(

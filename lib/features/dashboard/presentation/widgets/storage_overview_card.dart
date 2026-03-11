@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../domain/entities/storage_info.dart';
@@ -41,25 +41,28 @@ class StorageOverviewCard extends ConsumerWidget {
     final percentage = (info.usedPercentage * 100).toInt();
 
     // Determine progress bar value
-    String statusText = '$percentage% Used';
+    String statusText = context.l10n.percentUsed(percentage);
 
     // Override if scanning — show phase name for better UX
     if (currentProgress != null) {
       if (currentProgress.phase == ScanPhase.paused) {
-        statusText = 'Scan Paused (Battery Low)';
+        statusText = context.l10n.scanPausedBattery;
       } else {
-        final phaseName = _phaseName(currentProgress.phase);
+        final phaseName = _phaseName(context, currentProgress.phase);
 
         if (currentProgress.totalItems > 0) {
           final total = currentProgress.totalItems;
           final processed = currentProgress.processedItems;
           final p = (processed / total).clamp(0.0, 1.0);
-          statusText = 'Scanning $phaseName... (${(p * 100).toInt()}%)';
+          statusText = context.l10n.scanningPhasePercent(
+            phaseName,
+            (p * 100).toInt(),
+          );
         } else if (currentProgress.phase == ScanPhase.calculating) {
-          statusText = 'Calculating...';
+          statusText = context.l10n.calculating;
         } else {
           // Phase just started, totalItems not yet known
-          statusText = 'Scanning $phaseName...';
+          statusText = context.l10n.scanningPhase(phaseName);
         }
       }
     }
@@ -76,7 +79,7 @@ class StorageOverviewCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'INTERNAL STORAGE',
+                    context.l10n.internalStorage,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.0,
@@ -91,13 +94,13 @@ class StorageOverviewCard extends ConsumerWidget {
                         freeSize,
                         style: Theme.of(context).textTheme.displaySmall
                             ?.copyWith(
-                              color: AppColors.primary,
+                              color: context.colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
                       const Gap(4),
                       Text(
-                        'Free',
+                        context.l10n.free,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
@@ -110,7 +113,7 @@ class StorageOverviewCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '$totalSize Total',
+                    context.l10n.totalSize(totalSize),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: context.appTextPrimary,
@@ -118,7 +121,7 @@ class StorageOverviewCard extends ConsumerWidget {
                   ),
                   const Gap(2),
                   Text(
-                    '$usedSize Used',
+                    context.l10n.usedSize(usedSize),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
@@ -148,10 +151,10 @@ class StorageOverviewCard extends ConsumerWidget {
                       widthFactor: info.usedPercentage.clamp(0.01, 1.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             colors: [
                               Color(0xFF3B82F6),
-                              AppColors.primary,
+                              context.colorScheme.primary,
                             ], // Blue-500 to Primary
                           ),
                           borderRadius: BorderRadius.circular(100),
@@ -167,11 +170,15 @@ class StorageOverviewCard extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('0 B', style: Theme.of(context).textTheme.labelSmall),
+              Text(context.l10n.zeroBytes, style: Theme.of(context).textTheme.labelSmall),
               Text(
-                currentProgress != null ? statusText : '$percentage% Used',
+                currentProgress != null
+                    ? statusText
+                    : context.l10n.percentUsed(percentage),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: currentProgress != null ? AppColors.primary : null,
+                  color: currentProgress != null
+                      ? context.colorScheme.primary
+                      : null,
                   fontWeight: currentProgress != null ? FontWeight.bold : null,
                 ),
               ),
@@ -188,17 +195,17 @@ class StorageOverviewCard extends ConsumerWidget {
             children: [
               _QuickStat(
                 value: FileUtils.formatSize(info.photosSize),
-                label: 'PHOTOS',
+                label: context.l10n.photosTitle.toUpperCase(),
                 isFirst: true,
               ),
               _QuickStat(
                 value: FileUtils.formatSize(info.videosSize),
-                label: 'VIDEOS',
+                label: context.l10n.videos.toUpperCase(),
                 hasBorder: true,
               ),
               _QuickStat(
                 value: FileUtils.formatSize(info.systemSize),
-                label: 'OTHER',
+                label: context.l10n.other.toUpperCase(),
                 isLast: true,
               ),
             ],
@@ -208,28 +215,28 @@ class StorageOverviewCard extends ConsumerWidget {
     );
   }
 
-  String _phaseName(ScanPhase phase) {
+  String _phaseName(BuildContext context, ScanPhase phase) {
     switch (phase) {
       case ScanPhase.diskSpace:
-        return 'Disk';
+        return context.l10n.phaseDisk;
       case ScanPhase.photos:
-        return 'Photos';
+        return context.l10n.phasePhotos;
       case ScanPhase.videos:
-        return 'Videos';
+        return context.l10n.phaseVideos;
       case ScanPhase.audio:
-        return 'Audio';
+        return context.l10n.phaseAudio;
       case ScanPhase.documents:
-        return 'Documents';
+        return context.l10n.phaseDocuments;
       case ScanPhase.junk:
-        return 'Junk Files';
+        return context.l10n.phaseJunk;
       case ScanPhase.emptyFolders:
-        return 'Folders';
+        return context.l10n.phaseFolders;
       case ScanPhase.apks:
-        return 'APKs';
+        return context.l10n.phaseApks;
       case ScanPhase.similarPhotos:
-        return 'Similar Photos';
+        return context.l10n.phaseSimilar;
       default:
-        return 'Storage';
+        return context.l10n.phaseStorage;
     }
   }
 }

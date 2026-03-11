@@ -4,7 +4,7 @@ import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/route_constants.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -31,7 +31,7 @@ class CleanupScreen extends ConsumerWidget {
         scrolledUnderElevation: 0,
         centerTitle: false,
         title: Text(
-          'Cleanup',
+          context.l10n.cleanup,
           style: Theme.of(
             context,
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -54,7 +54,7 @@ class CleanupScreen extends ConsumerWidget {
                 const _CleanupHeader(),
                 const Gap(24),
                 Text(
-                  'Suggestions',
+                  context.l10n.suggestions,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -63,16 +63,16 @@ class CleanupScreen extends ConsumerWidget {
                 ),
                 const Gap(16),
                 CleanupCategoryTile(
-                  title: 'Duplicate Files',
-                  subtitle: 'Find and remove identical files',
+                  title: context.l10n.duplicateFiles,
+                  subtitle: context.l10n.findIdenticalFiles,
                   size: storageAsync.when(
                     data: (info) => info != null
                         ? FileUtils.formatSize(info.potentialSavings)
                         : '0 B',
-                    loading: () => 'Analyzing...',
+                    loading: () => context.l10n.analyzing,
                     error: (_, __) => 'Error',
                   ),
-                  color: AppColors.secondary,
+                  color: context.customColors.secondary,
                   icon: Icons.copy_all_rounded,
                   onTap: () => context.goNamed(
                     'duplicates',
@@ -81,16 +81,16 @@ class CleanupScreen extends ConsumerWidget {
                 ),
                 const Gap(12),
                 CleanupCategoryTile(
-                  title: 'Similar Photos',
-                  subtitle: 'Find key photo moments',
+                  title: context.l10n.similarPhotos,
+                  subtitle: context.l10n.findKeyMoments,
                   size: storageAsync.when(
                     data: (info) => info != null
                         ? FileUtils.formatSize(info.similarPhotoSize)
                         : '0 B',
-                    loading: () => 'Analyzing...',
+                    loading: () => context.l10n.analyzing,
                     error: (_, __) => 'Error',
                   ),
-                  color: AppColors.primary,
+                  color: context.colorScheme.primary,
                   icon: Icons.photo_library_rounded,
                   onTap: () => context.goNamed(
                     'duplicates',
@@ -109,16 +109,16 @@ class CleanupScreen extends ConsumerWidget {
                     }
 
                     return CleanupCategoryTile(
-                      title: 'Large Files',
-                      subtitle: 'Files larger than $label',
+                      title: context.l10n.largeFiles,
+                      subtitle: context.l10n.filesLargerThan(label),
                       size: storageAsync.when(
                         data: (info) => info != null
                             ? FileUtils.formatSize(info.largeFilesTotalSize)
                             : '0 B',
-                        loading: () => 'Analyzing...',
+                        loading: () => context.l10n.analyzing,
                         error: (_, __) => 'Error',
                       ),
-                      color: AppColors.error,
+                      color: context.colorScheme.error,
                       icon: Icons.video_file_rounded,
                       onTap: () => context.go(RouteConstants.largeFiles),
                     );
@@ -126,27 +126,27 @@ class CleanupScreen extends ConsumerWidget {
                 ),
                 const Gap(12),
                 CleanupCategoryTile(
-                  title: 'Screenshots',
-                  subtitle: 'Find and delete screenshots',
+                  title: context.l10n.screenshots,
+                  subtitle: context.l10n.findAndDeleteScreenshots,
                   size: screenshotsState.isLoading
                       ? 'Analyzing...'
                       : screenshotsState.errorMessage != null
                       ? 'Error'
                       : FileUtils.formatSize(screenshotsState.totalSize),
-                  color: AppColors.orange,
+                  color: context.customColors.orange,
                   icon: Icons.screenshot_rounded,
                   onTap: () => context.push(RouteConstants.screenshots),
                 ),
                 const Gap(12),
                 CleanupCategoryTile(
-                  title: 'Downloads',
-                  subtitle: 'Manage your downloaded files',
+                  title: context.l10n.downloads,
+                  subtitle: context.l10n.manageDownloadedFiles,
                   size: downloadsState.isLoading
                       ? 'Analyzing...'
                       : downloadsState.errorMessage != null
                       ? 'Error'
                       : FileUtils.formatSize(downloadsState.totalSize),
-                  color: AppColors.primary,
+                  color: context.colorScheme.primary,
                   icon: Icons.download_rounded,
                   onTap: () => context.push(RouteConstants.downloads),
                 ),
@@ -174,15 +174,15 @@ class _CleanupHeader extends StatelessWidget {
               color: context.colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.cleaning_services_rounded,
               size: 48,
-              color: AppColors.primary,
+              color: context.colorScheme.primary,
             ),
           ),
           const Gap(16),
           Text(
-            'Keep your storage healthy',
+            context.l10n.keepStorageHealthy,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -191,7 +191,7 @@ class _CleanupHeader extends StatelessWidget {
           ),
           const Gap(8),
           Text(
-            'We found some files you might want to remove to free up space.',
+            context.l10n.cleanupHeaderDesc,
             textAlign: TextAlign.center,
             style: TextStyle(color: context.appTextSecondary, height: 1.5),
           ),

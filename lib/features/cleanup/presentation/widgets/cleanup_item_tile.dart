@@ -95,9 +95,9 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
                     color: context.appSurface,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.check_circle,
-                    color: AppColors.primary,
+                    color: context.colorScheme.primary,
                     size: 20,
                   ),
                 ),
@@ -135,10 +135,7 @@ class _CleanupItemTileState extends ConsumerState<CleanupItemTile> {
               widget.item.path.split('/').last,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 11,
-                color: context.appTextTertiary,
-              ),
+              style: TextStyle(fontSize: 11, color: context.appTextTertiary),
             ),
           ),
         ],

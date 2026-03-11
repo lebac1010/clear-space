@@ -17,7 +17,7 @@ void main() {
     test('formatSize formats MB correctly', () {
       expect(FileUtils.formatSize(1024 * 1024), '1.0 MB');
       expect(
-        FileUtils.formatSize(1024 * 1024 * 1.5 as int),
+        FileUtils.formatSize((1024 * 1024 * 1.5).toInt()),
         '1.5 MB',
       ); // Cast for calculation
     });

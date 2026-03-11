@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../dashboard/data/providers/storage_provider.dart';
@@ -23,7 +23,7 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        title: const Text('Screenshots Cleaner'),
+        title: Text(context.l10n.screenshotsCleanerTitle),
         actions: [
           if (state.items.isNotEmpty)
             TextButton(
@@ -32,9 +32,9 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
               ),
               child: Text(
                 state.selectedCount < state.items.length
-                    ? 'Select All'
-                    : 'Deselect All',
-                style: const TextStyle(color: AppColors.primary),
+                    ? context.l10n.selectAll
+                    : context.l10n.deselectAll,
+                style: TextStyle(color: context.colorScheme.primary),
               ),
             ),
         ],
@@ -49,7 +49,7 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
           : state.items.isEmpty
           ? Center(
               child: Text(
-                'No screenshots found',
+                context.l10n.noPhotosFound,
                 style: TextStyle(color: context.appTextSecondary),
               ),
             )
@@ -94,7 +94,7 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${state.items.length} screenshots',
+                context.l10n.screenshotsCount(state.items.length),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
@@ -108,9 +108,12 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
           ),
           if (state.selectedCount > 0)
             Text(
-              'Selected: ${state.selectedCount} (${FileUtils.formatSize(state.selectedSize)})',
-              style: const TextStyle(
-                color: AppColors.primary,
+              context.l10n.selectedCountSize(
+                state.selectedCount,
+                FileUtils.formatSize(state.selectedSize),
+              ),
+              style: TextStyle(
+                color: context.colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -143,7 +146,7 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
               ? null
               : () => _confirmDelete(context, ref, state, controller),
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.error,
+            backgroundColor: context.colorScheme.error,
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 54),
             shape: RoundedRectangleBorder(
@@ -153,7 +156,9 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
           child: state.isDeleting
               ? const CircularProgressIndicator(color: Colors.white)
               : Text(
-                  'Delete Selected (${FileUtils.formatSize(state.selectedSize)})',
+                  context.l10n.deleteSelectedSize(
+                    FileUtils.formatSize(state.selectedSize),
+                  ),
                 ),
         ),
       ),
@@ -169,17 +174,19 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmation'),
-        content: Text('Delete ${state.selectedCount} screenshots permanently?'),
+        title: Text(context.l10n.confirmation),
+        content: Text(context.l10n.deleteCountScreenshots(state.selectedCount)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Delete'),
+            style: TextButton.styleFrom(
+              foregroundColor: context.colorScheme.error,
+            ),
+            child: Text(context.l10n.delete),
           ),
         ],
       ),
@@ -190,15 +197,13 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
       if (context.mounted) {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Screenshots deleted successfully')),
+            SnackBar(content: Text(context.l10n.screenshotsDeletedSuccess)),
           );
         } else {
           // [Bug #8 fix] Show error feedback on deletion failure
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                'Failed to delete some screenshots. Please try again.',
-              ),
+              content: Text(context.l10n.deleteFailedGeneral),
               backgroundColor: context.colorScheme.error,
             ),
           );
@@ -215,7 +220,8 @@ class _ScreenshotGridTile extends ConsumerStatefulWidget {
   const _ScreenshotGridTile({required this.item, required this.onToggle});
 
   @override
-  ConsumerState<_ScreenshotGridTile> createState() => _ScreenshotGridTileState();
+  ConsumerState<_ScreenshotGridTile> createState() =>
+      _ScreenshotGridTileState();
 }
 
 class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
@@ -278,7 +284,7 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: widget.item.isSelected
-                    ? AppColors.primary
+                    ? context.colorScheme.primary
                     : context.appBorder.withValues(alpha: 0.5),
                 width: widget.item.isSelected ? 2 : 1,
               ),
@@ -301,7 +307,7 @@ class _ScreenshotGridTileState extends ConsumerState<_ScreenshotGridTile> {
                     ? Icons.check_circle
                     : Icons.circle_outlined,
                 color: widget.item.isSelected
-                    ? AppColors.primary
+                    ? context.colorScheme.primary
                     : context.appTextTertiary,
                 size: 24,
               ),
