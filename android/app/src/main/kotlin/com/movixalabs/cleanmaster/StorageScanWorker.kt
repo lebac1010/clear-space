@@ -1,11 +1,11 @@
-package com.lebac.storage_dashboard.clear_space
+package com.movixalabs.cleanmaster
 
 import android.content.Context
 import androidx.work.*
-import com.lebac.storage_dashboard.clear_space.utils.MediaStoreScanner
-import com.lebac.storage_dashboard.clear_space.utils.ScanUpdate
+import com.movixalabs.cleanmaster.utils.MediaStoreScanner
+import com.movixalabs.cleanmaster.utils.ScanUpdate
 import kotlinx.coroutines.flow.collect
-import com.lebac.storage_dashboard.clear_space.models.StorageInfo
+import com.movixalabs.cleanmaster.models.StorageInfo
 import com.google.gson.Gson
 
 /**

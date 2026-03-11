@@ -1,7 +1,7 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
-import com.lebac.storage_dashboard.clear_space.models.LargeFileInfo
-import com.lebac.storage_dashboard.clear_space.models.MediaType
+import com.movixalabs.cleanmaster.models.LargeFileInfo
+import com.movixalabs.cleanmaster.models.MediaType
 import java.util.PriorityQueue
 
 /**

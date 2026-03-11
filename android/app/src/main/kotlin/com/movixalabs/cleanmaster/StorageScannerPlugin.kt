@@ -1,11 +1,11 @@
-package com.lebac.storage_dashboard.clear_space
+package com.movixalabs.cleanmaster
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import com.lebac.storage_dashboard.clear_space.utils.ProgressStreamHandler
+import com.movixalabs.cleanmaster.utils.ProgressStreamHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
@@ -65,7 +65,7 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
         val intent = Intent(context, StorageScannerService::class.java)
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
         
-        val packageName = "com.lebac.storage_dashboard.clear_space"
+        val packageName = "com.movixalabs.cleanmaster"
         
         methodChannel = MethodChannel(binding.binaryMessenger, "$packageName/storage_scanner")
         methodChannel.setMethodCallHandler(this)
@@ -333,7 +333,7 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
                 
                 val inputData = androidx.work.workDataOf("types" to types.toTypedArray())
                 
-                val request = androidx.work.OneTimeWorkRequest.Builder(com.lebac.storage_dashboard.clear_space.workers.CleanupWorker::class.java)
+                val request = androidx.work.OneTimeWorkRequest.Builder(com.movixalabs.cleanmaster.workers.CleanupWorker::class.java)
                     .setInputData(inputData)
                     .setExpedited(androidx.work.OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                     .addTag("cleanup_job")

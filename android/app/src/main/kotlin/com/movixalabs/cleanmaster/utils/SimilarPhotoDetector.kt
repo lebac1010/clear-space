@@ -1,4 +1,4 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,8 +6,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
-import com.lebac.storage_dashboard.clear_space.models.DuplicateFileInfo
-import com.lebac.storage_dashboard.clear_space.models.DuplicateItem
+import com.movixalabs.cleanmaster.models.DuplicateFileInfo
+import com.movixalabs.cleanmaster.models.DuplicateItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit

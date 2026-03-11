@@ -1,4 +1,4 @@
-package com.lebac.storage_dashboard.clear_space.models
+package com.movixalabs.cleanmaster.models
 
 data class DuplicateFileInfo(
     val signature: String,  // name_size hash

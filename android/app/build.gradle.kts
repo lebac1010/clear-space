@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.lebac.storage_dashboard.clear_space"
+    namespace = "com.movixalabs.cleanmaster"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.lebac.storage_dashboard.clear_space"
+        applicationId = "com.movixalabs.cleanmaster"
         // [P10] Explicit SDK versions for Play Store compliance (Aug 2025: targetSdk >= 35)
         minSdk = 24
         targetSdk = 35

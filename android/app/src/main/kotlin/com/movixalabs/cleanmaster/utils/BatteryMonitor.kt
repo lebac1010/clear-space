@@ -1,4 +1,4 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context

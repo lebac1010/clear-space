@@ -1,7 +1,7 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
-import com.lebac.storage_dashboard.clear_space.models.DuplicateFileInfo
-import com.lebac.storage_dashboard.clear_space.models.DuplicateItem
+import com.movixalabs.cleanmaster.models.DuplicateFileInfo
+import com.movixalabs.cleanmaster.models.DuplicateItem
 
 /**
  * Detects duplicate files based on name + size signature.

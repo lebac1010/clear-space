@@ -1,4 +1,4 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
 import android.content.ContentResolver
 import android.content.ContentUris
@@ -10,7 +10,7 @@ import android.os.Environment
 import android.os.StatFs
 import android.app.usage.StorageStatsManager
 import android.provider.MediaStore
-import com.lebac.storage_dashboard.clear_space.models.*
+import com.movixalabs.cleanmaster.models.*
 import android.content.pm.PackageManager
 import android.util.Log
 import kotlinx.coroutines.*

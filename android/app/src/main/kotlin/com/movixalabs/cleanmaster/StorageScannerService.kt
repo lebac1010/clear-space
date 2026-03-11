@@ -1,4 +1,4 @@
-package com.lebac.storage_dashboard.clear_space
+package com.movixalabs.cleanmaster
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -14,9 +14,9 @@ import android.os.IBinder
 import android.util.Log
 import android.os.Environment
 import androidx.core.app.NotificationCompat
-import com.lebac.storage_dashboard.clear_space.models.ScanPhase
-import com.lebac.storage_dashboard.clear_space.models.ScanProgress
-import com.lebac.storage_dashboard.clear_space.utils.*
+import com.movixalabs.cleanmaster.models.ScanPhase
+import com.movixalabs.cleanmaster.models.ScanProgress
+import com.movixalabs.cleanmaster.utils.*
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch

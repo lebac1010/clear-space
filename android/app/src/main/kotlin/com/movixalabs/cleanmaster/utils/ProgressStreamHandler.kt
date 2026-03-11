@@ -1,8 +1,8 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
 import android.os.Handler
 import android.os.Looper
-import com.lebac.storage_dashboard.clear_space.models.ScanProgress
+import com.movixalabs.cleanmaster.models.ScanProgress
 import io.flutter.plugin.common.EventChannel
 import java.util.concurrent.atomic.AtomicBoolean
 

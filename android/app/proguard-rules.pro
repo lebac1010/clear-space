@@ -2,7 +2,7 @@
 # [E5] Prevent R8 from obfuscating classes used with Gson reflection
 
 # Keep model classes used with Gson serialization
--keep class com.lebac.storage_dashboard.clear_space.models.** { *; }
+-keep class com.movixalabs.cleanmaster.models.** { *; }
 
 # Keep Gson itself
 -keep class com.google.gson.** { *; }
@@ -11,9 +11,9 @@
 -dontwarn com.google.gson.**
 
 # Keep WorkManager worker classes
--keep class com.lebac.storage_dashboard.clear_space.workers.** { *; }
--keep class com.lebac.storage_dashboard.clear_space.StorageScanWorker { *; }
--keep class com.lebac.storage_dashboard.clear_space.StorageCacheManager { *; }
+-keep class com.movixalabs.cleanmaster.workers.** { *; }
+-keep class com.movixalabs.cleanmaster.StorageScanWorker { *; }
+-keep class com.movixalabs.cleanmaster.StorageCacheManager { *; }
 
 # Keep Flutter plugin entry point
--keep class com.lebac.storage_dashboard.clear_space.StorageScannerPlugin { *; }
+-keep class com.movixalabs.cleanmaster.StorageScannerPlugin { *; }

@@ -1,10 +1,10 @@
-package com.lebac.storage_dashboard.clear_space.workers
+package com.movixalabs.cleanmaster.workers
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.lebac.storage_dashboard.clear_space.utils.MediaStoreScanner
+import com.movixalabs.cleanmaster.utils.MediaStoreScanner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.app.NotificationChannel

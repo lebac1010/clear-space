@@ -1,11 +1,11 @@
-package com.lebac.storage_dashboard.clear_space.utils
+package com.movixalabs.cleanmaster.utils
 
 import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
-import com.lebac.storage_dashboard.clear_space.models.StorageVolumeInfo
+import com.movixalabs.cleanmaster.models.StorageVolumeInfo
 import java.io.File
 import java.lang.reflect.Method
 

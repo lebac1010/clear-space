@@ -1,4 +1,4 @@
-package com.lebac.storage_dashboard.clear_space
+package com.movixalabs.cleanmaster
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
