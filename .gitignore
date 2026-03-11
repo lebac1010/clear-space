@@ -55,6 +55,8 @@ app.*.map.json
 /android/key.properties
 **/*.keystore
 **/*.jks
+/android/keystore/
+/artifacts/
 
 # iOS/macOS Specific
 **/ios/Flutter/Generated.xcconfig
