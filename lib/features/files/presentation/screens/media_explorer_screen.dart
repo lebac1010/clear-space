@@ -24,6 +24,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
   late String _selectedType;
   late PageController _pageController;
   late List<_TabItem> _tabs;
+  bool _isInitialized = false;
 
   @override
   void didChangeDependencies() {
@@ -45,16 +46,22 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
         icon: Icons.description_rounded,
       ),
     ];
+    
+    // Only set up the PageController and selected type the first time
+    if (!_isInitialized) {
+      _selectedType = widget.initialType;
+      final initialIndex = _tabs
+          .indexWhere((t) => t.type == _selectedType)
+          .clamp(0, 2);
+      _pageController = PageController(initialPage: initialIndex);
+      _isInitialized = true;
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _selectedType = widget.initialType;
-    final initialIndex = _tabs
-        .indexWhere((t) => t.type == _selectedType)
-        .clamp(0, 2);
-    _pageController = PageController(initialPage: initialIndex);
+    // Move _tabs access out of here as context is not fully available yet for l10n
   }
 
   @override
