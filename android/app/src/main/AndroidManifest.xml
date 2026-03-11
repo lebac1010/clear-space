@@ -20,7 +20,7 @@
     </queries>
 
     <application
-        android:label="Clean Master Space: Optimizer"
+        android:label="ClearMaster"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round">
