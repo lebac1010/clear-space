@@ -22,7 +22,7 @@ KEYSTORE_DIR="${ANDROID_DIR}/keystore"
 KEYSTORE_FILE_NAME="upload-keystore.jks"
 KEYSTORE_PATH="${KEYSTORE_DIR}/${KEYSTORE_FILE_NAME}"
 KEY_PROPERTIES_PATH="${ANDROID_DIR}/key.properties"
-RELATIVE_KEYSTORE_PATH="keystore/${KEYSTORE_FILE_NAME}"
+RELATIVE_KEYSTORE_PATH="../keystore/${KEYSTORE_FILE_NAME}"
 
 echo
 echo -e "${MAGENTA}============================================${NC}"

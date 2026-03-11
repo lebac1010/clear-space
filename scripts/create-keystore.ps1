@@ -30,7 +30,7 @@ $keystoreDir = Join-Path $androidDir "keystore"
 $keystoreFileName = "upload-keystore.jks"
 $keystorePath = Join-Path $keystoreDir $keystoreFileName
 $keyPropertiesPath = Join-Path $androidDir "key.properties"
-$relativeKeystorePath = "keystore/$keystoreFileName"
+$relativeKeystorePath = "../keystore/$keystoreFileName"
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Magenta
