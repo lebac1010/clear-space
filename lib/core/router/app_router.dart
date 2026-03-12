@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:flutter/material.dart';
 
+import '../extensions/build_context_x.dart';
 import '../../features/cleanup/presentation/screens/cleanup_screen.dart';
 import '../../features/cleanup/presentation/screens/duplicate_list_screen.dart';
 import '../../features/cleanup/presentation/screens/large_file_list_screen.dart';
@@ -17,6 +18,7 @@ import '../../features/files/presentation/screens/media_explorer_screen.dart';
 import '../../features/apps/presentation/screens/app_manager_screen.dart';
 import '../../features/photos/presentation/screens/photos_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/settings/presentation/screens/legal_document_screen.dart';
 import '../../features/onboarding/presentation/screens/language_selection_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/cleanup/presentation/screens/screenshots_cleaner_screen.dart';
@@ -222,6 +224,24 @@ GoRouter goRouter(GoRouterRef ref) {
         name: 'settings',
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: RouteConstants.privacyPolicy,
+        name: 'privacy-policy',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => LegalDocumentScreen(
+          title: context.l10n.privacyPolicy,
+          assetPath: 'assets/legal/privacy_policy.html',
+        ),
+      ),
+      GoRoute(
+        path: RouteConstants.termsOfService,
+        name: 'terms-of-service',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => LegalDocumentScreen(
+          title: context.l10n.termsOfService,
+          assetPath: 'assets/legal/terms_of_service.html',
+        ),
       ),
       // Full-screen detail view for Smart Cleanup items
       GoRoute(

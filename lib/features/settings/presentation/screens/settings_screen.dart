@@ -63,7 +63,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _sendFeedbackEmail() async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'support@clearspace.com', // Replace with real support email
+      path: 'patternatorhd@gmail.com',
       query: _encodeQueryParameters(<String, String>{
         'subject': '[Clear Space] Bug Report / Feedback',
         'body':
@@ -85,25 +85,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(context.l10n.emailRestricted)));
-    }
-  }
-
-  Future<void> _openLink(String url) async {
-    try {
-      final Uri uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.l10n.browserLaunchFailed)),
-        );
-      }
-    } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(context.l10n.browserRestricted)));
     }
   }
 
@@ -953,9 +934,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   title: context.l10n.privacyPolicy,
                   subtitle: context.l10n.howWeProtectData,
                   color: context.customColors.secondary,
-                  onTap: () => _openLink(
-                    'https://policies.google.com/privacy',
-                  ), // Placeholder
+                  onTap: () => context.push(RouteConstants.privacyPolicy),
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
@@ -963,9 +942,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   title: context.l10n.termsOfService,
                   subtitle: context.l10n.rulesAndGuidelines,
                   color: context.customColors.secondary,
-                  onTap: () => _openLink(
-                    'https://policies.google.com/terms',
-                  ), // Placeholder
+                  onTap: () => context.push(RouteConstants.termsOfService),
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(

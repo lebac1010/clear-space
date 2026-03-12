@@ -25,6 +25,8 @@ abstract class RouteConstants {
   static const String screenshots = '/cleanup/screenshots';
   static const String downloads = '/cleanup/downloads';
   static const String history = '/cleanup/history';
+  static const String privacyPolicy = '/legal/privacy-policy';
+  static const String termsOfService = '/legal/terms-of-service';
 }
 
 /// 404 Not Found Screen for unknown routes.
