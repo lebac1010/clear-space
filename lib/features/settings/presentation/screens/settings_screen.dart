@@ -24,6 +24,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   String _appVersion = '...';
+  String _packageName = '';
   final InAppReview _inAppReview = InAppReview.instance;
 
   @override
@@ -38,10 +39,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       if (!mounted) return;
       setState(() {
         _appVersion = '${info.version} (Build ${info.buildNumber})';
+        _packageName = info.packageName;
       });
     } catch (_) {
       if (!mounted) return;
-      setState(() => _appVersion = context.l10n.versionUnavailable);
+      setState(() {
+        _appVersion = context.l10n.versionUnavailable;
+        _packageName = '';
+      });
     }
   }
 
@@ -122,8 +127,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   void _shareApp() {
     try {
-      const storeUrl =
-          'https://play.google.com/store/apps/details?id=com.lebac.storage_dashboard.clear_space';
+      final storeUrl = _packageName.isEmpty
+          ? 'https://play.google.com/store/apps/details'
+          : 'https://play.google.com/store/apps/details?id=$_packageName';
 
       SharePlus.instance.share(
         ShareParams(

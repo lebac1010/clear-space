@@ -18,8 +18,8 @@ void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({
       'onboarding_completed': true,
-      'has_selected_language': true,
-      'language_code': 'en',
+      'language_selected': true,
+      'locale': 'en',
     });
 
     // Build our app and trigger a frame.

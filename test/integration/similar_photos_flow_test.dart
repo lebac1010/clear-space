@@ -176,8 +176,8 @@ void main() {
     (WidgetTester tester) async {
       SharedPreferences.setMockInitialValues({
         'onboarding_completed': true,
-        'has_selected_language': true,
-        'language_code': 'en',
+        'language_selected': true,
+        'locale': 'en',
       });
 
       // 1. Setup App with Routes and Overrides

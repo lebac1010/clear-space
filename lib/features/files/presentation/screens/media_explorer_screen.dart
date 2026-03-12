@@ -164,6 +164,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
                               tab.icon,
@@ -173,11 +174,11 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
                                   : context.appTextTertiary,
                             ),
                             const SizedBox(width: 6),
-                            Expanded(
+                            Flexible(
                               child: Text(
                                 tab.label,
                                 textAlign: TextAlign.center,
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 13,

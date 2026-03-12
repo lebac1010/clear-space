@@ -21,6 +21,9 @@ import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicInteger
 
 class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+    companion object {
+        private const val CHANNEL_NAMESPACE = "clear_space"
+    }
 
     private lateinit var methodChannel: MethodChannel
     private lateinit var eventChannel: EventChannel
@@ -65,12 +68,10 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
         val intent = Intent(context, StorageScannerService::class.java)
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
         
-        val packageName = "com.movixalabs.cleanmaster"
-        
-        methodChannel = MethodChannel(binding.binaryMessenger, "$packageName/storage_scanner")
+        methodChannel = MethodChannel(binding.binaryMessenger, "$CHANNEL_NAMESPACE/storage_scanner")
         methodChannel.setMethodCallHandler(this)
 
-        eventChannel = EventChannel(binding.binaryMessenger, "$packageName/storage_scanner_progress")
+        eventChannel = EventChannel(binding.binaryMessenger, "$CHANNEL_NAMESPACE/storage_scanner_progress")
         eventChannel.setStreamHandler(progressHandler)
     }
 

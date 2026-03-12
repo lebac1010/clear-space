@@ -6,14 +6,14 @@ import '../../features/dashboard/domain/entities/scan_progress.dart';
 import '../../features/dashboard/domain/entities/storage_info.dart';
 
 class NativeStorageScanner {
-  // FIX #15: Use correct package name matching Android plugin
-  static const String _packageName = 'com.lebac.storage_dashboard.clear_space';
+  // Keep channel names decoupled from Android package/applicationId changes.
+  static const String _channelNamespace = 'clear_space';
 
   static const MethodChannel _methodChannel = MethodChannel(
-    '$_packageName/storage_scanner',
+    '$_channelNamespace/storage_scanner',
   );
   static const EventChannel _eventChannel = EventChannel(
-    '$_packageName/storage_scanner_progress',
+    '$_channelNamespace/storage_scanner_progress',
   );
 
   /// Get progress stream - creates fresh stream each time
