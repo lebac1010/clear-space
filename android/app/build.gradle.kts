@@ -17,7 +17,7 @@ if (keyPropertiesFile.exists()) {
 
 android {
     namespace = "com.movixalabs.cleanmaster"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId = "com.movixalabs.cleanmaster"
-        // [P10] Explicit SDK versions for Play Store compliance (Aug 2025: targetSdk >= 35)
+        // Safer rollout: build against Android 16 APIs without opting into all Android 16 target behaviors yet.
         minSdk = 24
         targetSdk = 35
         versionCode = flutter.versionCode

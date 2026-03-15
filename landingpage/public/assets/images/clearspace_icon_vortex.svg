@@ -1,0 +1,24 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#1A2F60"/>
+      <stop offset="55%" stop-color="#0F3C8E"/>
+      <stop offset="100%" stop-color="#0A2145"/>
+    </radialGradient>
+    <linearGradient id="orb" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#137FEC"/>
+      <stop offset="100%" stop-color="#1BB3A4"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.0)"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="64" y="64" width="896" height="896" rx="220" fill="url(#bg)"/>
+  <circle cx="512" cy="512" r="316" fill="url(#orb)"/>
+  <path d="M 693 331 A 256 256 0 1 0 693 693" fill="none" stroke="url(#sweep)" stroke-width="120" stroke-linecap="round"/>
+  <circle cx="704" cy="340" r="36" fill="#FFC857"/>
+  <circle cx="330" cy="690" r="22" fill="#5CFFC5" opacity="0.75"/>
+  <circle cx="598" cy="740" r="14" fill="#FFFFFF" opacity="0.5"/>
+</svg>

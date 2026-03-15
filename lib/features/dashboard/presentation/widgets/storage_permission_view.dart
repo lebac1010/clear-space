@@ -56,10 +56,9 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               padding: const EdgeInsets.all(24),
@@ -77,21 +76,62 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             ),
             const Gap(24),
             Text(
-              'Storage Access Required',
+              context.l10n.storageAccessRequired,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const Gap(8),
             Text(
               _isPermanentlyDenied
-                  ? 'Storage permission was denied. Please enable it in Settings to continue.'
-                  : 'Clear Space needs "All files access" to scan your device for duplicates, large files, and junk files. \n\nYou will be directed to Settings to grant this permission.',
+                  ? context.l10n.storagePermissionDeniedDesc
+                  : context.l10n.storageAccessDesc,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
+            if (!_isPermanentlyDenied) ...[
+              const Gap(24),
+              _PermissionDisclosureCard(
+                icon: Icons.photo_library_outlined,
+                iconColor: context.colorScheme.primary,
+                title: context.l10n.permissionMediaTitle,
+                description: context.l10n.permissionMediaDesc,
+              ),
+              const Gap(12),
+              _PermissionDisclosureCard(
+                icon: Icons.folder_open_outlined,
+                iconColor: context.customColors.orange,
+                title: context.l10n.permissionAllFilesTitle,
+                description: context.l10n.permissionAllFilesDesc,
+              ),
+              const Gap(12),
+              _PermissionDisclosureCard(
+                icon: Icons.apps_outlined,
+                iconColor: context.customColors.purple,
+                title: context.l10n.permissionInstalledAppsTitle,
+                description: context.l10n.permissionInstalledAppsDesc,
+              ),
+              const Gap(12),
+              _PermissionDisclosureCard(
+                icon: Icons.notifications_active_outlined,
+                iconColor: context.customColors.success,
+                title: context.l10n.permissionVisibleProgressTitle,
+                description: context.l10n.permissionVisibleProgressDesc,
+              ),
+              const Gap(16),
+              Text(
+                context.l10n.permissionOnDeviceNote,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: context.appTextSecondary,
+                  height: 1.45,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
             const Gap(32),
             AppButton(
-              text: _isPermanentlyDenied ? 'Open Settings' : 'Grant Access',
+              text: _isPermanentlyDenied
+                  ? context.l10n.openSettings
+                  : context.l10n.grantPermission,
               onPressed: () {
                 if (_isPermanentlyDenied) {
                   openAppSettings();
@@ -104,6 +144,68 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _PermissionDisclosureCard extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String description;
+
+  const _PermissionDisclosureCard({
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: context.appSurface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: context.appBorder.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: iconColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, size: 22, color: iconColor),
+          ),
+          const Gap(14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const Gap(4),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: context.appTextSecondary,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

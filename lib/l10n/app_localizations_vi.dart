@@ -46,7 +46,46 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get storageAccessDesc =>
-      'Clear Space cần \"Quyền truy cập tất cả tệp\" để quét thiết bị của bạn tìm tệp trùng lặp, tệp lớn và tệp rác.\n\nBạn sẽ được chuyển hướng tới Cài đặt Hệ thống để cấp quyền này khi nhấn Cấp Quyền.';
+      'Clear Space chỉ yêu cầu quyền liên quan đến bộ nhớ cho những tính năng dọn dẹp mà bạn chọn sử dụng.';
+
+  @override
+  String get storagePermissionDeniedDesc =>
+      'Quyền truy cập bộ nhớ đã bị từ chối. Vui lòng bật lại trong Cài đặt để tiếp tục.';
+
+  @override
+  String get permissionMediaTitle => 'Ảnh, video và âm thanh';
+
+  @override
+  String get permissionMediaDesc =>
+      'Dùng để tìm tệp trùng lặp, ảnh tương tự, ảnh chụp màn hình, mục tải xuống và các tệp media dung lượng lớn trên thiết bị của bạn.';
+
+  @override
+  String get permissionAllFilesTitle => 'Quyền truy cập tất cả tệp';
+
+  @override
+  String get permissionAllFilesDesc =>
+      'Dùng cho các tính năng dọn dẹp không phải media như tệp rác, xem APK, xem mục tải xuống và thư mục rỗng.';
+
+  @override
+  String get permissionInstalledAppsTitle => 'Ứng dụng đã cài đặt';
+
+  @override
+  String get permissionInstalledAppsDesc =>
+      'Dùng cho App Manager để hiển thị các ứng dụng hiện có và mở xác nhận gỡ cài đặt Android khi bạn chọn.';
+
+  @override
+  String get permissionVisibleProgressTitle => 'Tiến trình hiển thị';
+
+  @override
+  String get permissionVisibleProgressDesc =>
+      'Dùng để giữ tiến trình quét hoặc dọn dẹp luôn hiển thị khi một tác vụ do bạn khởi chạy đang diễn ra.';
+
+  @override
+  String get permissionOnDeviceNote =>
+      'Việc phân tích quét và dọn dẹp được thực hiện trên thiết bị của bạn. Clear Space không tải tệp của bạn lên máy chủ của nhà phát triển cho các tính năng này.';
+
+  @override
+  String get openSettings => 'Mở Cài đặt';
 
   @override
   String get grantPermission => 'Cấp Quyền';

@@ -8,10 +8,10 @@ CYAN='\033[0;36m'
 MAGENTA='\033[0;35m'
 NC='\033[0m'
 
-CLEAN=false
+NO_CLEAN=false
 ANALYZE=false
 OBFUSCATE=false
-INCREMENT_BUILD_NUMBER=false
+NO_INCREMENT_BUILD_NUMBER=false
 NO_PUB_GET=false
 EXTRA_ARGS=()
 
@@ -20,19 +20,19 @@ usage() {
 Usage: scripts/build-release.sh [options] [-- flutter_build_args...]
 
 Options:
-  -c, --clean                    Run flutter clean before build
+      --no-clean                 Skip flutter clean before build
   -a, --analyze                  Run flutter analyze before build
   -o, --obfuscate                Build with --obfuscate and split debug info
-  -i, --increment-build-number   Increment pubspec version code (+N) before build
-      --no-pub-get               Skip flutter pub get
+      --no-increment-build-number Skip automatic pubspec version code increment
+  --no-pub-get               Skip flutter pub get
   -h, --help                     Show this help message
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -c|--clean)
-      CLEAN=true
+    --no-clean)
+      NO_CLEAN=true
       shift
       ;;
     -a|--analyze)
@@ -43,8 +43,8 @@ while [[ $# -gt 0 ]]; do
       OBFUSCATE=true
       shift
       ;;
-    -i|--increment-build-number)
-      INCREMENT_BUILD_NUMBER=true
+    --no-increment-build-number)
+      NO_INCREMENT_BUILD_NUMBER=true
       shift
       ;;
     --no-pub-get)
@@ -153,7 +153,7 @@ else
   ok "Using CMS_UPLOAD_* environment variables"
 fi
 
-if [[ "${INCREMENT_BUILD_NUMBER}" == true ]]; then
+if [[ "${NO_INCREMENT_BUILD_NUMBER}" == false ]]; then
   step "Incrementing build number in pubspec.yaml"
   version_line="$(grep -E '^version:' "${PUBSPEC_PATH}" || true)"
   if [[ "${version_line}" =~ ^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+)\+([0-9]+) ]]; then
@@ -176,7 +176,7 @@ fi
 
 cd "${APP_DIR}"
 
-if [[ "${CLEAN}" == true ]]; then
+if [[ "${NO_CLEAN}" == false ]]; then
   step "Running flutter clean"
   flutter clean
 fi

@@ -12,8 +12,8 @@
        CMS_UPLOAD_KEY_ALIAS
        CMS_UPLOAD_KEY_PASSWORD
 
-.PARAMETER Clean
-    Run flutter clean before build.
+.PARAMETER NoClean
+    Skip flutter clean before build.
 
 .PARAMETER Analyze
     Run flutter analyze before build.
@@ -21,18 +21,18 @@
 .PARAMETER Obfuscate
     Enable Dart obfuscation and emit debug symbols.
 
-.PARAMETER IncrementBuildNumber
-    Increment pubspec version build number (+N) before build.
+.PARAMETER NoIncrementBuildNumber
+    Skip automatic pubspec version build number increment (+N) before build.
 
 .PARAMETER NoPubGet
     Skip flutter pub get.
 #>
 
 param(
-    [switch]$Clean,
+    [switch]$NoClean,
     [switch]$Analyze,
     [switch]$Obfuscate,
-    [switch]$IncrementBuildNumber,
+    [switch]$NoIncrementBuildNumber,
     [switch]$NoPubGet
 )
 
@@ -119,7 +119,7 @@ if ($hasKeyProps) {
 
 Set-Location $appDir
 
-if ($IncrementBuildNumber) {
+if (-not $NoIncrementBuildNumber) {
     Write-Step "Incrementing build number in pubspec.yaml"
     $pubspec = Get-Content $pubspecPath -Raw
     if ($pubspec -notmatch 'version:\s*([0-9]+\.[0-9]+\.[0-9]+)\+([0-9]+)') {
@@ -134,7 +134,7 @@ if ($IncrementBuildNumber) {
     Write-Success "Updated to $newVersion"
 }
 
-if ($Clean) {
+if (-not $NoClean) {
     Write-Step "Running flutter clean"
     flutter clean
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

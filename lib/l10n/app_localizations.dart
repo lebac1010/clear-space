@@ -197,8 +197,81 @@ abstract class AppLocalizations {
   /// No description provided for @storageAccessDesc.
   ///
   /// In en, this message translates to:
-  /// **'Clear Space needs \"All files access\" to scan your device for duplicates, large files, and junk files.\n\nYou will be directed to System Settings to grant this permission when you tap Grant Permission.'**
-  String get storageAccessDesc;
+  /// **'Clear Space requests storage-related access only for cleanup features that you choose to use.'**
+  String get storageAccessDesc =>
+      'Clear Space requests storage-related access only for cleanup features that you choose to use.';
+
+  /// No description provided for @storagePermissionDeniedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage permission was denied. Please enable it in Settings to continue.'**
+  String get storagePermissionDeniedDesc =>
+      'Storage permission was denied. Please enable it in Settings to continue.';
+
+  /// No description provided for @permissionMediaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos, videos, and audio'**
+  String get permissionMediaTitle => 'Photos, videos, and audio';
+
+  /// No description provided for @permissionMediaDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.'**
+  String get permissionMediaDesc =>
+      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
+
+  /// No description provided for @permissionAllFilesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All files access'**
+  String get permissionAllFilesTitle => 'All files access';
+
+  /// No description provided for @permissionAllFilesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.'**
+  String get permissionAllFilesDesc =>
+      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
+
+  /// No description provided for @permissionInstalledAppsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed apps'**
+  String get permissionInstalledAppsTitle => 'Installed apps';
+
+  /// No description provided for @permissionInstalledAppsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.'**
+  String get permissionInstalledAppsDesc =>
+      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
+
+  /// No description provided for @permissionVisibleProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible progress'**
+  String get permissionVisibleProgressTitle => 'Visible progress';
+
+  /// No description provided for @permissionVisibleProgressDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Used to keep scan or cleanup progress visible while a user-initiated task is running.'**
+  String get permissionVisibleProgressDesc =>
+      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
+
+  /// No description provided for @permissionOnDeviceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.'**
+  String get permissionOnDeviceNote =>
+      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings => 'Open Settings';
 
   /// No description provided for @grantPermission.
   ///

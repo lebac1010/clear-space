@@ -12,7 +12,7 @@
   "lightTheme": "Light",
   "darkTheme": "Dark",
   "storageAccessRequired": "Storage Access Required",
-  "storageAccessDesc": "Clear Space needs \"All files access\" to scan your device for duplicates, large files, and junk files.\n\nYou will be directed to System Settings to grant this permission when you tap Grant Permission.",
+  "storageAccessDesc": "Clear Space requests storage-related access only for cleanup features that you choose to use.",
   "grantPermission": "Grant Permission",
   "getStarted": "Get Started",
   "next": "Next",

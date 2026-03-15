@@ -23,6 +23,13 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  static final Uri _privacyPolicyUri = Uri.parse(
+    'https://clearspace-clean-master.web.app/privacy',
+  );
+  static final Uri _termsOfServiceUri = Uri.parse(
+    'https://clearspace-clean-master.web.app/terms',
+  );
+
   String _appVersion = '...';
   String _packageName = '';
   final InAppReview _inAppReview = InAppReview.instance;
@@ -102,6 +109,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(context.l10n.storeUnavailable)));
+      }
+    }
+  }
+
+  Future<void> _openLegalUrl(Uri uri, String fallbackRoute) async {
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched && mounted) {
+        context.push(fallbackRoute);
+      }
+    } catch (_) {
+      if (mounted) {
+        context.push(fallbackRoute);
       }
     }
   }
@@ -934,7 +957,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   title: context.l10n.privacyPolicy,
                   subtitle: context.l10n.howWeProtectData,
                   color: context.customColors.secondary,
-                  onTap: () => context.push(RouteConstants.privacyPolicy),
+                  onTap: () => _openLegalUrl(
+                    _privacyPolicyUri,
+                    RouteConstants.privacyPolicy,
+                  ),
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(
@@ -942,7 +968,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   title: context.l10n.termsOfService,
                   subtitle: context.l10n.rulesAndGuidelines,
                   color: context.customColors.secondary,
-                  onTap: () => context.push(RouteConstants.termsOfService),
+                  onTap: () => _openLegalUrl(
+                    _termsOfServiceUri,
+                    RouteConstants.termsOfService,
+                  ),
                 ),
                 Divider(height: 1, color: context.appBorder, indent: 70),
                 _SettingsTile(

@@ -46,7 +46,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storageAccessDesc =>
-      'Clear Space needs \"All files access\" to scan your device for duplicates, large files, and junk files.\n\nYou will be directed to System Settings to grant this permission when you tap Grant Permission.';
+      'Clear Space requests storage-related access only for cleanup features that you choose to use.';
 
   @override
   String get grantPermission => 'Grant Permission';
@@ -798,7 +798,7 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get storageAccessDesc =>
-      'Clear Space needs \"All files access\" to scan your device for duplicates, large files, and junk files.\n\nYou will be directed to System Settings to grant this permission when you tap Grant Permission.';
+      'Clear Space requests storage-related access only for cleanup features that you choose to use.';
 
   @override
   String get grantPermission => 'Grant Permission';

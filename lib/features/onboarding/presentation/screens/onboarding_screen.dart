@@ -263,6 +263,101 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             textAlign: TextAlign.center,
           ),
+          const Gap(24),
+          _buildPermissionDisclosureItem(
+            context,
+            icon: Icons.photo_library_outlined,
+            color: context.colorScheme.primary,
+            title: l10n.permissionMediaTitle,
+            description: l10n.permissionMediaDesc,
+          ),
+          const Gap(12),
+          _buildPermissionDisclosureItem(
+            context,
+            icon: Icons.folder_open_outlined,
+            color: context.customColors.orange,
+            title: l10n.permissionAllFilesTitle,
+            description: l10n.permissionAllFilesDesc,
+          ),
+          const Gap(12),
+          _buildPermissionDisclosureItem(
+            context,
+            icon: Icons.apps_outage_outlined,
+            color: context.customColors.purple,
+            title: l10n.permissionInstalledAppsTitle,
+            description: l10n.permissionInstalledAppsDesc,
+          ),
+          const Gap(12),
+          _buildPermissionDisclosureItem(
+            context,
+            icon: Icons.notifications_active_outlined,
+            color: context.customColors.success,
+            title: l10n.permissionVisibleProgressTitle,
+            description: l10n.permissionVisibleProgressDesc,
+          ),
+          const Gap(16),
+          Text(
+            l10n.permissionOnDeviceNote,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: context.appTextTertiary,
+              height: 1.45,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPermissionDisclosureItem(
+    BuildContext context, {
+    required IconData icon,
+    required Color color,
+    required String title,
+    required String description,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: context.appSurface,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: context.appBorder.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+            child: Icon(icon, color: color, size: 22),
+          ),
+          const Gap(14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: context.appTextPrimary,
+                  ),
+                ),
+                const Gap(4),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: context.appTextSecondary,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

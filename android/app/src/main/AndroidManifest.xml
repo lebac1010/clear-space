@@ -11,14 +11,6 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
-    <!-- Safe App Visibility queries (No QUERY_ALL_PACKAGES required) -->
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent>
-    </queries>
-
     <application
         android:label="Clear Space"
         android:name="${applicationName}"
@@ -52,7 +44,11 @@
             android:name=".StorageScannerService"
             android:foregroundServiceType="specialUse"
             android:exported="false"
-            android:stopWithTask="false" />
+            android:stopWithTask="false">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="User-initiated foreground storage scanning for file analysis, duplicate detection, similar photo detection, large file discovery, junk review, and cleanup progress visibility." />
+        </service>
 
         <!-- WorkManager Foreground Service (required for Android 14+ / setForeground()) -->
         <service
@@ -66,7 +62,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <!-- Required to query activities that can process text, see:
+    <!-- Safe app visibility queries (no QUERY_ALL_PACKAGES) plus required Flutter/url_launcher queries.
+         Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 

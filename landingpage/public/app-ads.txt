@@ -1,0 +1,6 @@
+# Clear Space does not currently ship an AdMob publisher ID in this repository.
+# Replace the example line below with your real seller record before enabling ads.
+# Format reference: https://support.google.com/admob/answer/9363762
+#
+# Example:
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
