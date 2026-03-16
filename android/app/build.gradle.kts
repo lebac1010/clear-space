@@ -51,7 +51,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders["admobAppId"] =
+                "ca-app-pub-3940256099942544~3347511713"
+        }
         release {
+            manifestPlaceholders["admobAppId"] =
+                (project.findProperty("ADMOB_APP_ID") as String?) ?: ""
             // [P7] Enable R8 code shrinking + link ProGuard rules for Gson safety
             isMinifyEnabled = true
             isShrinkResources = true
@@ -76,5 +82,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.concurrent:concurrent-futures-ktx:1.2.0")
 }
 

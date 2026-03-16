@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/router/route_constants.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
+import '../../../../core/ads/ad_unit_ids.dart';
+import '../../../../core/ads/widgets/native_template_ad_card.dart';
 import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../controllers/downloads_controller.dart';
@@ -98,6 +100,10 @@ class CleanupScreen extends ConsumerWidget {
                   ),
                 ),
                 const Gap(12),
+                const NativeTemplateAdCard(
+                  placement: AppNativeAdPlacement.cleanup,
+                  margin: EdgeInsets.only(bottom: 12),
+                ),
                 Consumer(
                   builder: (context, ref, child) {
                     final threshold = ref.watch(largeFileThresholdProvider);

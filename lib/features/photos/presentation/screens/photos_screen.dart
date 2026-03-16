@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/ads/ad_unit_ids.dart';
+import '../../../../core/ads/widgets/native_template_ad_card.dart';
 import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -86,7 +88,11 @@ class PhotosScreen extends ConsumerWidget {
                   ),
                   const Gap(12),
                   _buildAnalysisCards(context, ref, storageInfoAsync),
-                  const Gap(24),
+                  const NativeTemplateAdCard(
+                    placement: AppNativeAdPlacement.photos,
+                    margin: EdgeInsets.only(top: 8),
+                  ),
+                  const Gap(12),
 
                   // Gallery Header
                   Text(

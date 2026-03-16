@@ -1,4 +1,6 @@
 import 'package:clear_space/core/widgets/app_button.dart';
+import 'package:clear_space/core/ads/ad_unit_ids.dart';
+import 'package:clear_space/core/ads/widgets/native_template_ad_card.dart';
 import 'package:clear_space/core/extensions/build_context_x.dart';
 import 'package:clear_space/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:clear_space/features/dashboard/presentation/providers/scan_progress_provider.dart';
@@ -93,8 +95,10 @@ class DashboardScreen extends ConsumerWidget {
             ),
             children: [
               StorageOverviewCard(info: info),
-
-              const Gap(24),
+              const NativeTemplateAdCard(
+                placement: AppNativeAdPlacement.dashboard,
+                margin: EdgeInsets.only(top: 12, bottom: 10),
+              ),
 
               if (!isScanning &&
                   (info.junkSize > 0 ||
@@ -134,7 +138,7 @@ class DashboardScreen extends ConsumerWidget {
                   ),
                 ),
 
-              const Gap(24),
+              const Gap(10),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

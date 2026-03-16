@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 
+import 'core/ads/ad_service.dart';
 import 'core/theme/app_theme.dart';
 import 'core/services/app_settings_service.dart';
 import 'core/router/app_router.dart';
@@ -16,6 +17,7 @@ void main() async {
   // Load SharedPreferences synchronously before app starts
   // This ensures router has immediate access to onboarding state
   final prefs = await SharedPreferences.getInstance();
+  await AppAdService.instance.initialize();
 
   // Global error handling — sync errors (widget build, layout, painting)
   FlutterError.onError = (details) {

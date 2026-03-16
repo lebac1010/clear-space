@@ -14,6 +14,8 @@ import io.flutter.plugin.common.MethodChannel
 import android.app.Activity
 import android.content.IntentSender
 import android.util.Log
+import androidx.lifecycle.Observer
+import androidx.work.WorkInfo
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.PluginRegistry
@@ -350,31 +352,31 @@ class StorageScannerPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Act
             }
             "getCleanupInfo" -> {
                 val workManager = androidx.work.WorkManager.getInstance(context)
-                val statusFuture = workManager.getWorkInfosForUniqueWork("cleanup_job")
-                
-                statusFuture.addListener({
+                val liveData = workManager.getWorkInfosForUniqueWorkLiveData("cleanup_job")
+                var observer: Observer<List<WorkInfo>>? = null
+
+                observer = Observer<List<WorkInfo>> { workInfoList ->
+                    observer?.let { liveData.removeObserver(it) }
+
                     try {
-                        val workInfoList = statusFuture.get()
                         if (workInfoList.isNotEmpty()) {
                             val info = workInfoList[0]
-                            val state = info.state.name
                             val output = info.outputData
-                            val count = output.getInt("count", -1)
-                            val bytes = output.getLong("bytes", -1)
-                            
-                            val map = mapOf(
-                                "state" to state,
-                                "count" to count,
-                                "bytes" to bytes
+                            val map: Map<String, Any> = mapOf(
+                                "state" to info.state.name,
+                                "count" to output.getInt("count", -1),
+                                "bytes" to output.getLong("bytes", -1),
                             )
                             result.success(map)
                         } else {
                             result.success(null)
                         }
                     } catch (e: Exception) {
-                         result.error("WORK_INFO_ERROR", e.message, null)
+                        result.error("WORK_INFO_ERROR", e.message, null)
                     }
-                }, androidx.core.content.ContextCompat.getMainExecutor(context))
+                }
+
+                liveData.observeForever(observer)
             }
             // [S1] getPhotoBytes — URI validation + size cap + .use{} + background thread
             "getPhotoBytes" -> {

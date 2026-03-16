@@ -2,4 +2,13 @@
 <resources>
     <color name="ic_launcher_background">#0A2145</color>
     <color name="app_window_background">#F8F9FA</color>
+    <color name="native_ad_surface">#FFFFFF</color>
+    <color name="native_ad_border">#E9ECEF</color>
+    <color name="native_ad_icon_background">#E8F3FD</color>
+    <color name="native_ad_badge_background">#E8F3FD</color>
+    <color name="native_ad_badge_text">#137FEC</color>
+    <color name="native_ad_headline">#1A1C1E</color>
+    <color name="native_ad_body">#6C757D</color>
+    <color name="native_ad_cta_background">#137FEC</color>
+    <color name="native_ad_cta_text">#FFFFFF</color>
 </resources>

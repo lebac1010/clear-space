@@ -228,83 +228,88 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     WidgetRef ref,
     AppLocalizations l10n,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: context.customColors.orange.withValues(alpha: 0.12),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.shield_outlined,
-              size: 64,
-              color: context.customColors.orange,
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight - 48),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: context.customColors.orange.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.shield_outlined,
+                  size: 64,
+                  color: context.customColors.orange,
+                ),
+              ),
+              const Gap(32),
+              Text(
+                l10n.storageAccessRequired,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.appTextPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const Gap(16),
+              Text(
+                l10n.storageAccessDesc,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: context.appTextSecondary,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const Gap(24),
+              _buildPermissionDisclosureItem(
+                context,
+                icon: Icons.photo_library_outlined,
+                color: context.colorScheme.primary,
+                title: l10n.permissionMediaTitle,
+                description: l10n.permissionMediaDesc,
+              ),
+              const Gap(12),
+              _buildPermissionDisclosureItem(
+                context,
+                icon: Icons.folder_open_outlined,
+                color: context.customColors.orange,
+                title: l10n.permissionAllFilesTitle,
+                description: l10n.permissionAllFilesDesc,
+              ),
+              const Gap(12),
+              _buildPermissionDisclosureItem(
+                context,
+                icon: Icons.apps_outage_outlined,
+                color: context.customColors.purple,
+                title: l10n.permissionInstalledAppsTitle,
+                description: l10n.permissionInstalledAppsDesc,
+              ),
+              const Gap(12),
+              _buildPermissionDisclosureItem(
+                context,
+                icon: Icons.notifications_active_outlined,
+                color: context.customColors.success,
+                title: l10n.permissionVisibleProgressTitle,
+                description: l10n.permissionVisibleProgressDesc,
+              ),
+              const Gap(16),
+              Text(
+                l10n.permissionOnDeviceNote,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: context.appTextTertiary,
+                  height: 1.45,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          const Gap(32),
-          Text(
-            l10n.storageAccessRequired,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: context.appTextPrimary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const Gap(16),
-          Text(
-            l10n.storageAccessDesc,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: context.appTextSecondary,
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const Gap(24),
-          _buildPermissionDisclosureItem(
-            context,
-            icon: Icons.photo_library_outlined,
-            color: context.colorScheme.primary,
-            title: l10n.permissionMediaTitle,
-            description: l10n.permissionMediaDesc,
-          ),
-          const Gap(12),
-          _buildPermissionDisclosureItem(
-            context,
-            icon: Icons.folder_open_outlined,
-            color: context.customColors.orange,
-            title: l10n.permissionAllFilesTitle,
-            description: l10n.permissionAllFilesDesc,
-          ),
-          const Gap(12),
-          _buildPermissionDisclosureItem(
-            context,
-            icon: Icons.apps_outage_outlined,
-            color: context.customColors.purple,
-            title: l10n.permissionInstalledAppsTitle,
-            description: l10n.permissionInstalledAppsDesc,
-          ),
-          const Gap(12),
-          _buildPermissionDisclosureItem(
-            context,
-            icon: Icons.notifications_active_outlined,
-            color: context.customColors.success,
-            title: l10n.permissionVisibleProgressTitle,
-            description: l10n.permissionVisibleProgressDesc,
-          ),
-          const Gap(16),
-          Text(
-            l10n.permissionOnDeviceNote,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: context.appTextTertiary,
-              height: 1.45,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -49,6 +49,45 @@ class AppLocalizationsEs extends AppLocalizations {
       'Clear Space necesita \"Acceso a todos los archivos\" para buscar duplicados, archivos grandes y archivos basura en tu dispositivo.\n\nSerás dirigido a la configuración del sistema para otorgar este permiso cuando toques Conceder Permiso.';
 
   @override
+  String get storagePermissionDeniedDesc =>
+      'Storage permission was denied. Please enable it in Settings to continue.';
+
+  @override
+  String get permissionMediaTitle => 'Photos, videos, and audio';
+
+  @override
+  String get permissionMediaDesc =>
+      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
+
+  @override
+  String get permissionAllFilesTitle => 'All files access';
+
+  @override
+  String get permissionAllFilesDesc =>
+      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
+
+  @override
+  String get permissionInstalledAppsTitle => 'Installed apps';
+
+  @override
+  String get permissionInstalledAppsDesc =>
+      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
+
+  @override
+  String get permissionVisibleProgressTitle => 'Visible progress';
+
+  @override
+  String get permissionVisibleProgressDesc =>
+      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
+
+  @override
+  String get permissionOnDeviceNote =>
+      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
   String get grantPermission => 'Conceder Permiso';
 
   @override
