@@ -83,5 +83,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
     implementation("androidx.concurrent:concurrent-futures-ktx:1.2.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
+
+
 
