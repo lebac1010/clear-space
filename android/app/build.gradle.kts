@@ -57,7 +57,7 @@ android {
         }
         release {
             manifestPlaceholders["admobAppId"] =
-                (project.findProperty("ADMOB_APP_ID") as String?) ?: ""
+                "ca-app-pub-1766243060895749~8503467356"
             // [P7] Enable R8 code shrinking + link ProGuard rules for Gson safety
             isMinifyEnabled = true
             isShrinkResources = true

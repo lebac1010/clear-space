@@ -16,15 +16,12 @@ class AppAdUnitIds {
       'ca-app-pub-3940256099942544/6300978111';
 
   // Configure release IDs via --dart-define before shipping ads.
-  static const String _androidReleaseNativeDashboard = String.fromEnvironment(
-    'ADMOB_NATIVE_DASHBOARD_ANDROID',
-  );
-  static const String _androidReleaseNativeCleanup = String.fromEnvironment(
-    'ADMOB_NATIVE_CLEANUP_ANDROID',
-  );
-  static const String _androidReleaseNativePhotos = String.fromEnvironment(
-    'ADMOB_NATIVE_PHOTOS_ANDROID',
-  );
+  static const String _androidReleaseNativeDashboard =
+      'ca-app-pub-1766243060895749/5479650512';
+  static const String _androidReleaseNativeCleanup =
+      'ca-app-pub-1766243060895749/8551568810';
+  static const String _androidReleaseNativePhotos =
+      'ca-app-pub-1766243060895749/2797646855';
   static const String _androidReleaseBanner = String.fromEnvironment(
     'ADMOB_BANNER_ANDROID',
   );
