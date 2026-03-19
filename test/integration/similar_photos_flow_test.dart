@@ -31,9 +31,11 @@ class FakeStorageRepository implements StorageRepository {
   @override
   Future<StoragePermissionState> getPermissionState() async =>
       const StoragePermissionState(
+        hasPhotoAccess: true,
         hasMediaAccess: true,
         hasAllFilesAccess: true,
-        isPermanentlyDenied: false,
+        isPhotoPermanentlyDenied: false,
+        isFullAccessPermanentlyDenied: false,
       );
 
   @override
@@ -78,7 +80,9 @@ class FakeStorageRepository implements StorageRepository {
   }
 
   @override
-  Future<bool> requestPermissions() async => true;
+  Future<bool> requestPermissions({
+    RequiredStorageAccess requiredAccess = RequiredStorageAccess.full,
+  }) async => true;
 
   @override
   Future<List<Map<String, dynamic>>> getInstalledApps() async => [];

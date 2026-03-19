@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../../domain/entities/installed_app.dart';
 import '../controllers/app_manager_controller.dart';
 
@@ -33,7 +34,6 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     super.dispose();
   }
 
-  /// When user returns from system uninstall dialog, re-fetch apps
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && _didTriggerUninstall) {
@@ -50,7 +50,6 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        // Consistent with DuplicateListScreen, LargeFileListScreen, MediaExplorerScreen
         backgroundColor: context.appBackground,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
@@ -83,78 +82,80 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              _buildSearchBar(controller),
-              _buildSummaryHeader(state),
-              Expanded(
-                child: state.apps.when(
-                  loading: () => Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: CircularProgressIndicator(
-                        color: context.colorScheme.primary,
+          StoragePermissionGate(
+            requiredAccess: RequiredStorageAccess.full,
+            builder: (context, ref) => Column(
+              children: [
+                _buildSearchBar(controller),
+                _buildSummaryHeader(state),
+                Expanded(
+                  child: state.apps.when(
+                    loading: () => Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: CircularProgressIndicator(
+                          color: context.colorScheme.primary,
+                        ),
                       ),
                     ),
-                  ),
-                  // Use shared ErrorView widget — consistent with rest of the app
-                  error: (err, _) => ErrorView(
-                    message: err.toString(),
-                    onRetry: () => controller.refresh(),
-                  ),
-                  data: (_) {
-                    final appsList = state.filteredAndSortedApps;
+                    error: (err, _) => ErrorView(
+                      message: err.toString(),
+                      onRetry: () => controller.refresh(),
+                    ),
+                    data: (_) {
+                      final appsList = state.filteredAndSortedApps;
 
-                    if (appsList.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.apps_rounded,
-                              size: 64,
-                              color: context.appTextTertiary.withValues(
-                                alpha: 0.5,
+                      if (appsList.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.apps_rounded,
+                                size: 64,
+                                color: context.appTextTertiary.withValues(
+                                  alpha: 0.5,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              state.searchQuery.isEmpty
-                                  ? context.l10n.noAppsFound
-                                  : context.l10n.noMatchingApps,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: context.appTextSecondary,
+                              const SizedBox(height: 16),
+                              Text(
+                                state.searchQuery.isEmpty
+                                    ? context.l10n.noAppsFound
+                                    : context.l10n.noMatchingApps,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.appTextSecondary,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        );
+                      }
+
+                      return Scrollbar(
+                        thumbVisibility: true,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          itemCount: appsList.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final app = appsList[index];
+                            return _AppItemCard(
+                              app: app,
+                              onUninstall: () =>
+                                  _confirmUninstall(context, app, controller),
+                            );
+                          },
                         ),
                       );
-                    }
-
-                    return Scrollbar(
-                      thumbVisibility: true,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        itemCount: appsList.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final app = appsList[index];
-                          return _AppItemCard(
-                            app: app,
-                            onUninstall: () =>
-                                _confirmUninstall(context, app, controller),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          // Loading overlay during uninstall
           if (state.isUninstalling)
             Container(
               color: context.appOverlay.withValues(alpha: 0.3),
@@ -183,7 +184,6 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     );
   }
 
-  /// Confirmation dialog — consistent with cleanup screens
   void _confirmUninstall(
     BuildContext context,
     InstalledApp app,
@@ -262,7 +262,6 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
     );
   }
 
-  /// Summary bar showing total apps, total size, and sort dropdown
   Widget _buildSummaryHeader(AppManagerState state) {
     if (!state.apps.hasValue) return const SizedBox.shrink();
 
@@ -287,7 +286,7 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
           ),
           const SizedBox(width: 8),
           Text(
-            '•  ${FileUtils.formatSize(state.totalAppSize)}',
+            '| ${FileUtils.formatSize(state.totalAppSize)}',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
@@ -295,7 +294,6 @@ class _AppManagerScreenState extends ConsumerState<AppManagerScreen>
             ),
           ),
           const Spacer(),
-          // Sort dropdown — compact, inline
           Container(
             height: 32,
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -362,7 +360,6 @@ class _AppItemCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Icon — iconBytes is cached Uint8List, no decode needed
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: app.iconBytes.isNotEmpty
@@ -372,7 +369,6 @@ class _AppItemCard extends StatelessWidget {
                     height: 48,
                     fit: BoxFit.cover,
                     gaplessPlayback: true,
-                    // Decode to exact display size for memory efficiency
                     cacheWidth: 144,
                     cacheHeight: 144,
                     errorBuilder: (_, __, ___) => _fallbackIcon(context),
@@ -380,8 +376,6 @@ class _AppItemCard extends StatelessWidget {
                 : _fallbackIcon(context),
           ),
           const SizedBox(width: 16),
-
-          // Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +402,7 @@ class _AppItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text('•', style: TextStyle(color: context.appTextTertiary)),
+                    Text('|', style: TextStyle(color: context.appTextTertiary)),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -427,8 +421,6 @@ class _AppItemCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-
-          // Uninstall Button
           IconButton(
             onPressed: onUninstall,
             icon: Icon(

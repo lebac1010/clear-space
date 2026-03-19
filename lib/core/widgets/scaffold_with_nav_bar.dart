@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clear_space/core/extensions/build_context_x.dart';
 import 'package:clear_space/features/dashboard/data/providers/storage_provider.dart';
+import 'package:clear_space/features/dashboard/domain/entities/storage_permission_state.dart';
 
 /// A scaffold wrapper for the bottom navigation bar.
 class ScaffoldWithNavBar extends ConsumerWidget {
@@ -20,6 +21,13 @@ class ScaffoldWithNavBar extends ConsumerWidget {
       3 => permissionState.canAccessFiles,
       _ => false,
     };
+    final isPermanentlyDeniedForBranch = switch (index) {
+      0 => false,
+      1 => permissionState.isPermanentlyDeniedFor(RequiredStorageAccess.full),
+      2 => permissionState.isPermanentlyDeniedFor(RequiredStorageAccess.media),
+      3 => permissionState.isPermanentlyDeniedFor(RequiredStorageAccess.full),
+      _ => false,
+    };
 
     if (!canOpenBranch) {
       navigationShell.goBranch(0);
@@ -27,7 +35,7 @@ class ScaffoldWithNavBar extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              permissionState.isPermanentlyDenied
+              isPermanentlyDeniedForBranch
                   ? context.l10n.storagePermissionDeniedDesc
                   : context.l10n.storageAccessRequired,
             ),

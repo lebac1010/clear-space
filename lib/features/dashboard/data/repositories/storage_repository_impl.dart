@@ -30,25 +30,34 @@ class StorageRepositoryImpl implements StorageRepository {
   Stream<ScanProgress> get scanProgress => _nativeScanner.onProgress;
 
   @override
-  Future<bool> requestPermissions() async {
+  Future<bool> requestPermissions({
+    RequiredStorageAccess requiredAccess = RequiredStorageAccess.full,
+  }) async {
     if (Platform.isAndroid) {
-      final permissions = [
-        Permission.photos,
-        Permission.videos,
-        Permission.audio,
-      ];
-
-      await permissions.request();
-
-      await Permission.manageExternalStorage.request();
-      await Permission.storage.request();
+      if (requiredAccess == RequiredStorageAccess.media) {
+        await Permission.photos.request();
+      } else {
+        final permissions = [
+          Permission.photos,
+          Permission.videos,
+          Permission.audio,
+        ];
+        await permissions.request();
+        await Permission.manageExternalStorage.request();
+        await Permission.storage.request();
+      }
 
       final permissionState = await getPermissionState();
-      return permissionState.hasFullAccess;
+      return switch (requiredAccess) {
+        RequiredStorageAccess.media => permissionState.canAccessPhotos,
+        RequiredStorageAccess.full => permissionState.hasFullAccess,
+      };
     }
 
     final status = await Permission.photos.request();
-    return status.isGranted;
+    return requiredAccess == RequiredStorageAccess.media
+        ? status.isGranted || status.isLimited
+        : status.isGranted;
   }
 
   @override
@@ -67,36 +76,37 @@ class StorageRepositoryImpl implements StorageRepository {
       final storage = await Permission.storage.status;
 
       final hasLegacyStorageAccess = storage.isGranted;
+      final hasPhotoAccess =
+          hasLegacyStorageAccess || photos.isGranted || photos.isLimited;
       final hasMediaAccess =
-          hasLegacyStorageAccess ||
-          photos.isGranted ||
-          photos.isLimited ||
+          hasPhotoAccess ||
           videos.isGranted ||
           videos.isLimited ||
           audio.isGranted ||
           audio.isLimited;
       final hasAllFilesAccess = manageStatus.isGranted || hasLegacyStorageAccess;
-      final isPermanentlyDenied =
-          !hasMediaAccess &&
+      final isPhotoPermanentlyDenied =
+          !hasPhotoAccess && photos.isPermanentlyDenied;
+      final isFullAccessPermanentlyDenied =
           !hasAllFilesAccess &&
-          (manageStatus.isPermanentlyDenied ||
-              photos.isPermanentlyDenied ||
-              videos.isPermanentlyDenied ||
-              audio.isPermanentlyDenied ||
-              storage.isPermanentlyDenied);
+          (manageStatus.isPermanentlyDenied || storage.isPermanentlyDenied);
 
       return StoragePermissionState(
+        hasPhotoAccess: hasPhotoAccess,
         hasMediaAccess: hasMediaAccess,
         hasAllFilesAccess: hasAllFilesAccess,
-        isPermanentlyDenied: isPermanentlyDenied,
+        isPhotoPermanentlyDenied: isPhotoPermanentlyDenied,
+        isFullAccessPermanentlyDenied: isFullAccessPermanentlyDenied,
       );
     }
 
     final status = await Permission.photos.status;
     return StoragePermissionState(
+      hasPhotoAccess: status.isGranted || status.isLimited,
       hasMediaAccess: status.isGranted || status.isLimited,
       hasAllFilesAccess: status.isGranted,
-      isPermanentlyDenied: status.isPermanentlyDenied,
+      isPhotoPermanentlyDenied: status.isPermanentlyDenied,
+      isFullAccessPermanentlyDenied: status.isPermanentlyDenied,
     );
   }
 

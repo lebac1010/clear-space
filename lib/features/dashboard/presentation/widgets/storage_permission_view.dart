@@ -71,14 +71,20 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
     };
   }
 
+  bool _isPermanentlyDeniedForRequiredAccess(
+    StoragePermissionState permissionState,
+  ) {
+    return permissionState.isPermanentlyDeniedFor(widget.requiredAccess);
+  }
+
   Future<void> _handlePermissionAction() async {
-    if (_permissionState.isPermanentlyDenied) {
+    if (_isPermanentlyDeniedForRequiredAccess(_permissionState)) {
       await openAppSettings();
       return;
     }
 
     final repository = await ref.read(storageRepositoryProvider.future);
-    await repository.requestPermissions();
+    await repository.requestPermissions(requiredAccess: widget.requiredAccess);
     await _checkPermissionStatus();
   }
 
@@ -111,13 +117,13 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             ),
             const Gap(8),
             Text(
-              _permissionState.isPermanentlyDenied
+              _isPermanentlyDeniedForRequiredAccess(_permissionState)
                   ? context.l10n.storagePermissionDeniedDesc
                   : context.l10n.storageAccessDesc,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            if (!_permissionState.isPermanentlyDenied) ...[
+            if (!_isPermanentlyDeniedForRequiredAccess(_permissionState)) ...[
               const Gap(24),
               _PermissionDisclosureCard(
                 icon: Icons.photo_library_outlined,
@@ -125,27 +131,29 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
                 title: context.l10n.permissionMediaTitle,
                 description: context.l10n.permissionMediaDesc,
               ),
-              const Gap(12),
-              _PermissionDisclosureCard(
-                icon: Icons.folder_open_outlined,
-                iconColor: context.customColors.orange,
-                title: context.l10n.permissionAllFilesTitle,
-                description: context.l10n.permissionAllFilesDesc,
-              ),
-              const Gap(12),
-              _PermissionDisclosureCard(
-                icon: Icons.apps_outlined,
-                iconColor: context.customColors.purple,
-                title: context.l10n.permissionInstalledAppsTitle,
-                description: context.l10n.permissionInstalledAppsDesc,
-              ),
-              const Gap(12),
-              _PermissionDisclosureCard(
-                icon: Icons.notifications_active_outlined,
-                iconColor: context.customColors.success,
-                title: context.l10n.permissionVisibleProgressTitle,
-                description: context.l10n.permissionVisibleProgressDesc,
-              ),
+              if (widget.requiredAccess == RequiredStorageAccess.full) ...[
+                const Gap(12),
+                _PermissionDisclosureCard(
+                  icon: Icons.folder_open_outlined,
+                  iconColor: context.customColors.orange,
+                  title: context.l10n.permissionAllFilesTitle,
+                  description: context.l10n.permissionAllFilesDesc,
+                ),
+                const Gap(12),
+                _PermissionDisclosureCard(
+                  icon: Icons.apps_outlined,
+                  iconColor: context.customColors.purple,
+                  title: context.l10n.permissionInstalledAppsTitle,
+                  description: context.l10n.permissionInstalledAppsDesc,
+                ),
+                const Gap(12),
+                _PermissionDisclosureCard(
+                  icon: Icons.notifications_active_outlined,
+                  iconColor: context.customColors.success,
+                  title: context.l10n.permissionVisibleProgressTitle,
+                  description: context.l10n.permissionVisibleProgressDesc,
+                ),
+              ],
               const Gap(16),
               Text(
                 context.l10n.permissionOnDeviceNote,
@@ -158,7 +166,7 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             ],
             const Gap(32),
             AppButton(
-              text: _permissionState.isPermanentlyDenied
+              text: _isPermanentlyDeniedForRequiredAccess(_permissionState)
                   ? context.l10n.openSettings
                   : context.l10n.grantPermission,
               onPressed: _handlePermissionAction,

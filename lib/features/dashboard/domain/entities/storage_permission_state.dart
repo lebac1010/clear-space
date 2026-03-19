@@ -1,20 +1,26 @@
 enum RequiredStorageAccess { media, full }
 
 class StoragePermissionState {
+  final bool hasPhotoAccess;
   final bool hasMediaAccess;
   final bool hasAllFilesAccess;
-  final bool isPermanentlyDenied;
+  final bool isPhotoPermanentlyDenied;
+  final bool isFullAccessPermanentlyDenied;
 
   const StoragePermissionState({
+    required this.hasPhotoAccess,
     required this.hasMediaAccess,
     required this.hasAllFilesAccess,
-    required this.isPermanentlyDenied,
+    required this.isPhotoPermanentlyDenied,
+    required this.isFullAccessPermanentlyDenied,
   });
 
   const StoragePermissionState.none()
-    : hasMediaAccess = false,
+    : hasPhotoAccess = false,
+      hasMediaAccess = false,
       hasAllFilesAccess = false,
-      isPermanentlyDenied = false;
+      isPhotoPermanentlyDenied = false,
+      isFullAccessPermanentlyDenied = false;
 
   bool get hasAnyAccess => hasMediaAccess || hasAllFilesAccess;
 
@@ -22,9 +28,19 @@ class StoragePermissionState {
 
   bool get isPartialAccess => hasAnyAccess && !hasFullAccess;
 
-  bool get canAccessPhotos => hasMediaAccess || hasAllFilesAccess;
+  bool get isPermanentlyDenied =>
+      isPhotoPermanentlyDenied || isFullAccessPermanentlyDenied;
+
+  bool get canAccessPhotos => hasPhotoAccess || hasAllFilesAccess;
 
   bool get canAccessCleanup => hasAllFilesAccess;
 
   bool get canAccessFiles => hasAllFilesAccess;
+
+  bool isPermanentlyDeniedFor(RequiredStorageAccess requiredAccess) {
+    return switch (requiredAccess) {
+      RequiredStorageAccess.media => isPhotoPermanentlyDenied,
+      RequiredStorageAccess.full => isFullAccessPermanentlyDenied,
+    };
+  }
 }

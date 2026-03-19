@@ -26,6 +26,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   int _currentPage = 0;
   StoragePermissionState _permissionState = const StoragePermissionState.none();
   bool _isCheckingPermission = false;
+  bool _hasHandledPermissionStep = false;
 
   @override
   void initState() {
@@ -58,6 +59,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     }
   }
 
+  bool get _isFullAccessPermanentlyDenied =>
+      _permissionState.isPermanentlyDeniedFor(RequiredStorageAccess.full);
+
+  bool get _shouldShowSkip => _currentPage < 2;
+
+  bool get _shouldShowPermissionNext =>
+      _permissionState.hasFullAccess || _hasHandledPermissionStep;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -67,6 +76,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       body: SafeArea(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  if (_shouldShowSkip)
+                    TextButton(
+                      onPressed: () => _finishOnboarding(context, ref),
+                      child: const Text('Skip'),
+                    ),
+                ],
+              ),
+            ),
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -129,27 +151,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                       onPressed: _nextPage,
                     )
                   else if (_currentPage == 1)
-                    Column(
-                      children: [
-                        AppButton(
-                          text: _permissionState.hasFullAccess
-                              ? l10n.next
-                              : _permissionState.isPermanentlyDenied
-                              ? l10n.openSettings
-                              : l10n.grantPermission,
-                          isFullWidth: true,
-                          onPressed: _isCheckingPermission
-                              ? null
-                              : () => _handlePermissionAction(ref),
-                        ),
-                        if (!_permissionState.hasFullAccess) ...[
-                          const Gap(8),
-                          TextButton(
-                            onPressed: _isCheckingPermission ? null : _nextPage,
-                            child: Text(l10n.next),
-                          ),
-                        ],
-                      ],
+                    AppButton(
+                      text: _shouldShowPermissionNext
+                          ? l10n.next
+                          : l10n.grantPermission,
+                      isFullWidth: true,
+                      onPressed: _isCheckingPermission
+                          ? null
+                          : () => _handlePermissionAction(ref),
                     )
                   else
                     AppButton(
@@ -467,12 +476,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   }
 
   Future<void> _handlePermissionAction(WidgetRef ref) async {
-    if (_permissionState.hasFullAccess) {
+    if (_shouldShowPermissionNext) {
       _nextPage();
       return;
     }
 
-    if (_permissionState.isPermanentlyDenied) {
+    if (_isFullAccessPermanentlyDenied) {
+      setState(() => _hasHandledPermissionStep = true);
       await openAppSettings();
       return;
     }
@@ -484,12 +494,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       final permissionState = await repo.getPermissionState();
       if (!mounted) return;
 
-      setState(() => _permissionState = permissionState);
-      if (permissionState.hasFullAccess) {
-        _nextPage();
-      }
+      setState(() {
+        _permissionState = permissionState;
+        _hasHandledPermissionStep = true;
+      });
     } catch (_) {
       // Keep onboarding on the permission step; user can continue in limited mode.
+      if (mounted) {
+        setState(() => _hasHandledPermissionStep = true);
+      }
     } finally {
       if (mounted) {
         setState(() => _isCheckingPermission = false);

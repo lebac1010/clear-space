@@ -54,10 +54,10 @@ class PhotosScreen extends ConsumerWidget {
           final hasStorageSummary = storageInfoAsync.valueOrNull != null;
           final loadedPhotos = photosAsync.valueOrNull;
           final photoCount = loadedPhotos?.length ?? 0;
-          final totalPhotoSize = loadedPhotos?.fold<int>(
-            0,
-            (sum, photo) => sum + photo.size,
-          );
+          final totalPhotoSize =
+              loadedPhotos == null || loadedPhotos.isEmpty
+              ? null
+              : loadedPhotos.fold<int>(0, (sum, photo) => sum + photo.size);
 
           return CustomScrollView(
             slivers: [

@@ -5,7 +5,9 @@ import '../entities/storage_permission_state.dart';
 abstract class StorageRepository {
   /// Request necessary storage permissions.
   /// Returns [true] if granted.
-  Future<bool> requestPermissions();
+  Future<bool> requestPermissions({
+    RequiredStorageAccess requiredAccess = RequiredStorageAccess.full,
+  });
 
   /// Get comprehensive storage information.
   Future<StorageInfo> getStorageInfo({bool forceRefresh = false});
