@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="app_window_background">#111315</color>
+    <color name="app_window_background">#F8F9FA</color>
     <color name="native_ad_surface">#1E2022</color>
     <color name="native_ad_border">#333538</color>
     <color name="native_ad_icon_background">#17273B</color>
@@ -11,3 +11,4 @@
     <color name="native_ad_cta_background">#137FEC</color>
     <color name="native_ad_cta_text">#FFFFFF</color>
 </resources>
+

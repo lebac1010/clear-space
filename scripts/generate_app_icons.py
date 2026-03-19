@@ -49,8 +49,9 @@ LEGACY_ICON_SIZES = {
 
 FOREGROUND_SIZE = 432
 MASTER_SIZE = 1024
-MASTER_COVERAGE = 0.875
-FOREGROUND_COVERAGE = 0.72
+MASTER_COVERAGE = 1.0
+FOREGROUND_COVERAGE = 0.66
+FOREGROUND_Y_OFFSET = 8
 
 
 class SvgRenderError(RuntimeError):
@@ -243,21 +244,27 @@ def save_png(image: Image.Image, output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     image.save(output_path, "PNG", optimize=True)
 
-
-def center_on_canvas(image: Image.Image, canvas_size: int, ratio: float) -> Image.Image:
+def center_on_canvas(image: Image.Image, canvas_size: int, ratio: float, offset_y: int = 0) -> Image.Image:
     target_size = max(1, int(canvas_size * ratio))
     fitted = ImageOps.contain(image, (target_size, target_size), Image.Resampling.LANCZOS)
     canvas = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
-    offset = ((canvas_size - fitted.width) // 2, (canvas_size - fitted.height) // 2)
+    offset = ((canvas_size - fitted.width) // 2, ((canvas_size - fitted.height) // 2) + offset_y)
     canvas.alpha_composite(fitted, offset)
     return canvas
+
 
 
 def strip_adaptive_background(source_svg: Path, output_svg: Path) -> None:
     svg_text = source_svg.read_text(encoding="utf-8")
     svg_text = svg_text.replace("<!-- Adaptive safe zone squircle -->\n", "")
+    svg_text = svg_text.replace("<!-- Background squircle -->\n", "")
+    svg_text = svg_text.replace("<!-- Background squircle, full bleed -->\n", "")
     svg_text = svg_text.replace(
         '<rect x="64" y="64" width="896" height="896" rx="220" fill="url(#bg)"/>\n',
+        "",
+    )
+    svg_text = svg_text.replace(
+        '<rect x="0" y="0" width="1024" height="1024" rx="220" fill="url(#bg2)"/>\n',
         "",
     )
     output_svg.write_text(svg_text, encoding="utf-8")
@@ -341,7 +348,7 @@ def main() -> int:
             derived_foreground_svg, MASTER_SIZE, MASTER_SIZE
         )
         foreground_icon = center_on_canvas(
-            foreground_render, FOREGROUND_SIZE, FOREGROUND_COVERAGE
+            foreground_render, FOREGROUND_SIZE, FOREGROUND_COVERAGE, offset_y=FOREGROUND_Y_OFFSET
         )
 
         cleanup_generated_assets()
