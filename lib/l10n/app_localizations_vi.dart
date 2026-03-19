@@ -94,6 +94,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get getStarted => 'Bắt Đầu';
 
   @override
+  String get skip => 'Bỏ qua';
+
+  @override
   String get next => 'Tiếp theo';
 
   @override
@@ -504,16 +507,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get duplicates => 'Duplicates';
+  String get duplicates => 'Trùng lặp';
 
   @override
-  String get similar => 'Similar';
+  String get similar => 'Tương tự';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Đã xảy ra lỗi';
 
   @override
-  String get pageNotFoundDesc => 'The page you are looking for does not exist.';
+  String get pageNotFoundDesc => 'Trang bạn đang tìm không tồn tại.';
 
   @override
   String get allClean => 'Đã sạch sẽ!';

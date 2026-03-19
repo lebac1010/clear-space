@@ -94,6 +94,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getStarted => 'Get Started';
 
   @override
+  String get skip => 'Skip';
+
+  @override
   String get next => 'Next';
 
   @override
@@ -840,10 +843,52 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
       'Clear Space requests storage-related access only for cleanup features that you choose to use.';
 
   @override
+  String get storagePermissionDeniedDesc =>
+      'Storage permission was denied. Please enable it in Settings to continue.';
+
+  @override
+  String get permissionMediaTitle => 'Photos, videos, and audio';
+
+  @override
+  String get permissionMediaDesc =>
+      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
+
+  @override
+  String get permissionAllFilesTitle => 'All files access';
+
+  @override
+  String get permissionAllFilesDesc =>
+      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
+
+  @override
+  String get permissionInstalledAppsTitle => 'Installed apps';
+
+  @override
+  String get permissionInstalledAppsDesc =>
+      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
+
+  @override
+  String get permissionVisibleProgressTitle => 'Visible progress';
+
+  @override
+  String get permissionVisibleProgressDesc =>
+      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
+
+  @override
+  String get permissionOnDeviceNote =>
+      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
   String get grantPermission => 'Grant Permission';
 
   @override
   String get getStarted => 'Get Started';
+
+  @override
+  String get skip => 'Skip';
 
   @override
   String get next => 'Next';
@@ -1120,6 +1165,19 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get confirmation => 'Confirmation';
 
   @override
+  String get clearHistory => 'Clear History';
+
+  @override
+  String get clearHistoryConfirm =>
+      'Are you sure you want to delete all cleanup logs?';
+
+  @override
+  String get clearAll => 'Clear All';
+
+  @override
+  String get cleanAllSafeItems => 'Clean All Safe Items';
+
+  @override
   String get deleteFilesQuestion => 'Delete files?';
 
   @override
@@ -1238,6 +1296,18 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String appsShowingCount(int showing, int total) {
     return '$showing / $total apps';
   }
+
+  @override
+  String get duplicates => 'Duplicates';
+
+  @override
+  String get similar => 'Similar';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String get pageNotFoundDesc => 'The page you are looking for does not exist.';
 
   @override
   String get allClean => 'All clean!';

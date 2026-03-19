@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../../core/services/app_settings_service.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../dashboard/data/providers/storage_provider.dart';
 import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
 import '../../domain/entities/download_item.dart';
@@ -12,6 +14,10 @@ part 'downloads_controller.g.dart';
 /// async pattern as ScreenshotsController.
 @riverpod
 class DownloadsController extends _$DownloadsController {
+  AppLocalizations get _l10n => lookupAppLocalizations(
+    ref.read(localeControllerProvider),
+  );
+
   @override
   DownloadsState build() {
     Future.microtask(() => loadDownloads());
@@ -127,7 +133,7 @@ class DownloadsController extends _$DownloadsController {
         // Rollback
         state = state.copyWith(
           items: previousItems,
-          errorMessage: 'Failed to delete some items. Please try again.',
+          errorMessage: _l10n.deleteFailedGeneral,
         );
         _updateSelectionStats();
         return false;
@@ -135,7 +141,7 @@ class DownloadsController extends _$DownloadsController {
     } catch (e) {
       state = state.copyWith(
         items: previousItems,
-        errorMessage: 'Delete failed: ${e.toString()}',
+        errorMessage: _l10n.deleteFailed(e.toString()),
       );
       _updateSelectionStats();
       return false;

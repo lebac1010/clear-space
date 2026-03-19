@@ -1,6 +1,9 @@
 {
   "@@locale": "es",
   "appTitle": "Clear Space",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   "dashboardTitle": "Panel",
   "cleanupTitle": "Limpieza",
   "photosTitle": "Fotos",
@@ -13,8 +16,23 @@
   "darkTheme": "Oscuro",
   "storageAccessRequired": "Se requiere acceso",
   "storageAccessDesc": "Clear Space necesita \"Acceso a todos los archivos\" para buscar duplicados, archivos grandes y archivos basura en tu dispositivo.\n\nSerás dirigido a la configuración del sistema para otorgar este permiso cuando toques Conceder Permiso.",
+  "storagePermissionDeniedDesc": "Storage permission was denied. Please enable it in Settings to continue.",
+  "permissionMediaTitle": "Photos, videos, and audio",
+  "permissionMediaDesc": "Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.",
+  "permissionAllFilesTitle": "All files access",
+  "permissionAllFilesDesc": "Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.",
+  "permissionInstalledAppsTitle": "Installed apps",
+  "permissionInstalledAppsDesc": "Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.",
+  "permissionVisibleProgressTitle": "Visible progress",
+  "permissionVisibleProgressDesc": "Used to keep scan or cleanup progress visible while a user-initiated task is running.",
+  "permissionOnDeviceNote": "Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.",
+  "openSettings": "Open Settings",
   "grantPermission": "Conceder Permiso",
   "getStarted": "Empezar",
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "Siguiente",
   "continueText": "Continuar",
   "cancel": "Cancelar",
@@ -24,6 +42,13 @@
   "success": "Éxito",
   "noItemsFound": "No se encontraron elementos",
   "itemsSelected": "{count, plural, =0{Ningún elemento} =1{1 elemento} other{{count} elementos}} seleccionados",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "onboardingWelcome": "Bienvenido a la forma más inteligente de mantener tu dispositivo limpio, rápido y seguro.",
   "onboardingFeaturesTitle": "Funciones potentes",
   "onboardingFeaturesDesc": "Todo lo que necesitas para administrar tu almacenamiento de manera eficiente.",
@@ -34,6 +59,146 @@
   "feature3Title": "Libera espacio",
   "feature3Desc": "Encuentra y elimina instantáneamente basura, archivos grandes y duplicados.",
   "termsDesc": "Al continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.",
+  "selectLanguage": "Select Your Language",
+  "changeLaterInSettings": "You can change this later in Settings.",
+  "photosAndImages": "Photos & Images",
+  "videos": "Videos",
+  "audio": "Audio",
+  "documentsAndFiles": "Documents & Files",
+  "systemAndApps": "System & Apps",
+  "other": "OTHER",
+  "review": "Review",
+  "viewDetails": "View Details",
+  "smartCleanupPlan": "Smart Cleanup Plan",
+  "analyzingSafeToDelete": "Analyzing safe-to-delete files...",
+  "returnToDashboard": "Return to Dashboard",
+  "returnDirectlyToDashboard": "Return directly to Dashboard",
+  "appearanceAndLanguage": "Appearance & Language",
+  "supportAndEngagement": "Support & Engagement",
+  "scanPreferences": "Scan Preferences",
+  "legalAndAppInfo": "Legal & App Info",
+  "cleanupHistory": "Cleanup History",
+  "viewPastCleaning": "View your past cleaning activities",
+  "sendFeedback": "Send Feedback",
+  "reportBugs": "Report bugs or suggest improvements",
+  "rateUs": "Rate Us 5 Stars",
+  "helpOthers": "Help others find Clear Space",
+  "shareWithFriends": "Share with Friends",
+  "recommendApp": "Recommend the app via messages",
+  "similarPhotoSensitivity": "Similar Photo Sensitivity",
+  "largeFileThreshold": "Large File Threshold",
+  "strict": "Strict",
+  "normal": "Normal",
+  "loose": "Loose",
+  "privacyPolicy": "Privacy Policy",
+  "howWeProtectData": "How we protect your data",
+  "termsOfService": "Terms of Service",
+  "rulesAndGuidelines": "Rules and guidelines",
+  "appVersion": "App Version",
+  "emailRestricted": "Email functionality restricted by device.",
+  "browserLaunchFailed": "Could not launch browser.",
+  "storeUnavailable": "Store service temporarily unavailable.",
+  "browserRestricted": "Browser access restricted on this device.",
+  "shareUnavailable": "Share functionality unavailable.",
+  "keepPhoneClean": "Keep your phone clean with Clear Space",
+  "duplicateFiles": "Duplicate Files",
+  "findIdenticalFiles": "Find and remove identical files",
+  "similarPhotos": "Similar Photos",
+  "findKeyMoments": "Find key photo moments",
+  "largeFiles": "Large Files",
+  "filesLargerThan": "Files larger than {size}",
+  "@filesLargerThan": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "screenshots": "Screenshots",
+  "findAndDeleteScreenshots": "Find and delete screenshots",
+  "downloads": "Downloads",
+  "manageDownloadedFiles": "Manage your downloaded files",
+  "tempAndLogFiles": "Temporary & Log Files",
+  "sizeFound": "{size} found",
+  "@sizeFound": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyFolders": "Empty Folders",
+  "emptyFoldersFound": "{count} empty folders found",
+  "@emptyFoldersFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "safeApkInstallers": "Safe APK Installers",
+  "cleanOldApks": "Clean installed/old APKs",
+  "pleaseScanStorageFirst": "Please scan storage first",
+  "noJunkFilesFound": "No junk files found!",
+  "cleanupComplete": "Cleanup complete!",
+  "cleanupFailed": "Cleanup failed: {error}",
+  "@cleanupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAll": "Select All",
+  "noLargeFilesFound": "No large files found!",
+  "noDuplicatesFound": "No duplicates found!",
+  "delete": "Delete",
+  "confirmation": "Confirmation",
+  "clearHistory": "Clear History",
+  "clearHistoryConfirm": "Are you sure you want to delete all cleanup logs?",
+  "clearAll": "Clear All",
+  "cleanAllSafeItems": "Clean All Safe Items",
+  "deleteFilesQuestion": "Delete files?",
+  "deleteCountScreenshots": "Delete {count} screenshots permanently?",
+  "@deleteCountScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "screenshotsDeletedSuccess": "Screenshots deleted successfully",
+  "junkFilesFound": "Archivos basura encontrados",
+  "noPhotosFound": "No photos found",
+  "errorLoadingPhotos": "Error loading photos: {error}",
+  "@errorLoadingPhotos": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteFailed": "Delete failed: {error}",
+  "@deleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts": "Contacts",
+  "contactsNotImplemented": "Contacts List Not Implemented",
+  "smartSelect": "Smart Select",
+  "junkFiles": "Junk Files",
+  "potentialSize": "{size} potential",
+  "@potentialSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "noFilesMatchFilter": "No files match this filter",
   "refreshingAppList": "Actualizando lista de aplicaciones...",
   "openingUninstaller": "Abriendo desinstalador...",
   "uninstallApp": "Desinstalar aplicación",
@@ -53,19 +218,84 @@
   "noAppsFound": "No se encontraron aplicaciones",
   "noMatchingApps": "Sin coincidencias",
   "uninstallConfirmMsg": "¿Seguro que quieres desinstalar \"{appName}\" ({size})?",
+  "@uninstallConfirmMsg": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "uninstallActionDesc": "Se eliminará la aplicación y todos sus datos.",
   "appsCount": "{count} aplicaciones",
+  "@appsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appsShowingCount": "{showing} / {total} aplicaciones",
+  "@appsShowingCount": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicates": "Duplicates",
+  "similar": "Similar",
+  "somethingWentWrong": "Something went wrong",
+  "pageNotFoundDesc": "The page you are looking for does not exist.",
   "allClean": "¡Todo limpio!",
   "deleting": "Eliminando...",
   "deleteItemsCount": "Eliminar {count} elementos ({size})",
+  "@deleteItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deletedCountMsg": "Eliminados {count} elementos ({size})",
+  "@deletedCountMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "actionCannotBeUndone": "Esta acción no se puede deshacer.",
   "cleanupBreakdown": "Resumen de limpieza",
   "smartCleanupDesc": "Conservamos automáticamente la mejor versión de tus fotos y archivos.",
   "cleaning": "Limpiando...",
   "cleanUpSize": "Liberar {size}",
+  "@cleanUpSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youSavedSize": "Has ahorrado {size}",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youreAllSet": "¡Todo listo!",
   "noSmartCleanupItems": "No se encontraron archivos duplicados o similares.",
   "save": "Guardar",
@@ -76,9 +306,40 @@
   "others": "Otros",
   "all": "Todos",
   "deleteConfirmMsg": "¿Seguro que quieres eliminar {count} archivos seleccionados?\n\nSe moverán a la papelera o se eliminarán definitivamente.",
+  "@deleteConfirmMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsCount": "{count, plural, =0{Sin capturas} =1{1 captura} other{{count} capturas}}",
+  "@screenshotsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCountSize": "Seleccionado: {count} ({size})",
+  "@selectedCountSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteSelectedSize": "Eliminar selección ({size})",
+  "@deleteSelectedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailedGeneral": "Error al eliminar algunos elementos. Inténtalo de nuevo.",
   "systemDefault": "Por defecto",
   "light": "Claro",
@@ -94,15 +355,26 @@
   "thresholdDesc": "Los archivos por encima de este valor se marcarán para su eliminación.",
   "thresholdUpdated": "Límite de tamaño actualizado. Se aplicará en el próximo escaneo.",
   "largerThanSize": "Mayores a {size}",
+  "@largerThanSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "madeWithHeart": "Hecho con ❤️ para un teléfono más limpio",
   "versionUnavailable": "Versión no disponible",
   "emailNotSupported": "No se pudo abrir el correo. Escríbenos directamente.",
-  "browserRestricted": "Browser access restricted on this device.",
-  "storeUnavailable": "Store service temporarily unavailable.",
   "clearSpace": "Clear Space",
   "storageDashboard": "Panel de almacenamiento",
-  "junkFilesFound": "Archivos basura encontrados",
   "itemsCanBeCleaned": "{count} elementos a limpiar",
+  "@itemsCanBeCleaned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "storageBreakdown": "Desglose de uso",
   "cleanup": "Limpiar",
   "suggestions": "Sugerencias",
@@ -110,9 +382,33 @@
   "keepStorageHealthy": "Mantén tu memoria sana",
   "cleanupHeaderDesc": "Encontramos archivos que podrías eliminar para liberar espacio.",
   "percentUsed": "{percentage}% Usado",
+  "@percentUsed": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "scanPausedBattery": "Pausado (Batería baja)",
   "scanningPhase": "Escaneando {phase}...",
+  "@scanningPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
   "scanningPhasePercent": "Escaneando {phase}... ({percentage}%)",
+  "@scanningPhasePercent": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "calculating": "Calculando...",
   "internalStorage": "ALMACENAMIENTO",
   "free": "Libre",
@@ -128,12 +424,32 @@
   "phaseApks": "APKs",
   "phaseSimilar": "Fotos similares",
   "phaseStorage": "Memoria",
-  "selectYourLanguage": "Elige tu idioma",
-  "changeLaterInSettings": "You can change this later in Settings.",
-  "largeFilesTitle": "Archivos grandes",
-  "usedSize": "{size} Usado",
   "totalSize": "{size} Total",
+  "@totalSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "usedSize": "{size} Usado",
+  "@usedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "largeFilesTitle": "Archivos grandes",
+  "selectYourLanguage": "Elige tu idioma",
   "analyzingLabel": "Analizando...",
   "zeroBytes": "0 B",
-  "itemCount": "{count} elementos"
+  "itemCount": "{count} elementos",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

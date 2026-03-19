@@ -1,6 +1,9 @@
 {
   "@@locale": "tr",
   "appTitle": "Clear Space",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   "dashboardTitle": "Panel",
   "cleanupTitle": "Temizle",
   "photosTitle": "Fotoğraflar",
@@ -13,8 +16,23 @@
   "darkTheme": "Koyu",
   "storageAccessRequired": "Erişim Gerekli",
   "storageAccessDesc": "Clear Space'in cihazınızda kopyaları, büyük dosyaları ve çöp dosyaları taramak için \"Tüm dosyalara erişim\" iznine ihtiyacı var.\n\nİzin vermek için ayarlara yönlendirileceksiniz.",
+  "storagePermissionDeniedDesc": "Storage permission was denied. Please enable it in Settings to continue.",
+  "permissionMediaTitle": "Photos, videos, and audio",
+  "permissionMediaDesc": "Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.",
+  "permissionAllFilesTitle": "All files access",
+  "permissionAllFilesDesc": "Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.",
+  "permissionInstalledAppsTitle": "Installed apps",
+  "permissionInstalledAppsDesc": "Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.",
+  "permissionVisibleProgressTitle": "Visible progress",
+  "permissionVisibleProgressDesc": "Used to keep scan or cleanup progress visible while a user-initiated task is running.",
+  "permissionOnDeviceNote": "Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.",
+  "openSettings": "Open Settings",
   "grantPermission": "İzin Ver",
   "getStarted": "Başla",
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "İleri",
   "continueText": "Devam",
   "cancel": "İptal",
@@ -24,6 +42,13 @@
   "success": "Başarılı",
   "noItemsFound": "Öğe bulunamadı",
   "itemsSelected": "{count, plural, =0{Öğe yok} =1{1 öğe} other{{count} öğe}} seçildi",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "onboardingWelcome": "Cihazınızı temiz, hızlı ve güvenli tutmanın en akıllı yoluna hoş geldiniz.",
   "onboardingFeaturesTitle": "Güçlü Özellikler",
   "onboardingFeaturesDesc": "Depolamanızı verimli bir şekilde yönetmek için ihtiyacınız olan her şey.",
@@ -34,6 +59,146 @@
   "feature3Title": "Yer açın",
   "feature3Desc": "Çöpleri, büyük dosyaları ve kopyaları anında bulun ve silin.",
   "termsDesc": "Devam ederek, Gizlilik Politikamızı kabul etmiş olursunuz.",
+  "selectLanguage": "Select Your Language",
+  "changeLaterInSettings": "You can change this later in Settings.",
+  "photosAndImages": "Photos & Images",
+  "videos": "Videos",
+  "audio": "Audio",
+  "documentsAndFiles": "Documents & Files",
+  "systemAndApps": "System & Apps",
+  "other": "OTHER",
+  "review": "Review",
+  "viewDetails": "View Details",
+  "smartCleanupPlan": "Smart Cleanup Plan",
+  "analyzingSafeToDelete": "Analyzing safe-to-delete files...",
+  "returnToDashboard": "Return to Dashboard",
+  "returnDirectlyToDashboard": "Return directly to Dashboard",
+  "appearanceAndLanguage": "Appearance & Language",
+  "supportAndEngagement": "Support & Engagement",
+  "scanPreferences": "Scan Preferences",
+  "legalAndAppInfo": "Legal & App Info",
+  "cleanupHistory": "Cleanup History",
+  "viewPastCleaning": "View your past cleaning activities",
+  "sendFeedback": "Send Feedback",
+  "reportBugs": "Report bugs or suggest improvements",
+  "rateUs": "Rate Us 5 Stars",
+  "helpOthers": "Help others find Clear Space",
+  "shareWithFriends": "Share with Friends",
+  "recommendApp": "Recommend the app via messages",
+  "similarPhotoSensitivity": "Similar Photo Sensitivity",
+  "largeFileThreshold": "Large File Threshold",
+  "strict": "Strict",
+  "normal": "Normal",
+  "loose": "Loose",
+  "privacyPolicy": "Privacy Policy",
+  "howWeProtectData": "How we protect your data",
+  "termsOfService": "Terms of Service",
+  "rulesAndGuidelines": "Rules and guidelines",
+  "appVersion": "App Version",
+  "emailRestricted": "Email functionality restricted by device.",
+  "browserLaunchFailed": "Could not launch browser.",
+  "storeUnavailable": "Store service temporarily unavailable.",
+  "browserRestricted": "Browser access restricted on this device.",
+  "shareUnavailable": "Share functionality unavailable.",
+  "keepPhoneClean": "Keep your phone clean with Clear Space",
+  "duplicateFiles": "Duplicate Files",
+  "findIdenticalFiles": "Find and remove identical files",
+  "similarPhotos": "Similar Photos",
+  "findKeyMoments": "Find key photo moments",
+  "largeFiles": "Large Files",
+  "filesLargerThan": "Files larger than {size}",
+  "@filesLargerThan": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "screenshots": "Screenshots",
+  "findAndDeleteScreenshots": "Find and delete screenshots",
+  "downloads": "Downloads",
+  "manageDownloadedFiles": "Manage your downloaded files",
+  "tempAndLogFiles": "Temporary & Log Files",
+  "sizeFound": "{size} found",
+  "@sizeFound": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyFolders": "Empty Folders",
+  "emptyFoldersFound": "{count} empty folders found",
+  "@emptyFoldersFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "safeApkInstallers": "Safe APK Installers",
+  "cleanOldApks": "Clean installed/old APKs",
+  "pleaseScanStorageFirst": "Please scan storage first",
+  "noJunkFilesFound": "No junk files found!",
+  "cleanupComplete": "Cleanup complete!",
+  "cleanupFailed": "Cleanup failed: {error}",
+  "@cleanupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAll": "Select All",
+  "noLargeFilesFound": "No large files found!",
+  "noDuplicatesFound": "No duplicates found!",
+  "delete": "Delete",
+  "confirmation": "Confirmation",
+  "clearHistory": "Clear History",
+  "clearHistoryConfirm": "Are you sure you want to delete all cleanup logs?",
+  "clearAll": "Clear All",
+  "cleanAllSafeItems": "Clean All Safe Items",
+  "deleteFilesQuestion": "Delete files?",
+  "deleteCountScreenshots": "Delete {count} screenshots permanently?",
+  "@deleteCountScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "screenshotsDeletedSuccess": "Screenshots deleted successfully",
+  "junkFilesFound": "Gereksiz Dosyalar Bulundu",
+  "noPhotosFound": "No photos found",
+  "errorLoadingPhotos": "Error loading photos: {error}",
+  "@errorLoadingPhotos": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteFailed": "Delete failed: {error}",
+  "@deleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts": "Contacts",
+  "contactsNotImplemented": "Contacts List Not Implemented",
+  "smartSelect": "Smart Select",
+  "junkFiles": "Junk Files",
+  "potentialSize": "{size} potential",
+  "@potentialSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "noFilesMatchFilter": "No files match this filter",
   "refreshingAppList": "Uygulama listesi yenileniyor...",
   "openingUninstaller": "Kaldırıcı açılıyor...",
   "uninstallApp": "Uygulamayı Kaldır",
@@ -53,19 +218,84 @@
   "noAppsFound": "Uygulama bulunamadı",
   "noMatchingApps": "Eşleşen uygulama yok",
   "uninstallConfirmMsg": "\"{appName}\" ({size}) uygulamasını kaldırmak istiyor musunuz?",
+  "@uninstallConfirmMsg": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "uninstallActionDesc": "Uygulama ve tüm verileri silinecektir.",
   "appsCount": "{count} uygulama",
+  "@appsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appsShowingCount": "{showing} / {total} uygulama gösteriliyor",
+  "@appsShowingCount": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicates": "Duplicates",
+  "similar": "Similar",
+  "somethingWentWrong": "Something went wrong",
+  "pageNotFoundDesc": "The page you are looking for does not exist.",
   "allClean": "Tertemiz!",
   "deleting": "Siliniyor...",
   "deleteItemsCount": "{count} öğeyi sil ({size})",
+  "@deleteItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deletedCountMsg": "{count} öğe silindi ({size})",
+  "@deletedCountMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "actionCannotBeUndone": "Bu işlem geri alınamaz.",
   "cleanupBreakdown": "Temizlik Dağılımı",
   "smartCleanupDesc": "Benzer fotoğrafların ve dosyaların en iyi sürümünü otomatik tutuyoruz.",
   "cleaning": "Temizleniyor...",
   "cleanUpSize": "{size} Temizle",
+  "@cleanUpSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youSavedSize": "{size} yer açtınız",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youreAllSet": "Her Şey Hazır!",
   "noSmartCleanupItems": "Hiç kopya dosya bulunamadı.",
   "save": "Kaydet",
@@ -76,9 +306,40 @@
   "others": "Diğer",
   "all": "Tümü",
   "deleteConfirmMsg": "Seçilen {count} dosyayı silmek istediğinizden emin misiniz?",
+  "@deleteConfirmMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsCount": "{count, plural, =0{Ekran görüntüsü yok} =1{1 görüntü} other{{count} görüntü}}",
+  "@screenshotsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCountSize": "Seçilen: {count} ({size})",
+  "@selectedCountSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteSelectedSize": "Seçilenleri Sil ({size})",
+  "@deleteSelectedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailedGeneral": "Bazı öğeler silinemedi. Tekrar deneyin.",
   "systemDefault": "Sistem Varsayılanı",
   "light": "Açık",
@@ -94,15 +355,26 @@
   "thresholdDesc": "Bu değerden büyük dosyalar işaretlenir.",
   "thresholdUpdated": "Limit güncellendi.",
   "largerThanSize": "{size} boyutundan büyük",
+  "@largerThanSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "madeWithHeart": "Daha temiz bir telefon için ❤️ ile yapıldı",
   "versionUnavailable": "Sürüm yok",
   "emailNotSupported": "E-posta desteklenmiyor.",
-  "browserRestricted": "Browser access restricted on this device.",
-  "storeUnavailable": "Store service temporarily unavailable.",
   "clearSpace": "Clear Space",
   "storageDashboard": "Depolama Paneli",
-  "junkFilesFound": "Gereksiz Dosyalar Bulundu",
   "itemsCanBeCleaned": "{count} öğe temizlenebilir",
+  "@itemsCanBeCleaned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "storageBreakdown": "Depolama Kullanımı",
   "cleanup": "Temizlik",
   "suggestions": "Önerilenler",
@@ -110,9 +382,33 @@
   "keepStorageHealthy": "Depolamanızı koruyun",
   "cleanupHeaderDesc": "Yer açmak için silebileceğiniz dosyaları bulduk.",
   "percentUsed": "%{percentage} Dolu",
+  "@percentUsed": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "scanPausedBattery": "Tarama Durduruldu (Düşük Pil)",
   "scanningPhase": "Taranıyor: {phase}...",
+  "@scanningPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
   "scanningPhasePercent": "Taranıyor: {phase}... (%{percentage})",
+  "@scanningPhasePercent": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "calculating": "Hesaplanıyor...",
   "internalStorage": "DAHİLİ DEPOLAMA",
   "free": "Boş",
@@ -128,12 +424,32 @@
   "phaseApks": "Kurulumlar",
   "phaseSimilar": "Benzer Resimler",
   "phaseStorage": "Depolama",
-  "selectYourLanguage": "Dilinizi Seçin",
-  "changeLaterInSettings": "You can change this later in Settings.",
-  "largeFilesTitle": "Büyük Dosyalar",
-  "usedSize": "{size} Kullanımda",
   "totalSize": "{size} Toplam",
+  "@totalSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "usedSize": "{size} Kullanımda",
+  "@usedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "largeFilesTitle": "Büyük Dosyalar",
+  "selectYourLanguage": "Dilinizi Seçin",
   "analyzingLabel": "Analiz ediliyor...",
   "zeroBytes": "0 B",
-  "itemCount": "{count} öğe"
+  "itemCount": "{count} öğe",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

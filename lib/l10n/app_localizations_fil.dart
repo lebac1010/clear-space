@@ -94,6 +94,9 @@ class AppLocalizationsFil extends AppLocalizations {
   String get getStarted => 'Magsimula';
 
   @override
+  String get skip => 'Skip';
+
+  @override
   String get next => 'Susunod';
 
   @override

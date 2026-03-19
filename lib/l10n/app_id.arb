@@ -1,6 +1,9 @@
 {
   "@@locale": "id",
   "appTitle": "Clear Space",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   "dashboardTitle": "Dasbor",
   "cleanupTitle": "Pembersihan",
   "photosTitle": "Foto",
@@ -13,8 +16,23 @@
   "darkTheme": "Gelap",
   "storageAccessRequired": "Akses Penyimpanan Diperlukan",
   "storageAccessDesc": "Clear Space memerlukan \"Akses ke semua file\" untuk memindai perangkat Anda dari file duplikat, file besar, dan file sampah.\n\nAnda akan diarahkan ke Pengaturan Sistem untuk memberikan izin ini setelah mengetuk Berikan Izin.",
+  "storagePermissionDeniedDesc": "Storage permission was denied. Please enable it in Settings to continue.",
+  "permissionMediaTitle": "Photos, videos, and audio",
+  "permissionMediaDesc": "Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.",
+  "permissionAllFilesTitle": "All files access",
+  "permissionAllFilesDesc": "Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.",
+  "permissionInstalledAppsTitle": "Installed apps",
+  "permissionInstalledAppsDesc": "Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.",
+  "permissionVisibleProgressTitle": "Visible progress",
+  "permissionVisibleProgressDesc": "Used to keep scan or cleanup progress visible while a user-initiated task is running.",
+  "permissionOnDeviceNote": "Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.",
+  "openSettings": "Open Settings",
   "grantPermission": "Berikan Izin",
   "getStarted": "Mulai",
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "Selanjutnya",
   "continueText": "Lanjutkan",
   "cancel": "Batal",
@@ -24,6 +42,13 @@
   "success": "Sukses",
   "noItemsFound": "Tidak ada item ditemukan",
   "itemsSelected": "{count} item dipilih",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "onboardingWelcome": "Selamat datang di cara paling cerdas untuk menjaga perangkat Anda tetap bersih, cepat, dan aman.",
   "onboardingFeaturesTitle": "Fitur Canggih",
   "onboardingFeaturesDesc": "Semua yang Anda butuhkan untuk mengelola penyimpanan secara efisien.",
@@ -82,36 +107,97 @@
   "findKeyMoments": "Temukan momen foto utama",
   "largeFiles": "File Besar",
   "filesLargerThan": "File lebih besar dari {size}",
+  "@filesLargerThan": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "screenshots": "Tangkapan Layar",
   "findAndDeleteScreenshots": "Temukan dan hapus tangkapan layar",
   "downloads": "Unduhan",
   "manageDownloadedFiles": "Kelola file yang Anda unduh",
   "tempAndLogFiles": "File Sementara & Log",
   "sizeFound": "{size} ditemukan",
+  "@sizeFound": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "emptyFolders": "Folder Kosong",
   "emptyFoldersFound": "{count} folder kosong ditemukan",
+  "@emptyFoldersFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "safeApkInstallers": "Pemasang APK Aman",
   "cleanOldApks": "Bersihkan APK yang terinstal/lama",
   "pleaseScanStorageFirst": "Harap pindai penyimpanan terlebih dahulu",
   "noJunkFilesFound": "Tidak ditemukan file sampah!",
   "cleanupComplete": "Pembersihan selesai!",
   "cleanupFailed": "Pembersihan gagal: {error}",
+  "@cleanupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "selectAll": "Pilih Semua",
   "noLargeFilesFound": "Tidak ditemukan file besar!",
   "noDuplicatesFound": "Tidak ada duplikat yang ditemukan!",
   "delete": "Hapus",
   "confirmation": "Konfirmasi",
+  "clearHistory": "Clear History",
+  "clearHistoryConfirm": "Are you sure you want to delete all cleanup logs?",
+  "clearAll": "Clear All",
+  "cleanAllSafeItems": "Clean All Safe Items",
   "deleteFilesQuestion": "Hapus file?",
   "deleteCountScreenshots": "Hapus {count} tangkapan layar secara permanen?",
+  "@deleteCountScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsDeletedSuccess": "Tangkapan layar berhasil dihapus",
+  "junkFilesFound": "File Sampah Ditemukan",
   "noPhotosFound": "Tidak ada foto yang ditemukan",
   "errorLoadingPhotos": "Galat memuat foto: {error}",
+  "@errorLoadingPhotos": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailed": "Penghapusan gagal: {error}",
+  "@deleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "contacts": "Kontak",
   "contactsNotImplemented": "Daftar Kontak Tidak Diimplementasikan",
   "smartSelect": "Pilih Pintar",
   "junkFiles": "File Sampah",
   "potentialSize": "{size} potensial",
+  "@potentialSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "noFilesMatchFilter": "Tidak ada file yang cocok dengan filter ini",
   "refreshingAppList": "Menyegarkan daftar aplikasi...",
   "openingUninstaller": "Membuka pencopot pemasangan...",
@@ -132,19 +218,84 @@
   "noAppsFound": "Tidak ada aplikasi",
   "noMatchingApps": "Tidak ada aplikasi cocok",
   "uninstallConfirmMsg": "Apakah Anda yakin ingin mencopot \"{appName}\" ({size})?",
+  "@uninstallConfirmMsg": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "uninstallActionDesc": "Ini akan menghapus aplikasi dan semua datanya.",
   "appsCount": "{count} aplikasi",
+  "@appsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appsShowingCount": "{showing} / {total} aplikasi",
+  "@appsShowingCount": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicates": "Duplicates",
+  "similar": "Similar",
+  "somethingWentWrong": "Something went wrong",
+  "pageNotFoundDesc": "The page you are looking for does not exist.",
   "allClean": "Semua bersih!",
   "deleting": "Menghapus...",
   "deleteItemsCount": "Hapus {count} item ({size})",
+  "@deleteItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deletedCountMsg": "{count} item dihapus ({size})",
+  "@deletedCountMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "actionCannotBeUndone": "Tindakan tak dapat dibatalkan.",
   "cleanupBreakdown": "Rincian Pembersihan",
   "smartCleanupDesc": "Kami secara otomatis menyimpan versi terbaik foto dan file Anda.",
   "cleaning": "Membersihkan...",
   "cleanUpSize": "Bersihkan {size}",
+  "@cleanUpSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youSavedSize": "Anda menghemat {size}",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youreAllSet": "Semuanya Beres!",
   "noSmartCleanupItems": "Tidak ditemukan file duplikat.",
   "save": "Simpan",
@@ -155,9 +306,40 @@
   "others": "Lainnya",
   "all": "Semua",
   "deleteConfirmMsg": "Apakah Anda yakin ingin menghapus {count} file yang dipilih?\n\nFile akan dihapus secara permanen.",
+  "@deleteConfirmMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsCount": "{count, plural, =0{Tidak ada tangkapan layar} =1{1 tangkapan layar} other{{count} tangkapan layar}}",
+  "@screenshotsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCountSize": "Terpilih: {count} ({size})",
+  "@selectedCountSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteSelectedSize": "Hapus Terpilih ({size})",
+  "@deleteSelectedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailedGeneral": "Gagal menghapus file. Coba lagi.",
   "systemDefault": "Standar Sistem",
   "light": "Terang",
@@ -173,13 +355,26 @@
   "thresholdDesc": "File lebih besar dari ini akan ditandai untuk dihapus.",
   "thresholdUpdated": "Batas diperbarui. Akan digunakan pada pemindaian berikutnya.",
   "largerThanSize": "Lebih besar dari {size}",
+  "@largerThanSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "madeWithHeart": "Dibuat dengan ❤️ untuk ponsel yang lebih bersih",
   "versionUnavailable": "Versi tidak tersedia",
   "emailNotSupported": "Gagal membuka email.",
   "clearSpace": "Clear Space",
   "storageDashboard": "Dasbor Penyimpanan",
-  "junkFilesFound": "File Sampah Ditemukan",
   "itemsCanBeCleaned": "{count} item siap dibersihkan",
+  "@itemsCanBeCleaned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "storageBreakdown": "Rincian Penyimpanan",
   "cleanup": "Pembersihan",
   "suggestions": "Saran",
@@ -187,9 +382,33 @@
   "keepStorageHealthy": "Jaga ruang ponsel Anda",
   "cleanupHeaderDesc": "File ini dapat dihapus untuk ruang kosong.",
   "percentUsed": "{percentage}% Digunakan",
+  "@percentUsed": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "scanPausedBattery": "Jeda (Baterai Lemah)",
   "scanningPhase": "Memindai {phase}...",
+  "@scanningPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
   "scanningPhasePercent": "Memindai {phase}... ({percentage}%)",
+  "@scanningPhasePercent": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "calculating": "Menghitung...",
   "internalStorage": "PENYIMPANAN INTERNAL",
   "free": "Kosong",
@@ -205,11 +424,32 @@
   "phaseApks": "APK",
   "phaseSimilar": "Foto Mirip",
   "phaseStorage": "Penyimpanan",
-  "selectYourLanguage": "Pilih Bahasa",
-  "largeFilesTitle": "File Besar",
-  "usedSize": "{size} Digunakan",
   "totalSize": "{size} Total",
+  "@totalSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "usedSize": "{size} Digunakan",
+  "@usedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "largeFilesTitle": "File Besar",
+  "selectYourLanguage": "Pilih Bahasa",
   "analyzingLabel": "Menganalisis...",
   "zeroBytes": "0 B",
-  "itemCount": "{count} item"
+  "itemCount": "{count} item",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

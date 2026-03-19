@@ -1,6 +1,9 @@
 {
   "@@locale": "fil",
   "appTitle": "Clear Space",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   "dashboardTitle": "Dashboard",
   "cleanupTitle": "Paglilinis",
   "photosTitle": "Mga Larawan",
@@ -13,8 +16,23 @@
   "darkTheme": "Madilim",
   "storageAccessRequired": "Kailangan ng Access sa Storage",
   "storageAccessDesc": "Kailangan ng Clear Space ang \"Access sa lahat ng file\" upang i-scan ang iyong device para sa mga duplicate, malalaking file, at junk na file.\n\nIdidirekta ka sa Mga Setting ng System upang ibigay ang pahintulot na ito kapag na-tap mo ang Ibigay ang Pahintulot.",
+  "storagePermissionDeniedDesc": "Storage permission was denied. Please enable it in Settings to continue.",
+  "permissionMediaTitle": "Photos, videos, and audio",
+  "permissionMediaDesc": "Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.",
+  "permissionAllFilesTitle": "All files access",
+  "permissionAllFilesDesc": "Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.",
+  "permissionInstalledAppsTitle": "Installed apps",
+  "permissionInstalledAppsDesc": "Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.",
+  "permissionVisibleProgressTitle": "Visible progress",
+  "permissionVisibleProgressDesc": "Used to keep scan or cleanup progress visible while a user-initiated task is running.",
+  "permissionOnDeviceNote": "Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.",
+  "openSettings": "Open Settings",
   "grantPermission": "Ibigay ang Pahintulot",
   "getStarted": "Magsimula",
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "Susunod",
   "continueText": "Magpatuloy",
   "cancel": "Kanselahin",
@@ -24,6 +42,13 @@
   "success": "Tagumpay",
   "noItemsFound": "Walang nakitang item",
   "itemsSelected": "{count} (na) item ang napili",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "onboardingWelcome": "Maligayang pagdating sa pinakamatalinong paraan upang panatilihing malinis, mabilis, at ligtas ang iyong device.",
   "onboardingFeaturesTitle": "Makapangyarihang Mga Tampok",
   "onboardingFeaturesDesc": "Lahat ng kailangan mo upang mahusay na pamahalaan ang iyong storage.",
@@ -82,36 +107,97 @@
   "findKeyMoments": "Maghanap ng mga pangunahing sandali sa larawan",
   "largeFiles": "Malalaking File",
   "filesLargerThan": "Mga file na mas malaki kaysa sa {size}",
+  "@filesLargerThan": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "screenshots": "Mga Screenshot",
   "findAndDeleteScreenshots": "Maghanap at magtanggal ng mga screenshot",
   "downloads": "Mga Na-download",
   "manageDownloadedFiles": "Pamahalaan ang iyong mga na-download na file",
   "tempAndLogFiles": "Mga Temporary at Log na File",
   "sizeFound": "Nakita ang {size}",
+  "@sizeFound": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "emptyFolders": "Mga Walang Laman na Folder",
   "emptyFoldersFound": "Nakitang {count} walang laman na folder",
+  "@emptyFoldersFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "safeApkInstallers": "Mga Ligtas na APK Installer",
   "cleanOldApks": "Linisin ang naka-install/lumang APK",
   "pleaseScanStorageFirst": "Mangyaring i-scan muna ang storage",
   "noJunkFilesFound": "Walang nakitang junk file!",
   "cleanupComplete": "Kumpleto na ang paglilinis!",
   "cleanupFailed": "Nabigo ang paglilinis: {error}",
+  "@cleanupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "selectAll": "Piliin Lahat",
   "noLargeFilesFound": "Walang nakitang malalaking file!",
   "noDuplicatesFound": "Walang nakitang duplicate!",
   "delete": "Tapusin",
   "confirmation": "Kumpirmasyon",
+  "clearHistory": "Clear History",
+  "clearHistoryConfirm": "Are you sure you want to delete all cleanup logs?",
+  "clearAll": "Clear All",
+  "cleanAllSafeItems": "Clean All Safe Items",
   "deleteFilesQuestion": "Tanggalin ang mga file?",
   "deleteCountScreenshots": "Permanenteng tanggalin ang {count} (na) screenshot?",
+  "@deleteCountScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsDeletedSuccess": "Matagumpay na natanggal ang mga screenshot",
+  "junkFilesFound": "Mga Basurang Nahanap",
   "noPhotosFound": "Walang nakitang mga larawan",
   "errorLoadingPhotos": "Error sa pag-load ng mga larawan: {error}",
+  "@errorLoadingPhotos": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailed": "Nabigo sa pag-delete: {error}",
+  "@deleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "contacts": "Mga Contact",
   "contactsNotImplemented": "Hindi Ipinatupad ang Listahan ng Mga Contact",
   "smartSelect": "Smart Select",
   "junkFiles": "Junk na mga File",
   "potentialSize": "{size} na potensyal",
+  "@potentialSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "noFilesMatchFilter": "Walang mga file na tumutugma sa filter na ito",
   "refreshingAppList": "Nire-refresh ang apps...",
   "openingUninstaller": "Binubuksan ang uninstaller...",
@@ -132,19 +218,84 @@
   "noAppsFound": "Walang nakitang apps",
   "noMatchingApps": "Walang tumugma",
   "uninstallConfirmMsg": "Sigurado ka bang i-uninstall ang \"{appName}\" ({size})?",
+  "@uninstallConfirmMsg": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "uninstallActionDesc": "Tatanggalin nito ang app at ang data.",
   "appsCount": "{count} apps",
+  "@appsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appsShowingCount": "{showing} / {total} apps",
+  "@appsShowingCount": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicates": "Duplicates",
+  "similar": "Similar",
+  "somethingWentWrong": "Something went wrong",
+  "pageNotFoundDesc": "The page you are looking for does not exist.",
   "allClean": "Lahat malinis!",
   "deleting": "Binubura...",
   "deleteItemsCount": "Burahin {count} aytem ({size})",
+  "@deleteItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deletedCountMsg": "Nabura ang {count} aytem ({size})",
+  "@deletedCountMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "actionCannotBeUndone": "Hindi na babalik ang nabura.",
   "cleanupBreakdown": "Bahagi ng Nilinis",
   "smartCleanupDesc": "Pinapanatili ang pinakamagandang kuha ng mga litrato mo.",
   "cleaning": "Naglilinis...",
   "cleanUpSize": "Linisin {size}",
+  "@cleanUpSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youSavedSize": "Nakatipid ka ng {size}",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youreAllSet": "Handa na lahat!",
   "noSmartCleanupItems": "Walang duplicate na nakita.",
   "save": "I-save",
@@ -155,9 +306,40 @@
   "others": "Iba pa",
   "all": "Lahat",
   "deleteConfirmMsg": "Sigurado ka bang buburahin ang {count} file?\n\nAng mga ito ay permenenteng mbubura.",
+  "@deleteConfirmMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsCount": "{count, plural, =0{Walang screenshots} =1{1 screenshot} other{{count} screenshots}}",
+  "@screenshotsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCountSize": "Pinili: {count} ({size})",
+  "@selectedCountSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteSelectedSize": "Burahin ang Napili ({size})",
+  "@deleteSelectedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailedGeneral": "Bigo na burahin ang ilang files.",
   "systemDefault": "System Default",
   "light": "Liwanag",
@@ -173,13 +355,26 @@
   "thresholdDesc": "Ang mga file na mas malaki dito ay makukuha.",
   "thresholdUpdated": "Limitasyon nakasave.",
   "largerThanSize": "Mas malaki sa {size}",
+  "@largerThanSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "madeWithHeart": "Ginawa may pagmamahal ❤️",
   "versionUnavailable": "Bersyon hindi handa",
   "emailNotSupported": "Email system walang galaw.",
   "clearSpace": "Clear Space",
   "storageDashboard": "Imbakang Dasboard",
-  "junkFilesFound": "Mga Basurang Nahanap",
   "itemsCanBeCleaned": "{count} aytem pwedeng linisin",
+  "@itemsCanBeCleaned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "storageBreakdown": "Lagayan Ng Espasyo",
   "cleanup": "Linisin",
   "suggestions": "Pangyayari",
@@ -187,9 +382,33 @@
   "keepStorageHealthy": "Gawing Mabilis ang Phone Mo",
   "cleanupHeaderDesc": "Files pwedeng tanggalin upang makatipid.",
   "percentUsed": "{percentage}% Ginamit",
+  "@percentUsed": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "scanPausedBattery": "Tumigil (Low Battery)",
   "scanningPhase": "Sinasakan: {phase}...",
+  "@scanningPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
   "scanningPhasePercent": "Sinasakan: {phase}... ({percentage}%)",
+  "@scanningPhasePercent": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "calculating": "Kinakalkula...",
   "internalStorage": "PANLOOB NA ESPASYO",
   "free": "Libre",
@@ -205,11 +424,32 @@
   "phaseApks": "Mga APKs",
   "phaseSimilar": "Dobleng Larawan",
   "phaseStorage": "Bara",
-  "selectYourLanguage": "Piliin ang Lenggwahe",
-  "largeFilesTitle": "Malalaking File",
-  "usedSize": "Ginamit na {size}",
   "totalSize": "Lahat {size}",
+  "@totalSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "usedSize": "Ginamit na {size}",
+  "@usedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "largeFilesTitle": "Malalaking File",
+  "selectYourLanguage": "Piliin ang Lenggwahe",
   "analyzingLabel": "Sinusuri...",
   "zeroBytes": "0 B",
-  "itemCount": "{count} na item"
+  "itemCount": "{count} na item",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

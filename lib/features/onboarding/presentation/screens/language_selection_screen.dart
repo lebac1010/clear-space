@@ -137,8 +137,7 @@ class _LanguageSelectionScreenState
               ),
               const Gap(8),
               Text(
-                l10n?.changeLaterInSettings ??
-                    'You can change this later in Settings.',
+                l10n!.changeLaterInSettings,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -256,3 +255,5 @@ class _LanguageSelectionScreenState
     );
   }
 }
+
+

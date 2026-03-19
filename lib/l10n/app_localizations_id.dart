@@ -94,6 +94,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get getStarted => 'Mulai';
 
   @override
+  String get skip => 'Skip';
+
+  @override
   String get next => 'Selanjutnya';
 
   @override

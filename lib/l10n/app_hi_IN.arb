@@ -1,6 +1,9 @@
 {
   "@@locale": "hi_IN",
   "appTitle": "Clear Space",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   "dashboardTitle": "डैशबोर्ड",
   "cleanupTitle": "क्लीनअप",
   "photosTitle": "तस्वीरें",
@@ -13,8 +16,23 @@
   "darkTheme": "डार्क",
   "storageAccessRequired": "स्टोरेज एक्सेस आवश्यक है",
   "storageAccessDesc": "क्लियर स्पेस को डुप्लिकेट, बड़ी फ़ाइलों और जंक फ़ाइलों के लिए आपके डिवाइस को स्कैन करने हेतु \"सभी फ़ाइल एक्सेस\" की आवश्यकता है।\n\nअनुमति दें पर टैप करने के बाद यह अनुमति देने के लिए आपको सिस्टम सेटिंग्स पर भेज दिया जाएगा।",
+  "storagePermissionDeniedDesc": "Storage permission was denied. Please enable it in Settings to continue.",
+  "permissionMediaTitle": "Photos, videos, and audio",
+  "permissionMediaDesc": "Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.",
+  "permissionAllFilesTitle": "All files access",
+  "permissionAllFilesDesc": "Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.",
+  "permissionInstalledAppsTitle": "Installed apps",
+  "permissionInstalledAppsDesc": "Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.",
+  "permissionVisibleProgressTitle": "Visible progress",
+  "permissionVisibleProgressDesc": "Used to keep scan or cleanup progress visible while a user-initiated task is running.",
+  "permissionOnDeviceNote": "Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.",
+  "openSettings": "Open Settings",
   "grantPermission": "अनुमति दें",
   "getStarted": "शुरू करें",
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "अगला",
   "continueText": "जारी रखें",
   "cancel": "रद्द करें",
@@ -24,6 +42,13 @@
   "success": "सफलता",
   "noItemsFound": "कोई आइटम नहीं मिला",
   "itemsSelected": "{count} आइटम चयनित",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "onboardingWelcome": "अपने डिवाइस को साफ़, तेज़ और सुरक्षित रखने के सबसे स्मार्ट तरीके में आपका स्वागत है।",
   "onboardingFeaturesTitle": "शक्तिशाली सुविधाएँ",
   "onboardingFeaturesDesc": "आपके स्टोरेज को प्रभावी ढंग से प्रबंधित करने के लिए आपकी ज़रूरत की हर चीज़।",
@@ -82,36 +107,97 @@
   "findKeyMoments": "मुख्य फ़ोटो पल ढूँढें",
   "largeFiles": "बड़ी फ़ाइलें",
   "filesLargerThan": "{size} से बड़ी फ़ाइलें",
+  "@filesLargerThan": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "screenshots": "स्क्रीनशॉट",
   "findAndDeleteScreenshots": "स्क्रीनशॉट खोजें और हटाएँ",
   "downloads": "डाउनलोड",
   "manageDownloadedFiles": "अपनी डाउनलोड की गई फ़ाइलों को प्रबंधित करें",
   "tempAndLogFiles": "अस्थायी और लॉग फ़ाइलें",
   "sizeFound": "{size} मिले",
+  "@sizeFound": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "emptyFolders": "खाली फोल्डर",
   "emptyFoldersFound": "{count} खाली फ़ोल्डर मिले",
+  "@emptyFoldersFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "safeApkInstallers": "सुरक्षित APK इंस्टॉलर",
   "cleanOldApks": "इंस्टॉल किए गए/पुराने APK साफ़ करें",
   "pleaseScanStorageFirst": "कृपया पहले स्टोरेज स्कैन करें",
   "noJunkFilesFound": "कोई जंक फ़ाइल नहीं मिली!",
   "cleanupComplete": "सफ़ाई पूरी हो गई!",
   "cleanupFailed": "क्लीनअप विफल: {error}",
+  "@cleanupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "selectAll": "सभी चुनें",
   "noLargeFilesFound": "कोई बड़ी फ़ाइल नहीं मिली!",
   "noDuplicatesFound": "कोई डुप्लिकेट नहीं मिला!",
   "delete": "हटाएँ",
   "confirmation": "पुष्टिकरण",
+  "clearHistory": "Clear History",
+  "clearHistoryConfirm": "Are you sure you want to delete all cleanup logs?",
+  "clearAll": "Clear All",
+  "cleanAllSafeItems": "Clean All Safe Items",
   "deleteFilesQuestion": "फ़ाइलें हटाएँ?",
   "deleteCountScreenshots": "क्या {count} स्क्रीनशॉट स्थायी रूप से हटा दिए जाएँ?",
+  "@deleteCountScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsDeletedSuccess": "स्क्रीनशॉट सफलतापूर्वक हटा दिए गए",
+  "junkFilesFound": "कचरा फ़ाइलें मिलीं",
   "noPhotosFound": "कोई फ़ोटो नहीं मिली",
   "errorLoadingPhotos": "फ़ोटो लोड करने में त्रुटि: {error}",
+  "@errorLoadingPhotos": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailed": "हटाने में विफल: {error}",
+  "@deleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "contacts": "संपर्क",
   "contactsNotImplemented": "संपर्क सूची लागू नहीं की गई",
   "smartSelect": "स्मार्ट चयन",
   "junkFiles": "जंक फ़ाइलें",
   "potentialSize": "{size} क्षमता",
+  "@potentialSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "noFilesMatchFilter": "कोई भी फ़ाइल इस फ़िल्टर से मेल नहीं खाती",
   "refreshingAppList": "ऐप सूची रीफ्रेश कर रहे हैं...",
   "openingUninstaller": "अनइंस्टालर खोल रहे हैं...",
@@ -132,19 +218,84 @@
   "noAppsFound": "कोई ऐप नहीं मिला",
   "noMatchingApps": "कोई संबंधित ऐप नहीं",
   "uninstallConfirmMsg": "क्या आप निश्चित रूप से \"{appName}\" ({size}) अनइंस्टॉल करना चाहते हैं?",
+  "@uninstallConfirmMsg": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "uninstallActionDesc": "यह ऐप और उसका सारा डेटा मिटा देगा।",
   "appsCount": "{count} ऐप्स",
+  "@appsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appsShowingCount": "{showing} / {total} ऐप्स",
+  "@appsShowingCount": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicates": "Duplicates",
+  "similar": "Similar",
+  "somethingWentWrong": "Something went wrong",
+  "pageNotFoundDesc": "The page you are looking for does not exist.",
   "allClean": "सब कुछ साफ़ है!",
   "deleting": "हटा रहे हैं...",
   "deleteItemsCount": "{count} आइटम हटाएं ({size})",
+  "@deleteItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deletedCountMsg": "{count} आइटम हटाए गए ({size})",
+  "@deletedCountMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "actionCannotBeUndone": "इस क्रिया को पूर्ववत नहीं किया जा सकता।",
   "cleanupBreakdown": "सफाई विवरण",
   "smartCleanupDesc": "हम स्वचालित रूप से आपकी फ़ोटो का सबसे अच्छा संस्करण रखते हैं।",
   "cleaning": "सफाई हो रही है...",
   "cleanUpSize": "{size} खाली करें",
+  "@cleanUpSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youSavedSize": "आपने {size} बचाया",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youreAllSet": "सब कुछ तैयार है!",
   "noSmartCleanupItems": "कोई डुप्लिकेट नहीं मिला।",
   "save": "बचाएं",
@@ -155,9 +306,40 @@
   "others": "अन्य",
   "all": "सभी",
   "deleteConfirmMsg": "क्या आप चुने गए {count} दस्तावेज़ मिटाना चाहते हैं?",
+  "@deleteConfirmMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsCount": "{count, plural, =0{कोई स्क्रीनशॉट नहीं} =1{1 स्क्रीनशॉट} other{{count} स्क्रीनशॉट}}",
+  "@screenshotsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCountSize": "चुना हुआ: {count} ({size})",
+  "@selectedCountSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteSelectedSize": "चुने गए आइटम हटाएँ ({size})",
+  "@deleteSelectedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailedGeneral": "कुछ आइटम हटाने में विफल रहे। पुनः प्रयास करें।",
   "systemDefault": "सिस्टम डिफ़ॉल्ट",
   "light": "हल्का",
@@ -173,13 +355,26 @@
   "thresholdDesc": "इस आकार से बड़ी फाइलें हटाने के लिए चिह्नित होंगी।",
   "thresholdUpdated": "सीमा अद्यतित की गई।",
   "largerThanSize": "{size} से बड़ी",
+  "@largerThanSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "madeWithHeart": "साफ़ फ़ोन के लिए ❤️ से बना",
   "versionUnavailable": "संस्करण अनुपलब्ध",
   "emailNotSupported": "ईमेल ग्राहक नहीं खुला।",
   "clearSpace": "Clear Space",
   "storageDashboard": "स्टोरेज डैशबोर्ड",
-  "junkFilesFound": "कचरा फ़ाइलें मिलीं",
   "itemsCanBeCleaned": "{count} आइटम साफ़ हो सकते हैं",
+  "@itemsCanBeCleaned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "storageBreakdown": "स्टोरेज उपयोग",
   "cleanup": "सफाई करें",
   "suggestions": "सुझाव",
@@ -187,9 +382,33 @@
   "keepStorageHealthy": "स्थान को स्वस्थ रखें",
   "cleanupHeaderDesc": "स्थान खाली करने वाले दस्तावेज़।",
   "percentUsed": "{percentage}% उपयोग",
+  "@percentUsed": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "scanPausedBattery": "रुक गया (कम बैटरी)",
   "scanningPhase": "स्कैनिंग {phase}...",
+  "@scanningPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
   "scanningPhasePercent": "स्कैनिंग {phase}... ({percentage}%)",
+  "@scanningPhasePercent": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "calculating": "मूल्यांकन कर रहे हैं...",
   "internalStorage": "इंटरनल स्टोरेज",
   "free": "खाली",
@@ -205,8 +424,32 @@
   "phaseApks": "APKs",
   "phaseSimilar": "समान तस्वीरें",
   "phaseStorage": "स्टोरेज",
-  "selectYourLanguage": "अपनी भाषा चुनें",
-  "largeFilesTitle": "बड़ी फ़ाइलें",
+  "totalSize": "{size} कुल",
+  "@totalSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "usedSize": "{size} उपयोग",
-  "totalSize": "{size} कुल"
+  "@usedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "largeFilesTitle": "बड़ी फ़ाइलें",
+  "selectYourLanguage": "अपनी भाषा चुनें",
+  "analyzingLabel": "Analyzing...",
+  "zeroBytes": "0 B",
+  "itemCount": "{count} items",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

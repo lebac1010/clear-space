@@ -29,6 +29,10 @@
   "openSettings": "Open Settings",
   "grantPermission": "Grant Permission",
   "getStarted": "Get Started",
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "Next",
   "continueText": "Continue",
   "cancel": "Cancel",
@@ -165,7 +169,6 @@
   },
   "screenshotsDeletedSuccess": "Screenshots deleted successfully",
   "junkFilesFound": "Junk Files Found",
-  "noItemsFound": "No items found",
   "noPhotosFound": "No photos found",
   "errorLoadingPhotos": "Error loading photos: {error}",
   "@errorLoadingPhotos": {
@@ -362,12 +365,8 @@
   "madeWithHeart": "Made with ❤️ for a cleaner phone",
   "versionUnavailable": "Version unavailable",
   "emailNotSupported": "Could not open email client. Please email us directly.",
-  "browserRestricted": "Browser access restricted on this device.",
-  "storeUnavailable": "Store service temporarily unavailable.",
   "clearSpace": "Clear Space",
-  "loading": "Loading...",
   "storageDashboard": "Storage Dashboard",
-  "junkFilesFound": "Junk Files Found",
   "itemsCanBeCleaned": "{count} items can be cleaned",
   "@itemsCanBeCleaned": {
     "placeholders": {
@@ -443,7 +442,6 @@
   },
   "largeFilesTitle": "Large Files",
   "selectYourLanguage": "Select Your Language",
-  "changeLaterInSettings": "You can change this later in Settings.",
   "analyzingLabel": "Analyzing...",
   "zeroBytes": "0 B",
   "itemCount": "{count} items",

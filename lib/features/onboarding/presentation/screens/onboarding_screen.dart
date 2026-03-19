@@ -84,7 +84,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   if (_shouldShowSkip)
                     TextButton(
                       onPressed: () => _finishOnboarding(context, ref),
-                      child: const Text('Skip'),
+                      child: Text(l10n.skip),
                     ),
                 ],
               ),

@@ -1,6 +1,9 @@
 {
   "@@locale": "vi",
   "appTitle": "Clear Space",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   "dashboardTitle": "Tổng quan",
   "cleanupTitle": "Dọn dẹp",
   "photosTitle": "Ảnh",
@@ -26,6 +29,10 @@
   "openSettings": "Mở Cài đặt",
   "grantPermission": "Cấp Quyền",
   "getStarted": "Bắt Đầu",
+  "skip": "Bỏ qua",
+  "@skip": {
+    "description": "Skip action label"
+  },
   "next": "Tiếp theo",
   "continueText": "Tiếp tục",
   "cancel": "Hủy",
@@ -35,6 +42,13 @@
   "success": "Thành công",
   "noItemsFound": "Không tìm thấy thư mục nào",
   "itemsSelected": "Đã chọn {count} mục",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "onboardingWelcome": "Chào mừng đến với phương pháp dọn dẹp, tăng tốc và bảo vệ thiết bị thông minh nhất.",
   "onboardingFeaturesTitle": "Tính năng Mạnh mẽ",
   "onboardingFeaturesDesc": "Tất cả những gì bạn cần để quản lý dung lượng lưu trữ hiệu quả.",
@@ -93,36 +107,97 @@
   "findKeyMoments": "Tìm các khoảnh khắc ảnh chính",
   "largeFiles": "Tệp tin lớn",
   "filesLargerThan": "Các tệp lớn hơn {size}",
+  "@filesLargerThan": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "screenshots": "Ảnh chụp màn hình",
   "findAndDeleteScreenshots": "Tìm và xóa ảnh chụp màn hình",
   "downloads": "Tải xuống",
   "manageDownloadedFiles": "Quản lý tệp tải xuống của bạn",
   "tempAndLogFiles": "Tệp Tạm & Tệp Nhật ký",
   "sizeFound": "Đã tìm thấy {size}",
+  "@sizeFound": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "emptyFolders": "Thư mục rỗng",
   "emptyFoldersFound": "Đã tìm thấy {count} thư mục rỗng",
+  "@emptyFoldersFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "safeApkInstallers": "Trình cài đặt APK an toàn",
   "cleanOldApks": "Dọn dẹp APK đã cài đặt/cũ",
   "pleaseScanStorageFirst": "Vui lòng quét dung lượng trước",
   "noJunkFilesFound": "Không tìm thấy tệp rác nào!",
   "cleanupComplete": "Đã dọn dẹp xong!",
   "cleanupFailed": "Dọn dẹp thất bại: {error}",
+  "@cleanupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "selectAll": "Chọn Tất cả",
   "noLargeFilesFound": "Không tìm thấy tệp kích thước lớn nào!",
   "noDuplicatesFound": "Không tìm thấy tệp trùng lặp nào!",
   "delete": "Xóa",
   "confirmation": "Xác nhận",
+  "clearHistory": "Xóa Lịch Sử",
+  "clearHistoryConfirm": "Bạn có chắc muốn xóa toàn bộ nhật ký dọn dẹp không?",
+  "clearAll": "Xóa Tất Cả",
+  "cleanAllSafeItems": "Dọn dẹp Tất cả Mục Khả dụng",
   "deleteFilesQuestion": "Xóa tệp?",
   "deleteCountScreenshots": "Xóa vĩnh viễn {count} ảnh chụp màn hình?",
+  "@deleteCountScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsDeletedSuccess": "Đã xóa ảnh chụp màn hình thành công",
+  "junkFilesFound": "Đã tìm thấy Tệp Rác",
   "noPhotosFound": "Không tìm thấy ảnh",
   "errorLoadingPhotos": "Lỗi khi tải ảnh: {error}",
+  "@errorLoadingPhotos": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailed": "Xóa thất bại: {error}",
+  "@deleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "contacts": "Danh bạ",
   "contactsNotImplemented": "Danh sách danh bạ chưa được triển khai",
   "smartSelect": "Chọn thông minh",
   "junkFiles": "Tệp rác",
   "potentialSize": "Tiềm năng {size}",
+  "@potentialSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "noFilesMatchFilter": "Không có tệp nào khớp với bộ lọc này",
   "refreshingAppList": "Đang làm mới danh sách ứng dụng...",
   "openingUninstaller": "Đang mở trình gỡ cài đặt...",
@@ -143,19 +218,84 @@
   "noAppsFound": "Không tìm thấy ứng dụng",
   "noMatchingApps": "Không có ứng dụng phù hợp",
   "uninstallConfirmMsg": "Bạn có chắc muốn gỡ cài đặt \"{appName}\" ({size})?",
+  "@uninstallConfirmMsg": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "uninstallActionDesc": "Hành động này sẽ xóa ứng dụng và toàn bộ dữ liệu của nó.",
   "appsCount": "{count} ứng dụng",
+  "@appsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appsShowingCount": "{showing} / {total} ứng dụng",
+  "@appsShowingCount": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicates": "Trùng lặp",
+  "similar": "Tương tự",
+  "somethingWentWrong": "Đã xảy ra lỗi",
+  "pageNotFoundDesc": "Trang bạn đang tìm không tồn tại.",
   "allClean": "Đã sạch sẽ!",
   "deleting": "Đang xóa...",
   "deleteItemsCount": "Xóa {count} mục ({size})",
+  "@deleteItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deletedCountMsg": "Đã xóa {count} mục ({size})",
+  "@deletedCountMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "actionCannotBeUndone": "Hành động này không thể hoàn tác.",
   "cleanupBreakdown": "Chi tiết Dọn dẹp",
   "smartCleanupDesc": "Chúng tôi tự động giữ lại phiên bản tốt nhất của ảnh và tệp của bạn.",
   "cleaning": "Đang dọn dẹp...",
   "cleanUpSize": "Dọn dẹp {size}",
+  "@cleanUpSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youSavedSize": "Bạn đã tiết kiệm được {size}",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "youreAllSet": "Mọi thứ đã sẵn sàng!",
   "noSmartCleanupItems": "Không tìm thấy tệp trùng lặp hoặc tương tự.",
   "save": "Lưu",
@@ -166,9 +306,40 @@
   "others": "Khác",
   "all": "Tất cả",
   "deleteConfirmMsg": "Bạn có chắc chắn muốn xóa {count} tệp đã chọn?\n\nCác mục sẽ được chuyển vào Thùng rác nếu được hỗ trợ, hoặc bị xóa vĩnh viễn.",
+  "@deleteConfirmMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "screenshotsCount": "{count, plural, =0{Không có ảnh chụp màn hình} =1{1 ảnh chụp màn hình} other{{count} ảnh chụp màn hình}}",
+  "@screenshotsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCountSize": "Đã chọn: {count} ({size})",
+  "@selectedCountSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteSelectedSize": "Xóa mục đã chọn ({size})",
+  "@deleteSelectedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "deleteFailedGeneral": "Không thể xóa một số mục. Vui lòng thử lại.",
   "systemDefault": "Mặc định hệ thống",
   "light": "Sáng",
@@ -184,13 +355,26 @@
   "thresholdDesc": "Các tệp lớn hơn giá trị này sẽ được đánh dấu để dọn dẹp.",
   "thresholdUpdated": "Ngưỡng đã được cập nhật. Sẽ áp dụng vào lần quét tiếp theo.",
   "largerThanSize": "Lớn hơn {size}",
+  "@largerThanSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "madeWithHeart": "Làm bằng ❤️ cho một chiếc điện thoại sạch hơn",
   "versionUnavailable": "Phiên bản không khả dụng",
   "emailNotSupported": "Không thể mở ứng dụng gửi email. Vui lòng gửi email trực tiếp cho chúng tôi.",
   "clearSpace": "Clear Space",
   "storageDashboard": "Tổng quan Lưu trữ",
-  "junkFilesFound": "Đã tìm thấy Tệp Rác",
   "itemsCanBeCleaned": "{count} mục có thể được dọn dẹp",
+  "@itemsCanBeCleaned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "storageBreakdown": "Phân bổ Bộ nhớ",
   "cleanup": "Dọn dẹp",
   "suggestions": "Đề xuất",
@@ -198,9 +382,33 @@
   "keepStorageHealthy": "Giữ cho bộ nhớ của bạn khỏe mạnh",
   "cleanupHeaderDesc": "Chúng tôi tìm thấy một số tệp bạn có thể muốn xóa để giải phóng dung lượng.",
   "percentUsed": "Đã sử dụng {percentage}%",
+  "@percentUsed": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "scanPausedBattery": "Đã tạm dừng quét (Pin yếu)",
   "scanningPhase": "Đang quét {phase}...",
+  "@scanningPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
   "scanningPhasePercent": "Đang quét {phase}... ({percentage}%)",
+  "@scanningPhasePercent": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "calculating": "Đang tính toán...",
   "internalStorage": "BỘ NHỚ TRONG",
   "free": "Trống",
@@ -216,15 +424,32 @@
   "phaseApks": "APKs",
   "phaseSimilar": "Ảnh tương tự",
   "phaseStorage": "Bộ nhớ",
-  "selectYourLanguage": "Chọn ngôn ngữ của bạn",
-  "largeFilesTitle": "Tệp Lớn",
-  "usedSize": "Đã dùng {size}",
   "totalSize": "Tổng {size}",
-  "clearHistory": "Xóa Lịch Sử",
-  "clearHistoryConfirm": "Bạn có chắc muốn xóa toàn bộ nhật ký dọn dẹp không?",
-  "clearAll": "Xóa Tất Cả",
-  "cleanAllSafeItems": "Dọn dẹp Tất cả Mục Khả dụng",
+  "@totalSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "usedSize": "Đã dùng {size}",
+  "@usedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "largeFilesTitle": "Tệp Lớn",
+  "selectYourLanguage": "Chọn ngôn ngữ của bạn",
   "analyzingLabel": "Đang phân tích...",
   "zeroBytes": "0 B",
-  "itemCount": "{count} mục"
+  "itemCount": "{count} mục",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
