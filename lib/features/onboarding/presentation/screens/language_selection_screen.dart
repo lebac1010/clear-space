@@ -55,38 +55,26 @@ class _LanguageSelectionScreenState
       {
         'code': 'en',
         'emoji': '🇺🇸',
-        'title': 'English (US)',
-        'subtitle': 'English (US)',
-      },
-      {
-        'code': 'en_GB',
-        'emoji': '🇬🇧',
-        'title': 'English (UK)',
-        'subtitle': 'English (UK)',
+        'title': 'English',
+        'subtitle': 'English',
       },
       {
         'code': 'es',
-        'emoji': '🇲🇽',
-        'title': 'Español (Latinoamérica)',
-        'subtitle': 'Spanish (Latin America)',
-      },
-      {
-        'code': 'es_ES',
         'emoji': '🇪🇸',
-        'title': 'Español (España)',
-        'subtitle': 'Spanish (Spain)',
+        'title': 'Español',
+        'subtitle': 'Spanish',
       },
       {
         'code': 'pt',
         'emoji': '🇧🇷',
-        'title': 'Português (Brasil)',
-        'subtitle': 'Portuguese (Brazil)',
+        'title': 'Português',
+        'subtitle': 'Portuguese',
       },
       {
         'code': 'hi',
         'emoji': '🇮🇳',
         'title': 'हिन्दी',
-        'subtitle': 'Hindi (India)',
+        'subtitle': 'Hindi',
       },
       {
         'code': 'id',
@@ -136,12 +124,13 @@ class _LanguageSelectionScreenState
                 ),
               ),
               const Gap(8),
-              Text(
-                l10n!.changeLaterInSettings,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+              if (l10n != null)
+                Text(
+                  l10n.changeLaterInSettings,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
-              ),
               const Gap(24),
 
               Expanded(
