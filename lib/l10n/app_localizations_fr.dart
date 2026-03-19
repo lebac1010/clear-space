@@ -50,42 +50,42 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get storagePermissionDeniedDesc =>
-      'Storage permission was denied. Please enable it in Settings to continue.';
+      'L\'autorisation de stockage a été refusée. Veuillez l\'activer dans les Paramètres pour continuer.';
 
   @override
-  String get permissionMediaTitle => 'Photos, videos, and audio';
+  String get permissionMediaTitle => 'Photos, vidéos et audio';
 
   @override
   String get permissionMediaDesc =>
-      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
+      'Utilisé pour trouver les doublons, les photos similaires, les captures d\'écran, les téléchargements et les fichiers volumineux sur votre appareil.';
 
   @override
-  String get permissionAllFilesTitle => 'All files access';
+  String get permissionAllFilesTitle => 'Accès à tous les fichiers';
 
   @override
   String get permissionAllFilesDesc =>
-      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
+      'Utilisé pour les fonctionnalités de nettoyage non-médias telles que les fichiers indésirables, les APK, les téléchargements et les dossiers vides.';
 
   @override
-  String get permissionInstalledAppsTitle => 'Installed apps';
+  String get permissionInstalledAppsTitle => 'Applications installées';
 
   @override
   String get permissionInstalledAppsDesc =>
-      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
+      'Utilisé par le Gestionnaire d\'applications pour afficher les applications installées et ouvrir la confirmation de désinstallation Android.';
 
   @override
-  String get permissionVisibleProgressTitle => 'Visible progress';
+  String get permissionVisibleProgressTitle => 'Progression visible';
 
   @override
   String get permissionVisibleProgressDesc =>
-      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
+      'Utilisé pour garder visible la progression de l\'analyse ou du nettoyage pendant une tâche lancée par l\'utilisateur.';
 
   @override
   String get permissionOnDeviceNote =>
-      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
+      'L\'analyse et le nettoyage restent sur votre appareil. Clear Space n\'envoie pas vos fichiers sur un serveur distant pour ces fonctions.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Ouvrir les Paramètres';
 
   @override
   String get grantPermission => 'Accorder';
@@ -94,7 +94,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get getStarted => 'Commencer';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Passer';
 
   @override
   String get next => 'Suivant';
@@ -169,88 +169,90 @@ class AppLocalizationsFr extends AppLocalizations {
       'En continuant, vous acceptez nos conditions d\'utilisation.';
 
   @override
-  String get selectLanguage => 'Select Your Language';
+  String get selectLanguage => 'Choisir votre langue';
 
   @override
-  String get changeLaterInSettings => 'You can change this later in Settings.';
+  String get changeLaterInSettings =>
+      'Vous pourrez changer cela plus tard dans les Paramètres.';
 
   @override
   String get photosAndImages => 'Photos & Images';
 
   @override
-  String get videos => 'Videos';
+  String get videos => 'Vidéos';
 
   @override
   String get audio => 'Audio';
 
   @override
-  String get documentsAndFiles => 'Documents & Files';
+  String get documentsAndFiles => 'Documents & Fichiers';
 
   @override
-  String get systemAndApps => 'System & Apps';
+  String get systemAndApps => 'Système & Apps';
 
   @override
-  String get other => 'OTHER';
+  String get other => 'AUTRE';
 
   @override
-  String get review => 'Review';
+  String get review => 'Revoir';
 
   @override
-  String get viewDetails => 'View Details';
+  String get viewDetails => 'Voir les détails';
 
   @override
-  String get smartCleanupPlan => 'Smart Cleanup Plan';
+  String get smartCleanupPlan => 'Plan de nettoyage intelligent';
 
   @override
-  String get analyzingSafeToDelete => 'Analyzing safe-to-delete files...';
+  String get analyzingSafeToDelete =>
+      'Analyse des fichiers pouvant être supprimés...';
 
   @override
-  String get returnToDashboard => 'Return to Dashboard';
+  String get returnToDashboard => 'Retour à l\'accueil';
 
   @override
-  String get returnDirectlyToDashboard => 'Return directly to Dashboard';
+  String get returnDirectlyToDashboard => 'Retourner directement à l\'accueil';
 
   @override
-  String get appearanceAndLanguage => 'Appearance & Language';
+  String get appearanceAndLanguage => 'Apparence & Langue';
 
   @override
   String get supportAndEngagement => 'Support & Engagement';
 
   @override
-  String get scanPreferences => 'Scan Preferences';
+  String get scanPreferences => 'Préférences d\'analyse';
 
   @override
-  String get legalAndAppInfo => 'Legal & App Info';
+  String get legalAndAppInfo => 'Mentions légales & Infos';
 
   @override
-  String get cleanupHistory => 'Cleanup History';
+  String get cleanupHistory => 'Historique de nettoyage';
 
   @override
-  String get viewPastCleaning => 'View your past cleaning activities';
+  String get viewPastCleaning => 'Voir vos activités de nettoyage passées';
 
   @override
-  String get sendFeedback => 'Send Feedback';
+  String get sendFeedback => 'Envoyer un avis';
 
   @override
-  String get reportBugs => 'Report bugs or suggest improvements';
+  String get reportBugs => 'Signaler un bug ou proposer une idée';
 
   @override
-  String get rateUs => 'Rate Us 5 Stars';
+  String get rateUs => 'Notez-nous 5 étoiles';
 
   @override
-  String get helpOthers => 'Help others find Clear Space';
+  String get helpOthers => 'Aidez d\'autres personnes à trouver Clear Space';
 
   @override
-  String get shareWithFriends => 'Share with Friends';
+  String get shareWithFriends => 'Partager avec des amis';
 
   @override
-  String get recommendApp => 'Recommend the app via messages';
+  String get recommendApp => 'Recommander l\'application par message';
 
   @override
-  String get similarPhotoSensitivity => 'Similar Photo Sensitivity';
+  String get similarPhotoSensitivity => 'Sensibilité des photos similaires';
 
   @override
-  String get largeFileThreshold => 'Large File Threshold';
+  String get largeFileThreshold => 'Seuil des fichiers volumineux';
 
   @override
   String get strict => 'Strict';
@@ -259,183 +261,188 @@ class AppLocalizationsFr extends AppLocalizations {
   String get normal => 'Normal';
 
   @override
-  String get loose => 'Loose';
+  String get loose => 'Souple';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Politique de confidentialité';
 
   @override
-  String get howWeProtectData => 'How we protect your data';
+  String get howWeProtectData => 'Comment nous protégeons vos données';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Conditions d\'utilisation';
 
   @override
-  String get rulesAndGuidelines => 'Rules and guidelines';
+  String get rulesAndGuidelines => 'Règles et directives';
 
   @override
-  String get appVersion => 'App Version';
+  String get appVersion => 'Version de l\'application';
 
   @override
-  String get emailRestricted => 'Email functionality restricted by device.';
+  String get emailRestricted =>
+      'La fonctionnalité email est restreinte sur cet appareil.';
 
   @override
-  String get browserLaunchFailed => 'Could not launch browser.';
+  String get browserLaunchFailed => 'Impossible de lancer le navigateur.';
 
   @override
-  String get storeUnavailable => 'Store service temporarily unavailable.';
+  String get storeUnavailable =>
+      'Le service du store est temporairement indisponible.';
 
   @override
-  String get browserRestricted => 'Browser access restricted on this device.';
+  String get browserRestricted =>
+      'L\'accès au navigateur est restreint sur cet appareil.';
 
   @override
-  String get shareUnavailable => 'Share functionality unavailable.';
+  String get shareUnavailable => 'La fonction de partage est indisponible.';
 
   @override
-  String get keepPhoneClean => 'Keep your phone clean with Clear Space';
+  String get keepPhoneClean => 'Gardez votre téléphone propre avec Clear Space';
 
   @override
-  String get duplicateFiles => 'Duplicate Files';
+  String get duplicateFiles => 'Fichiers en double';
 
   @override
-  String get findIdenticalFiles => 'Find and remove identical files';
+  String get findIdenticalFiles =>
+      'Trouver et supprimer les fichiers identiques';
 
   @override
-  String get similarPhotos => 'Similar Photos';
+  String get similarPhotos => 'Photos similaires';
 
   @override
-  String get findKeyMoments => 'Find key photo moments';
+  String get findKeyMoments => 'Trouver les moments clés en photo';
 
   @override
-  String get largeFiles => 'Large Files';
+  String get largeFiles => 'Gros fichiers';
 
   @override
   String filesLargerThan(String size) {
-    return 'Files larger than $size';
+    return 'Fichiers de plus de $size';
   }
 
   @override
-  String get screenshots => 'Screenshots';
+  String get screenshots => 'Captures d\'écran';
 
   @override
-  String get findAndDeleteScreenshots => 'Find and delete screenshots';
+  String get findAndDeleteScreenshots => 'Trouver et supprimer les captures';
 
   @override
-  String get downloads => 'Downloads';
+  String get downloads => 'Téléchargements';
 
   @override
-  String get manageDownloadedFiles => 'Manage your downloaded files';
+  String get manageDownloadedFiles => 'Gérer vos fichiers téléchargés';
 
   @override
-  String get tempAndLogFiles => 'Temporary & Log Files';
+  String get tempAndLogFiles => 'Fichiers temporaires & logs';
 
   @override
   String sizeFound(String size) {
-    return '$size found';
+    return '$size trouvés';
   }
 
   @override
-  String get emptyFolders => 'Empty Folders';
+  String get emptyFolders => 'Dossiers vides';
 
   @override
   String emptyFoldersFound(int count) {
-    return '$count empty folders found';
+    return '$count dossiers vides trouvés';
   }
 
   @override
-  String get safeApkInstallers => 'Safe APK Installers';
+  String get safeApkInstallers => 'Installateurs APK sûrs';
 
   @override
-  String get cleanOldApks => 'Clean installed/old APKs';
+  String get cleanOldApks => 'Nettoyer les APK installés/anciens';
 
   @override
-  String get pleaseScanStorageFirst => 'Please scan storage first';
+  String get pleaseScanStorageFirst => 'Veuillez d\'abord analyser le stockage';
 
   @override
-  String get noJunkFilesFound => 'No junk files found!';
+  String get noJunkFilesFound => 'Aucun fichier indésirable trouvé !';
 
   @override
-  String get cleanupComplete => 'Cleanup complete!';
+  String get cleanupComplete => 'Nettoyage terminé !';
 
   @override
   String cleanupFailed(String error) {
-    return 'Cleanup failed: $error';
+    return 'Échec du nettoyage : $error';
   }
 
   @override
-  String get selectAll => 'Select All';
+  String get selectAll => 'Tout sélectionner';
 
   @override
-  String get noLargeFilesFound => 'No large files found!';
+  String get noLargeFilesFound => 'Aucun gros fichier trouvé !';
 
   @override
-  String get noDuplicatesFound => 'No duplicates found!';
+  String get noDuplicatesFound => 'Aucun doublon trouvé !';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Supprimer';
 
   @override
   String get confirmation => 'Confirmation';
 
   @override
-  String get clearHistory => 'Clear History';
+  String get clearHistory => 'Effacer l\'historique';
 
   @override
   String get clearHistoryConfirm =>
-      'Are you sure you want to delete all cleanup logs?';
+      'Voulez-vous vraiment effacer tous les logs de nettoyage ?';
 
   @override
-  String get clearAll => 'Clear All';
+  String get clearAll => 'Tout effacer';
 
   @override
-  String get cleanAllSafeItems => 'Clean All Safe Items';
+  String get cleanAllSafeItems => 'Nettoyer tous les éléments sûrs';
 
   @override
-  String get deleteFilesQuestion => 'Delete files?';
+  String get deleteFilesQuestion => 'Supprimer les fichiers ?';
 
   @override
   String deleteCountScreenshots(int count) {
-    return 'Delete $count screenshots permanently?';
+    return 'Supprimer définitivement $count captures ?';
   }
 
   @override
-  String get screenshotsDeletedSuccess => 'Screenshots deleted successfully';
+  String get screenshotsDeletedSuccess =>
+      'Captures d\'écran supprimées avec succès';
 
   @override
   String get junkFilesFound => 'Fichiers résiduels trouvés';
 
   @override
-  String get noPhotosFound => 'No photos found';
+  String get noPhotosFound => 'Aucune photo trouvée';
 
   @override
   String errorLoadingPhotos(String error) {
-    return 'Error loading photos: $error';
+    return 'Erreur lors du chargement des photos : $error';
   }
 
   @override
   String deleteFailed(String error) {
-    return 'Delete failed: $error';
+    return 'Échec de suppression : $error';
   }
 
   @override
   String get contacts => 'Contacts';
 
   @override
-  String get contactsNotImplemented => 'Contacts List Not Implemented';
+  String get contactsNotImplemented => 'Liste de contacts non implémentée';
 
   @override
-  String get smartSelect => 'Smart Select';
+  String get smartSelect => 'Sélection intelligente';
 
   @override
-  String get junkFiles => 'Junk Files';
+  String get junkFiles => 'Fichiers indésirables';
 
   @override
   String potentialSize(String size) {
-    return '$size potential';
+    return '$size potentiel';
   }
 
   @override
-  String get noFilesMatchFilter => 'No files match this filter';
+  String get noFilesMatchFilter => 'Aucun fichier ne correspond à ce filtre';
 
   @override
   String get refreshingAppList => 'Actualisation...';
@@ -511,16 +518,16 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get duplicates => 'Duplicates';
+  String get duplicates => 'Doublons';
 
   @override
-  String get similar => 'Similar';
+  String get similar => 'Similaires';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Un problème est survenu';
 
   @override
-  String get pageNotFoundDesc => 'The page you are looking for does not exist.';
+  String get pageNotFoundDesc => 'La page demandée n\'existe pas.';
 
   @override
   String get allClean => 'Tout propre !';
@@ -789,795 +796,5 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String itemCount(int count) {
     return '$count éléments';
-  }
-}
-
-/// The translations for French, as used in France (`fr_FR`).
-class AppLocalizationsFrFr extends AppLocalizationsFr {
-  AppLocalizationsFrFr() : super('fr_FR');
-
-  @override
-  String get appTitle => 'Clear Space';
-
-  @override
-  String get dashboardTitle => 'Tableau de bord';
-
-  @override
-  String get cleanupTitle => 'Nettoyage';
-
-  @override
-  String get photosTitle => 'Photos';
-
-  @override
-  String get filesTitle => 'Fichiers';
-
-  @override
-  String get settingsTitle => 'Paramètres';
-
-  @override
-  String get languageTitle => 'Langue';
-
-  @override
-  String get themeTitle => 'Thème';
-
-  @override
-  String get systemTheme => 'Par défaut du système';
-
-  @override
-  String get lightTheme => 'Clair';
-
-  @override
-  String get darkTheme => 'Sombre';
-
-  @override
-  String get storageAccessRequired => 'Accès au stockage requis';
-
-  @override
-  String get storageAccessDesc =>
-      'Clear Space a besoin de \"l\'accès à tous les fichiers\" pour analyser votre appareil à la recherche de doublons, de fichiers volumineux et de fichiers indésirables.\n\nVous serez redirigé vers les paramètres du système pour accorder cette autorisation lorsque vous appuierez sur Accorder l\'autorisation.';
-
-  @override
-  String get storagePermissionDeniedDesc =>
-      'Storage permission was denied. Please enable it in Settings to continue.';
-
-  @override
-  String get permissionMediaTitle => 'Photos, videos, and audio';
-
-  @override
-  String get permissionMediaDesc =>
-      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
-
-  @override
-  String get permissionAllFilesTitle => 'All files access';
-
-  @override
-  String get permissionAllFilesDesc =>
-      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
-
-  @override
-  String get permissionInstalledAppsTitle => 'Installed apps';
-
-  @override
-  String get permissionInstalledAppsDesc =>
-      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
-
-  @override
-  String get permissionVisibleProgressTitle => 'Visible progress';
-
-  @override
-  String get permissionVisibleProgressDesc =>
-      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
-
-  @override
-  String get permissionOnDeviceNote =>
-      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
-
-  @override
-  String get openSettings => 'Open Settings';
-
-  @override
-  String get grantPermission => 'Accorder l\'autorisation';
-
-  @override
-  String get getStarted => 'Commencer';
-
-  @override
-  String get skip => 'Skip';
-
-  @override
-  String get next => 'Suivant';
-
-  @override
-  String get continueText => 'Continuer';
-
-  @override
-  String get cancel => 'Annuler';
-
-  @override
-  String get analyze => 'Analyser';
-
-  @override
-  String get loading => 'Chargement...';
-
-  @override
-  String get error => 'Erreur';
-
-  @override
-  String get success => 'Succès';
-
-  @override
-  String get noItemsFound => 'Aucun élément trouvé';
-
-  @override
-  String itemsSelected(int count) {
-    return '$count éléments sélectionnés';
-  }
-
-  @override
-  String get onboardingWelcome =>
-      'Bienvenue dans le moyen le plus intelligent de garder votre appareil propre, rapide et sécurisé.';
-
-  @override
-  String get onboardingFeaturesTitle => 'Fonctionnalités puissantes';
-
-  @override
-  String get onboardingFeaturesDesc =>
-      'Tout ce dont vous avez besoin pour gérer efficacement votre stockage.';
-
-  @override
-  String get feature1Title => 'Comprenez votre stockage';
-
-  @override
-  String get feature1Desc =>
-      'Obtenez une répartition visuelle claire de ce qui prend de la place.';
-
-  @override
-  String get feature2Title => 'Nettoyez en toute sécurité';
-
-  @override
-  String get feature2Desc =>
-      'Supprimez les fichiers inutiles avec des protocoles de suppression sécurisés.';
-
-  @override
-  String get feature3Title => 'Libérez de l\'espace';
-
-  @override
-  String get feature3Desc =>
-      'Trouvez et supprimez instantanément les fichiers indésirables, volumineux et les doublons.';
-
-  @override
-  String get termsDesc =>
-      'En continuant, vous acceptez nos conditions d\'utilisation et notre politique de confidentialité.';
-
-  @override
-  String get selectLanguage => 'Sélectionnez votre langue';
-
-  @override
-  String get changeLaterInSettings =>
-      'Vous pourrez modifier cela plus tard dans les paramètres.';
-
-  @override
-  String get photosAndImages => 'Photos et images';
-
-  @override
-  String get videos => 'Vidéos';
-
-  @override
-  String get audio => 'Audio';
-
-  @override
-  String get documentsAndFiles => 'Documents et fichiers';
-
-  @override
-  String get systemAndApps => 'Système et applications';
-
-  @override
-  String get other => 'AUTRE';
-
-  @override
-  String get review => 'Examiner';
-
-  @override
-  String get viewDetails => 'Voir les détails';
-
-  @override
-  String get smartCleanupPlan => 'Plan de nettoyage intelligent';
-
-  @override
-  String get analyzingSafeToDelete =>
-      'Analyse des fichiers à supprimer en toute sécurité...';
-
-  @override
-  String get returnToDashboard => 'Retour au tableau de bord';
-
-  @override
-  String get returnDirectlyToDashboard =>
-      'Retourner directement au tableau de bord';
-
-  @override
-  String get appearanceAndLanguage => 'Apparence et langue';
-
-  @override
-  String get supportAndEngagement => 'Assistance et engagement';
-
-  @override
-  String get scanPreferences => 'Préférences d\'analyse';
-
-  @override
-  String get legalAndAppInfo => 'Informations légales et sur l\'application';
-
-  @override
-  String get cleanupHistory => 'Historique de nettoyage';
-
-  @override
-  String get viewPastCleaning => 'Consultez vos activités de nettoyage passées';
-
-  @override
-  String get sendFeedback => 'Envoyer des commentaires';
-
-  @override
-  String get reportBugs => 'Signaler des bugs ou suggérer des améliorations';
-
-  @override
-  String get rateUs => 'Notez-nous 5 étoiles';
-
-  @override
-  String get helpOthers => 'Aidez les autres à trouver Clear Space';
-
-  @override
-  String get shareWithFriends => 'Partager avec des amis';
-
-  @override
-  String get recommendApp => 'Recommander l\'application par messages';
-
-  @override
-  String get similarPhotoSensitivity => 'Sensibilité aux photos similaires';
-
-  @override
-  String get largeFileThreshold => 'Seuil des fichiers volumineux';
-
-  @override
-  String get strict => 'Strict';
-
-  @override
-  String get normal => 'Normal';
-
-  @override
-  String get loose => 'Souple';
-
-  @override
-  String get privacyPolicy => 'Politique de confidentialité';
-
-  @override
-  String get howWeProtectData => 'Comment nous protégeons vos données';
-
-  @override
-  String get termsOfService => 'Conditions d\'utilisation';
-
-  @override
-  String get rulesAndGuidelines => 'Règles et directives';
-
-  @override
-  String get appVersion => 'Version de l\'application';
-
-  @override
-  String get emailRestricted =>
-      'Fonctionnalité de messagerie restreinte par l\'appareil.';
-
-  @override
-  String get browserLaunchFailed => 'Impossible de lancer le navigateur.';
-
-  @override
-  String get storeUnavailable =>
-      'Service de magasin temporairement indisponible.';
-
-  @override
-  String get browserRestricted =>
-      'Accès au navigateur restreint sur cet appareil.';
-
-  @override
-  String get shareUnavailable => 'Fonctionnalité de partage non disponible.';
-
-  @override
-  String get keepPhoneClean => 'Gardez votre téléphone propre avec Clear Space';
-
-  @override
-  String get duplicateFiles => 'Fichiers en double';
-
-  @override
-  String get findIdenticalFiles =>
-      'Trouver et supprimer les fichiers identiques';
-
-  @override
-  String get similarPhotos => 'Photos similaires';
-
-  @override
-  String get findKeyMoments => 'Trouver les moments clés des photos';
-
-  @override
-  String get largeFiles => 'Fichiers volumineux';
-
-  @override
-  String filesLargerThan(String size) {
-    return 'Fichiers supérieurs à $size';
-  }
-
-  @override
-  String get screenshots => 'Captures d\'écran';
-
-  @override
-  String get findAndDeleteScreenshots =>
-      'Trouver et supprimer des captures d\'écran';
-
-  @override
-  String get downloads => 'Téléchargements';
-
-  @override
-  String get manageDownloadedFiles => 'Gérez vos fichiers téléchargés';
-
-  @override
-  String get tempAndLogFiles => 'Fichiers temporaires et journaux';
-
-  @override
-  String sizeFound(String size) {
-    return '$size trouvés';
-  }
-
-  @override
-  String get emptyFolders => 'Dossiers vides';
-
-  @override
-  String emptyFoldersFound(int count) {
-    return '$count dossiers vides trouvés';
-  }
-
-  @override
-  String get safeApkInstallers => 'Installateurs APK sécurisés';
-
-  @override
-  String get cleanOldApks => 'Nettoyer les APK installés/anciens';
-
-  @override
-  String get pleaseScanStorageFirst => 'Veuillez d\'abord analyser le stockage';
-
-  @override
-  String get noJunkFilesFound => 'Aucun fichier indésirable trouvé !';
-
-  @override
-  String get cleanupComplete => 'Nettoyage terminé !';
-
-  @override
-  String cleanupFailed(String error) {
-    return 'Échec du nettoyage : $error';
-  }
-
-  @override
-  String get selectAll => 'Tout sélectionner';
-
-  @override
-  String get noLargeFilesFound => 'Aucun fichier volumineux trouvé !';
-
-  @override
-  String get noDuplicatesFound => 'Aucun doublon trouvé !';
-
-  @override
-  String get delete => 'Supprimer';
-
-  @override
-  String get confirmation => 'Confirmation';
-
-  @override
-  String get clearHistory => 'Clear History';
-
-  @override
-  String get clearHistoryConfirm =>
-      'Are you sure you want to delete all cleanup logs?';
-
-  @override
-  String get clearAll => 'Clear All';
-
-  @override
-  String get cleanAllSafeItems => 'Clean All Safe Items';
-
-  @override
-  String get deleteFilesQuestion => 'Supprimer les fichiers ?';
-
-  @override
-  String deleteCountScreenshots(int count) {
-    return 'Supprimer définitivement $count captures d\'écran ?';
-  }
-
-  @override
-  String get screenshotsDeletedSuccess =>
-      'Captures d\'écran supprimées avec succès';
-
-  @override
-  String get junkFilesFound => 'Fichiers résiduels trouvés';
-
-  @override
-  String get noPhotosFound => 'Aucune photo trouvée';
-
-  @override
-  String errorLoadingPhotos(String error) {
-    return 'Erreur lors du chargement des photos : $error';
-  }
-
-  @override
-  String deleteFailed(String error) {
-    return 'Échec de la suppression : $error';
-  }
-
-  @override
-  String get contacts => 'Contacts';
-
-  @override
-  String get contactsNotImplemented => 'Liste de contacts non implémentée';
-
-  @override
-  String get smartSelect => 'Sélection intelligente';
-
-  @override
-  String get junkFiles => 'Fichiers indésirables';
-
-  @override
-  String potentialSize(String size) {
-    return '$size potentiel';
-  }
-
-  @override
-  String get noFilesMatchFilter => 'Aucun fichier ne correspond à ce filtre';
-
-  @override
-  String get refreshingAppList => 'Actualisation...';
-
-  @override
-  String get openingUninstaller => 'Ouverture de la désinstallation...';
-
-  @override
-  String get uninstallApp => 'Désinstaller l\'application';
-
-  @override
-  String get uninstall => 'Désinstaller';
-
-  @override
-  String get sortLargest => 'Plus gros';
-
-  @override
-  String get sortSmallest => 'Plus petit';
-
-  @override
-  String get sortNewest => 'Plus récents';
-
-  @override
-  String get sortAZ => 'A-Z';
-
-  @override
-  String get pageNotFound => 'Page introuvable';
-
-  @override
-  String get goToDashboard => 'Aller à l\'accueil';
-
-  @override
-  String get deleteFilesTitle => 'Supprimer les fichiers';
-
-  @override
-  String get smartCleanupPlanTitle => 'Plan de nettoyage intelligent';
-
-  @override
-  String get screenshotsCleanerTitle => 'Nettoyage des captures';
-
-  @override
-  String get tryAgain => 'Réessayer';
-
-  @override
-  String get appManagerTitle => 'Gestionnaire d\'applications';
-
-  @override
-  String get searchApps => 'Rechercher...';
-
-  @override
-  String get noAppsFound => 'Aucune application';
-
-  @override
-  String get noMatchingApps => 'Aucun résultat';
-
-  @override
-  String uninstallConfirmMsg(String appName, String size) {
-    return 'Voulez-vous désinstaller \"$appName\" ($size)?';
-  }
-
-  @override
-  String get uninstallActionDesc =>
-      'L\'application et ses données seront supprimées.';
-
-  @override
-  String appsCount(int count) {
-    return '$count applications';
-  }
-
-  @override
-  String appsShowingCount(int showing, int total) {
-    return '$showing / $total applications';
-  }
-
-  @override
-  String get duplicates => 'Duplicates';
-
-  @override
-  String get similar => 'Similar';
-
-  @override
-  String get somethingWentWrong => 'Something went wrong';
-
-  @override
-  String get pageNotFoundDesc => 'The page you are looking for does not exist.';
-
-  @override
-  String get allClean => 'Tout propre !';
-
-  @override
-  String get deleting => 'Suppression...';
-
-  @override
-  String deleteItemsCount(int count, String size) {
-    return 'Supprimer $count éléments ($size)';
-  }
-
-  @override
-  String deletedCountMsg(int count, String size) {
-    return '$count éléments supprimés ($size)';
-  }
-
-  @override
-  String get actionCannotBeUndone => 'Cette action est irréversible.';
-
-  @override
-  String get cleanupBreakdown => 'Bilan de nettoyage';
-
-  @override
-  String get smartCleanupDesc =>
-      'Nous gardons automatiquement la meilleure version de vos fichiers.';
-
-  @override
-  String get cleaning => 'Nettoyage...';
-
-  @override
-  String cleanUpSize(String size) {
-    return 'Nettoyer $size';
-  }
-
-  @override
-  String youSavedSize(String size) {
-    return 'Vous avez libéré $size';
-  }
-
-  @override
-  String get youreAllSet => 'Tout est prêt !';
-
-  @override
-  String get noSmartCleanupItems => 'Aucun doublon trouvé.';
-
-  @override
-  String get save => 'Sauvegarder';
-
-  @override
-  String get keep => 'GARDER';
-
-  @override
-  String get deselectAll => 'Tout désélectionner';
-
-  @override
-  String get images => 'Images';
-
-  @override
-  String get docs => 'Docs';
-
-  @override
-  String get others => 'Autres';
-
-  @override
-  String get all => 'Tout';
-
-  @override
-  String deleteConfirmMsg(int count) {
-    return 'Voulez-vous vraiment supprimer les fichiers sélectionnés ?';
-  }
-
-  @override
-  String screenshotsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count captures',
-      one: '1 capture',
-      zero: 'Aucune',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String selectedCountSize(int count, String size) {
-    return 'Sélection : $count ($size)';
-  }
-
-  @override
-  String deleteSelectedSize(String size) {
-    return 'Effacer la sélection ($size)';
-  }
-
-  @override
-  String get deleteFailedGeneral => 'Échec de suppression.';
-
-  @override
-  String get systemDefault => 'Système par défaut';
-
-  @override
-  String get light => 'Clair';
-
-  @override
-  String get dark => 'Sombre';
-
-  @override
-  String get strictSensitivity => 'Strict (Correspondance 95%)';
-
-  @override
-  String get normalSensitivity => 'Normal (Correspondance 85%)';
-
-  @override
-  String get looseSensitivity => 'Souple (Correspondance 75%)';
-
-  @override
-  String get sensitivityDesc =>
-      'Choisissez comment les photos similaires sont identifiées.';
-
-  @override
-  String get strictSensitivityDesc => 'Seulement presque identiques';
-
-  @override
-  String get normalSensitivityDesc => 'Recommandé';
-
-  @override
-  String get looseSensitivityDesc => 'Variations plus larges';
-
-  @override
-  String get sensitivityUpdated => 'Paramètre de sensibilité mis à jour.';
-
-  @override
-  String get thresholdDesc => 'Fichiers plus grands que cette valeur ciblés.';
-
-  @override
-  String get thresholdUpdated => 'Seuil mis à jour.';
-
-  @override
-  String largerThanSize(String size) {
-    return 'Supérieur à $size';
-  }
-
-  @override
-  String get madeWithHeart => 'Fait avec ❤️ pour nettoyer votre mobile';
-
-  @override
-  String get versionUnavailable => 'Version non disponible';
-
-  @override
-  String get emailNotSupported => 'Action d\'email non supportée.';
-
-  @override
-  String get clearSpace => 'Clear Space';
-
-  @override
-  String get storageDashboard => 'Tableau de Bord';
-
-  @override
-  String itemsCanBeCleaned(int count) {
-    return '$count fichiers à nettoyer';
-  }
-
-  @override
-  String get storageBreakdown => 'Détail de l\'espace';
-
-  @override
-  String get cleanup => 'Nettoyage';
-
-  @override
-  String get suggestions => 'Suggestions';
-
-  @override
-  String get analyzing => 'Analyse...';
-
-  @override
-  String get keepStorageHealthy => 'Gardez votre stockage à flot';
-
-  @override
-  String get cleanupHeaderDesc => 'Fichiers pouvant être supprimés.';
-
-  @override
-  String percentUsed(int percentage) {
-    return '$percentage% Utilisé';
-  }
-
-  @override
-  String get scanPausedBattery => 'Analyse Pause (Batterie)';
-
-  @override
-  String scanningPhase(String phase) {
-    return 'Scanner $phase...';
-  }
-
-  @override
-  String scanningPhasePercent(String phase, int percentage) {
-    return 'Scanner $phase... ($percentage%)';
-  }
-
-  @override
-  String get calculating => 'Calcul...';
-
-  @override
-  String get internalStorage => 'STOCKAGE INTERNE';
-
-  @override
-  String get free => 'Libre';
-
-  @override
-  String get used => 'Utilisé';
-
-  @override
-  String get total => 'Total';
-
-  @override
-  String get phaseDisk => 'Disque';
-
-  @override
-  String get phasePhotos => 'Photos';
-
-  @override
-  String get phaseVideos => 'Vidéos';
-
-  @override
-  String get phaseAudio => 'Audio';
-
-  @override
-  String get phaseDocuments => 'Documents';
-
-  @override
-  String get phaseJunk => 'Résiduels';
-
-  @override
-  String get phaseFolders => 'Dossiers';
-
-  @override
-  String get phaseApks => 'APKs';
-
-  @override
-  String get phaseSimilar => 'Similaires';
-
-  @override
-  String get phaseStorage => 'Espace';
-
-  @override
-  String totalSize(String size) {
-    return '$size Total';
-  }
-
-  @override
-  String usedSize(String size) {
-    return '$size Utilisé';
-  }
-
-  @override
-  String get largeFilesTitle => 'Fichiers Volumineux';
-
-  @override
-  String get selectYourLanguage => 'Sélectionnez votre Langue';
-
-  @override
-  String get analyzingLabel => 'Analyzing...';
-
-  @override
-  String get zeroBytes => '0 B';
-
-  @override
-  String itemCount(int count) {
-    return '$count items';
   }
 }

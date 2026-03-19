@@ -15,21 +15,21 @@
   "lightTheme": "Açık",
   "darkTheme": "Koyu",
   "storageAccessRequired": "Erişim Gerekli",
-  "storageAccessDesc": "Clear Space'in cihazınızda kopyaları, büyük dosyaları ve çöp dosyaları taramak için \"Tüm dosyalara erişim\" iznine ihtiyacı var.\n\nİzin vermek için ayarlara yönlendirileceksiniz.",
-  "storagePermissionDeniedDesc": "Storage permission was denied. Please enable it in Settings to continue.",
-  "permissionMediaTitle": "Photos, videos, and audio",
-  "permissionMediaDesc": "Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.",
-  "permissionAllFilesTitle": "All files access",
-  "permissionAllFilesDesc": "Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.",
-  "permissionInstalledAppsTitle": "Installed apps",
-  "permissionInstalledAppsDesc": "Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.",
-  "permissionVisibleProgressTitle": "Visible progress",
-  "permissionVisibleProgressDesc": "Used to keep scan or cleanup progress visible while a user-initiated task is running.",
-  "permissionOnDeviceNote": "Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.",
-  "openSettings": "Open Settings",
+  "storageAccessDesc": "Clear Space'in cihazınızda kopyaları, büyük dosyaları and çöp dosyaları taramak için \"Tüm dosyalara erişim\" iznine ihtiyacı var.\n\nİzin vermek için ayarlara yönlendirileceksiniz.",
+  "storagePermissionDeniedDesc": "Depolama izni reddedildi. Lütfen devam etmek için Ayarlar'dan etkinleştirin.",
+  "permissionMediaTitle": "Fotoğraflar, videolar and ses",
+  "permissionMediaDesc": "Cihazınızda saklanan kopya dosyaları, benzer fotoğrafları, ekran görüntülerini, indirmeleri and büyük medyaları bulmak için kullanılır.",
+  "permissionAllFilesTitle": "Tüm dosyalara erişim",
+  "permissionAllFilesDesc": "Gereksiz dosyalar, APK incelemesi, indirme incelemesi and boş klasörler gibi medya dışı temizleme özellikleri için kullanılır.",
+  "permissionInstalledAppsTitle": "Yüklü uygulamalar",
+  "permissionInstalledAppsDesc": "Uygulama Yöneticisi tarafından başlatıcıda görünen yüklü uygulamaları göstermek and seçtiğinizde Android kaldırma onayını açmak için kullanılır.",
+  "permissionVisibleProgressTitle": "Görünür ilerleme",
+  "permissionVisibleProgressDesc": "Kullanıcı tarafından başlatılan bir görev çalışırken tarama veya temizleme ilerlemesini görünür tutmak için kullanılır.",
+  "permissionOnDeviceNote": "Tarama and temizleme analizi cihazınızda kalır. Clear Space, bu özellikler için dosyalarınızı bir geliştirici sunucusuna yüklemez.",
+  "openSettings": "Ayarları Aç",
   "grantPermission": "İzin Ver",
   "getStarted": "Başla",
-  "skip": "Skip",
+  "skip": "Atla",
   "@skip": {
     "description": "Skip action label"
   },
@@ -49,7 +49,7 @@
       }
     }
   },
-  "onboardingWelcome": "Cihazınızı temiz, hızlı ve güvenli tutmanın en akıllı yoluna hoş geldiniz.",
+  "onboardingWelcome": "Cihazınızı temiz, hızlı and güvenli tutmanın en akıllı yoluna hoş geldiniz.",
   "onboardingFeaturesTitle": "Güçlü Özellikler",
   "onboardingFeaturesDesc": "Depolamanızı verimli bir şekilde yönetmek için ihtiyacınız olan her şey.",
   "feature1Title": "Depolamanızı anlayın",
@@ -57,56 +57,56 @@
   "feature2Title": "Güvenle temizleyin",
   "feature2Desc": "Gereksiz dosyaları güvenli silme protokolleriyle kaldırın.",
   "feature3Title": "Yer açın",
-  "feature3Desc": "Çöpleri, büyük dosyaları ve kopyaları anında bulun ve silin.",
+  "feature3Desc": "Çöpleri, büyük dosyaları and kopyaları anında bulun and silin.",
   "termsDesc": "Devam ederek, Gizlilik Politikamızı kabul etmiş olursunuz.",
-  "selectLanguage": "Select Your Language",
-  "changeLaterInSettings": "You can change this later in Settings.",
-  "photosAndImages": "Photos & Images",
-  "videos": "Videos",
-  "audio": "Audio",
-  "documentsAndFiles": "Documents & Files",
-  "systemAndApps": "System & Apps",
-  "other": "OTHER",
-  "review": "Review",
-  "viewDetails": "View Details",
-  "smartCleanupPlan": "Smart Cleanup Plan",
-  "analyzingSafeToDelete": "Analyzing safe-to-delete files...",
-  "returnToDashboard": "Return to Dashboard",
-  "returnDirectlyToDashboard": "Return directly to Dashboard",
-  "appearanceAndLanguage": "Appearance & Language",
-  "supportAndEngagement": "Support & Engagement",
-  "scanPreferences": "Scan Preferences",
-  "legalAndAppInfo": "Legal & App Info",
-  "cleanupHistory": "Cleanup History",
-  "viewPastCleaning": "View your past cleaning activities",
-  "sendFeedback": "Send Feedback",
-  "reportBugs": "Report bugs or suggest improvements",
-  "rateUs": "Rate Us 5 Stars",
-  "helpOthers": "Help others find Clear Space",
-  "shareWithFriends": "Share with Friends",
-  "recommendApp": "Recommend the app via messages",
-  "similarPhotoSensitivity": "Similar Photo Sensitivity",
-  "largeFileThreshold": "Large File Threshold",
-  "strict": "Strict",
+  "selectLanguage": "Dilinizi Seçin",
+  "changeLaterInSettings": "Bunu daha sonra Ayarlar'dan değiştirebilirsiniz.",
+  "photosAndImages": "Fotoğraflar and Resimler",
+  "videos": "Videolar",
+  "audio": "Ses",
+  "documentsAndFiles": "Belgeler and Dosyalar",
+  "systemAndApps": "Sistem and Uygulamalar",
+  "other": "DİĞER",
+  "review": "İncele",
+  "viewDetails": "Detayları Görüntüle",
+  "smartCleanupPlan": "Akıllı Temizlik Planı",
+  "analyzingSafeToDelete": "Silinmesi güvenli dosyalar analiz ediliyor...",
+  "returnToDashboard": "Panele Dön",
+  "returnDirectlyToDashboard": "Doğrudan Panele Dön",
+  "appearanceAndLanguage": "Görünüm and Dil",
+  "supportAndEngagement": "Destek and Katılım",
+  "scanPreferences": "Tarama Tercihleri",
+  "legalAndAppInfo": "Yasal and Uygulama Bilgisi",
+  "cleanupHistory": "Temizlik Geçmişi",
+  "viewPastCleaning": "Geçmiş temizlik aktivitelerinizi görüntüleyin",
+  "sendFeedback": "Geri Bildirim Gönder",
+  "reportBugs": "Hataları bildirin veya iyileştirme önerin",
+  "rateUs": "Bize 5 Yıldız Verin",
+  "helpOthers": "Başkalarının Clear Space'i bulmasına yardım edin",
+  "shareWithFriends": "Arkadaşlarla Paylaş",
+  "recommendApp": "Uygulamayı mesaj yoluyla önerin",
+  "similarPhotoSensitivity": "Benzer Fotoğraf Hassasiyeti",
+  "largeFileThreshold": "Büyük Dosya Eşiği",
+  "strict": "Katı",
   "normal": "Normal",
-  "loose": "Loose",
-  "privacyPolicy": "Privacy Policy",
-  "howWeProtectData": "How we protect your data",
-  "termsOfService": "Terms of Service",
-  "rulesAndGuidelines": "Rules and guidelines",
-  "appVersion": "App Version",
-  "emailRestricted": "Email functionality restricted by device.",
-  "browserLaunchFailed": "Could not launch browser.",
-  "storeUnavailable": "Store service temporarily unavailable.",
-  "browserRestricted": "Browser access restricted on this device.",
-  "shareUnavailable": "Share functionality unavailable.",
-  "keepPhoneClean": "Keep your phone clean with Clear Space",
-  "duplicateFiles": "Duplicate Files",
-  "findIdenticalFiles": "Find and remove identical files",
-  "similarPhotos": "Similar Photos",
-  "findKeyMoments": "Find key photo moments",
-  "largeFiles": "Large Files",
-  "filesLargerThan": "Files larger than {size}",
+  "loose": "Gevşek",
+  "privacyPolicy": "Gizlilik Politikası",
+  "howWeProtectData": "Verilerinizi nasıl koruyoruz",
+  "termsOfService": "Hizmet Şartları",
+  "rulesAndGuidelines": "Kurallar and yönergeler",
+  "appVersion": "Uygulama Sürümü",
+  "emailRestricted": "E-posta işlevselliği cihaz tarafından kısıtlandı.",
+  "browserLaunchFailed": "Tarayıcı başlatılamadı.",
+  "storeUnavailable": "Mağaza hizmeti geçici olarak kullanılamıyor.",
+  "browserRestricted": "Bu cihazda tarayıcı erişimi kısıtlandı.",
+  "shareUnavailable": "Paylaşım işlevselliği kullanılamıyor.",
+  "keepPhoneClean": "Clear Space ile telefonunuzu temiz tutun",
+  "duplicateFiles": "Kopya Dosyalar",
+  "findIdenticalFiles": "Özdeş dosyaları bulun and kaldırın",
+  "similarPhotos": "Benzer Fotoğraflar",
+  "findKeyMoments": "Önemli fotoğraf anlarını bulun",
+  "largeFiles": "Büyük Dosyalar",
+  "filesLargerThan": "{size} boyutundan büyük dosyalar",
   "@filesLargerThan": {
     "placeholders": {
       "size": {
@@ -114,12 +114,12 @@
       }
     }
   },
-  "screenshots": "Screenshots",
-  "findAndDeleteScreenshots": "Find and delete screenshots",
-  "downloads": "Downloads",
-  "manageDownloadedFiles": "Manage your downloaded files",
-  "tempAndLogFiles": "Temporary & Log Files",
-  "sizeFound": "{size} found",
+  "screenshots": "Ekran Görüntüleri",
+  "findAndDeleteScreenshots": "Ekran görüntülerini bulun and silin",
+  "downloads": "İndirilenler",
+  "manageDownloadedFiles": "İndirilen dosyalarınızı yönetin",
+  "tempAndLogFiles": "Geçici and Günlük Dosyaları",
+  "sizeFound": "{size} bulundu",
   "@sizeFound": {
     "placeholders": {
       "size": {
@@ -127,8 +127,8 @@
       }
     }
   },
-  "emptyFolders": "Empty Folders",
-  "emptyFoldersFound": "{count} empty folders found",
+  "emptyFolders": "Boş Klasörler",
+  "emptyFoldersFound": "{count} boş klasör bulundu",
   "@emptyFoldersFound": {
     "placeholders": {
       "count": {
@@ -136,12 +136,12 @@
       }
     }
   },
-  "safeApkInstallers": "Safe APK Installers",
-  "cleanOldApks": "Clean installed/old APKs",
-  "pleaseScanStorageFirst": "Please scan storage first",
-  "noJunkFilesFound": "No junk files found!",
-  "cleanupComplete": "Cleanup complete!",
-  "cleanupFailed": "Cleanup failed: {error}",
+  "safeApkInstallers": "Güvenli APK Yükleyiciler",
+  "cleanOldApks": "Yüklü/eski APK'ları temizleyin",
+  "pleaseScanStorageFirst": "Lütfen önce depolamayı tarayın",
+  "noJunkFilesFound": "Gereksiz dosya bulunamadı!",
+  "cleanupComplete": "Temizlik tamamlandı!",
+  "cleanupFailed": "Temizlik başarısız oldu: {error}",
   "@cleanupFailed": {
     "placeholders": {
       "error": {
@@ -149,17 +149,17 @@
       }
     }
   },
-  "selectAll": "Select All",
-  "noLargeFilesFound": "No large files found!",
-  "noDuplicatesFound": "No duplicates found!",
-  "delete": "Delete",
-  "confirmation": "Confirmation",
-  "clearHistory": "Clear History",
-  "clearHistoryConfirm": "Are you sure you want to delete all cleanup logs?",
-  "clearAll": "Clear All",
-  "cleanAllSafeItems": "Clean All Safe Items",
-  "deleteFilesQuestion": "Delete files?",
-  "deleteCountScreenshots": "Delete {count} screenshots permanently?",
+  "selectAll": "Tümünü Seç",
+  "noLargeFilesFound": "Büyük dosya bulunamadı!",
+  "noDuplicatesFound": "Kopya bulunamadı!",
+  "delete": "Sil",
+  "confirmation": "Onay",
+  "clearHistory": "Geçmişi Temizle",
+  "clearHistoryConfirm": "Tüm temizlik günlüklerini silmek istediğinizden emin misiniz?",
+  "clearAll": "Tümünü Temizle",
+  "cleanAllSafeItems": "Tüm Güvenli Öğeleri Temizle",
+  "deleteFilesQuestion": "Dosyalar silinsin mi?",
+  "deleteCountScreenshots": "{count} ekran görüntüsünü kalıcı olarak sil?",
   "@deleteCountScreenshots": {
     "placeholders": {
       "count": {
@@ -167,10 +167,10 @@
       }
     }
   },
-  "screenshotsDeletedSuccess": "Screenshots deleted successfully",
+  "screenshotsDeletedSuccess": "Ekran görüntüleri başarıyla silindi",
   "junkFilesFound": "Gereksiz Dosyalar Bulundu",
-  "noPhotosFound": "No photos found",
-  "errorLoadingPhotos": "Error loading photos: {error}",
+  "noPhotosFound": "Fotoğraf bulunamadı",
+  "errorLoadingPhotos": "Fotoğraflar yüklenirken hata oluştu: {error}",
   "@errorLoadingPhotos": {
     "placeholders": {
       "error": {
@@ -178,7 +178,7 @@
       }
     }
   },
-  "deleteFailed": "Delete failed: {error}",
+  "deleteFailed": "Silme başarısız oldu: {error}",
   "@deleteFailed": {
     "placeholders": {
       "error": {
@@ -186,11 +186,11 @@
       }
     }
   },
-  "contacts": "Contacts",
-  "contactsNotImplemented": "Contacts List Not Implemented",
-  "smartSelect": "Smart Select",
-  "junkFiles": "Junk Files",
-  "potentialSize": "{size} potential",
+  "contacts": "Kişiler",
+  "contactsNotImplemented": "Kişiler Listesi Uygulanmadı",
+  "smartSelect": "Akıllı Seçim",
+  "junkFiles": "Gereksiz Dosyalar",
+  "potentialSize": "{size} potansiyel",
   "@potentialSize": {
     "placeholders": {
       "size": {
@@ -198,7 +198,7 @@
       }
     }
   },
-  "noFilesMatchFilter": "No files match this filter",
+  "noFilesMatchFilter": "Bu filtreye uygun dosya yok",
   "refreshingAppList": "Uygulama listesi yenileniyor...",
   "openingUninstaller": "Kaldırıcı açılıyor...",
   "uninstallApp": "Uygulamayı Kaldır",
@@ -228,7 +228,7 @@
       }
     }
   },
-  "uninstallActionDesc": "Uygulama ve tüm verileri silinecektir.",
+  "uninstallActionDesc": "Uygulama and tüm verileri silinecektir.",
   "appsCount": "{count} uygulama",
   "@appsCount": {
     "placeholders": {
@@ -248,10 +248,10 @@
       }
     }
   },
-  "duplicates": "Duplicates",
-  "similar": "Similar",
-  "somethingWentWrong": "Something went wrong",
-  "pageNotFoundDesc": "The page you are looking for does not exist.",
+  "duplicates": "Kopyalar",
+  "similar": "Benzerler",
+  "somethingWentWrong": "Bir şeyler yanlış gitti",
+  "pageNotFoundDesc": "Aradığınız sayfa mevcut değil.",
   "allClean": "Tertemiz!",
   "deleting": "Siliniyor...",
   "deleteItemsCount": "{count} öğeyi sil ({size})",
@@ -278,7 +278,7 @@
   },
   "actionCannotBeUndone": "Bu işlem geri alınamaz.",
   "cleanupBreakdown": "Temizlik Dağılımı",
-  "smartCleanupDesc": "Benzer fotoğrafların ve dosyaların en iyi sürümünü otomatik tutuyoruz.",
+  "smartCleanupDesc": "Benzer fotoğrafların and dosyaların en iyi sürümünü otomatik tutuyoruz.",
   "cleaning": "Temizleniyor...",
   "cleanUpSize": "{size} Temizle",
   "@cleanUpSize": {

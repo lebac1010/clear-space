@@ -46,46 +46,46 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get storageAccessDesc =>
-      'Clear Space memerlukan \"Akses ke semua file\" untuk memindai perangkat Anda dari file duplikat, file besar, dan file sampah.\n\nAnda akan diarahkan ke Pengaturan Sistem untuk memberikan izin ini setelah mengetuk Berikan Izin.';
+      'Clear Space memerlukan \"Akses ke semua file\" untuk memindai perangkat Anda dari file duplikat, file besar, and file sampah.\n\nAnda akan diarahkan ke Pengaturan Sistem untuk memberikan izin ini setelah mengetuk Berikan Izin.';
 
   @override
   String get storagePermissionDeniedDesc =>
-      'Storage permission was denied. Please enable it in Settings to continue.';
+      'Izin penyimpanan ditolak. Harap aktifkan di Pengaturan para melanjutkan.';
 
   @override
-  String get permissionMediaTitle => 'Photos, videos, and audio';
+  String get permissionMediaTitle => 'Foto, video, dan audio';
 
   @override
   String get permissionMediaDesc =>
-      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
+      'Digunakan untuk menemukan file duplikat, foto serupa, tangkapan layar, unduhan, dan media besar yang tersimpan di perangkat Anda.';
 
   @override
-  String get permissionAllFilesTitle => 'All files access';
+  String get permissionAllFilesTitle => 'Akses ke semua file';
 
   @override
   String get permissionAllFilesDesc =>
-      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
+      'Digunakan untuk fitur pembersihan non-media seperti file sampah, tinjauan APK, tinjauan unduhan, dan folder kosong.';
 
   @override
-  String get permissionInstalledAppsTitle => 'Installed apps';
+  String get permissionInstalledAppsTitle => 'Aplikasi terinstal';
 
   @override
   String get permissionInstalledAppsDesc =>
-      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
+      'Digunakan oleh Manajer Aplikasi untuk menampilkan aplikasi terinstal yang terlihat di launcher and membuka konfirmasi pencopotan Android saat Anda memilih.';
 
   @override
-  String get permissionVisibleProgressTitle => 'Visible progress';
+  String get permissionVisibleProgressTitle => 'Progres terlihat';
 
   @override
   String get permissionVisibleProgressDesc =>
-      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
+      'Digunakan untuk menjaga progres pemindaian atau pembersihan tetap terlihat saat tugas yang dimulai pengguna sedang berjalan.';
 
   @override
   String get permissionOnDeviceNote =>
-      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
+      'Analisis pemindaian and pembersihan tetap ada di perangkat Anda. Clear Space tidak mengunggah file Anda ke server pengembang para fitur ini.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Buka Pengaturan';
 
   @override
   String get grantPermission => 'Berikan Izin';
@@ -94,7 +94,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get getStarted => 'Mulai';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Lewati';
 
   @override
   String get next => 'Selanjutnya';
@@ -127,7 +127,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingWelcome =>
-      'Selamat datang di cara paling cerdas untuk menjaga perangkat Anda tetap bersih, cepat, dan aman.';
+      'Selamat datang di cara paling cerdas untuk menjaga perangkat Anda tetap bersih, cepat, and aman.';
 
   @override
   String get onboardingFeaturesTitle => 'Fitur Canggih';
@@ -155,7 +155,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get feature3Desc =>
-      'Temukan dan hapus file sampah, file besar, dan duplikat secara instan.';
+      'Temukan and hapus file sampah, file besar, and duplikat secara instan.';
 
   @override
   String get termsDesc =>
@@ -197,7 +197,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get analyzingSafeToDelete =>
-      'Menganalisis file yang aman untuk dihapus...';
+      'Menganalisis file yang aman para dihapus...';
 
   @override
   String get returnToDashboard => 'Kembali ke Dasbor';
@@ -266,7 +266,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get termsOfService => 'Ketentuan Layanan';
 
   @override
-  String get rulesAndGuidelines => 'Aturan dan pedoman';
+  String get rulesAndGuidelines => 'Aturan and pedoman';
 
   @override
   String get appVersion => 'Versi Aplikasi';
@@ -278,7 +278,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get browserLaunchFailed => 'Tidak dapat meluncurkan peramban.';
 
   @override
-  String get storeUnavailable => 'Layanan toko untuk sementara tidak tersedia.';
+  String get storeUnavailable => 'Layanan toko para sementara tidak tersedia.';
 
   @override
   String get browserRestricted => 'Akses peramban dibatasi pada perangkat ini.';
@@ -294,7 +294,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get duplicateFiles => 'File Duplikat';
 
   @override
-  String get findIdenticalFiles => 'Temukan dan hapus file yang identik';
+  String get findIdenticalFiles => 'Temukan and hapus file yang identik';
 
   @override
   String get similarPhotos => 'Foto Serupa';
@@ -314,7 +314,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get screenshots => 'Tangkapan Layar';
 
   @override
-  String get findAndDeleteScreenshots => 'Temukan dan hapus tangkapan layar';
+  String get findAndDeleteScreenshots => 'Temukan and hapus tangkapan layar';
 
   @override
   String get downloads => 'Unduhan';
@@ -375,17 +375,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get confirmation => 'Konfirmasi';
 
   @override
-  String get clearHistory => 'Clear History';
+  String get clearHistory => 'Hapus Riwayat';
 
   @override
   String get clearHistoryConfirm =>
-      'Are you sure you want to delete all cleanup logs?';
+      'Apakah Anda yakin ingin menghapus semua log pembersihan?';
 
   @override
-  String get clearAll => 'Clear All';
+  String get clearAll => 'Hapus Semua';
 
   @override
-  String get cleanAllSafeItems => 'Clean All Safe Items';
+  String get cleanAllSafeItems => 'Bersihkan Semua Item Aman';
 
   @override
   String get deleteFilesQuestion => 'Hapus file?';
@@ -496,7 +496,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get uninstallActionDesc =>
-      'Ini akan menghapus aplikasi dan semua datanya.';
+      'Ini akan menghapus aplikasi and semua datanya.';
 
   @override
   String appsCount(int count) {
@@ -509,16 +509,16 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get duplicates => 'Duplicates';
+  String get duplicates => 'Duplikat';
 
   @override
-  String get similar => 'Similar';
+  String get similar => 'Serupa';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Terjadi kesalahan';
 
   @override
-  String get pageNotFoundDesc => 'The page you are looking for does not exist.';
+  String get pageNotFoundDesc => 'Halaman yang Anda cari tidak ada.';
 
   @override
   String get allClean => 'Semua bersih!';
@@ -544,7 +544,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get smartCleanupDesc =>
-      'Kami secara otomatis menyimpan versi terbaik foto dan file Anda.';
+      'Kami secara otomatis menyimpan versi terbaik foto and file Anda.';
 
   @override
   String get cleaning => 'Membersihkan...';
@@ -653,7 +653,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get thresholdDesc =>
-      'File lebih besar dari ini akan ditandai untuk dihapus.';
+      'File lebih besar dari ini akan ditandai para dihapus.';
 
   @override
   String get thresholdUpdated =>
@@ -665,7 +665,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get madeWithHeart => 'Dibuat dengan ❤️ untuk ponsel yang lebih bersih';
+  String get madeWithHeart => 'Dibuat dengan ❤️ para ponsel yang lebih bersih';
 
   @override
   String get versionUnavailable => 'Versi tidak tersedia';
@@ -700,7 +700,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get keepStorageHealthy => 'Jaga ruang ponsel Anda';
 
   @override
-  String get cleanupHeaderDesc => 'File ini dapat dihapus untuk ruang kosong.';
+  String get cleanupHeaderDesc => 'File ini dapat dihapus para ruang kosong.';
 
   @override
   String percentUsed(int percentage) {

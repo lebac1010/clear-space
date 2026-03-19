@@ -103,22 +103,14 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('de'),
-    Locale('de', 'DE'),
     Locale('en'),
-    Locale('en', 'GB'),
     Locale('es'),
-    Locale('es', '419'),
-    Locale('es', 'ES'),
     Locale('fil'),
     Locale('fr'),
-    Locale('fr', 'FR'),
     Locale('hi'),
-    Locale('hi', 'IN'),
     Locale('id'),
     Locale('pt'),
-    Locale('pt', 'BR'),
     Locale('tr'),
-    Locale('tr', 'TR'),
     Locale('vi'),
   ];
 
@@ -1543,68 +1535,6 @@ class _AppLocalizationsDelegate
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-  // Lookup logic when language+country codes are specified.
-  switch (locale.languageCode) {
-    case 'de':
-      {
-        switch (locale.countryCode) {
-          case 'DE':
-            return AppLocalizationsDeDe();
-        }
-        break;
-      }
-    case 'en':
-      {
-        switch (locale.countryCode) {
-          case 'GB':
-            return AppLocalizationsEnGb();
-        }
-        break;
-      }
-    case 'es':
-      {
-        switch (locale.countryCode) {
-          case '419':
-            return AppLocalizationsEs419();
-          case 'ES':
-            return AppLocalizationsEsEs();
-        }
-        break;
-      }
-    case 'fr':
-      {
-        switch (locale.countryCode) {
-          case 'FR':
-            return AppLocalizationsFrFr();
-        }
-        break;
-      }
-    case 'hi':
-      {
-        switch (locale.countryCode) {
-          case 'IN':
-            return AppLocalizationsHiIn();
-        }
-        break;
-      }
-    case 'pt':
-      {
-        switch (locale.countryCode) {
-          case 'BR':
-            return AppLocalizationsPtBr();
-        }
-        break;
-      }
-    case 'tr':
-      {
-        switch (locale.countryCode) {
-          case 'TR':
-            return AppLocalizationsTrTr();
-        }
-        break;
-      }
-  }
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'de':

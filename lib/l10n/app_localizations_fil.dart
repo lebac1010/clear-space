@@ -50,42 +50,42 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get storagePermissionDeniedDesc =>
-      'Storage permission was denied. Please enable it in Settings to continue.';
+      'Tinanggihan ang pahintulot sa storage. Pakisuri at i-enable ito sa Mga Setting upang magpatuloy.';
 
   @override
-  String get permissionMediaTitle => 'Photos, videos, and audio';
+  String get permissionMediaTitle => 'Mga larawan, video, at audio';
 
   @override
   String get permissionMediaDesc =>
-      'Used to find duplicate files, similar photos, screenshots, downloads, and large media stored on your device.';
+      'Ginagamit upang mahanap ang mga duplicate na file, katulad na mga larawan, screenshot, download, at malalaking media na naka-store sa iyong device.';
 
   @override
-  String get permissionAllFilesTitle => 'All files access';
+  String get permissionAllFilesTitle => 'Access sa lahat ng mga file';
 
   @override
   String get permissionAllFilesDesc =>
-      'Used for non-media cleanup features such as junk files, APK review, download review, and empty folders.';
+      'Ginagamit para sa mga feature ng paglilinis na hindi media tulad ng mga junk file, pagsusuri ng APK, pagsusuri ng download, at mga walang lamang folder.';
 
   @override
-  String get permissionInstalledAppsTitle => 'Installed apps';
+  String get permissionInstalledAppsTitle => 'Mga naka-install na app';
 
   @override
   String get permissionInstalledAppsDesc =>
-      'Used by App Manager to show launcher-visible installed apps and open Android uninstall confirmation when you choose.';
+      'Ginagamit ng App Manager upang ipakita ang mga naka-install na app na nakikita sa launcher at buksan ang kumpirmasyon ng pag-uninstall ng Android kapag pinili mo.';
 
   @override
-  String get permissionVisibleProgressTitle => 'Visible progress';
+  String get permissionVisibleProgressTitle => 'Nakikitang progreso';
 
   @override
   String get permissionVisibleProgressDesc =>
-      'Used to keep scan or cleanup progress visible while a user-initiated task is running.';
+      'Ginagamit upang panatilihing nakikitang progreso ng pag-scan o paglilinis habang tumatakbo ang isang gawain na pinasimulan ng user.';
 
   @override
   String get permissionOnDeviceNote =>
-      'Scanning and cleanup analysis stay on your device. Clear Space does not upload your files to a developer server for these features.';
+      'Ang pag-scan at pagsusuri ng paglilinis ay nananatili sa iyong device. Hindi ina-upload ng Clear Space ang iyong mga file sa isang developer server para sa mga feature na ito.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Buksan ang Mga Setting';
 
   @override
   String get grantPermission => 'Ibigay ang Pahintulot';
@@ -94,7 +94,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get getStarted => 'Magsimula';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Laktawan';
 
   @override
   String get next => 'Susunod';
@@ -382,17 +382,17 @@ class AppLocalizationsFil extends AppLocalizations {
   String get confirmation => 'Kumpirmasyon';
 
   @override
-  String get clearHistory => 'Clear History';
+  String get clearHistory => 'I-clear ang Kasaysayan';
 
   @override
   String get clearHistoryConfirm =>
-      'Are you sure you want to delete all cleanup logs?';
+      'Sigurado ka bang gusto mong burahin ang lahat ng log ng paglilinis?';
 
   @override
-  String get clearAll => 'Clear All';
+  String get clearAll => 'I-clear Lahat';
 
   @override
-  String get cleanAllSafeItems => 'Clean All Safe Items';
+  String get cleanAllSafeItems => 'Linisin ang Lahat ng Ligtas na Item';
 
   @override
   String get deleteFilesQuestion => 'Tanggalin ang mga file?';
@@ -517,16 +517,16 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get duplicates => 'Duplicates';
+  String get duplicates => 'Mga Duplicate';
 
   @override
-  String get similar => 'Similar';
+  String get similar => 'Katulad';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Nagkaroon ng problema';
 
   @override
-  String get pageNotFoundDesc => 'The page you are looking for does not exist.';
+  String get pageNotFoundDesc => 'Ang pahinang hinahanap mo ay hindi umiiral.';
 
   @override
   String get allClean => 'Lahat malinis!';
