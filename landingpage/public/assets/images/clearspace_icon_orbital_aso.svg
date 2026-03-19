@@ -1,0 +1,50 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Concept 2: Orbital Shield -->
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#040B18"/>
+      <stop offset="100%" stop-color="#1E8FFF"/>
+    </linearGradient>
+    <linearGradient id="shieldFill" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#137FEC"/>
+      <stop offset="100%" stop-color="#0FB5A6"/>
+    </linearGradient>
+    <linearGradient id="orbitStroke" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#5CFFC5" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#5CFFC5" stop-opacity="0.35"/>
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#091123" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background squircle, full bleed -->
+  <rect x="0" y="0" width="1024" height="1024" rx="220" fill="url(#bg2)"/>
+
+  <!-- Shield: width ~632, height ~720 (phi ratio) -->
+  <path d="
+    M 512 212
+    C 652 212 770 298 770 426
+    C 770 632 640 760 512 812
+    C 384 760 254 632 254 426
+    C 254 298 372 212 512 212 Z
+  " fill="url(#shieldFill)" filter="url(#shadow2)"/>
+
+  <!-- Inner cut highlight -->
+  <path d="
+    M 512 262
+    C 632 262 722 330 722 430
+    C 722 586 612 690 512 732
+    C 412 690 302 586 302 430
+    C 302 330 392 262 512 262 Z
+  " fill="rgba(255,255,255,0.10)"/>
+
+  <!-- Orbit ring (thickness 46 ~ 632/13.7) -->
+  <ellipse cx="512" cy="492" rx="320" ry="196" stroke="url(#orbitStroke)" stroke-width="46" fill="none"/>
+  <ellipse cx="512" cy="492" rx="320" ry="196" stroke="#5CFFC5" stroke-opacity="0.08" stroke-width="80" fill="none"/>
+
+  <!-- Spark satellites -->
+  <circle cx="790" cy="462" r="32" fill="#FFD54A" />
+  <circle cx="286" cy="552" r="20" fill="#5CFFC5" opacity="0.8"/>
+</svg>
+
