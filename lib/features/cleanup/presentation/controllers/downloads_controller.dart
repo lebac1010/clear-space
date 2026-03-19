@@ -127,7 +127,7 @@ class DownloadsController extends _$DownloadsController {
         // Rollback
         state = state.copyWith(
           items: previousItems,
-          errorMessage: 'Failed to delete some files. Please try again.',
+          errorMessage: 'Failed to delete some items. Please try again.',
         );
         _updateSelectionStats();
         return false;
@@ -135,7 +135,7 @@ class DownloadsController extends _$DownloadsController {
     } catch (e) {
       state = state.copyWith(
         items: previousItems,
-        errorMessage: 'An error occurred while deleting files: ${e.toString()}',
+        errorMessage: 'Delete failed: ${e.toString()}',
       );
       _updateSelectionStats();
       return false;

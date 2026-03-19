@@ -5,6 +5,8 @@ import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../../domain/entities/cleanup_item.dart';
 import '../controllers/large_file_controller.dart';
 import '../widgets/cleanup_item_tile.dart';
@@ -14,9 +16,6 @@ class LargeFileListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final largeFilesAsync = ref.watch(largeFileControllerProvider);
-    final filter = ref.watch(largeFileFilterNotifierProvider);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
@@ -32,73 +31,81 @@ class LargeFileListScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: largeFilesAsync.when(
-        data: (files) {
-          if (files.isEmpty) {
-            return Center(child: Text(context.l10n.noLargeFilesFound));
-          }
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        builder: (context, ref) {
+          final largeFilesAsync = ref.watch(largeFileControllerProvider);
+          final filter = ref.watch(largeFileFilterNotifierProvider);
 
-          // Apply Filter
-          var filteredFiles = files;
-          if (filter != LargeFileFilter.all) {
-            filteredFiles = files.where((f) {
-              final type = f.mediaType?.toUpperCase();
-              switch (filter) {
-                case LargeFileFilter.image:
-                  return type == 'IMAGE';
-                case LargeFileFilter.video:
-                  return type == 'VIDEO';
-                case LargeFileFilter.audio:
-                  return type == 'AUDIO';
-                case LargeFileFilter.document:
-                  return type == 'DOCUMENT';
-                case LargeFileFilter.other:
-                  return type == 'OTHER' || type == null;
-                default:
-                  return true;
+          return largeFilesAsync.when(
+            data: (files) {
+              if (files.isEmpty) {
+                return Center(child: Text(context.l10n.noLargeFilesFound));
               }
-            }).toList();
-          }
 
-          // Sort by size descending
-          final sortedFiles = List<CleanupItem>.from(filteredFiles)
-            ..sort((a, b) => b.size.compareTo(a.size));
+              var filteredFiles = files;
+              if (filter != LargeFileFilter.all) {
+                filteredFiles = files.where((f) {
+                  final type = f.mediaType?.toUpperCase();
+                  switch (filter) {
+                    case LargeFileFilter.image:
+                      return type == 'IMAGE';
+                    case LargeFileFilter.video:
+                      return type == 'VIDEO';
+                    case LargeFileFilter.audio:
+                      return type == 'AUDIO';
+                    case LargeFileFilter.document:
+                      return type == 'DOCUMENT';
+                    case LargeFileFilter.other:
+                      return type == 'OTHER' || type == null;
+                    default:
+                      return true;
+                  }
+                }).toList();
+              }
 
-          return Column(
-            children: [
-              _FilterBar(currentFilter: filter),
-              Expanded(
-                child: sortedFiles.isEmpty
-                    ? Center(child: Text(context.l10n.noFilesMatchFilter))
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        itemCount: sortedFiles.length,
-                        itemBuilder: (context, index) {
-                          final item = sortedFiles[index];
-                          return AppCard(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            padding: EdgeInsets.zero,
-                            child: CleanupItemTile(
-                              item: item,
-                              onTap: () {
-                                ref
-                                    .read(largeFileControllerProvider.notifier)
-                                    .toggleSelection(item.id);
-                              },
+              final sortedFiles = List<CleanupItem>.from(filteredFiles)
+                ..sort((a, b) => b.size.compareTo(a.size));
+
+              return Column(
+                children: [
+                  _FilterBar(currentFilter: filter),
+                  Expanded(
+                    child: sortedFiles.isEmpty
+                        ? Center(child: Text(context.l10n.noFilesMatchFilter))
+                        : ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
                             ),
-                          );
-                        },
-                      ),
-              ),
-              _BottomActionPanel(files: sortedFiles),
-            ],
+                            itemCount: sortedFiles.length,
+                            itemBuilder: (context, index) {
+                              final item = sortedFiles[index];
+                              return AppCard(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: EdgeInsets.zero,
+                                child: CleanupItemTile(
+                                  item: item,
+                                  onTap: () {
+                                    ref
+                                        .read(
+                                          largeFileControllerProvider.notifier,
+                                        )
+                                        .toggleSelection(item.id);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                  _BottomActionPanel(files: sortedFiles),
+                ],
+              );
+            },
+            error: (err, st) => ErrorView(message: err.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()),
           );
         },
-        error: (err, st) => ErrorView(message: err.toString()),
-        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

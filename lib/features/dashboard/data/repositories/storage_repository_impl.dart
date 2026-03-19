@@ -10,6 +10,7 @@ import '../../../../core/services/cleanup_history_service.dart';
 import '../../../cleanup/domain/entities/cleanup_history_record.dart';
 import '../../domain/entities/scan_progress.dart';
 import '../../domain/entities/storage_info.dart';
+import '../../domain/entities/storage_permission_state.dart';
 import '../../domain/repositories/storage_repository.dart';
 
 class StorageRepositoryImpl implements StorageRepository {
@@ -31,65 +32,72 @@ class StorageRepositoryImpl implements StorageRepository {
   @override
   Future<bool> requestPermissions() async {
     if (Platform.isAndroid) {
-      // Android 13+ (SDK 33)
       final permissions = [
         Permission.photos,
         Permission.videos,
         Permission.audio,
       ];
 
-      final statuses = await permissions.request();
+      await permissions.request();
 
-      // Check if primary permissions are granted
-      bool granted = statuses.values.every((s) => s.isGranted || s.isLimited);
+      await Permission.manageExternalStorage.request();
+      await Permission.storage.request();
 
-      // FIX: Request All Files Access for Android 11+ (API 30+)
-      // This is required for non-media file access (e.g. Empty Folders in Downloads)
-      if (await Permission.manageExternalStorage.status.isDenied) {
-        final manageStatus = await Permission.manageExternalStorage.request();
-        if (manageStatus.isGranted) {
-          granted = true;
-        }
-      } else if (await Permission.manageExternalStorage.status.isGranted) {
-        granted = true;
-      }
-
-      if (!granted) {
-        // Fallback for older Android (SDK < 33) using READ_EXTERNAL_STORAGE
-        final storage = await Permission.storage.request();
-        if (storage.isGranted) {
-          granted = true;
-        }
-      }
-
-      return granted;
+      final permissionState = await getPermissionState();
+      return permissionState.hasFullAccess;
     }
 
-    // iOS
     final status = await Permission.photos.request();
-    return status.isGranted || status.isLimited;
+    return status.isGranted;
   }
 
   @override
   Future<bool> checkPermissions() async {
-    if (Platform.isAndroid) {
-      // Check All Files Access first
-      if (await Permission.manageExternalStorage.isGranted) {
-        return true;
-      }
+    final permissionState = await getPermissionState();
+    return permissionState.hasFullAccess;
+  }
 
+  @override
+  Future<StoragePermissionState> getPermissionState() async {
+    if (Platform.isAndroid) {
+      final manageStatus = await Permission.manageExternalStorage.status;
       final photos = await Permission.photos.status;
       final videos = await Permission.videos.status;
       final audio = await Permission.audio.status;
       final storage = await Permission.storage.status;
 
-      return (photos.isGranted || photos.isLimited) ||
-          (videos.isGranted || videos.isLimited) ||
-          (audio.isGranted || audio.isLimited) ||
-          storage.isGranted;
+      final hasLegacyStorageAccess = storage.isGranted;
+      final hasMediaAccess =
+          hasLegacyStorageAccess ||
+          photos.isGranted ||
+          photos.isLimited ||
+          videos.isGranted ||
+          videos.isLimited ||
+          audio.isGranted ||
+          audio.isLimited;
+      final hasAllFilesAccess = manageStatus.isGranted || hasLegacyStorageAccess;
+      final isPermanentlyDenied =
+          !hasMediaAccess &&
+          !hasAllFilesAccess &&
+          (manageStatus.isPermanentlyDenied ||
+              photos.isPermanentlyDenied ||
+              videos.isPermanentlyDenied ||
+              audio.isPermanentlyDenied ||
+              storage.isPermanentlyDenied);
+
+      return StoragePermissionState(
+        hasMediaAccess: hasMediaAccess,
+        hasAllFilesAccess: hasAllFilesAccess,
+        isPermanentlyDenied: isPermanentlyDenied,
+      );
     }
+
     final status = await Permission.photos.status;
-    return status.isGranted || status.isLimited;
+    return StoragePermissionState(
+      hasMediaAccess: status.isGranted || status.isLimited,
+      hasAllFilesAccess: status.isGranted,
+      isPermanentlyDenied: status.isPermanentlyDenied,
+    );
   }
 
   @override

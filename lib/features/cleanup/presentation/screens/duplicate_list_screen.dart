@@ -5,27 +5,26 @@ import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../../core/utils/file_utils.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../controllers/duplicate_controller.dart';
 import '../widgets/cleanup_item_tile.dart';
 import '../../domain/entities/cleanup_group.dart';
 
 class DuplicateListScreen extends ConsumerWidget {
   final CleanupType type;
-
+  final RequiredStorageAccess requiredAccess;
   final bool autoSmartSelect;
 
   const DuplicateListScreen({
     super.key,
     this.type = CleanupType.duplicate,
+    this.requiredAccess = RequiredStorageAccess.full,
     this.autoSmartSelect = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final duplicatesAsync = ref.watch(
-      duplicateControllerProvider(type, autoSmartSelect: autoSmartSelect),
-    );
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
@@ -52,117 +51,128 @@ class DuplicateListScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: duplicatesAsync.when(
-        data: (groups) {
-          if (groups.isEmpty) {
-            return Center(child: Text(context.l10n.noDuplicatesFound));
-          }
+      body: StoragePermissionGate(
+        requiredAccess: requiredAccess,
+        builder: (context, ref) {
+          final duplicatesAsync = ref.watch(
+            duplicateControllerProvider(type, autoSmartSelect: autoSmartSelect),
+          );
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: groups.length,
-                  itemBuilder: (context, index) {
-                    final group = groups[index];
-                    return AppCard(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    group.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Text(
-                                  FileUtils.formatSize(group.totalSize),
-                                  style: TextStyle(
-                                    color: context.appTextSecondary,
-                                    fontSize: 12,
-                                  ).copyWith(color: context.appTextSecondary),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Divider(height: 1),
-                          ...group.items.map((item) {
-                            final isBest =
-                                group.items.every(
-                                  (other) =>
-                                      other.id == item.id || !other.isSelected,
-                                ) &&
-                                !item.isSelected;
+          return duplicatesAsync.when(
+            data: (groups) {
+              if (groups.isEmpty) {
+                return Center(child: Text(context.l10n.noDuplicatesFound));
+              }
 
-                            return Stack(
-                              children: [
-                                CleanupItemTile(
-                                  key: ValueKey(
-                                    item.id,
-                                  ), // [D5] Prevent stale thumbnails on reorder
-                                  item: item,
-                                  onTap: () {
-                                    ref
-                                        .read(
-                                          duplicateControllerProvider(
-                                            type,
-                                            autoSmartSelect: autoSmartSelect,
-                                          ).notifier,
-                                        )
-                                        .toggleSelection(group.id, item.id);
-                                  },
-                                ),
-                                if (isBest)
-                                  Positioned(
-                                    top: 8,
-                                    right: 12,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: context.colorScheme.primary
-                                            .withValues(alpha: 0.1),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: groups.length,
+                      itemBuilder: (context, index) {
+                        final group = groups[index];
+                        return AppCard(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  children: [
+                                    Expanded(
                                       child: Text(
-                                        context.l10n.keep,
-                                        style: TextStyle(
-                                          fontSize: 9,
-                                          fontWeight: FontWeight.w800,
-                                          color: context.colorScheme.primary,
-                                          letterSpacing: 0.5,
+                                        group.title,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Text(
+                                      FileUtils.formatSize(group.totalSize),
+                                      style: TextStyle(
+                                        color: context.appTextSecondary,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(height: 1),
+                              ...group.items.map((item) {
+                                final isBest =
+                                    group.items.every(
+                                      (other) =>
+                                          other.id == item.id ||
+                                          !other.isSelected,
+                                    ) &&
+                                    !item.isSelected;
+
+                                return Stack(
+                                  children: [
+                                    CleanupItemTile(
+                                      key: ValueKey(item.id),
+                                      item: item,
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                              duplicateControllerProvider(
+                                                type,
+                                                autoSmartSelect:
+                                                    autoSmartSelect,
+                                              ).notifier,
+                                            )
+                                            .toggleSelection(group.id, item.id);
+                                      },
+                                    ),
+                                    if (isBest)
+                                      Positioned(
+                                        top: 8,
+                                        right: 12,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: context.colorScheme.primary
+                                                .withValues(alpha: 0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          child: Text(
+                                            context.l10n.keep,
+                                            style: TextStyle(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w800,
+                                              color:
+                                                  context.colorScheme.primary,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                              ],
-                            );
-                          }),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              _BottomActionPanel(groups: groups, type: type),
-            ],
+                                  ],
+                                );
+                              }),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  _BottomActionPanel(groups: groups, type: type),
+                ],
+              );
+            },
+            error: (err, st) => ErrorView(message: err.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()),
           );
         },
-        error: (err, st) => ErrorView(message: err.toString()),
-        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

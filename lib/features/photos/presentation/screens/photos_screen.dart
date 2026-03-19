@@ -1,28 +1,29 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/ads/ad_unit_ids.dart';
 import '../../../../core/ads/widgets/native_template_ad_card.dart';
 import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/router/route_constants.dart';
-import '../../../../core/widgets/app_card.dart';
 import '../../../../core/utils/file_utils.dart';
-import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
-import '../../../dashboard/domain/entities/storage_info.dart';
-import '../controllers/photos_controller.dart';
+import '../../../../core/widgets/app_card.dart';
 import '../../../dashboard/data/providers/storage_provider.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/domain/entities/storage_info.dart';
+import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../../domain/entities/photo_model.dart';
-import 'dart:typed_data';
+import '../controllers/photos_controller.dart';
 
 class PhotosScreen extends ConsumerWidget {
   const PhotosScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final storageInfoAsync = ref.watch(dashboardControllerProvider);
-    final photosAsync = ref.watch(photosControllerProvider);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
@@ -31,7 +32,7 @@ class PhotosScreen extends ConsumerWidget {
         scrolledUnderElevation: 0,
         centerTitle: false,
         title: Text(
-          'Photos',
+          context.l10n.photosTitle,
           style: Theme.of(
             context,
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -45,117 +46,166 @@ class PhotosScreen extends ConsumerWidget {
           const Gap(8),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          // Header & Analysis Cards
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Summary Header
-                  storageInfoAsync.when(
-                    data: (info) {
-                      if (info == null) return const SizedBox();
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${info.photosCount} photos',
-                            style: Theme.of(context).textTheme.headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            FileUtils.formatSize(info.photosSize),
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: context.appTextSecondary),
-                          ),
-                        ],
-                      );
-                    },
-                    loading: () => const SizedBox(height: 50),
-                    error: (_, __) => const SizedBox(),
-                  ),
-                  const Gap(24),
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.media,
+        builder: (context, ref) {
+          final storageInfoAsync = ref.watch(dashboardControllerProvider);
+          final photosAsync = ref.watch(photosControllerProvider);
+          final hasStorageSummary = storageInfoAsync.valueOrNull != null;
+          final loadedPhotos = photosAsync.valueOrNull;
+          final photoCount = loadedPhotos?.length ?? 0;
+          final totalPhotoSize = loadedPhotos?.fold<int>(
+            0,
+            (sum, photo) => sum + photo.size,
+          );
 
-                  // Analysis Section
-                  Text(
-                    'Analysis',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Gap(12),
-                  _buildAnalysisCards(context, ref, storageInfoAsync),
-                  const NativeTemplateAdCard(
-                    placement: AppNativeAdPlacement.photos,
-                    margin: EdgeInsets.only(top: 8),
-                  ),
-                  const Gap(12),
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      storageInfoAsync.when(
+                        data: (info) {
+                          if (info != null) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context.l10n.itemCount(info.photosCount),
+                                  style: Theme.of(context).textTheme.headlineSmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  FileUtils.formatSize(info.photosSize),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: context.appTextSecondary),
+                                ),
+                              ],
+                            );
+                          }
 
-                  // Gallery Header
-                  Text(
-                    'All Photos',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Photo Grid
-          photosAsync.when(
-            data: (photos) {
-              if (photos.isEmpty) {
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(32.0),
-                      child: Text(context.l10n.noPhotosFound),
-                    ),
-                  ),
-                );
-              }
-              return SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                sliver: SliverGrid(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    // Trigger load more when reaching near end
-                    if (index == photos.length - 5) {
-                      // Use addPostFrameCallback to avoid calling during build
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ref.read(photosControllerProvider.notifier).loadMore();
-                      });
-                    }
-                    return _PhotoGridItem(photo: photos[index]);
-                  }, childCount: photos.length),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 2,
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                photoCount > 0
+                                    ? context.l10n.itemCount(photoCount)
+                                    : context.l10n.photosTitle,
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              if (totalPhotoSize != null)
+                                Text(
+                                  FileUtils.formatSize(totalPhotoSize),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: context.appTextSecondary),
+                                ),
+                            ],
+                          );
+                        },
+                        loading: () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.l10n.photosTitle,
+                              style: Theme.of(context).textTheme.headlineSmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const Gap(4),
+                            Text(
+                              context.l10n.loading,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: context.appTextSecondary),
+                            ),
+                          ],
+                        ),
+                        error: (_, __) => Text(
+                          photoCount > 0
+                              ? context.l10n.itemCount(photoCount)
+                              : context.l10n.photosTitle,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const Gap(24),
+                      if (hasStorageSummary) ...[
+                        Text(
+                          context.l10n.analyze,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const Gap(12),
+                        _buildAnalysisCards(context, ref, storageInfoAsync),
+                      ],
+                      const NativeTemplateAdCard(
+                        placement: AppNativeAdPlacement.photos,
+                        margin: EdgeInsets.only(top: 8),
+                      ),
+                      const Gap(12),
+                      Text(
+                        context.l10n.photosTitle,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-            loading: () => const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(32.0),
-                child: Center(child: CircularProgressIndicator()),
               ),
-            ),
-            error: (err, stack) => SliverToBoxAdapter(
-              child: Center(
-                child: Text(context.l10n.errorLoadingPhotos(err.toString())),
+              photosAsync.when(
+                data: (photos) {
+                  if (photos.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Text(context.l10n.noPhotosFound),
+                        ),
+                      ),
+                    );
+                  }
+                  return SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        if (index == photos.length - 5) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            ref
+                                .read(photosControllerProvider.notifier)
+                                .loadMore();
+                          });
+                        }
+                        return _PhotoGridItem(photo: photos[index]);
+                      }, childCount: photos.length),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 2,
+                            crossAxisSpacing: 2,
+                          ),
+                    ),
+                  );
+                },
+                loading: () => const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                ),
+                error: (err, stack) => SliverToBoxAdapter(
+                  child: Center(
+                    child: Text(
+                      context.l10n.errorLoadingPhotos(err.toString()),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-
-          // Bottom padding
-          const SliverToBoxAdapter(child: Gap(80)),
-        ],
+              const SliverToBoxAdapter(child: Gap(80)),
+            ],
+          );
+        },
       ),
     );
   }
@@ -173,7 +223,6 @@ class PhotosScreen extends ConsumerWidget {
 
         return Row(
           children: [
-            // Duplicates Card
             Expanded(
               child: _AnalysisCard(
                 title: context.l10n.duplicates,
@@ -182,14 +231,10 @@ class PhotosScreen extends ConsumerWidget {
                 ),
                 icon: Icons.copy,
                 color: context.customColors.orange,
-                onTap: () {
-                  // Navigate to Photos tab's duplicates sub-route
-                  context.go('/photos/duplicates?type=duplicate');
-                },
+                onTap: () => context.go('/photos/duplicates?type=duplicate'),
               ),
             ),
             const Gap(12),
-            // Similar Photos Card
             Expanded(
               child: _AnalysisCard(
                 title: context.l10n.similar,
@@ -198,9 +243,7 @@ class PhotosScreen extends ConsumerWidget {
                 ),
                 icon: Icons.photo_library_outlined,
                 color: context.customColors.purple,
-                onTap: () {
-                  context.go('/photos/duplicates?type=similar');
-                },
+                onTap: () => context.go('/photos/duplicates?type=similar'),
               ),
             ),
           ],
@@ -302,7 +345,7 @@ class _PhotoGridItemState extends ConsumerState<_PhotoGridItem> {
           _hasError = bytes == null;
         });
       }
-    } catch (e) {
+    } catch (_) {
       if (mounted) {
         setState(() {
           _loading = false;

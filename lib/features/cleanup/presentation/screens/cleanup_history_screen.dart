@@ -4,37 +4,34 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-
-import '../../../../core/utils/file_utils.dart';
-import '../../../../core/widgets/error_view.dart';
-import '../../../../core/widgets/app_card.dart';
-import '../../domain/entities/cleanup_history_record.dart';
 import '../../../../core/services/cleanup_history_service.dart';
+import '../../../../core/utils/file_utils.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/error_view.dart';
+import '../../domain/entities/cleanup_history_record.dart';
 
 class CleanupHistoryScreen extends ConsumerWidget {
   const CleanupHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final historyAsync = ref.watch(cleanupHistoryProvider);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        title: const Text('Cleanup History'),
+        title: Text(context.l10n.cleanupHistory),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_sweep_outlined),
             onPressed: () => _confirmClear(context, ref),
-            tooltip: 'Clear All History',
+            tooltip: context.l10n.clearHistory,
           ),
         ],
       ),
-      body: historyAsync.when(
+      body: ref.watch(cleanupHistoryProvider).when(
         data: (history) => history.isEmpty
             ? Center(
                 child: Text(
-                  'No cleanup history yet',
+                  context.l10n.noItemsFound,
                   style: TextStyle(color: context.appTextSecondary),
                 ),
               )
@@ -88,7 +85,7 @@ class _HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('MMM dd, yyyy • HH:mm');
+    final dateFormat = DateFormat('MMM dd, yyyy - HH:mm');
     final color = _getColorForType(context, record.cleanupType);
     final icon = _getIconForType(record.cleanupType);
 
@@ -114,7 +111,7 @@ class _HistoryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _formatType(record.cleanupType),
+                      _formatType(context, record.cleanupType),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -142,7 +139,7 @@ class _HistoryCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${record.itemsCount} items',
+                    context.l10n.itemCount(record.itemsCount),
                     style: TextStyle(
                       color: context.appTextSecondary,
                       fontSize: 12,
@@ -155,7 +152,7 @@ class _HistoryCard extends StatelessWidget {
           if (record.fileNames.isNotEmpty) ...[
             const Divider(height: 24),
             Text(
-              'Files: ${record.fileNames.join(", ")}${record.itemsCount > record.fileNames.length ? "..." : ""}',
+              '${context.l10n.filesTitle}: ${record.fileNames.join(", ")}${record.itemsCount > record.fileNames.length ? "..." : ""}',
               style: TextStyle(
                 fontSize: 12,
                 color: context.appTextSecondary,
@@ -197,16 +194,16 @@ class _HistoryCard extends StatelessWidget {
     );
   }
 
-  String _formatType(String type) {
+  String _formatType(BuildContext context, String type) {
     switch (type) {
       case 'junk':
-        return 'System Junk';
+        return context.l10n.junkFiles;
       case 'screenshots':
-        return 'Old Screenshots';
+        return context.l10n.screenshots;
       case 'downloads':
-        return 'Downloads';
+        return context.l10n.downloads;
       case 'large_files':
-        return 'Large Files';
+        return context.l10n.largeFiles;
       default:
         return type.substring(0, 1).toUpperCase() + type.substring(1);
     }

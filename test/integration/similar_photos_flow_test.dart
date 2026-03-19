@@ -11,6 +11,7 @@ import 'package:clear_space/features/dashboard/data/providers/storage_provider.d
 import 'package:clear_space/features/dashboard/domain/entities/large_file_info.dart';
 import 'package:clear_space/features/dashboard/domain/entities/scan_progress.dart';
 import 'package:clear_space/features/dashboard/domain/entities/storage_info.dart';
+import 'package:clear_space/features/dashboard/domain/entities/storage_permission_state.dart';
 import 'package:clear_space/features/dashboard/domain/entities/storage_volume_info.dart';
 import 'package:clear_space/features/dashboard/domain/repositories/storage_repository.dart';
 import 'package:clear_space/features/dashboard/presentation/screens/dashboard_screen.dart';
@@ -26,6 +27,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FakeStorageRepository implements StorageRepository {
   @override
   Future<bool> checkPermissions() async => true;
+
+  @override
+  Future<StoragePermissionState> getPermissionState() async =>
+      const StoragePermissionState(
+        hasMediaAccess: true,
+        hasAllFilesAccess: true,
+        isPermanentlyDenied: false,
+      );
 
   @override
   Future<bool> deleteFiles(List<String> uris, {bool permanent = false}) async =>

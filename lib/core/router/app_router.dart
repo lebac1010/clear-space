@@ -12,6 +12,7 @@ import '../../features/cleanup/presentation/screens/smart_cleanup_plan_screen.da
 import '../../features/cleanup/presentation/controllers/duplicate_controller.dart'; // Import CleanupType
 import '../../features/contacts/presentation/screens/contacts_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/dashboard/domain/entities/storage_permission_state.dart';
 import '../../features/cleanup/presentation/screens/junk_files_screen.dart';
 import '../../features/cleanup/presentation/screens/junk_detail_screen.dart';
 import '../../features/files/presentation/screens/media_explorer_screen.dart';
@@ -116,7 +117,10 @@ GoRouter goRouter(GoRouterRef ref) {
                       final type = typeStr == 'similar'
                           ? CleanupType.similar
                           : CleanupType.duplicate;
-                      return DuplicateListScreen(type: type);
+                      return DuplicateListScreen(
+                        type: type,
+                        requiredAccess: RequiredStorageAccess.full,
+                      );
                     },
                   ),
                   GoRoute(
@@ -175,7 +179,10 @@ GoRouter goRouter(GoRouterRef ref) {
                       final type = typeStr == 'similar'
                           ? CleanupType.similar
                           : CleanupType.duplicate;
-                      return DuplicateListScreen(type: type);
+                      return DuplicateListScreen(
+                        type: type,
+                        requiredAccess: RequiredStorageAccess.media,
+                      );
                     },
                   ),
                 ],
@@ -257,7 +264,11 @@ GoRouter goRouter(GoRouterRef ref) {
               : CleanupType.duplicate;
           final autoSelect = autoSelectStr == 'true';
 
-          return DuplicateListScreen(type: type, autoSmartSelect: autoSelect);
+          return DuplicateListScreen(
+            type: type,
+            requiredAccess: RequiredStorageAccess.full,
+            autoSmartSelect: autoSelect,
+          );
         },
       ),
       // Full-screen detail view for Junk categories

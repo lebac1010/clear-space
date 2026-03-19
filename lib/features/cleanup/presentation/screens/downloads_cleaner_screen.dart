@@ -1,79 +1,92 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
+import '../../domain/entities/download_item.dart';
 import '../controllers/downloads_controller.dart';
 import '../controllers/downloads_state.dart';
-import '../../domain/entities/download_item.dart';
 
 class DownloadsCleanerScreen extends ConsumerWidget {
   const DownloadsCleanerScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // [Bug #1 fix] Updated provider reference for new @riverpod Notifier
-    final state = ref.watch(downloadsControllerProvider);
-    final controller = ref.read(downloadsControllerProvider.notifier);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
-        title: const Text('Downloads Cleaner'),
-        actions: [
-          if (state.items.isNotEmpty)
-            TextButton(
-              onPressed: () => controller.toggleAll(
-                state.selectedCount < state.items.length,
-              ),
-              child: Text(
-                state.selectedCount < state.items.length
-                    ? 'Select All'
-                    : 'Deselect All',
-                style: TextStyle(color: context.colorScheme.primary),
-              ),
-            ),
-        ],
+        title: Text(context.l10n.downloads),
       ),
-      body: Column(
-        children: [
-          if (state.isLoading)
-            const Expanded(child: Center(child: CircularProgressIndicator()))
-          else if (state.errorMessage != null)
-            Expanded(child: ErrorView(message: state.errorMessage!))
-          else if (state.items.isEmpty)
-            Expanded(
-              child: Center(
-                child: Text(
-                  'No downloads found',
-                  style: TextStyle(color: context.appTextSecondary),
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        builder: (context, ref) {
+          final state = ref.watch(downloadsControllerProvider);
+          final controller = ref.read(downloadsControllerProvider.notifier);
+
+          return Column(
+            children: [
+              if (state.items.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: TextButton(
+                      onPressed: () => controller.toggleAll(
+                        state.selectedCount < state.items.length,
+                      ),
+                      child: Text(
+                        state.selectedCount < state.items.length
+                            ? context.l10n.selectAll
+                            : context.l10n.deselectAll,
+                        style: TextStyle(color: context.colorScheme.primary),
+                      ),
+                    ),
+                  ),
                 ),
+              Expanded(
+                child: state.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : state.errorMessage != null
+                    ? ErrorView(message: state.errorMessage!)
+                    : state.items.isEmpty
+                    ? Center(
+                        child: Text(
+                          context.l10n.noItemsFound,
+                          style: TextStyle(color: context.appTextSecondary),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          _buildSummaryBar(context, state),
+                          Expanded(
+                            child: ListView.separated(
+                              padding: const EdgeInsets.all(16),
+                              itemCount: state.items.length,
+                              separatorBuilder: (context, index) =>
+                                  Divider(height: 1, color: context.appBorder),
+                              itemBuilder: (context, index) {
+                                final item = state.items[index];
+                                return _DownloadListTile(
+                                  item: item,
+                                  onToggle: () =>
+                                      controller.toggleSelection(item.id),
+                                );
+                              },
+                            ),
+                          ),
+                          if (state.selectedCount > 0)
+                            _buildBottomBar(context, ref, state, controller),
+                        ],
+                      ),
               ),
-            )
-          else ...[
-            _buildSummaryBar(context, state),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(16),
-                itemCount: state.items.length,
-                separatorBuilder: (context, index) =>
-                    Divider(height: 1, color: context.appBorder),
-                itemBuilder: (context, index) {
-                  final item = state.items[index];
-                  return _DownloadListTile(
-                    item: item,
-                    onToggle: () => controller.toggleSelection(item.id),
-                  );
-                },
-              ),
-            ),
-            if (state.selectedCount > 0)
-              _buildBottomBar(context, ref, state, controller),
-          ],
-        ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -89,7 +102,7 @@ class DownloadsCleanerScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${state.items.length} files found',
+                context.l10n.itemCount(state.items.length),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
@@ -97,13 +110,16 @@ class DownloadsCleanerScreen extends ConsumerWidget {
                 style: TextStyle(
                   color: context.appTextSecondary,
                   fontSize: 12,
-                ).copyWith(color: context.appTextSecondary),
+                ),
               ),
             ],
           ),
           if (state.selectedCount > 0)
             Text(
-              'Selected: ${state.selectedCount} (${FileUtils.formatSize(state.selectedSize)})',
+              context.l10n.selectedCountSize(
+                state.selectedCount,
+                FileUtils.formatSize(state.selectedSize),
+              ),
               style: TextStyle(
                 color: context.colorScheme.primary,
                 fontWeight: FontWeight.w600,
@@ -148,7 +164,9 @@ class DownloadsCleanerScreen extends ConsumerWidget {
           child: state.isDeleting
               ? const CircularProgressIndicator(color: Colors.white)
               : Text(
-                  'Delete Selected (${FileUtils.formatSize(state.selectedSize)})',
+                  context.l10n.deleteSelectedSize(
+                    FileUtils.formatSize(state.selectedSize),
+                  ),
                 ),
         ),
       ),
@@ -164,21 +182,19 @@ class DownloadsCleanerScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmation'),
-        content: Text(
-          'Delete ${state.selectedCount} files from Download folder?',
-        ),
+        title: Text(context.l10n.confirmation),
+        content: Text(context.l10n.deleteConfirmMsg(state.selectedCount)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: context.colorScheme.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.delete),
           ),
         ],
       ),
@@ -189,13 +205,19 @@ class DownloadsCleanerScreen extends ConsumerWidget {
       if (context.mounted) {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Downloads deleted successfully')),
+            SnackBar(
+              content: Text(
+                context.l10n.deletedCountMsg(
+                  state.selectedCount,
+                  FileUtils.formatSize(state.selectedSize),
+                ),
+              ),
+            ),
           );
         } else {
-          // [Bug #8 fix] Show error feedback on deletion failure
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to delete some files. Please try again.'),
+              content: Text(context.l10n.deleteFailedGeneral),
               backgroundColor: context.colorScheme.error,
             ),
           );
@@ -235,7 +257,6 @@ class _DownloadListTile extends StatelessWidget {
   Widget _buildFileIcon(BuildContext context, DownloadItem item) {
     final isImage = item.mimeType.startsWith('image/');
 
-    // [Bug #10 fix] Use Image.file for local paths
     if (isImage && item.path.isNotEmpty) {
       return Container(
         width: 48,

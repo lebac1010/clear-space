@@ -14,6 +14,7 @@ import '../../domain/entities/storage_info.dart';
 import '../widgets/storage_category_tile.dart';
 import '../widgets/storage_overview_card.dart';
 import '../widgets/storage_permission_view.dart';
+import '../../../../core/widgets/error_view.dart';
 import '../../../../core/router/route_constants.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -63,7 +64,7 @@ class DashboardScreen extends ConsumerWidget {
           StorageInfo.empty(),
           isScanning: true,
         ),
-        error: (err, st) => Center(child: Text('Error: $err')),
+        error: (err, st) => ErrorView(message: err.toString()),
         data: (info) {
           if (info == null) {
             return const StoragePermissionView();

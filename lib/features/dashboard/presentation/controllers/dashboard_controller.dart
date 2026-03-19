@@ -44,7 +44,7 @@ class DashboardController extends _$DashboardController {
         final data = await repo.getStorageInfo();
         state = AsyncData(data);
       } else {
-        state = AsyncError('Permission Denied', StackTrace.current);
+        state = const AsyncData(null);
       }
     } catch (e, st) {
       state = AsyncError(e, st);

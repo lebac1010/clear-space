@@ -4,13 +4,21 @@ import 'package:gap/gap.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
-
 import '../../../../core/widgets/app_button.dart';
+import '../../data/providers/storage_provider.dart';
+import '../../domain/entities/storage_permission_state.dart';
 import '../controllers/dashboard_controller.dart';
 
 /// [A6] Shows permission request view with handling for permanently denied state.
 class StoragePermissionView extends ConsumerStatefulWidget {
-  const StoragePermissionView({super.key});
+  const StoragePermissionView({
+    super.key,
+    this.requiredAccess = RequiredStorageAccess.full,
+    this.onPermissionGranted,
+  });
+
+  final RequiredStorageAccess requiredAccess;
+  final VoidCallback? onPermissionGranted;
 
   @override
   ConsumerState<StoragePermissionView> createState() =>
@@ -19,7 +27,7 @@ class StoragePermissionView extends ConsumerStatefulWidget {
 
 class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
     with WidgetsBindingObserver {
-  bool _isPermanentlyDenied = false;
+  StoragePermissionState _permissionState = const StoragePermissionState.none();
 
   @override
   void initState() {
@@ -43,14 +51,35 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
   }
 
   Future<void> _checkPermissionStatus() async {
-    final status = await Permission.manageExternalStorage.status;
+    final repository = await ref.read(storageRepositoryProvider.future);
+    final permissionState = await repository.getPermissionState();
     if (mounted) {
-      setState(() => _isPermanentlyDenied = status.isPermanentlyDenied);
-      // Auto-retry if permission was granted from Settings
-      if (status.isGranted) {
-        ref.read(dashboardControllerProvider.notifier).requestPermission();
+      setState(() => _permissionState = permissionState);
+      if (permissionState.hasFullAccess) {
+        ref.read(dashboardControllerProvider.notifier).refresh();
+      }
+      if (_hasRequiredAccess(permissionState)) {
+        widget.onPermissionGranted?.call();
       }
     }
+  }
+
+  bool _hasRequiredAccess(StoragePermissionState permissionState) {
+    return switch (widget.requiredAccess) {
+      RequiredStorageAccess.media => permissionState.canAccessPhotos,
+      RequiredStorageAccess.full => permissionState.hasFullAccess,
+    };
+  }
+
+  Future<void> _handlePermissionAction() async {
+    if (_permissionState.isPermanentlyDenied) {
+      await openAppSettings();
+      return;
+    }
+
+    final repository = await ref.read(storageRepositoryProvider.future);
+    await repository.requestPermissions();
+    await _checkPermissionStatus();
   }
 
   @override
@@ -82,13 +111,13 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             ),
             const Gap(8),
             Text(
-              _isPermanentlyDenied
+              _permissionState.isPermanentlyDenied
                   ? context.l10n.storagePermissionDeniedDesc
                   : context.l10n.storageAccessDesc,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            if (!_isPermanentlyDenied) ...[
+            if (!_permissionState.isPermanentlyDenied) ...[
               const Gap(24),
               _PermissionDisclosureCard(
                 icon: Icons.photo_library_outlined,
@@ -129,18 +158,10 @@ class _StoragePermissionViewState extends ConsumerState<StoragePermissionView>
             ],
             const Gap(32),
             AppButton(
-              text: _isPermanentlyDenied
+              text: _permissionState.isPermanentlyDenied
                   ? context.l10n.openSettings
                   : context.l10n.grantPermission,
-              onPressed: () {
-                if (_isPermanentlyDenied) {
-                  openAppSettings();
-                } else {
-                  ref
-                      .read(dashboardControllerProvider.notifier)
-                      .requestPermission();
-                }
-              },
+              onPressed: _handlePermissionAction,
             ),
           ],
         ),

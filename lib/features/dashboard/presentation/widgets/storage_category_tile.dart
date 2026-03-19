@@ -150,7 +150,7 @@ class _StorageCategoryTileState extends State<StorageCategoryTile>
                       if (showAnalyzing) ...[
                         const Gap(8),
                         Text(
-                          'Analyzing...',
+                          context.l10n.analyzing,
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
                                 color: widget.color,
@@ -160,7 +160,7 @@ class _StorageCategoryTileState extends State<StorageCategoryTile>
                       ] else if (widget.count != null) ...[
                         const Gap(8),
                         Text(
-                          '${widget.count} items',
+                          context.l10n.itemCount(widget.count!),
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],

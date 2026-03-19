@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/extensions/build_context_x.dart';
@@ -10,6 +11,7 @@ import '../../../../core/services/app_settings_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../dashboard/data/providers/storage_provider.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -18,14 +20,32 @@ class OnboardingScreen extends ConsumerStatefulWidget {
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
+    with WidgetsBindingObserver {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  StoragePermissionState _permissionState = const StoragePermissionState.none();
+  bool _isCheckingPermission = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refreshPermissionState();
+  }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pageController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshPermissionState();
+    }
   }
 
   void _nextPage() {
@@ -54,7 +74,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: [
                   _buildPage1(context, l10n),
-                  _buildPage3(context, ref, l10n), // Permissions is now second
+                  _buildPage3(context, l10n), // Permissions is now second
                   _buildPage2(context, l10n), // Features is now third
                 ],
               ),
@@ -109,10 +129,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       onPressed: _nextPage,
                     )
                   else if (_currentPage == 1)
-                    AppButton(
-                      text: l10n.grantPermission,
-                      isFullWidth: true,
-                      onPressed: () => _requestPermission(context, ref),
+                    Column(
+                      children: [
+                        AppButton(
+                          text: _permissionState.hasFullAccess
+                              ? l10n.next
+                              : _permissionState.isPermanentlyDenied
+                              ? l10n.openSettings
+                              : l10n.grantPermission,
+                          isFullWidth: true,
+                          onPressed: _isCheckingPermission
+                              ? null
+                              : () => _handlePermissionAction(ref),
+                        ),
+                        if (!_permissionState.hasFullAccess) ...[
+                          const Gap(8),
+                          TextButton(
+                            onPressed: _isCheckingPermission ? null : _nextPage,
+                            child: Text(l10n.next),
+                          ),
+                        ],
+                      ],
                     )
                   else
                     AppButton(
@@ -225,7 +262,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _buildPage3(
     BuildContext context,
-    WidgetRef ref,
     AppLocalizations l10n,
   ) {
     return LayoutBuilder(
@@ -430,15 +466,51 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Future<void> _requestPermission(BuildContext context, WidgetRef ref) async {
+  Future<void> _handlePermissionAction(WidgetRef ref) async {
+    if (_permissionState.hasFullAccess) {
+      _nextPage();
+      return;
+    }
+
+    if (_permissionState.isPermanentlyDenied) {
+      await openAppSettings();
+      return;
+    }
+
+    try {
+      setState(() => _isCheckingPermission = true);
+      final repo = await ref.read(storageRepositoryProvider.future);
+      await repo.requestPermissions();
+      final permissionState = await repo.getPermissionState();
+      if (!mounted) return;
+
+      setState(() => _permissionState = permissionState);
+      if (permissionState.hasFullAccess) {
+        _nextPage();
+      }
+    } catch (_) {
+      // Keep onboarding on the permission step; user can continue in limited mode.
+    } finally {
+      if (mounted) {
+        setState(() => _isCheckingPermission = false);
+      }
+    }
+  }
+
+  Future<void> _refreshPermissionState() async {
+    if (!mounted) return;
+    setState(() => _isCheckingPermission = true);
     try {
       final repo = await ref.read(storageRepositoryProvider.future);
-      // Request permissions immediately
-      await repo.requestPermissions();
-    } catch (_) {}
-
-    if (mounted) {
-      _nextPage();
+      final permissionState = await repo.getPermissionState();
+      if (!mounted) return;
+      setState(() => _permissionState = permissionState);
+    } catch (_) {
+      // Fall back to the default state and let the user continue manually.
+    } finally {
+      if (mounted) {
+        setState(() => _isCheckingPermission = false);
+      }
     }
   }
 

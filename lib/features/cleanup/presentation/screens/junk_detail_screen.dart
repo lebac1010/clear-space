@@ -5,6 +5,8 @@ import '../../../../core/extensions/build_context_x.dart';
 
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../../../dashboard/presentation/controllers/dashboard_controller.dart';
 import '../../domain/entities/junk_item.dart';
 import '../controllers/junk_detail_controller.dart';
@@ -42,9 +44,6 @@ class JunkDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(junkDetailControllerProvider(type));
-    final controller = ref.read(junkDetailControllerProvider(type).notifier);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
@@ -59,100 +58,118 @@ class JunkDetailScreen extends ConsumerWidget {
             fontSize: 18,
           ).copyWith(color: context.appTextPrimary),
         ),
-        actions: [
-          if (state.items.hasValue && state.items.value!.isNotEmpty)
-            TextButton(
-              onPressed: () {
-                if (state.allSelected) {
-                  controller.deselectAll();
-                } else {
-                  controller.selectAll();
-                }
-              },
-              child: Text(
-                state.allSelected
-                    ? context.l10n.deselectAll
-                    : context.l10n.selectAll,
-              ),
-            ),
-        ],
       ),
-      body: state.items.when(
-        loading: () => Center(
-          child: CircularProgressIndicator(color: context.colorScheme.primary),
-        ),
-        error: (err, _) => ErrorView(
-          message: err.toString(),
-          onRetry: () => controller.refresh(),
-        ),
-        data: (items) {
-          if (items.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    _icon,
-                    size: 64,
-                    color: context.appTextTertiary.withValues(alpha: 0.5),
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        builder: (context, ref) {
+          final state = ref.watch(junkDetailControllerProvider(type));
+          final controller = ref.read(junkDetailControllerProvider(type).notifier);
+
+          return state.items.when(
+            loading: () => Center(
+              child: CircularProgressIndicator(color: context.colorScheme.primary),
+            ),
+            error: (err, _) => ErrorView(
+              message: err.toString(),
+              onRetry: () => controller.refresh(),
+            ),
+            data: (items) {
+              if (items.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        _icon,
+                        size: 64,
+                        color: context.appTextTertiary.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        context.l10n.noItemsFound,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: context.appTextSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        context.l10n.allClean,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: context.appTextTertiary,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    context.l10n.noItemsFound,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: context.appTextSecondary,
+                );
+              }
+
+              return Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16, bottom: 8),
+                      child: TextButton(
+                        onPressed: () {
+                          if (state.allSelected) {
+                            controller.deselectAll();
+                          } else {
+                            controller.selectAll();
+                          }
+                        },
+                        child: Text(
+                          state.allSelected
+                              ? context.l10n.deselectAll
+                              : context.l10n.selectAll,
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    context.l10n.allClean,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.appTextTertiary,
+                  _buildSummaryBar(context, state, items),
+                  Expanded(
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+                        itemCount: items.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (context, index) {
+                          final item = items[index];
+                          final isSelected = state.selectedPaths.contains(item.path);
+                          return _JunkItemTile(
+                            item: item,
+                            type: type,
+                            isSelected: isSelected,
+                            onTap: () => controller.toggleItem(item.path),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
-              ),
-            );
-          }
-
-          return Column(
-            children: [
-              // Summary bar
-              _buildSummaryBar(context, state, items),
-              // List
-              Expanded(
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
-                    itemCount: items.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 8),
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      final isSelected = state.selectedPaths.contains(
-                        item.path,
-                      );
-                      return _JunkItemTile(
-                        item: item,
-                        type: type,
-                        isSelected: isSelected,
-                        onTap: () => controller.toggleItem(item.path),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
+              );
+            },
           );
         },
       ),
-      // Bottom action bar
-      bottomNavigationBar: state.items.hasValue && state.items.value!.isNotEmpty
-          ? _buildBottomBar(context, ref, state, controller)
-          : null,
+      bottomNavigationBar: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        loadingChild: const SizedBox.shrink(),
+        blockedChild: const SizedBox.shrink(),
+        builder: (context, ref) {
+          final state = ref.watch(junkDetailControllerProvider(type));
+          final controller = ref.read(junkDetailControllerProvider(type).notifier);
+
+          if (!(state.items.hasValue && state.items.value!.isNotEmpty)) {
+            return const SizedBox.shrink();
+          }
+
+          return _buildBottomBar(context, ref, state, controller);
+        },
+      ),
     );
   }
 

@@ -9,10 +9,13 @@ import '../../../../core/router/route_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../controllers/media_explorer_controller.dart';
 
 class MediaExplorerScreen extends ConsumerStatefulWidget {
   final String initialType;
+
   const MediaExplorerScreen({super.key, this.initialType = 'audio'});
 
   @override
@@ -46,8 +49,7 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
         icon: Icons.description_rounded,
       ),
     ];
-    
-    // Only set up the PageController and selected type the first time
+
     if (!_isInitialized) {
       _selectedType = widget.initialType;
       final initialIndex = _tabs
@@ -59,12 +61,6 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // Move _tabs access out of here as context is not fully available yet for l10n
-  }
-
-  @override
   void didUpdateWidget(MediaExplorerScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialType != oldWidget.initialType &&
@@ -73,7 +69,6 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
       final index = _tabs
           .indexWhere((t) => t.type == _selectedType)
           .clamp(0, 2);
-      // Wait for build to complete before animating page controller
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_pageController.hasClients) {
           _pageController.animateToPage(
@@ -126,118 +121,128 @@ class _MediaExplorerScreenState extends ConsumerState<MediaExplorerScreen> {
           const Gap(8),
         ],
       ),
-      body: Column(
-        children: [
-          // ─── Pill Tab Bar ───
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: context.appSurfaceContainer,
-                borderRadius: BorderRadius.circular(AppRadius.md),
-              ),
-              child: Row(
-                children: _tabs.map((tab) {
-                  final isActive = _selectedType == tab.type;
-                  return Expanded(
-                    child: GestureDetector(
-                      onTap: () => _onTabTapped(tab.type),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: isActive
-                              ? context.appSurface
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(AppRadius.sm),
-                          boxShadow: isActive
-                              ? [
-                                  BoxShadow(
-                                    color: context.appShadow.withValues(
-                                      alpha: 0.3,
-                                    ),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ]
-                              : null,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              tab.icon,
-                              size: 16,
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        builder: (context, ref) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: context.appSurfaceContainer,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                  child: Row(
+                    children: _tabs.map((tab) {
+                      final isActive = _selectedType == tab.type;
+                      return Expanded(
+                        child: GestureDetector(
+                          onTap: () => _onTabTapped(tab.type),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
                               color: isActive
-                                  ? context.colorScheme.primary
-                                  : context.appTextTertiary,
+                                  ? context.appSurface
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.sm,
+                              ),
+                              boxShadow: isActive
+                                  ? [
+                                      BoxShadow(
+                                        color: context.appShadow.withValues(
+                                          alpha: 0.3,
+                                        ),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ]
+                                  : null,
                             ),
-                            const SizedBox(width: 6),
-                            Flexible(
-                              child: Text(
-                                tab.label,
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: isActive
-                                      ? FontWeight.w700
-                                      : FontWeight.w500,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  tab.icon,
+                                  size: 16,
                                   color: isActive
                                       ? context.colorScheme.primary
-                                      : context.appTextSecondary,
+                                      : context.appTextTertiary,
                                 ),
-                              ),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: Text(
+                                    tab.label,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: isActive
+                                          ? FontWeight.w700
+                                          : FontWeight.w500,
+                                      color: isActive
+                                          ? context.colorScheme.primary
+                                          : context.appTextSecondary,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
-            ),
-          ),
-
-          // ─── PageView (swipe between tabs) ───
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() => _selectedType = _tabs[index].type);
-              },
-              children: _tabs
-                  .map(
-                    (tab) =>
-                        _MediaListView(key: ValueKey(tab.type), type: tab.type),
-                  )
-                  .toList(),
-            ),
-          ),
-        ],
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() => _selectedType = _tabs[index].type);
+                  },
+                  children: _tabs
+                      .map(
+                        (tab) => _MediaListView(
+                          key: ValueKey(tab.type),
+                          type: tab.type,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ],
+          );
+        },
       ),
-
-      // ─── Floating Bottom Action ───
-      bottomNavigationBar: _FloatingActionPanel(type: _selectedType),
+      bottomNavigationBar: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        loadingChild: const SizedBox.shrink(),
+        blockedChild: const SizedBox.shrink(),
+        builder: (context, ref) => _FloatingActionPanel(type: _selectedType),
+      ),
     );
   }
 }
 
-// ── Tab Item Model ──
 class _TabItem {
   final String type;
   final String label;
   final IconData icon;
+
   const _TabItem({required this.type, required this.label, required this.icon});
 }
 
-// ══════════════════════════════════════════════════════════════
-// ── Media List View (per tab) ──
-// ══════════════════════════════════════════════════════════════
 class _MediaListView extends ConsumerStatefulWidget {
   final String type;
+
   const _MediaListView({super.key, required this.type});
 
   @override
@@ -276,7 +281,7 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // Required by AutomaticKeepAliveClientMixin
+    super.build(context);
     final state = ref.watch(mediaExplorerControllerProvider(widget.type));
     final controller = ref.read(
       mediaExplorerControllerProvider(widget.type).notifier,
@@ -322,7 +327,6 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
 
         return Column(
           children: [
-            // ── Header Bar ──
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               child: Row(
@@ -380,8 +384,6 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
                 ],
               ),
             ),
-
-            // ── Scrollable List ──
             Expanded(
               child: Scrollbar(
                 controller: _scrollController,
@@ -423,9 +425,6 @@ class _MediaListViewState extends ConsumerState<_MediaListView>
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// ── Premium Media Item Card ──
-// ══════════════════════════════════════════════════════════════
 class _MediaItemCard extends StatelessWidget {
   final dynamic file;
   final String type;
@@ -462,11 +461,8 @@ class _MediaItemCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // ── Tinted Icon Avatar ──
               _IconAvatar(type: type, isSelected: isSelected),
               const SizedBox(width: 12),
-
-              // ── File Info ──
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -496,7 +492,7 @@ class _MediaItemCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          '•',
+                          '|',
                           style: TextStyle(color: context.appTextTertiary),
                         ),
                         const SizedBox(width: 6),
@@ -516,8 +512,6 @@ class _MediaItemCard extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // ── Selection Indicator ──
               const SizedBox(width: 8),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -560,12 +554,10 @@ class _MediaItemCard extends StatelessWidget {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// ── Tinted Icon Avatar ──
-// ══════════════════════════════════════════════════════════════
 class _IconAvatar extends StatelessWidget {
   final String type;
   final bool isSelected;
+
   const _IconAvatar({required this.type, required this.isSelected});
 
   @override
@@ -594,11 +586,9 @@ class _IconAvatar extends StatelessWidget {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// ── Floating Bottom Action Panel ──
-// ══════════════════════════════════════════════════════════════
 class _FloatingActionPanel extends ConsumerWidget {
   final String type;
+
   const _FloatingActionPanel({required this.type});
 
   @override
@@ -636,7 +626,6 @@ class _FloatingActionPanel extends ConsumerWidget {
         top: false,
         child: Row(
           children: [
-            // ── Info Column ──
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
@@ -666,8 +655,6 @@ class _FloatingActionPanel extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 12),
-
-            // ── Size Info ──
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -691,8 +678,6 @@ class _FloatingActionPanel extends ConsumerWidget {
                 ],
               ),
             ),
-
-            // ── Delete Button ──
             FilledButton.icon(
               onPressed: () =>
                   _showDeleteConfirmation(context, ref, selectedCount),

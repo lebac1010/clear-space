@@ -8,6 +8,8 @@ import '../../../../core/extensions/build_context_x.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../dashboard/data/providers/storage_provider.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 import '../../domain/entities/screenshot_item.dart';
 import '../controllers/screenshots_controller.dart';
 import '../controllers/screenshots_state.dart';
@@ -17,69 +19,85 @@ class ScreenshotsCleanerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(screenshotsControllerProvider);
-    final controller = ref.read(screenshotsControllerProvider.notifier);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
         title: Text(context.l10n.screenshotsCleanerTitle),
-        actions: [
-          if (state.items.isNotEmpty)
-            TextButton(
-              onPressed: () => controller.toggleAll(
-                state.selectedCount < state.items.length,
-              ),
-              child: Text(
-                state.selectedCount < state.items.length
-                    ? context.l10n.selectAll
-                    : context.l10n.deselectAll,
-                style: TextStyle(color: context.colorScheme.primary),
-              ),
-            ),
-        ],
       ),
-      body: state.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : state.errorMessage != null
-          ? ErrorView(
-              message: state.errorMessage!,
-              onRetry: () => controller.loadScreenshots(),
-            )
-          : state.items.isEmpty
-          ? Center(
-              child: Text(
-                context.l10n.noPhotosFound,
-                style: TextStyle(color: context.appTextSecondary),
-              ),
-            )
-          : Column(
-              children: [
-                _buildSummaryBar(context, state),
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(8),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childAspectRatio: 0.8,
-                        ),
-                    itemCount: state.items.length,
-                    itemBuilder: (context, index) {
-                      final item = state.items[index];
-                      return _ScreenshotGridTile(
-                        item: item,
-                        onToggle: () => controller.toggleSelection(item.id),
-                      );
-                    },
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        builder: (context, ref) {
+          final state = ref.watch(screenshotsControllerProvider);
+          final controller = ref.read(screenshotsControllerProvider.notifier);
+
+          return Column(
+            children: [
+              if (state.items.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: TextButton(
+                      onPressed: () => controller.toggleAll(
+                        state.selectedCount < state.items.length,
+                      ),
+                      child: Text(
+                        state.selectedCount < state.items.length
+                            ? context.l10n.selectAll
+                            : context.l10n.deselectAll,
+                        style: TextStyle(color: context.colorScheme.primary),
+                      ),
+                    ),
                   ),
                 ),
-                if (state.selectedCount > 0)
-                  _buildBottomBar(context, ref, state, controller),
-              ],
-            ),
+              Expanded(
+                child: state.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : state.errorMessage != null
+                    ? ErrorView(
+                        message: state.errorMessage!,
+                        onRetry: () => controller.loadScreenshots(),
+                      )
+                    : state.items.isEmpty
+                    ? Center(
+                        child: Text(
+                          context.l10n.noPhotosFound,
+                          style: TextStyle(color: context.appTextSecondary),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          _buildSummaryBar(context, state),
+                          Expanded(
+                            child: GridView.builder(
+                              padding: const EdgeInsets.all(8),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    childAspectRatio: 0.8,
+                                  ),
+                              itemCount: state.items.length,
+                              itemBuilder: (context, index) {
+                                final item = state.items[index];
+                                return _ScreenshotGridTile(
+                                  item: item,
+                                  onToggle: () =>
+                                      controller.toggleSelection(item.id),
+                                );
+                              },
+                            ),
+                          ),
+                          if (state.selectedCount > 0)
+                            _buildBottomBar(context, ref, state, controller),
+                        ],
+                      ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 

@@ -1,5 +1,6 @@
 import '../entities/scan_progress.dart';
 import '../entities/storage_info.dart';
+import '../entities/storage_permission_state.dart';
 
 abstract class StorageRepository {
   /// Request necessary storage permissions.
@@ -11,6 +12,9 @@ abstract class StorageRepository {
 
   /// Check current permission status without requesting.
   Future<bool> checkPermissions();
+
+  /// Get the current storage permission state for feature gating.
+  Future<StoragePermissionState> getPermissionState();
 
   /// Stream of scan progress updates
   Stream<ScanProgress> get scanProgress;

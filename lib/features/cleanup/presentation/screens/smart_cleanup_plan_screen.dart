@@ -9,6 +9,9 @@ import '../../../../core/router/route_constants.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/error_view.dart';
+import '../../../dashboard/domain/entities/storage_permission_state.dart';
+import '../../../dashboard/presentation/widgets/storage_permission_gate.dart';
 
 import '../controllers/smart_cleanup_controller.dart';
 
@@ -17,8 +20,6 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stateAsync = ref.watch(smartCleanupControllerProvider);
-
     return Scaffold(
       backgroundColor: context.appBackground,
       appBar: AppBar(
@@ -27,164 +28,165 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      body: stateAsync.when(
-        loading: () => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              Gap(16),
-              Text(context.l10n.analyzingSafeToDelete),
-            ],
-          ),
-        ),
-        error: (err, _) => Center(child: Text('Error: $err')),
-        data: (state) {
-          if (state.isCompleted) {
-            return _buildCompletionScreen(context, state.totalPotentialSavings);
-          }
+      body: StoragePermissionGate(
+        requiredAccess: RequiredStorageAccess.full,
+        builder: (context, ref) {
+          final stateAsync = ref.watch(smartCleanupControllerProvider);
 
-          // Empty State (Analysis complete but nothing to clean)
-          if (state.duplicateCount == 0 && state.similarPhotoCount == 0) {
-            return _buildEmptyState(context);
-          }
+          return stateAsync.when(
+            loading: () => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const Gap(16),
+                  Text(context.l10n.analyzingSafeToDelete),
+                ],
+              ),
+            ),
+            error: (err, _) => ErrorView(message: err.toString()),
+            data: (state) {
+              if (state.isCompleted) {
+                return _buildCompletionScreen(context, state.totalPotentialSavings);
+              }
 
-          return Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 24,
-                  ),
-                  child: Column(
-                    children: [
-                      // Hero Header with Animation
-                      _AnimatedHeroHeader(savings: state.totalPotentialSavings),
+              if (state.duplicateCount == 0 && state.similarPhotoCount == 0) {
+                return _buildEmptyState(context);
+              }
 
-                      const Gap(48),
-
-                      // Breakdown
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Cleanup Breakdown',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+              return Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 24,
+                      ),
+                      child: Column(
+                        children: [
+                          _AnimatedHeroHeader(savings: state.totalPotentialSavings),
+                          const Gap(48),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              context.l10n.cleanupBreakdown,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      const Gap(16),
-
-                      AppCard(
-                        padding: EdgeInsets.zero,
-                        child: Column(
-                          children: [
-                            _InteractiveBreakdownItem(
-                              icon: Icons.copy_all_rounded,
-                              color: context.customColors.secondary,
-                              title: context.l10n.duplicateFiles,
-                              count: state.duplicateCount,
-                              size: state.duplicateSize,
-                              isSelected: state.duplicatesSelected,
-                              onToggle: (val) {
-                                ref
-                                    .read(
-                                      smartCleanupControllerProvider.notifier,
-                                    )
-                                    .toggleDuplicates(val ?? false);
-                              },
-                              onTap: () => context.push(
-                                '${RouteConstants.smartDetail}?type=duplicate${state.duplicatesSelected ? '&autoSelect=true' : ''}',
-                              ),
-                            ),
-                            const Divider(height: 1),
-                            _InteractiveBreakdownItem(
-                              icon: Icons.photo_library_rounded,
-                              color: context.colorScheme.primary,
-                              title: context.l10n.similarPhotos,
-                              count: state.similarPhotoCount,
-                              size: state.similarPhotoSize,
-                              isSelected: state.similarPhotosSelected,
-                              onToggle: (val) {
-                                ref
-                                    .read(
-                                      smartCleanupControllerProvider.notifier,
-                                    )
-                                    .toggleSimilarPhotos(val ?? false);
-                              },
-                              onTap: () => context.push(
-                                '${RouteConstants.smartDetail}?type=similar${state.similarPhotosSelected ? '&autoSelect=true' : ''}',
-                              ),
-                            ),
-                            const Divider(height: 1),
-                            Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.info_outline_rounded,
-                                    size: 20,
-                                    color: context.appTextSecondary,
+                          const Gap(16),
+                          AppCard(
+                            padding: EdgeInsets.zero,
+                            child: Column(
+                              children: [
+                                _InteractiveBreakdownItem(
+                                  icon: Icons.copy_all_rounded,
+                                  color: context.customColors.secondary,
+                                  title: context.l10n.duplicateFiles,
+                                  count: state.duplicateCount,
+                                  size: state.duplicateSize,
+                                  isSelected: state.duplicatesSelected,
+                                  onToggle: (val) {
+                                    ref
+                                        .read(
+                                          smartCleanupControllerProvider.notifier,
+                                        )
+                                        .toggleDuplicates(val ?? false);
+                                  },
+                                  onTap: () => context.push(
+                                    '${RouteConstants.smartDetail}?type=duplicate${state.duplicatesSelected ? '&autoSelect=true' : ''}',
                                   ),
-                                  Gap(12),
-                                  Expanded(
-                                    child: Text(
-                                      context.l10n.smartCleanupDesc,
-                                      style: TextStyle(
+                                ),
+                                const Divider(height: 1),
+                                _InteractiveBreakdownItem(
+                                  icon: Icons.photo_library_rounded,
+                                  color: context.colorScheme.primary,
+                                  title: context.l10n.similarPhotos,
+                                  count: state.similarPhotoCount,
+                                  size: state.similarPhotoSize,
+                                  isSelected: state.similarPhotosSelected,
+                                  onToggle: (val) {
+                                    ref
+                                        .read(
+                                          smartCleanupControllerProvider.notifier,
+                                        )
+                                        .toggleSimilarPhotos(val ?? false);
+                                  },
+                                  onTap: () => context.push(
+                                    '${RouteConstants.smartDetail}?type=similar${state.similarPhotosSelected ? '&autoSelect=true' : ''}',
+                                  ),
+                                ),
+                                const Divider(height: 1),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.info_outline_rounded,
+                                        size: 20,
                                         color: context.appTextSecondary,
-                                        fontSize: 13,
                                       ),
-                                    ),
+                                      const Gap(12),
+                                      Expanded(
+                                        child: Text(
+                                          context.l10n.smartCleanupDesc,
+                                          style: TextStyle(
+                                            color: context.appTextSecondary,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Bottom Action
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 16,
-                ),
-                decoration: BoxDecoration(
-                  color: context.appSurface,
-                  boxShadow: [
-                    BoxShadow(
-                      color: context.appShadow.withValues(alpha: 0.35),
-                      blurRadius: 10,
-                      offset: const Offset(0, -4),
                     ),
-                  ],
-                ),
-                child: AppButton(
-                  text: state.isCleaning
-                      ? context.l10n.cleaning
-                      : context.l10n.cleanUpSize(
-                          FileUtils.formatSize(state.totalPotentialSavings),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: context.appSurface,
+                      boxShadow: [
+                        BoxShadow(
+                          color: context.appShadow.withValues(alpha: 0.35),
+                          blurRadius: 10,
+                          offset: const Offset(0, -4),
                         ),
-                  isLoading: state.isCleaning,
-                  icon: const Icon(Icons.cleaning_services_rounded),
-                  onPressed:
-                      state.isCleaning || state.totalPotentialSavings == 0
-                      ? null
-                      : () {
-                          ref
-                              .read(smartCleanupControllerProvider.notifier)
-                              .executeCleanup();
-                        },
-                ),
-              ),
-            ],
+                      ],
+                    ),
+                    child: AppButton(
+                      text: state.isCleaning
+                          ? context.l10n.cleaning
+                          : context.l10n.cleanUpSize(
+                              FileUtils.formatSize(state.totalPotentialSavings),
+                            ),
+                      isLoading: state.isCleaning,
+                      icon: const Icon(Icons.cleaning_services_rounded),
+                      onPressed:
+                          state.isCleaning || state.totalPotentialSavings == 0
+                          ? null
+                          : () {
+                              ref
+                                  .read(
+                                    smartCleanupControllerProvider.notifier,
+                                  )
+                                  .executeCleanup();
+                            },
+                    ),
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
@@ -243,9 +245,9 @@ class SmartCleanupPlanScreen extends ConsumerWidget {
             ),
           ),
           const Gap(24),
-          const Text(
-            "You're All Set!",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            context.l10n.youreAllSet,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const Gap(8),
           Text(
