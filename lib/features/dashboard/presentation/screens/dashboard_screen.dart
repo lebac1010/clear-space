@@ -98,13 +98,14 @@ class DashboardScreen extends ConsumerWidget {
               StorageOverviewCard(info: info),
               const NativeTemplateAdCard(
                 placement: AppNativeAdPlacement.dashboard,
-                margin: EdgeInsets.only(top: 12, bottom: 10),
+                margin: EdgeInsets.only(top: 12),
               ),
 
               if (!isScanning &&
                   (info.junkSize > 0 ||
                       info.emptyFolderCount > 0 ||
-                      info.apkCount > 0))
+                      info.apkCount > 0)) ...[
+                const Gap(12),
                 Card(
                   color: Theme.of(context).colorScheme.errorContainer,
                   child: ListTile(
@@ -138,6 +139,7 @@ class DashboardScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+              ],
 
               const Gap(10),
 
